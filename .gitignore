@@ -20,9 +20,13 @@ obj/Debug/SceneOfCustoms.dll
 *.dll
 *.pdb
 *.dll
+<<<<<<< HEAD
 bin/SceneOfCustoms.dll
 *.pdb
 obj/Debug/SceneOfCustoms.csproj.FileListAbsolute.txt
 bin/SceneOfCustoms.pdb
 obj/Debug/SceneOfCustoms.csproj.FileListAbsolute.txt
 obj/Debug/SceneOfCustoms.pdb
+=======
+*.pdb
+>>>>>>> 6e1ef20199e53829ed14075a7fde5c494bf496dd
