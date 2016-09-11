@@ -67,7 +67,6 @@ D:\net\SceneOfCustoms\bin\zh-Hans\Microsoft.Owin.Security.Facebook.resources.dll
 D:\net\SceneOfCustoms\bin\zh-Hans\Microsoft.Owin.Security.Google.resources.dll
 D:\net\SceneOfCustoms\bin\zh-Hans\Microsoft.Owin.Security.Twitter.resources.dll
 D:\net\SceneOfCustoms\bin\zh-Hans\Microsoft.Owin.Security.MicrosoftAccount.resources.dll
-D:\net\SceneOfCustoms\obj\Debug\SceneOfCustoms.csprojResolveAssemblyReference.cache
 D:\net\SceneOfCustoms\obj\Debug\SceneOfCustoms.dll
 D:\net\SceneOfCustoms\obj\Debug\SceneOfCustoms.pdb
 E:\SceneOfCustoms\bin\SceneOfCustoms.dll.config
