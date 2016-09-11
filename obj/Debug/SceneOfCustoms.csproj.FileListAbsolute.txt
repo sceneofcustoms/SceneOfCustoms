@@ -17,7 +17,6 @@ D:\net\SceneOfCustoms\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
 D:\net\SceneOfCustoms\bin\Microsoft.Owin.Security.OAuth.dll
 D:\net\SceneOfCustoms\bin\Microsoft.Owin.Security.Twitter.dll
 D:\net\SceneOfCustoms\bin\Microsoft.Web.Infrastructure.dll
-D:\net\SceneOfCustoms\bin\Newtonsoft.Json.dll
 D:\net\SceneOfCustoms\bin\Owin.dll
 D:\net\SceneOfCustoms\bin\System.Web.Helpers.dll
 D:\net\SceneOfCustoms\bin\System.Web.Mvc.dll
@@ -35,7 +34,6 @@ D:\net\SceneOfCustoms\bin\System.Web.WebPages.xml
 D:\net\SceneOfCustoms\bin\System.Web.WebPages.Deployment.xml
 D:\net\SceneOfCustoms\bin\System.Web.WebPages.Razor.xml
 D:\net\SceneOfCustoms\bin\Antlr3.Runtime.pdb
-D:\net\SceneOfCustoms\bin\Newtonsoft.Json.xml
 D:\net\SceneOfCustoms\bin\EntityFramework.xml
 D:\net\SceneOfCustoms\bin\EntityFramework.SqlServer.xml
 D:\net\SceneOfCustoms\bin\Microsoft.AspNet.Identity.Core.xml
