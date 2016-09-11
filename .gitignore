@@ -12,21 +12,14 @@ obj/Debug/SceneOfCustoms.csproj.FileListAbsolute.txt
 *.pdb
 *.cache
 obj/Debug/SceneOfCustoms.csproj.FileListAbsolute.txt
-*.pdb
-*.dll
-*.pdb
 *.txt
 obj/Debug/SceneOfCustoms.dll
 *.dll
 *.pdb
-*.dll
-<<<<<<< HEAD
+*.dll 
 bin/SceneOfCustoms.dll
 *.pdb
 obj/Debug/SceneOfCustoms.csproj.FileListAbsolute.txt
 bin/SceneOfCustoms.pdb
 obj/Debug/SceneOfCustoms.csproj.FileListAbsolute.txt
 obj/Debug/SceneOfCustoms.pdb
-=======
-*.pdb
->>>>>>> 6e1ef20199e53829ed14075a7fde5c494bf496dd
