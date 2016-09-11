@@ -19,3 +19,5 @@ obj/Debug/SceneOfCustoms.csproj.FileListAbsolute.txt
 obj/Debug/SceneOfCustoms.dll
 *.dll
 *.pdb
+*.dll
+*.pdb
