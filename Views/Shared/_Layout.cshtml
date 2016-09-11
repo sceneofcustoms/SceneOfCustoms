@@ -5,13 +5,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - 我的 ASP.NET 应用程序</title>
+    @if (IsSectionDefined("Styles"))
+    {@RenderSection("Styles", required: false)}
     <link href="~/Content/bootstrap32/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/common.css" rel="stylesheet" />
     <link href="~/css/superfish.css" rel="stylesheet" />
+    @Styles.Render("~/easyui/css")
     <script src="~/js/jquery-1.8.2.min.js"></script>
     <script src="~/js/hoverIntent.js"></script>
     <script src="~/js/superfish.js"></script>
     <link href="~/Content/iconfont/iconfont.css" rel="stylesheet" />
+    @Scripts.Render("~/easyui/js")
 </head>
 <body>
     <div class="container">
@@ -79,5 +83,6 @@
             });
         });
     </script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>

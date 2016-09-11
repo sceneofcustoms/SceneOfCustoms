@@ -26,6 +26,20 @@ namespace SceneOfCustoms
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            //easyui 1.4.5
+            bundles.Add(new StyleBundle("~/easyui/css").Include(
+                     "~/Scripts/easyui/themes/metro/easyui.css"));
+
+            bundles.Add(new ScriptBundle("~/easyui/js").Include(
+                      "~/Scripts/easyui/jquery.easyui.min.js",
+                      "~/Scripts/easyui/plugins/datagrid-filter.js",
+                      "~/Scripts/easyui/plugins/jquery.edatagrid.js",
+                      "~/Scripts/easyui/locale/easyui-lang-zh_CN.js",
+                      "~/Scripts/FileSaver.js",
+                      "~/Scripts/jQuery.print.js"
+                      ));
+
         }
     }
 }
