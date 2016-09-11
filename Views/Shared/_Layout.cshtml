@@ -1,45 +1,79 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - 我的 ASP.NET 应用程序</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/bootstrap32/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/common.css" rel="stylesheet" />
+    <link href="~/css/superfish.css" rel="stylesheet" />
+    <script src="~/js/jquery-1.8.2.min.js"></script>
+    <script src="~/js/hoverIntent.js"></script>
+    <script src="~/js/superfish.js"></script>
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("应用程序名称", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("主页", "Index", "Home")</li>
-                    <li>@Html.ActionLink("关于", "About", "Home")</li>
-                    <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
+    <div class="container">
+        <div style="margin:10px 0px">
+            <img src="~/Images/fld_logo.png" />
+            <div class="fr" style="font-size:12px">
+                <i class="icon iconfont">&#xe605;</i>
+                <span>当前用户：@Html.Action("CurrentUser", "Common")</span>&nbsp;&nbsp;
+                <a style="cursor:pointer" href="/Account/SignOut"><i class="icon iconfont">&#xe609;</i><span>退出</span></a>
             </div>
         </div>
+        <div>
+            <ul class="sf-menu" id="na_menu" style="font-size:14px">
+                @*@Html.Action("Header", "Common")*@
+                <li>
+                    <a href="#">现场关务</a>
+                    <ul>
+                        <li><a href="#">空运进口</a></li>
+                        <li><a href="#">空运出口</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 应用程序</p>
-        </footer>
+    <div class="container" style="height:600px">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
     </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    <div style="background-color: #CFDEFF; height: 70px; ">
+        <div class="container">
+            <table class="table" style="margin-bottom:0px">
+                <tr>
+                    <td rowspan="2" style="width:25%">
+                        <span class="icon iconfont iconsize">&#xe612;</span>
+                        <span class="icon iconfont iconsize">&#xe613;</span>
+                        <span class="icon iconfont iconsize">&#xe60f;</span>
+                    </td>
+                    <td>
+                        <a class="footer">关于我们</a>
+                        <a class="footer">用户协议</a>
+                        <a class="footer">法律声明</a>
+                        <a class="footer">常用下载</a>
+                        <a class="footer">意见反馈</a>
+                        <a class="footer">网站地图</a>
+                    </td>
+                    <td rowspan="2" style="width:25%">
+                        <span class="icon iconfont iconsize">&#xe614;</span><span>0512-57313261</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="footer">苏ICP备05048421号&copy; 江苏飞力达国际物流股份有限公司</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#na_menu').superfish({
+            });
+        });
+    </script>
 </body>
 </html>
