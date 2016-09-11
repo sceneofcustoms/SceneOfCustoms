@@ -1,43 +1,29 @@
 ﻿<div class="ibox-content">
     <div class="table-responsive">
 
-        <table class="easyui-datagrid" title="数据" style=""
+        <table id="dg" class="easyui-datagrid" title="Cache Editor for DataGrid" style="width:700px;height:auto"
                data-options="
-                                   rownumbers:true,
-                                   singleSelect:true,
-                        
-                                   method:'get',
-                                   toolbar:'#tb',
-                                   pagination:true ">
-            <thead data-options="frozen:true">
-                <tr>
-                    <th data-options="field:'STORERKEY',sortable:true,width:100">STORERKEY</th>
-                    <th data-options="field:'productid',width:120">Product</th>
-                </tr>
-            </thead>
+				iconCls: 'icon-edit',
+				singleSelect: true,
+				toolbar: '#tb',
+                dataType : 'json',
+				url: 'Order/GetData',
+				method: 'get',
+                pagination:true
+               ">
             <thead>
                 <tr>
-                    <th data-options="field:'listprice',width:90,align:'right'">List Price</th>
-                    <th data-options="field:'unitcost',width:90,align:'right'">Unit Cost</th>
-                    <th data-options="field:'attr1',width:230">Attribute</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
-                    <th data-options="field:'status',width:60,align:'center'">Status</th>
+                    <th data-options=" field:'ID',width:80">
+                        Item ID
+                    </th>
+                    <th data-options="field:'productid',width:100,
+						">
+                        Product
+                    </th>
+                    <th data-options="field:'listprice',width:80,align:'right',editor:{type:'numberbox',options:{precision:1}}">List Price</th>
+                    <th data-options="field:'unitcost',width:80,align:'right',editor:'numberbox'">Unit Cost</th>
+                    <th data-options="field:'attr1',width:250,editor:'text'">Attribute</th>
+                    <th data-options="field:'status',width:60,align:'center',editor:{type:'checkbox',options:{on:'P',off:''}}">Status</th>
                 </tr>
             </thead>
         </table>
@@ -81,3 +67,15 @@
     </div>
     <!-- end ibox-content -->
 </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //debugger;
+        //$('#dg').datagrid('loadData', {
+        //    "total": 50
+        //});
+    })
+
+</script>
