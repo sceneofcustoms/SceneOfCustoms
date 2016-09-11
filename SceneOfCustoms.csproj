@@ -159,6 +159,7 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -178,12 +179,16 @@
     <Content Include="Content\bootstrap32\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\bootstrap32\js\bootstrap.js" />
     <Content Include="Content\bootstrap32\js\bootstrap.min.js" />
+    <Content Include="Content\common.css" />
+    <Content Include="Content\iconfont\iconfont.css" />
+    <Content Include="Content\iconfont\iconfont.svg" />
     <Content Include="css\superfish-navbar.css" />
     <Content Include="css\superfish-vertical.css" />
     <Content Include="css\superfish.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\fld_logo.png" />
     <Content Include="js\hoverIntent.js" />
     <Content Include="js\jquery-1.8.2.min.js" />
     <Content Include="js\superfish.js" />
@@ -195,6 +200,9 @@
     <Content Include="Content\bootstrap32\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap32\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\bootstrap32\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\iconfont\iconfont.eot" />
+    <Content Include="Content\iconfont\iconfont.ttf" />
+    <Content Include="Content\iconfont\iconfont.woff" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -247,6 +255,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Common\" />
     <Folder Include="Views\Common\" />
+    <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
