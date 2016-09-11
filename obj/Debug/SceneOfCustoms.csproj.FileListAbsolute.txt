@@ -81,4 +81,3 @@ E:\SceneOfCustoms\bin\System.Web.Mvc.xml
 E:\SceneOfCustoms\bin\System.Web.WebPages.xml
 E:\SceneOfCustoms\obj\Debug\SceneOfCustoms.dll
 E:\SceneOfCustoms\obj\Debug\SceneOfCustoms.pdb
-E:\SceneOfCustoms\obj\Debug\SceneOfCustoms.csprojResolveAssemblyReference.cache
