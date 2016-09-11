@@ -192,7 +192,14 @@ namespace SceneOfCustoms.Common
             }
         }
 
-        //订单删除 公共方法 by panhuaguo 2016-08-30  含国内业务
+        public static string GetPageSql(string tempsql, string order, string asc, ref int totalProperty, int start, int limit)
+        { 
+            string sql = "select count(1) from ( " + tempsql + " )";
+            totalProperty = DBMgr.GetDataTable(sql).Rows.Count;
+            string pageSql = @"SELECT * FROM ( SELECT tt.*, ROWNUM AS rowno FROM ({0} ORDER BY {1} {2}) tt WHERE ROWNUM <= {4}) table_alias WHERE table_alias.rowno >= {3}";
+            pageSql = string.Format(pageSql, tempsql, order, asc, start + 1, limit + start);
+            return pageSql;
+        }
        
 
     }
