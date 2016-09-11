@@ -1,0 +1,26 @@
+﻿.container {
+    margin: 0 auto;
+    width: 1200px;
+    padding: 0;
+}
+
+.fr {
+    float: right;
+}
+
+.nav {
+    background-color: #363c64;
+}
+
+.iconsize {
+    font-size: 35px !important;
+    margin: 0 10px !important;
+}
+
+body {
+    font-family: 'Microsoft YaHei';
+}
+.footer{  
+    color:black;
+    margin:0 10px;
+}
