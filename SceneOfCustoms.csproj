@@ -167,6 +167,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Common\DB_BaseData.cs" />
     <Compile Include="Common\DBMgr.cs" />
     <Compile Include="Common\Extension.cs" />
     <Compile Include="Common\SeRedis.cs" />
