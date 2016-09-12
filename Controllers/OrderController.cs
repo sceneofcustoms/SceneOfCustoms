@@ -32,7 +32,7 @@ namespace SceneOfCustoms.Controllers
             else
             {
                string sql = "select CODE,NAME||'('||CODE||')' NAME from BASE_CUSTOMDISTRICT  where ENABLED=1 ORDER BY CODE";
-                json_sbgq = JsonConvert.SerializeObject(DBMgrBase.GetDataTable(sql));
+               json_sbgq = JsonConvert.SerializeObject(DB_BaseData.GetDataTable(sql));
                 db.StringSet("common_data:sbgq", json_sbgq);
             }
 
