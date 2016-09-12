@@ -27,6 +27,16 @@ namespace SceneOfCustoms
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
+            bundles.Add(new StyleBundle("~/font-awesome/css").Include(
+                      "~/fonts/font-awesome/css/font-awesome.min.css",
+
+                      new CssRewriteUrlTransform()));
+
+            bundles.Add(new StyleBundle("~/font-awesome3.2/css").Include(
+                      "~/fonts/font-awesome.3.2/css/font-awesome.min.css",
+
+                      new CssRewriteUrlTransform()));
+
             //easyui 1.4.5
             bundles.Add(new StyleBundle("~/easyui/css").Include(
                      "~/js/easyui/themes/metro/easyui.css"));
@@ -39,6 +49,8 @@ namespace SceneOfCustoms
                       "~/js/FileSaver.js",
                       "~/js/jQuery.print.js"
                       ));
+
+
 
         }
     }
