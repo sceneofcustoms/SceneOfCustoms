@@ -8,7 +8,7 @@ using System.Data.Common;
 using System.Data; 
 using System.Reflection;
 
-namespace SceneCustoms.Common
+namespace SceneOfCustoms.Common
 {
     public class DB_BaseData
     {

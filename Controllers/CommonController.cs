@@ -1,4 +1,5 @@
-﻿using SceneCustoms.Common;
+﻿using Newtonsoft.Json.Linq;
+using SceneOfCustoms.Common;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -18,9 +19,8 @@ namespace SceneOfCustoms.Controllers
         }
         public string CurrentUser()
         {
-            //JObject json_user = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
-            //return json_user.GetValue("REALNAME") + "";
-            return "测试用户";
+            JObject json_user = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
+            return json_user.GetValue("REALNAME") + "";          
         }
         public void ImportOrder()
         {
