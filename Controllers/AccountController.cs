@@ -76,7 +76,8 @@ namespace SceneOfCustoms.Controllers
                 if (string.IsNullOrEmpty(msg))
                 {
                     FormsAuthentication.SetAuthCookie(u.NAME, false);
-                    Response.Redirect("/Home/Index"); 
+                    //Response.Redirect("/Home/Index"); 
+                    Response.Redirect(Request["returnUrl"]);
                 }
             }
             else
