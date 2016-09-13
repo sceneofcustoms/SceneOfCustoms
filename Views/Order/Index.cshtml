@@ -121,12 +121,11 @@
         //双击事件
         $('#dg').datagrid({
             onDblClickCell: function (index, field, value) {
+                var row = $('#dg').datagrid('getData').rows[index];
+                if (row.ID != "") {
+                    window.location.href = "/Order/Edit/ID=" + row.ID;
+                }
                 debugger;
-                window.location.href = "/Order/Ini_Base_Data";
-                //self.location = "/Order/Edit";
-                //$(this).datagrid('beginEdit', index);
-                //var ed = $(this).datagrid('getEditor', { index: index, field: field });
-                //$(ed.target).focus();
             }
         });
 

@@ -20,9 +20,8 @@ namespace SceneOfCustoms.Controllers
         }
 
 
-        public ActionResult Ini_Base_Data()
+        public string Get_SBGQ()
         {
-
             IDatabase db = SeRedis.redis.GetDatabase();
             string json_sbgq = "[]";//申报关区 进口口岸 
             if (db.KeyExists("common_data:sbgq"))
@@ -31,13 +30,28 @@ namespace SceneOfCustoms.Controllers
             }
             else
             {
-               string sql = "select CODE,NAME||'('||CODE||')' NAME from BASE_CUSTOMDISTRICT  where ENABLED=1 ORDER BY CODE";
-               json_sbgq = JsonConvert.SerializeObject(DB_BaseData.GetDataTable(sql));
+                string sql = "select CODE,NAME||'('||CODE||')' NAME from BASE_CUSTOMDISTRICT  where ENABLED=1 ORDER BY CODE";
+                json_sbgq = JsonConvert.SerializeObject(DB_BaseData.GetDataTable(sql));
                 db.StringSet("common_data:sbgq", json_sbgq);
             }
+            return json_sbgq;
+        }
 
-            var str1 = "{\"name\":\"easyui\", \"email\":\"easyui@gmail.com\", \"subject\":\"Subject Title\", \"message\":\"Message Content\", \"language\":\"de\"}";
-            ViewData["str1"] = str1;
+
+        public string Init_Base_Data()
+        {
+            string sql = "select t.*, t.rowid from list_order t where t.busitype='11'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string result = JsonConvert.SerializeObject(dt);
+            return result;
+        }
+
+
+        [HttpGet]
+        public ActionResult Edit()
+        {
+            //var str1 = "{\"name\":\"easyui\", \"email\":\"easyui@gmail.com\", \"subject\":\"Subject Title\", \"message\":\"Message Content\", \"language\":\"de\"}";
+            //ViewData["str1"] = str1;
             return View();
         }
 
@@ -60,7 +74,7 @@ namespace SceneOfCustoms.Controllers
         [HttpPost]
         public ActionResult SaveData(FormCollection form)
         {
-            string str=form["name"];
+            string str = form["name"];
             string str1 = Request.Form["name"];
             return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
         }
