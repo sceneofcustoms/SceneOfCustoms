@@ -50,10 +50,7 @@ namespace SceneOfCustoms.Controllers
             {
                 _userManager = value;
             }
-        }
-
-        //
-        // GET: /Account/Login
+        } 
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
