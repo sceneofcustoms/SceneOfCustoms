@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using SceneOfCustoms.Models;
+using System.Data;
+using SceneOfCustoms.Common;
+using System.Web.Security;
 
 namespace SceneOfCustoms.Controllers
 {
@@ -50,17 +53,43 @@ namespace SceneOfCustoms.Controllers
             {
                 _userManager = value;
             }
-        }
-
-        //
-        // GET: /Account/Login
+        } 
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult DoLogin(Models.User u)
+        { 
+            string sql = "select * from sys_user where name = '" + u.NAME + "' and password = '" + Extension.ToSHA1(u.PASSWORD) + "'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string msg = "";
+            if (dt.Rows.Count > 0)
+            { 
+                if (dt.Rows[0]["STATUS"] + "" != "1")
+                {
+                    msg = "账号已停用!";
+                }
+                if (string.IsNullOrEmpty(msg))
+                {
+                    FormsAuthentication.SetAuthCookie(u.NAME, false);
+                    Response.Redirect("/Home/Index"); 
+                }
+            }
+            else
+            {
+                msg = "账号/密码错误!";
+            }
+            return View();
+        }
+        public void SignOut()
+        {
+            FormsAuthentication.SignOut();
+            Response.Redirect("/Account/Login");
+        }
         //
         // POST: /Account/Login
         [HttpPost]

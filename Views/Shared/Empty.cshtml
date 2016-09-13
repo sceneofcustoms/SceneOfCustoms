@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html> 
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>关务系统</title>
+    <link href="~/Content/bootstrap32/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/common.css" rel="stylesheet" />  
+    <script src="~/js/jquery-1.8.2.min.js"></script>
+    <script src="~/Content/bootstrap32/js/bootstrap.min.js"></script>
+    <link href="~/Content/iconfont/iconfont.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+</body>

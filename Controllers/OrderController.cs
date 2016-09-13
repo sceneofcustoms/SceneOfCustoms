@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
-using SceneCustoms.Common;
+using Newtonsoft.Json.Converters;
+using SceneOfCustoms.Common;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
@@ -40,18 +41,20 @@ namespace SceneOfCustoms.Controllers
 
         public string Init_Base_Data()
         {
-            string sql = "select t.*, t.rowid from list_order t where t.busitype='11'";
+            string ID = Request.QueryString["ID"];
+            string sql = "select t.*, t.rowid from list_order t where  ID = " + ID;
             DataTable dt = DBMgr.GetDataTable(sql);
-            string result = JsonConvert.SerializeObject(dt);
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string result = JsonConvert.SerializeObject(dt, iso);
+            result = result.Substring(1, result.Length - 1);
+            result = result.Substring(0, result.Length - 1);
             return result;
         }
 
 
-        [HttpGet]
         public ActionResult Edit()
         {
-            //var str1 = "{\"name\":\"easyui\", \"email\":\"easyui@gmail.com\", \"subject\":\"Subject Title\", \"message\":\"Message Content\", \"language\":\"de\"}";
-            //ViewData["str1"] = str1;
             return View();
         }
 
@@ -60,23 +63,69 @@ namespace SceneOfCustoms.Controllers
         [HttpGet]
         public string GetData()
         {
-
-            var str1 = "{\"total\":\"28\",\"rows\":[{\"productid\":\"FI-SW-01\",\"productname\":\"Koi\",\"unitcost\":\"10.00\",\"status\":\"P\",\"listprice\":\"36.50\",\"attr1\":\"Large\",\"itemid\":\"EST-1\"}]}";
             string sql = "select t.*, t.rowid from list_order t where t.busitype='11'";
             DataTable dt = DBMgr.GetDataTable(sql);
             string result = JsonConvert.SerializeObject(dt);
-            var str = "{\"total\":\"28\",\"rows\":" + result + "}";
-
-            return str;
+            result = "{\"total\":\"28\",\"rows\":" + result + "}";
+            return result;
 
         }
 
         [HttpPost]
         public ActionResult SaveData(FormCollection form)
         {
-            string str = form["name"];
-            string str1 = Request.Form["name"];
-            return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+            string ID = Request.Form["ID"];
+            string sql = "update list_order set ";
+
+            string REPUNITCODE = Request.Form["REPUNITCODE"];
+
+            if (REPUNITCODE != "")
+            {
+                sql += "  REPUNITCODE =  " + REPUNITCODE + ",";
+            }
+
+
+            sql += " where ID =" + ID;
+
+            if (DBMgr.ExecuteNonQuery(sql) == 1)
+            {
+                return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { Success = false }, JsonRequestBehavior.AllowGet);
+            }
+
         }
+
+        [HttpPost]
+        public ActionResult Edit_Ajax_Scene(FormCollection form)
+        {
+            string ID = Request.Form["ID"];
+            string type = Request.Form["type"];
+
+
+            string sql = "update list_order set ";
+            if (type != "")
+            {
+                string time = type + "TIME";
+                string userid = type + "USERID";
+                string username = type + "USERNAME";
+                sql += time + "  = sysdate ," + userid + " =1, " + username + " ='lakers' ";
+            }
+            sql += " where ID =" + ID;
+
+            if (DBMgr.ExecuteNonQuery(sql) == 1)
+            {
+                var datetime = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
+                return Json(new { Success = true, datetime = datetime }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { Success = false }, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
     }
 }

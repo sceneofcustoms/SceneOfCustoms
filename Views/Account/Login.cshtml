@@ -1,63 +1,56 @@
-﻿@using SceneOfCustoms.Models
-@model LoginViewModel
+﻿@model SceneOfCustoms.Models.User
+
 @{
-    ViewBag.Title = "登录";
+    Layout = "~/Views/Shared/Empty.cshtml";
 }
 
-<h2>@ViewBag.Title。</h2>
-<div class="row">
-    <div class="col-md-8">
-        <section id="loginForm">
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                <h4>使用本地帐户登录。</h4>
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                    </div>
+<div class="container">
+    <div style="margin:10px 0px"><img src="~/Images/fld_logo.png" /></div>
+    <div style="height: 2px; background-color: #363c64"></div>
+    <div class="container" style="padding-top: 80px">
+        <div class="carousel slide" id="carousel-595514" data-ride="carousel" style="width:645px;float:left">
+            <ol class="carousel-indicators">
+                <li class="active" data-slide-to="0" data-target="#carousel-595514">
+                </li>
+                <li data-slide-to="1" data-target="#carousel-595514">
+                </li> 
+            </ol>
+            <div class="carousel-inner">
+                <div class="item active">
+                    <img src="/Images/login01.jpg" alt="" />
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                    </div>
+                <div class="item">
+                    <img src="/Images/login02.jpg" alt="" />
+                </div> 
+            </div>
+        </div>
+        <div style="border: 1px solid #363c64; float: right; width: 350px; padding: 50px 50px 42px 50px;">
+            <form action="/Account/DoLogin" method="post">
+                <label for="user_name">登录名</label>
+                <div class="input-group" style="margin-bottom: 20px">
+                    <span class="input-group-addon icon iconfont">&#xe605;</span>
+                    @Html.TextBoxFor(u => u.NAME, new { @class = "form-control" })
+                    @*<input type="text" class="form-control" id="user_name" placeholder="请输入登录账号">*@
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
-                        </div>
-                    </div>
+                <label for="password">登录密码</label>
+                <div class="input-group">
+                    <span class="input-group-addon icon iconfont">&#xe608;</span>
+                    @Html.TextBoxFor(u => u.PASSWORD, new { @class = "form-control" })
+                    @*<input type="password" class="form-control" id="password" placeholder='请输入登录密码'>*@
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="登录" class="btn btn-default" />
-                    </div>
-                </div>
-                <p>
-                    @Html.ActionLink("注册为新用户", "Register")
-                </p>
-                @* 在为密码重置功能启用帐户确认后启用此项
-                    <p>
-                        @Html.ActionLink("忘记了密码?", "ForgotPassword")
-                    </p>*@
-            }
-        </section>
+                <div style="height:35px">   <label style="color:red" id="validate"></label>  </div>
+                <button type="submit" id='btn_login' class="btn btn-primary btn-group-justified">登录</button>
+            </form>
+        </div>
     </div>
-    <div class="col-md-4">
-        <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-        </section>
-    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btn_login').bind('click', function () { 
+            });
+            $("input").bind('focus', function () {
+                $("#validate").text("");
+            });
+        });
+    </script>
+
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

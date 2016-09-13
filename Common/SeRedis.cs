@@ -6,7 +6,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 
-namespace SceneCustoms.Common
+namespace SceneOfCustoms.Common
 {
 
     public static class SeRedis
