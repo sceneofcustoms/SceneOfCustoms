@@ -40,8 +40,9 @@
     #scene .time_input {
         width: 180px !important;
     }
+
     .panel-title {
-        color:#3071a9
+        color: #3071a9;
     }
 </style>
 
@@ -268,7 +269,7 @@
                 </td>
             </tr>
             <tr>
-                <td  colspan="4">
+                <td colspan="4">
                     <div style="float:left;height:22px;line-height:22px;">
                         <label>放行方式:</label>
                     </div>
@@ -315,11 +316,11 @@
                 </td>
                 <td style="text-align:left">
                     <label for="kouhuobiaoshi">扣货标识:</label>
-                    <input class="" id="kouhuobiaoshi" type="checkbox" name="KOUHUOSIGN" value="1" />   
+                    <input class="" id="kouhuobiaoshi" type="checkbox" name="KOUHUOSIGN" value="1" />
                 </td>
                 <td>
                     <label for="name">扣货时间:</label>
-                    <input class="easyui-textbox" type="text" name="KOUHUOTIME"  />
+                    <input class="easyui-textbox" type="text" name="KOUHUOTIME" />
                 </td>
             </tr>
 
@@ -331,23 +332,15 @@
                 </td>
                 <td>
                     <label for="name">调档次数:</label>
-                    <input class="easyui-textbox" type="text" name="TIAODANGTIMES"  />
+                    <input class="easyui-textbox" type="text" name="TIAODANGTIMES" />
                 </td>
             </tr>
-
-
-
         </table>
-
-
-
-
-
     </div>
 
 
     <div style="text-align:center;padding:5px 0">
-        <button type="button" class="btn btn-primary">原始按钮</button> 
+        <button type="button" class="btn btn-primary">原始按钮</button>
         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">Submit</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">Clear</a>
     </div>
@@ -356,7 +349,7 @@
 <div id="" class="easyui-panel" title="报关单信息"
      data-options="collapsible:true">
 
-    <table id="dg" class="easyui-datagrid" 
+    <table id="dg" class="easyui-datagrid"
            data-options=" rownumbers:true,
                                    dataType : 'json',
                                    method:'get',
@@ -427,6 +420,8 @@
                 var data = eval('(' + data + ')');  // change the JSON string to javascript object
                 if (data.Success) {
                     $.messager.alert('成功', '保存成功');
+                } else {
+                    $.messager.alert('失败', '保存失败');
                 }
             }
         });
@@ -447,12 +442,11 @@
 
         function loadsucc(data) {
             var PASSMODE = data['PASSMODE'];
-            if (PASSMODE !="") {
-              var arr = PASSMODE.split(',');
-              for (i = 0; i < arr.length;i++){
-                  debugger;
-                  $('input[name=PASSMODE][value=' + arr[i] + ']')[0].checked = true;
-              }
+            if (PASSMODE != "") {
+                var arr = PASSMODE.split(',');
+                for (i = 0; i < arr.length; i++) {
+                    $('input[name=PASSMODE][value=' + arr[i] + ']')[0].checked = true;
+                }
             }
 
         }
@@ -479,7 +473,7 @@
                         $(time).textbox('setValue', data.datetime);
                         $(name).textbox('setValue', 'lakers');
                     } else {
-                        alert('异常');
+                        $.messager.alert('异常', '联系管理员');
                     }
                 },
 

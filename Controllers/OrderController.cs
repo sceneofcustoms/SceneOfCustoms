@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace SceneOfCustoms.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         //
@@ -78,18 +79,82 @@ namespace SceneOfCustoms.Controllers
             string sql = "update list_order set ";
 
             string REPUNITCODE = Request.Form["REPUNITCODE"];
-
             if (REPUNITCODE != "")
             {
                 sql += "  REPUNITCODE =  " + REPUNITCODE + ",";
             }
 
+            string CUSTOMDISTRICTCODE = Request.Form["CUSTOMDISTRICTCODE"];
+            if (CUSTOMDISTRICTCODE != "")
+            {
+                sql += "  CUSTOMDISTRICTCODE =  " + CUSTOMDISTRICTCODE + ",";
+            }
 
+
+            string PASSMODE = Request.Form["PASSMODE"];
+            if (PASSMODE != "")
+            {
+                sql += "  PASSMODE =  " + PASSMODE + ",";
+            }
+
+            string IFCHAYAN = Request.Form["IFCHAYAN"];
+            if (IFCHAYAN != "")
+            {
+                sql += "  IFCHAYAN =  " + IFCHAYAN + ",";
+            }
+
+
+            string CHAYANTIMES = Request.Form["CHAYANTIMES"];
+            if (CHAYANTIMES != "")
+            {
+                sql += "  CHAYANTIMES =  " + CHAYANTIMES + ",";
+            }
+
+            string CHAYANREMARK = Request.Form["CHAYANREMARK"];
+            if (CHAYANREMARK != "")
+            {
+                sql += "  CHAYANREMARK =  " + CHAYANREMARK + ",";
+            }
+
+            string LIHUOSIGN = Request.Form["LIHUOSIGN"];
+            if (LIHUOSIGN != "")
+            {
+                sql += "  LIHUOSIGN =  " + LIHUOSIGN + ",";
+            }
+
+            string LIHUOTIMES = Request.Form["LIHUOTIMES"];
+            if (LIHUOTIMES != "")
+            {
+                sql += "  LIHUOTIMES =  " + LIHUOTIMES + ",";
+            }
+
+            string KOUHUOSIGN = Request.Form["KOUHUOSIGN"];
+            if (KOUHUOSIGN != "")
+            {
+                sql += "  KOUHUOSIGN =  " + KOUHUOSIGN + ",";
+            }
+
+            string KOUHUOTIME = Request.Form["KOUHUOTIME"];
+            if (KOUHUOTIME != "")
+            {
+                sql += "  KOUHUOTIME =  " + KOUHUOTIME + ",";
+            }
+
+            string IFTIAODANG = Request.Form["IFTIAODANG"];
+            if (IFTIAODANG != "")
+            {
+                sql += "  IFTIAODANG =  " + IFTIAODANG + ",";
+            }
+            string TIAODANGTIMES = Request.Form["TIAODANGTIMES"];
+            if (TIAODANGTIMES != "")
+            {
+                sql += "  TIAODANGTIMES =  " + TIAODANGTIMES + ",";
+            }
             sql += " where ID =" + ID;
 
             if (DBMgr.ExecuteNonQuery(sql) == 1)
             {
-                return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = true,sql=sql }, JsonRequestBehavior.AllowGet);
             }
             else
             {
