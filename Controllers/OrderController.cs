@@ -75,90 +75,99 @@ namespace SceneOfCustoms.Controllers
         [HttpPost]
         public ActionResult SaveData(FormCollection form)
         {
+
+
+
             string ID = Request.Form["ID"];
+
+
             string sql = "update list_order set ";
 
             string REPUNITCODE = Request.Form["REPUNITCODE"];
-            if (REPUNITCODE != "")
+            if (!string.IsNullOrEmpty(REPUNITCODE))
             {
-                sql += "  REPUNITCODE =  " + REPUNITCODE + ",";
+                sql += "  REPUNITCODE =  '" + REPUNITCODE + "',";
             }
 
             string CUSTOMDISTRICTCODE = Request.Form["CUSTOMDISTRICTCODE"];
-            if (CUSTOMDISTRICTCODE != "")
+            if (!string.IsNullOrEmpty(CUSTOMDISTRICTCODE))
             {
-                sql += "  CUSTOMDISTRICTCODE =  " + CUSTOMDISTRICTCODE + ",";
+                sql += "  CUSTOMDISTRICTCODE =  '" + CUSTOMDISTRICTCODE + "',";
             }
 
 
             string PASSMODE = Request.Form["PASSMODE"];
-            if (PASSMODE != "")
+            if (!string.IsNullOrEmpty(PASSMODE))
             {
-                sql += "  PASSMODE =  " + PASSMODE + ",";
+                sql += "  PASSMODE =  '" + PASSMODE + "',";
             }
 
             string IFCHAYAN = Request.Form["IFCHAYAN"];
-            if (IFCHAYAN != "")
+            if (!string.IsNullOrEmpty(IFCHAYAN))
             {
-                sql += "  IFCHAYAN =  " + IFCHAYAN + ",";
+                sql += "  IFCHAYAN =  '" + IFCHAYAN + "',";
             }
 
 
             string CHAYANTIMES = Request.Form["CHAYANTIMES"];
-            if (CHAYANTIMES != "")
+            if (!string.IsNullOrEmpty(CHAYANTIMES))
             {
-                sql += "  CHAYANTIMES =  " + CHAYANTIMES + ",";
+                sql += "  CHAYANTIMES =  '" + CHAYANTIMES + "',";
             }
 
             string CHAYANREMARK = Request.Form["CHAYANREMARK"];
-            if (CHAYANREMARK != "")
+            if (!string.IsNullOrEmpty(CHAYANREMARK))
             {
-                sql += "  CHAYANREMARK =  " + CHAYANREMARK + ",";
+                sql += "  CHAYANREMARK =  '" + CHAYANREMARK + "',";
             }
 
             string LIHUOSIGN = Request.Form["LIHUOSIGN"];
-            if (LIHUOSIGN != "")
+            if (!string.IsNullOrEmpty(LIHUOSIGN))
             {
-                sql += "  LIHUOSIGN =  " + LIHUOSIGN + ",";
+                sql += "  LIHUOSIGN =  '" + LIHUOSIGN + "',";
             }
 
             string LIHUOTIMES = Request.Form["LIHUOTIMES"];
-            if (LIHUOTIMES != "")
+            if (!string.IsNullOrEmpty(LIHUOTIMES))
             {
-                sql += "  LIHUOTIMES =  " + LIHUOTIMES + ",";
+                sql += "  LIHUOTIMES =  '" + LIHUOTIMES + "',";
             }
 
             string KOUHUOSIGN = Request.Form["KOUHUOSIGN"];
-            if (KOUHUOSIGN != "")
+            if (!string.IsNullOrEmpty(KOUHUOSIGN))
             {
-                sql += "  KOUHUOSIGN =  " + KOUHUOSIGN + ",";
+                sql += "  KOUHUOSIGN =  '" + KOUHUOSIGN + "',";
+
+                sql += "  KOUHUOTIME = sysdate ,";
             }
 
-            string KOUHUOTIME = Request.Form["KOUHUOTIME"];
-            if (KOUHUOTIME != "")
-            {
-                sql += "  KOUHUOTIME =  " + KOUHUOTIME + ",";
-            }
+            //string KOUHUOTIME = Request.Form["KOUHUOTIME"];
+            //if (!string.IsNullOrEmpty(KOUHUOTIME))
+            //{
+            //    sql += "  KOUHUOTIME =  '" + KOUHUOTIME + "',";
+            //}
 
             string IFTIAODANG = Request.Form["IFTIAODANG"];
-            if (IFTIAODANG != "")
+            if (!string.IsNullOrEmpty(IFTIAODANG))
             {
-                sql += "  IFTIAODANG =  " + IFTIAODANG + ",";
+                sql += "  IFTIAODANG =  '" + IFTIAODANG + "',";
             }
             string TIAODANGTIMES = Request.Form["TIAODANGTIMES"];
-            if (TIAODANGTIMES != "")
+            if (!string.IsNullOrEmpty(TIAODANGTIMES))
             {
-                sql += "  TIAODANGTIMES =  " + TIAODANGTIMES + ",";
+                sql += "  TIAODANGTIMES =  '" + TIAODANGTIMES + "',";
             }
+
+            sql = sql.Substring(0, sql.Length - 1);
             sql += " where ID =" + ID;
 
             if (DBMgr.ExecuteNonQuery(sql) == 1)
             {
-                return Json(new { Success = true,sql=sql }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = true, sql = sql }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { Success = false }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, sql = sql }, JsonRequestBehavior.AllowGet);
             }
 
         }

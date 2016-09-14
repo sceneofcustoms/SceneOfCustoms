@@ -25,6 +25,10 @@
                         width: 200px;
                     }
 
+                    #OrderFrom table tr td .easyui-numberspinner {
+                         width: 200px;
+                    }
+
                     #OrderFrom table tr td .easyui-combobox {
                         width: 200px;
                     }
@@ -297,7 +301,8 @@
                 </td>
                 <td>
                     <label for="">查验次数:</label>
-                    <input class="easyui-textbox" type="text" name="CHAYANTIMES" />
+                    <input class="easyui-numberspinner" name="CHAYANTIMES"
+                           data-options="min:0">
                 </td>
                 <td>
                     <label for="">查验备注:</label>
@@ -311,8 +316,8 @@
                 </td>
                 <td>
                     <label for="email">理货次数:</label>
-                    <input class="easyui-textbox" type="text" name="LIHUOTIMES" />
-
+                    <input class="easyui-numberspinner" name="LIHUOTIMES"
+                           data-options="min:0">
                 </td>
                 <td style="text-align:left">
                     <label for="kouhuobiaoshi">扣货标识:</label>
@@ -320,7 +325,7 @@
                 </td>
                 <td>
                     <label for="name">扣货时间:</label>
-                    <input class="easyui-textbox" type="text" name="KOUHUOTIME" />
+                    <input class="easyui-textbox" type="text" name="KOUHUOTIME" disabled="disabled" />
                 </td>
             </tr>
 
@@ -332,17 +337,22 @@
                 </td>
                 <td>
                     <label for="name">调档次数:</label>
-                    <input class="easyui-textbox" type="text" name="TIAODANGTIMES" />
+                    <input class="easyui-numberspinner" name="TIAODANGTIMES"
+                           data-options="min:0">
+
                 </td>
             </tr>
         </table>
     </div>
 
-
     <div style="text-align:center;padding:5px 0">
-        <button type="button" class="btn btn-primary">原始按钮</button>
-        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">Submit</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">Clear</a>
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="submitForm()">
+            <i class="icon-ok"></i> 保存
+        </a>
+
+        <a class="btn btn-primary" href="javascript:void(0)" >
+            <i class="icon-reply"></i> 返回
+        </a>
     </div>
 </form>
 
