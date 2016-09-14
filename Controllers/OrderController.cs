@@ -72,6 +72,44 @@ namespace SceneOfCustoms.Controllers
         }
 
 
+        public ActionResult SeaInList()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public string GetSeaInList()
+        {
+            string sql = "select t.*, t.rowid from list_order t where 1 = 1 and t.busitype='11'";
+            string cusno = Request["CUSNO"];
+            string contractno = Request["CONTRACTNO"];
+            string sort = Request["sort"];
+            string order = Request["order"];
+            if (string.IsNullOrEmpty(sort))
+                sort = "CUSNO";
+            if (string.IsNullOrEmpty(order))
+                order = "ASC";
+            if (!string.IsNullOrEmpty(cusno))
+            {
+                sql += " and CUSNO like '%" + cusno + "%'";
+            }
+            if (!string.IsNullOrEmpty(contractno))
+            {
+                sql += "and CONTRACTNO = '" + contractno + "'";
+            }
+
+            sql += " order by " + sort + " " + order + "";
+            //string sql = "select t.*, t.rowid from list_order t where 1 = 1 and cnsno like '%" + cnsno + "%' and contractno = '" + contractno + "' t.busitype='11' order by "+sort+" "+order+"";// t.busitype='11' order by "+sort+" "+order+"";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string result = JsonConvert.SerializeObject(dt);
+            int totalRow = dt.Rows.Count;
+            var str = "{\"total\":" + totalRow + ",\"rows\":" + result + "}";
+
+            return str;
+        }
+
+
+
 
 
         [HttpGet]

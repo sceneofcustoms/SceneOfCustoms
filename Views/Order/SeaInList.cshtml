@@ -1,0 +1,334 @@
+﻿<div class="ibox-content">
+    <div class="table-responsive">
+        <table id="dg" class="easyui-datagrid" title="数据表格" style="width:auto;height:auto"
+               data-options="iconCls: 'icon-edit',singleSelect:false,toolbar: '#tb',dataType :'json',url: '/Order/GetSeaInList',
+				method: 'get', pagination:true,multiSort:false">
+            <thead data-options="frozen:true">
+                <tr>
+                    <th data-options="field: 'ck', checkbox: true"></th>
+                    <th data-options="field:'CUSNO',width:120,sortable:true">收货人</th>
+                    <th data-options="field:'FIRSTLADINGBILLNO',width:100,sortable:true">一程提运单号</th>
+                    <th data-options="field:'SECONDLADINGBILLNO',width:80,align:'right',editor:{type:'numberbox',options:{precision:1}}">二程提运单号</th>
+                    <th data-options="field:'GOODSNUM',width:80,align:'right',editor:'numberbox',sortable:true">总件数</th>
+                    <th data-options="field:'GOODSWEIGHT',width:70,editor:'text',sortable:true">总重量</th>
+                </tr>
+            </thead>
+            <thead>
+                <tr>
+                    <th data-options="field:'DECLSHEETNUM',width:80,align:'center',sortable:true,editor:'text'">报关单张数</th>
+                    <th data-options="field:'LAWCONDITION',width:70,editor:'text',sortable:true">是否法检</th>
+                    <th data-options="field:'ASSOCIATEPEDECLNO',width:120,editor:'text',sortable:true">报关单号</th>
+                    @*<th data-options="field:'attr1',width:70,editor:'text'">理单时间</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">报关时间</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">单证放行时间</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">贸易方式</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">报关备注</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">放行时间</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">理单人</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">单证齐全时间</th>*@
+                    <th data-options="field:'SHIWUFANGXINGTIME',width:80,editor:'text',sortable:true">实物放行时间</th>
+                    <th data-options="field:'attr1',width:70,editor:'text',sortable:true">实物放行状态</th>
+                    <th data-options="field:'YWBH',width:70,editor:'text',sortable:true">业务编号</th>
+                    <th data-options="field:'CONTRACTNO',width:70,editor:'text',sortable:true">合同/发票号</th>
+                    <th data-options="field:'TURNPRENO',width:70,editor:'text',sortable:true">转关预录入号</th>
+                    <th data-options="field:'attr1',width:70,editor:'text',sortable:true">转关号</th>
+                    <th data-options="field:'CUSTOMDISTRICTCODE',width:70,editor:'text',sortable:true">申报关区</th>
+                    @*<th data-options="field:'attr1',width:70,editor:'text'">OPS接单备注</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">是否有作业单齐全时间</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">作业单齐全时间</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">单证放行人</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">实物放行人</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">关务状态</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">分批放行</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">申请放行</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">关区代码</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">平台编号</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">关务编号</th>*@
+                    <th data-options="field:'CLEARUNITNAME',width:70,editor:'text',sortable:true">结算方</th>
+                    @*<th data-options="field:'attr1',width:70,editor:'text'">报检接单时间</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">通关单标志</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">报检标志</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">制单备注</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">过机人</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">报关人</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">手册在否</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">手册号</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">出保</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">OPS接单人</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">OPS接单时间</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">出关封时间</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">口岸放行时间</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">口岸安排报关时间</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">通关状态</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">操作点</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">海关通关状态</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">签收号</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">签收人</th>
+                        <th data-options="field:'attr1',width:70,editor:'text'">签收日期</th>*@
+                </tr>
+            </thead>
+        </table>
+
+        <div id="tb" style="padding:2px 5px;">
+            <div class="tb_search">
+                @*Date From: <input class="easyui-datebox" style="width:110px">
+                    To: <input class="easyui-datebox" style="width:110px">
+                    Language:
+                    <select class="easyui-combobox" panelheight="auto" style="width:100px">
+                        <option value="java">Java</option>
+                        <option value="c">C</option>
+                        <option value="basic">Basic</option>
+                        <option value="perl">Perl</option>
+                        <option value="python">Python</option>
+                    </select>
+
+                    Date From: <input class="easyui-datebox" style="width:110px">
+                    To: <input class="easyui-datebox" style="width:110px">*@
+                @*Language:
+                    <select class="easyui-combobox" panelheight="auto" id="CUSNO" style="width:100px">
+                        <option value="java">Java</option>
+                        <option value="c">C</option>
+                        <option value="basic">Basic</option>
+                        <option value="perl">Perl</option>
+                        <option value="python">Python</option>
+                    </select>*@
+                <div id="tb" style="padding:3px">
+                    <span>收货人:</span>
+                    <input id="CUSNO" style="line-height:12px;border:1px solid #ccc">
+                    <span>合同/发票号:</span>
+                    <input id="CONTRACTNO" style="line-height:12px;border:1px solid #ccc">
+                    <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">查询</a>
+                </div>
+            </div>
+            <div class="tb_but">
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-plus',plain:true" onclick="append()">新增</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">删除</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">保存</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">取消</a>
+                @*<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-paperclip',plain:true" onclick="importexcel()">EXCEL 导入</a>*@
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-download-alt',plain:true" onclick="exportexcel()">导出 Excel</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-refresh',plain:true" onclick="reload()">刷新</a>
+            </div>
+        </div>
+
+    </div>
+    <!-- end ibox-content -->
+</div>
+
+<script type="text/javascript">
+
+
+    $("#submit_search").click(function () {
+        //$('#dg').datagrid({queryParams:form2Json("searchform")});   //点击搜索
+        $('#gd').datagrid('load', form2Json("searchform"));
+    });
+
+    function form2Json(id) {
+        var arr = $("#" + id).serializeArray()
+        var jsonStr = "";
+
+        jsonStr += '{';
+        for (var i = 0; i < arr.length; i++) {
+            jsonStr += '"' + arr[i].name + '":"' + arr[i].value + '",'
+        }
+        jsonStr = jsonStr.substring(0, (jsonStr.length - 1));
+        jsonStr += '}'
+
+        var json = JSON.parse(jsonStr)
+        return json
+    }
+
+    //冻结列
+    //$('#dg').datagrid({
+    //    title: 'DataGrid1',
+    //    iconCls: 'icon-save',
+    //    width: auto,
+    //    height: auto,
+    //    url: '/Order/GetSeaList',
+    //    frozenColumns: [[
+    //        { field: 'itemid', title: 'Item ID', width: 80 },
+    //        { field: 'productid', title: 'Product ID', width: 80 },
+    //    ]],
+    //    columns: [[
+    //        { field: 'listprice', title: 'List Price', width: 80, align: 'right' },
+    //        { field: 'unitcost', title: 'Unit Cost', width: 80, align: 'right' },
+    //        { field: 'attr1', title: 'Attribute', width: 100 },
+    //        { field: 'status', title: 'Status', width: 60 }
+    //    ]]
+    //});
+
+
+    //$('#dg').datagrid('sort', 'id');    // 排序一个列
+    //$('#dg').datagrid('sort', {	        // 指定了排序顺序的列
+    //    sortName: 'id',
+    //    sortOrder: 'desc'
+    //});
+
+
+    function doSearch() {
+        $('#dg').datagrid('load', {
+            //CUSNO: $('#CUSNO').val(),
+            //CONTRACTNO: $('#CONTRACTNO').val()
+            cusSearch: form2Json("searchform")
+        });
+    }
+
+
+    //给所有列指定排序属性
+    function initDataGrid(grid) {
+        var columns = $('#dg').datagrid("options").columns[0];
+        for (i = 0; i < columns.length; i++) {
+            columns[i].sortable = true;
+        }
+    }
+
+    $(function () {
+        //双击事件
+        $('#dg').datagrid({
+            onDblClickCell: function (index, field, value) {
+                //alert(field+value);
+                //window.location.href = "/Order/Ini_Base_Data";
+                //self.location = "/Order/Edit";
+                //$(this).datagrid('beginEdit', index);
+                //var ed = $(this).datagrid('getEditor', { index: index, field: field });
+                //$(ed.target).focus();
+            }
+        })
+    });
+
+
+    //绑定排序
+    $("#dg").datagrid({
+        onSortColumn: function (sort, order) {
+            loadlistgrid(sort, order);
+        }
+    });
+
+
+
+    //客户端分页
+    (function ($) {
+		function pagerFilter(data){
+		    if ($.isArray(data)){	// is array
+		        data = {
+		            total: data.length,
+		            rows: data
+		        }
+		    }
+		    var target = this;
+		    var dg = $(target);
+		    var state = dg.data('datagrid');
+		    var opts = dg.datagrid('options');
+		    if (!state.allRows){
+		        state.allRows = (data.rows);
+		    }
+		    if (!opts.remoteSort && opts.sortName){
+		        var names = opts.sortName.split(',');
+		        var orders = opts.sortOrder.split(',');
+		        state.allRows.sort(function(r1,r2){
+		            var r = 0;
+		            for(var i=0; i<names.length; i++){
+		                var sn = names[i];
+		                var so = orders[i];
+		                var col = $(target).datagrid('getColumnOption', sn);
+		                var sortFunc = col.sorter || function(a,b){
+		                    return a==b ? 0 : (a>b?1:-1);
+		                };
+		                r = sortFunc(r1[sn], r2[sn]) * (so=='asc'?1:-1);
+		                if (r != 0){
+		                    return r;
+		                }
+		            }
+		            return r;
+		        });
+		    }
+		    var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+		    var end = start + parseInt(opts.pageSize);
+		    data.rows = state.allRows.slice(start, end);
+		    return data;
+		}
+
+		var loadDataMethod = $.fn.datagrid.methods.loadData;
+		var deleteRowMethod = $.fn.datagrid.methods.deleteRow;
+		$.extend($.fn.datagrid.methods, {
+		    clientPaging: function(jq){
+		        return jq.each(function(){
+		            var dg = $(this);
+		            var state = dg.data('datagrid');
+		            var opts = state.options;
+		            opts.loadFilter = pagerFilter;
+		            var onBeforeLoad = opts.onBeforeLoad;
+		            opts.onBeforeLoad = function(param){
+		                state.allRows = null;
+		                return onBeforeLoad.call(this, param);
+		            }
+		            var pager = dg.datagrid('getPager');
+		            pager.pagination({
+		                onSelectPage:function(pageNum, pageSize){
+		                    opts.pageNumber = pageNum;
+		                    opts.pageSize = pageSize;
+		                    pager.pagination('refresh',{
+		                        pageNumber:pageNum,
+		                        pageSize:pageSize
+		                    });
+		                    dg.datagrid('loadData',state.allRows);
+		                }
+		            });
+		            $(this).datagrid('loadData', state.data);
+		            if (opts.url){
+		                $(this).datagrid('reload');
+		            }
+		        });
+		    },
+		    loadData: function(jq, data){
+		        jq.each(function(){
+		            $(this).data('datagrid').allRows = null;
+		        });
+		        return loadDataMethod.call($.fn.datagrid.methods, jq, data);
+		    },
+		    deleteRow: function(jq, index){
+		        return jq.each(function(){
+		            var row = $(this).datagrid('getRows')[index];
+		            deleteRowMethod.call($.fn.datagrid.methods, $(this), index);
+		            var state = $(this).data('datagrid');
+		            if (state.options.loadFilter == pagerFilter){
+		                for(var i=0; i<state.allRows.length; i++){
+		                    if (state.allRows[i] == row){
+		                        state.allRows.splice(i,1);
+		                        break;
+		                    }
+		                }
+		                $(this).datagrid('loadData', state.allRows);
+		            }
+		        });
+		    },
+		    getAllRows: function(jq){
+		        return jq.data('datagrid').allRows;
+		    }
+		})
+	})(jQuery);
+
+    function getData(){
+        var rows = [];
+        for(var i=1; i<=800; i++){
+            var amount = Math.floor(Math.random()*1000);
+            var price = Math.floor(Math.random()*1000);
+            rows.push({
+                inv: 'Inv No '+i,
+                date: $.fn.datebox.defaults.formatter(new Date()),
+                name: 'Name '+i,
+                amount: amount,
+                price: price,
+                cost: amount*price,
+                note: 'Note '+i
+            });
+        }
+        return rows;
+    }
+
+    $(function(){
+        $('#dg').datagrid({ data: getData() }).datagrid('clientPaging');
+    });
+
+
+</script>
