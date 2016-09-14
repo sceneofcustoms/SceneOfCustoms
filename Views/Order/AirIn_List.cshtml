@@ -123,7 +123,7 @@
             onDblClickCell: function (index, field, value) {
                 var row = $('#dg').datagrid('getData').rows[index];
                 if (row.ID != "") {
-                    window.location.href = "/Order/Edit?ID=" + row.ID;
+                    window.location.href = "/Order/AirIn_Edit?ID=" + row.ID;
                 }
             }
         });

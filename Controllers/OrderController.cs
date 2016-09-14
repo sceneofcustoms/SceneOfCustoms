@@ -14,12 +14,30 @@ namespace SceneOfCustoms.Controllers
     [Authorize]
     public class OrderController : Controller
     {
-        //
-        // GET: /Order/
-        public ActionResult Index()
+        //空进列表
+        public ActionResult AirIn_List()
         {
             return View();
         }
+
+        //空进编辑
+        public ActionResult AirIn_Edit()
+        {
+            return View();
+        }
+
+        //空出列表
+        public ActionResult AirOut_List()
+        {
+            return View();
+        }
+
+        //空出编辑
+        public ActionResult AirOut_Edit()
+        {
+            return View();
+        }
+
 
 
         public string Get_SBGQ()
@@ -54,11 +72,6 @@ namespace SceneOfCustoms.Controllers
         }
 
 
-        public ActionResult Edit()
-        {
-            return View();
-        }
-
 
 
         [HttpGet]
@@ -76,11 +89,7 @@ namespace SceneOfCustoms.Controllers
         public ActionResult SaveData(FormCollection form)
         {
 
-
-
             string ID = Request.Form["ID"];
-
-
             string sql = "update list_order set ";
 
             string REPUNITCODE = Request.Form["REPUNITCODE"];
@@ -163,7 +172,7 @@ namespace SceneOfCustoms.Controllers
 
             if (DBMgr.ExecuteNonQuery(sql) == 1)
             {
-                return Json(new { Success = true, sql = sql }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = true}, JsonRequestBehavior.AllowGet);
             }
             else
             {

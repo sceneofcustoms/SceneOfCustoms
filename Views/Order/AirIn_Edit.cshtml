@@ -362,8 +362,7 @@
     <table id="dg"  style="height:250px" class="easyui-datagrid"
            data-options=" rownumbers:true,
                                    dataType : 'json',
-                                   method:'get',
-                                   toolbar:'#tb'">
+                                   method:'get'">
         <thead>
             <tr>
                 <th data-options="field: 'ck', checkbox: true"></th>
@@ -390,13 +389,7 @@
         </thead>
     </table>
 
-    <div id="tb" style="padding:2px 5px;">
-        <div class="tb_but">
-            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-plus',plain:true" onclick="append()">新增</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-plus',plain:true" onclick="Edit()">修改</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">删除</a>
-        </div>
-    </div>
+
 
 
 </div>
@@ -418,7 +411,6 @@
         $('#OrderFrom ').form('submit', {
             url: "/Order/SaveData",
             onSubmit: function () {
-                debugger;
                 if ($(this).form('enableValidation').form('validate')) {
                     return true;
                 } else {
