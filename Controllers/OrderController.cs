@@ -38,6 +38,17 @@ namespace SceneOfCustoms.Controllers
             return View();
         }
 
+        //海运进口
+        public ActionResult SeaInList()
+        {
+            return View();
+        }
+
+        //海运出口
+        public ActionResult SeaOut_List()
+        {
+            return View();
+        }
 
 
 
@@ -73,10 +84,6 @@ namespace SceneOfCustoms.Controllers
         }
 
 
-        public ActionResult SeaInList()
-        {
-            return View();
-        }
 
         [HttpGet]
         public string GetSeaInList()

@@ -309,6 +309,11 @@
     <Content Include="Views\Order\AirIn_Edit.cshtml" />
     <Content Include="Views\Order\AirOut_List.cshtml" />
     <Content Include="Views\Order\AirOut_Edit.cshtml" />
+    <Content Include="Views\Order\SeaInList.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Shared\Empty.cshtml" />
+    <Content Include="Views\Order\SeaOut_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
