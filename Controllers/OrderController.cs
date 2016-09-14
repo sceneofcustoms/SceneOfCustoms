@@ -38,17 +38,46 @@ namespace SceneOfCustoms.Controllers
             return View();
         }
 
-        //海运进口
+        //海运进口列表
         public ActionResult SeaInList()
         {
             return View();
         }
 
-        //海运出口
+        //海运出口列表
         public ActionResult SeaOut_List()
         {
             return View();
         }
+
+
+        //陆运进口列表
+        public ActionResult LandIn_List() {
+
+            return View();
+        }
+
+
+        //陆运进口编辑
+        public ActionResult LandIn_Edit()
+        {
+
+            return View();
+        }
+
+
+        //陆运出口列表
+        public ActionResult LandOut_List()
+        {
+            return View();
+        }
+
+        //陆运出口编辑
+        public ActionResult LandOut_Edit()
+        {
+            return View();
+        }
+
 
 
 
