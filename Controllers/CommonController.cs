@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace SceneOfCustoms.Controllers
 {
+    [Authorize]
     public class CommonController : Controller
     {
         //

@@ -30,10 +30,10 @@
                 <a style="cursor:pointer" href="/Account/SignOut"><i class="icon iconfont">&#xe609;</i><span>退出</span></a>
             </div>
         </div>
-        <div>
+        <div style="height: 36px; background-color: #CFDEFF;width:100%">
             <ul class="sf-menu" id="na_menu" style="font-size:14px">
                 <li>
-                    <a href="#">同步数据</a>
+                    <a href="#">首页</a>
                 </li>
                 @*@Html.Action("Header", "Common")/Common/ImportOrder?busitype=11*@
                 <li>
@@ -45,7 +45,6 @@
                         <li><a href="/Order/LandOut_List">陆运出口</a></li>
                         <li><a href="/Order/SeaIn_List">海运进口</a></li>
                         <li><a href="/Order/SeaOut_List">海运出口</a></li>
-
                         <li><a href="">叠加保税</a></li>
                         <li><a href="">特殊监管</a></li>
                     </ul>
@@ -72,13 +71,15 @@
                 <li>
                     <a href="#">后台管理</a>
                     <ul>
-                        <li><a href="#">模块管理</a></li>
                         <li><a href="#">用户管理</a></li>
+                        <li><a href="#">模块管理</a></li>
                         <li><a href="#">权限管理</a></li>
+                        <li><a href="#">同步日志</a></li>
                     </ul>
                 </li>
             </ul>
         </div>
+
     </div>
     <div class="container" style="min-height:600px;">
         @RenderSection("featured", required: false)
