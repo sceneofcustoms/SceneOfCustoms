@@ -24,8 +24,6 @@ namespace SceneOfCustoms
         [WebMethod]
         public string SyncData(string param)
         {
-            IDatabase db = SeRedis.redis.GetDatabase();//先将报文数据保存至缓存数据库
-            db.ListRightPush("SyncDataFromSap", param);
             //param 参数为json格式的字符串{LICENSETYPE:'decl',FWONO:'',FOCUSTOMSNO:'',CONTAINERDETAIL:[{}]}
             //1 凭证类型    LICENSETYPE 对应本系统的业务类型
             //2 FWO订单号   FWONO
@@ -78,6 +76,9 @@ namespace SceneOfCustoms
             sql = string.Format(sql, json.Value<string>("FWONO"), json.Value<string>("FOCUSTOMSNO"), json.Value<string>("FOINSPECTNO"),
             json.Value<string>("BUSITYPE"));
             DBMgr.ExecuteNonQuery(sql);
+            IDatabase db = SeRedis.redis.GetDatabase();//先将报文数据保存至缓存数据库
+            string type = string.IsNullOrEmpty(json.Value<string>("FOCUSTOMSNO")) ? "报检" : "报关";
+            db.ListRightPush("SyncDataFromSap", "{data:" + param + ",createtime:'" + DateTime.Now + "',from:'SAP',type:'" + type + "'}");
             return "true";
         }
     }

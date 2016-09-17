@@ -68,7 +68,8 @@ namespace SceneOfCustoms.Controllers
 
 
         //陆运进口列表
-        public ActionResult LandIn_List() {
+        public ActionResult LandIn_List()
+        {
 
             return View();
         }
@@ -114,7 +115,24 @@ namespace SceneOfCustoms.Controllers
             }
             return json_sbgq;
         }
-
+        //报关车号 
+        public string Get_BGCH()
+        {
+            IDatabase db = SeRedis.redis.GetDatabase();
+            string json_truckno = "[]"; 
+            if (db.KeyExists("common_data:truckno"))
+            {
+                json_truckno = db.StringGet("common_data:truckno");
+            }
+            else
+            {
+                string sql = @"select t.license, t.license||'('||t.whitecard||')' as MERGENAME,t.whitecard,t1.NAME||'('|| t1.CODE||')' as UNITNO from sys_declarationcar t
+                left join base_motorcade t1 on t.motorcade=t1.code where t.enabled=1";
+                json_truckno = JsonConvert.SerializeObject(DB_BaseData.GetDataTable(sql));
+                db.StringSet("common_data:truckno", json_truckno);
+            }
+            return json_truckno;
+        }
 
         public string Init_Base_Data()
         {
@@ -264,7 +282,7 @@ namespace SceneOfCustoms.Controllers
 
             if (DBMgr.ExecuteNonQuery(sql) == 1)
             {
-                return Json(new { Success = true}, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
             }
             else
             {
