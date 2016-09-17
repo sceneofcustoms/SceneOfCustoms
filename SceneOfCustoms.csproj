@@ -309,7 +309,7 @@
     <Content Include="Views\Order\AirIn_Edit.cshtml" />
     <Content Include="Views\Order\AirOut_List.cshtml" />
     <Content Include="Views\Order\AirOut_Edit.cshtml" />
-    <Content Include="Views\Order\SeaInList.cshtml">
+    <Content Include="Views\Order\SeaIn_List.cshtml">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\Shared\Empty.cshtml" />
@@ -318,6 +318,8 @@
     <Content Include="Views\Order\LandIn_Edit.cshtml" />
     <Content Include="Views\Order\LandOut_List.cshtml" />
     <Content Include="Views\Order\LandOut_Edit.cshtml" />
+    <Content Include="Views\Order\SeaOut_Edit.cshtml" />
+    <Content Include="Views\Order\SeaIn_Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
