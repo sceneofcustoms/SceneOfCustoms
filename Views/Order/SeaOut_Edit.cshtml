@@ -321,9 +321,20 @@
                     <label for="DECLSTATUS">报关状态:</label>
                     <input class="easyui-textbox" type="text" name="DECLSTATUS" disabled="disabled" />
                 </td>
+
                 <td>
-                    <label for="DECLSTATUS">车号:</label>
-                    <input class="easyui-textbox" type="text" name="DECLSTATUS" disabled="disabled" />
+                    <label for="DECLCARNO">车号:</label>
+                    <input class="easyui-combobox" name="DECLCARNO" data-options="
+					url: '/Order/Get_BGCH',
+					method: 'get',
+					valueField: 'LICENSE',
+					textField: 'MERGENAME',
+					panelWidth: 200,
+					panelHeight: 'auto',
+					label: 'DECLCARNO:',
+                    panelHeight:'200',
+					labelPosition: 'top'
+					">
                 </td>
                 <td>
                     <label for="text">修改车号人员:</label>
@@ -367,8 +378,8 @@
                     <input class="easyui-textbox" type="text" name="CHAYANREMARK" />
                 </td>
                 <td>
-                    <label for="">开箱查验:</label>
-                    <input class=""  type="checkbox" value="2" name="PASSMODE1" />
+                    <label for="IFKXCHAYAN">开箱查验:</label>
+                    <input class="" id="IFKXCHAYAN" type="checkbox" value="1" name="IFKXCHAYAN" />
                 </td>
 
             </tr>
@@ -512,11 +523,10 @@
         }
 
         $('#OrderFrom').form({ onLoadSuccess: loadsucc });
-        $('#OrderFrom').form('load', '/Order/Init_Base_Data?ID=' + ID);
+        $('#OrderFrom').form('load', '/Order/Edit_Order?ID=' + ID);
 
 
         $('.fillingData').click(function () {
-            debugger;
             type = this.getAttribute("datatype");
             $.ajax({
                 url: '/Order/Edit_Ajax_Scene',// 跳转到 action
@@ -527,12 +537,13 @@
                 type: 'post',
                 dataType: 'json',
                 success: function (data) {
+                    debugger;
                     if (data.Success == true) {
                         var time = "#" + type + 'TIME';
                         var name = "#" + type + 'USERNAME';
                         debugger;
                         $(time).textbox('setValue', data.datetime);
-                        $(name).textbox('setValue', 'lakers');
+                        $(name).textbox('setValue', data.name);
                     } else {
                         $.messager.alert('异常', '联系管理员');
                     }
