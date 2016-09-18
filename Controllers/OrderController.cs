@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using SceneOfCustoms.Common;
 using StackExchange.Redis;
 using System;
@@ -96,7 +97,19 @@ namespace SceneOfCustoms.Controllers
             return View();
         }
 
+        //特殊监管列表
+        public ActionResult SpecialSupervision_List()
+        {
 
+            return View();
+        }
+
+        //特殊监管编辑
+        public ActionResult SpecialSupervision_Edit()
+        {
+
+            return View();
+        }
 
 
         public string Get_SBGQ()
@@ -115,11 +128,12 @@ namespace SceneOfCustoms.Controllers
             }
             return json_sbgq;
         }
+
         //报关车号 
         public string Get_BGCH()
         {
             IDatabase db = SeRedis.redis.GetDatabase();
-            string json_truckno = "[]"; 
+            string json_truckno = "[]";
             if (db.KeyExists("common_data:truckno"))
             {
                 json_truckno = db.StringGet("common_data:truckno");
@@ -134,7 +148,14 @@ namespace SceneOfCustoms.Controllers
             return json_truckno;
         }
 
+
         public string Init_Base_Data()
+        {
+            return "";
+        }
+
+
+        public string Edit_Order()
         {
             string ID = Request.QueryString["ID"];
             string sql = "select t.*, t.rowid from list_order t where  ID = " + ID;
@@ -146,6 +167,9 @@ namespace SceneOfCustoms.Controllers
             result = result.Substring(0, result.Length - 1);
             return result;
         }
+
+
+
 
 
 
@@ -277,6 +301,19 @@ namespace SceneOfCustoms.Controllers
                 sql += "  TIAODANGTIMES =  '" + TIAODANGTIMES + "',";
             }
 
+            string DECLCARNO = Request.Form["DECLCARNO"];
+            if (!string.IsNullOrEmpty(DECLCARNO))
+            {
+                sql += "  DECLCARNO =  '" + DECLCARNO + "',";
+            }
+
+            string IFKXCHAYAN = Request.Form["IFKXCHAYAN"];
+            if (!string.IsNullOrEmpty(IFKXCHAYAN))
+            {
+                sql += "  IFKXCHAYAN =  '" + IFKXCHAYAN + "',";
+            }
+
+
             sql = sql.Substring(0, sql.Length - 1);
             sql += " where ID =" + ID;
 
@@ -298,24 +335,27 @@ namespace SceneOfCustoms.Controllers
             string type = Request.Form["type"];
 
 
+            JObject jo = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
+
+
             string sql = "update list_order set ";
             if (type != "")
             {
                 string time = type + "TIME";
                 string userid = type + "USERID";
                 string username = type + "USERNAME";
-                sql += time + "  = sysdate ," + userid + " =1, " + username + " ='lakers' ";
+                sql += time + "  = sysdate ," + username + " ='" + jo.Value<string>("REALNAME") + "', " + userid + " =  " + jo.Value<string>("ID");
             }
             sql += " where ID =" + ID;
 
             if (DBMgr.ExecuteNonQuery(sql) == 1)
             {
                 var datetime = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
-                return Json(new { Success = true, datetime = datetime }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = true, datetime = datetime, name = jo.Value<string>("REALNAME") }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { Success = false }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, sql = sql }, JsonRequestBehavior.AllowGet);
             }
 
         }

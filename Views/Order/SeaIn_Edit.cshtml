@@ -310,6 +310,10 @@
                     <label for="">查验备注:</label>
                     <input class="easyui-textbox" type="text" name="CHAYANREMARK" />
                 </td>
+                <td>
+                    <label for="">报关行:</label>
+                    <input class="easyui-textbox" type="text" name="REPUNITCODE" />
+                </td>
             </tr>
             <tr>
                 <td style="text-align:left">
@@ -451,7 +455,7 @@
         }
 
         $('#OrderFrom').form({ onLoadSuccess: loadsucc });
-        $('#OrderFrom').form('load', '/Order/Init_Base_Data?ID=' + ID);
+        $('#OrderFrom').form('load', '/Order/Edit_Order?ID=' + ID);
 
 
         $('.fillingData').click(function () {

@@ -82,20 +82,44 @@
                     <label for="GOODSWEIGHT">总重量:</label>
                     <input class="easyui-textbox" type="text" name="GOODSWEIGHT" disabled="disabled" />
                 </td>
-                <td>
-                    <label for="TOTALNO">总单号:</label>
-                    <input class="easyui-textbox" type="text" name="TOTALNO" disabled="disabled" />
-                </td>
-                <td>
-                    <label for="DIVIDENO">分单号:</label>
-                    <input class="easyui-textbox" type="text" name="DIVIDENO" disabled="disabled" />
-                </td>
-            </tr>
-            <tr>
+
                 <td>
                     <label for="CONTRACTNO"> 合同/发票号:</label>
                     <input class="easyui-textbox" type="text" name="CONTRACTNO" disabled="disabled" />
                 </td>
+
+                <td>
+                    <label for="text"> 核销单号:</label>
+                    <input class="easyui-textbox" type="text" name="text" disabled="disabled" />
+                </td>
+
+
+            </tr>
+            <tr>
+                <td>
+                    <label for="text">进舱编号:</label>
+                    <input class="easyui-textbox" type="text" name="text" disabled="disabled" />
+                </td>
+
+                <td>
+                    <label for="text">20尺:</label>
+                    <input class="easyui-textbox" type="text" name="text" disabled="disabled" />
+                </td>
+
+
+                <td>
+                    <label for="text">40尺:</label>
+                    <input class="easyui-textbox" type="text" name="text" disabled="disabled" />
+                </td>
+
+                <td>
+                    <label for="LADINGBILLNO">提单号:</label>
+                    <input class="easyui-textbox" type="text" name="LADINGBILLNO" disabled="disabled" />
+                </td>
+              </tr>
+
+            @*<tr>
+
                 <td>
                     <label for="TURNPRENO">转关预录号:</label>
                     <input class="easyui-textbox" type="text" name="TURNPRENO" disabled="disabled" />
@@ -108,17 +132,25 @@
                     <label for="">接单备注:</label>
                     <input class="easyui-textbox" type="text" name="" disabled="disabled" />
                 </td>
-            </tr>
+            </tr>*@
+
+
             <tr>
                 <td>
                     <label for=""> 报检接单日期:</label>
                     <input class="easyui-textbox" type="text" name="" disabled="disabled" />
                 </td>
                 <td>
+                    <label for=""> 进场日期:</label>
+                    <input class="easyui-textbox" type="text" name="" disabled="disabled" />
+                </td>
+                <td>
                     <div style="text-align:center">
-                        快件:
+                        整箱:
                         <input class="" type="radio" name="" disabled="disabled" />
-                        普货:
+                        拼箱:
+                        <input class="" type="radio" name="" disabled="disabled" />
+                        散货:
                         <input class="" type="radio" name="" disabled="disabled" />
 
                         <input style="margin-left:30px;" type="checkbox" name="" disabled="disabled" /> 通关单否
@@ -128,12 +160,13 @@
                     <label for="CLEARANCENO">通关单号:</label>
                     <input class="easyui-textbox" type="text" name="CLEARANCENO" disabled="disabled" />
                 </td>
-                <td>
-                    <label for="ZUOYEDANTIME">作业单时间:</label>
-                    <input class="easyui-textbox" type="text" name="ZUOYEDANTIME" disabled="disabled" />
-                </td>
             </tr>
             <tr>
+                <td>
+                    <label for="">接单备注:</label>
+                    <input class="easyui-textbox" type="text" name="" disabled="disabled" />
+                </td>
+
                 <td>
                     <label for=""> 制单备注:</label>
                     <input class="easyui-textbox" type="text" name="" disabled="disabled" />
@@ -146,9 +179,15 @@
                     <label for="GUOJIUSERNAME">过机人:</label>
                     <input class="easyui-textbox" type="text" name="GUOJIUSERNAME" disabled="disabled" />
                 </td>
+            </tr>
+            <tr>
                 <td>
                     <label for="REPUNITCODE">报关行:</label>
                     <input class="easyui-textbox" type="text" name="REPUNITCODE" />
+                </td>
+                <td>
+                    <label for="text">出口口岸 :</label>
+                    <input class="easyui-textbox" type="text" name="text" disabled="disabled" />
                 </td>
             </tr>
 
@@ -199,8 +238,7 @@
                     <input class="easyui-textbox " type="text" id="DANZHENGFANGXINGUSERNAME" name="DANZHENGFANGXINGUSERNAME" disabled="disabled" />
                 </td>
             </tr>
-
-
+  
             <tr>
                 <td>
                     <label for="CHAYANSTARTTIME"> 查验起始时间:</label>
@@ -252,6 +290,18 @@
                     <input class="easyui-textbox " type="text" id="SHIWUFANGXINGUSERNAME" name="SHIWUFANGXINGUSERNAME" disabled="disabled" />
                 </td>
 
+
+                <td>
+                    <label for="SHIWUJIAFENGTIME"> 实物加封时间:</label>
+                    <input class="easyui-textbox time_input" type="text" id="SHIWUJIAFENGTIME" name="SHIWUJIAFENGTIME" disabled="disabled" />
+                    <a href="javascript:void(0)" datatype="SHIWUJIAFENG" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                </td>
+                <td>
+                    <label for="SHIWUJIAFENGUSERNAME">实物加封人:</label>
+                    <input class="easyui-textbox " type="text" id="SHIWUJIAFENGUSERNAME" name="SHIWUJIAFENGUSERNAME" disabled="disabled" />
+                </td>
+            </tr>
+            <tr>
                 <td>
                     <label for="CUSTOMDISTRICTCODE">申报关区:</label>
                     <input class="easyui-combobox" name="CUSTOMDISTRICTCODE" data-options="
@@ -271,7 +321,29 @@
                     <label for="DECLSTATUS">报关状态:</label>
                     <input class="easyui-textbox" type="text" name="DECLSTATUS" disabled="disabled" />
                 </td>
+
+                <td>
+                    <label for="DECLCARNO">车号:</label>
+                    <input class="easyui-combobox" name="DECLCARNO" data-options="
+					url: '/Order/Get_BGCH',
+					method: 'get',
+					valueField: 'LICENSE',
+					textField: 'MERGENAME',
+					panelWidth: 200,
+					panelHeight: 'auto',
+					label: 'DECLCARNO:',
+                    panelHeight:'200',
+					labelPosition: 'top'
+					">
+                </td>
+                <td>
+                    <label for="text">修改车号人员:</label>
+                    <input class="easyui-textbox" type="text" name="text" disabled="disabled" />
+                </td>
+
+
             </tr>
+
             <tr>
                 <td colspan="4">
                     <div style="float:left;height:22px;line-height:22px;">
@@ -284,10 +356,7 @@
                         <input class="" id="lihuo" type="checkbox" value="2" name="PASSMODE" />
                         <label for="jiancha">查检放行:</label>
                         <input class="" id="jiancha" type="checkbox" value="3" name="PASSMODE" />
-                        <label for="fenpi">分批放行:</label>
-                        <input class="" id="fenpi" type="checkbox" value="4" name="PASSMODE" />
-                        <label for="shenqing">申请放行:</label>
-                        <input class="" id="shenqing" type="checkbox" value="5" name="PASSMODE" />
+
 
                     </div>
 
@@ -308,6 +377,11 @@
                     <label for="">查验备注:</label>
                     <input class="easyui-textbox" type="text" name="CHAYANREMARK" />
                 </td>
+                <td>
+                    <label for="IFKXCHAYAN">开箱查验:</label>
+                    <input class="" id="IFKXCHAYAN" type="checkbox" value="1" name="IFKXCHAYAN" />
+                </td>
+
             </tr>
             <tr>
                 <td style="text-align:left">
@@ -449,7 +523,7 @@
         }
 
         $('#OrderFrom').form({ onLoadSuccess: loadsucc });
-        $('#OrderFrom').form('load', '/Order/Init_Base_Data?ID=' + ID);
+        $('#OrderFrom').form('load', '/Order/Edit_Order?ID=' + ID);
 
 
         $('.fillingData').click(function () {
@@ -463,12 +537,13 @@
                 type: 'post',
                 dataType: 'json',
                 success: function (data) {
+                    debugger;
                     if (data.Success == true) {
                         var time = "#" + type + 'TIME';
                         var name = "#" + type + 'USERNAME';
                         debugger;
                         $(time).textbox('setValue', data.datetime);
-                        $(name).textbox('setValue', 'lakers');
+                        $(name).textbox('setValue', data.name);
                     } else {
                         $.messager.alert('异常', '联系管理员');
                     }
