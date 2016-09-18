@@ -111,6 +111,21 @@ namespace SceneOfCustoms.Controllers
             return View();
         }
 
+        //叠加保税列表
+        public ActionResult OverlayBonded_List()
+        {
+            return View();
+        }
+
+        //叠加保税编辑
+        public ActionResult OverlayBonded_Edit()
+        {
+            string ID = Request["ID"];
+
+
+            ViewData["name"] = "lakers";
+            return View();
+        }
 
         public string Get_SBGQ()
         {
@@ -226,92 +241,125 @@ namespace SceneOfCustoms.Controllers
             string ID = Request.Form["ID"];
             string sql = "update list_order set ";
 
-            string REPUNITCODE = Request.Form["REPUNITCODE"];
-            if (!string.IsNullOrEmpty(REPUNITCODE))
+
+
+            if (Request.Params.AllKeys.Contains("REPUNITCODE"))
             {
-                sql += "  REPUNITCODE =  '" + REPUNITCODE + "',";
+                sql += "  REPUNITCODE =  '" + Request.Form["REPUNITCODE"] + "',";
             }
 
-            string CUSTOMDISTRICTCODE = Request.Form["CUSTOMDISTRICTCODE"];
-            if (!string.IsNullOrEmpty(CUSTOMDISTRICTCODE))
+            if (Request.Params.AllKeys.Contains("CUSTOMDISTRICTCODE"))
             {
-                sql += "  CUSTOMDISTRICTCODE =  '" + CUSTOMDISTRICTCODE + "',";
+                sql += "  CUSTOMDISTRICTCODE =  '" + Request.Form["CUSTOMDISTRICTCODE"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("PASSMODE"))
+            {
+                sql += "  PASSMODE =  '" + Request.Form["PASSMODE"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("IFCHAYAN"))
+            {
+                sql += "  IFCHAYAN =  '" + Request.Form["IFCHAYAN"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("CHAYANTIMES"))
+            {
+                sql += "  CHAYANTIMES =  '" + Request.Form["CHAYANTIMES"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("CHAYANREMARK"))
+            {
+                sql += "  CHAYANREMARK =  '" + Request.Form["CHAYANREMARK"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("LIHUOSIGN"))
+            {
+                sql += "  LIHUOSIGN =  '" + Request.Form["LIHUOSIGN"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("LIHUOTIMES"))
+            {
+                sql += "  LIHUOTIMES =  '" + Request.Form["LIHUOTIMES"] + "',";
             }
 
 
-            string PASSMODE = Request.Form["PASSMODE"];
-            if (!string.IsNullOrEmpty(PASSMODE))
+            if (Request.Params.AllKeys.Contains("KOUHUOSIGN"))
             {
-                sql += "  PASSMODE =  '" + PASSMODE + "',";
-            }
-
-            string IFCHAYAN = Request.Form["IFCHAYAN"];
-            if (!string.IsNullOrEmpty(IFCHAYAN))
-            {
-                sql += "  IFCHAYAN =  '" + IFCHAYAN + "',";
-            }
-
-
-            string CHAYANTIMES = Request.Form["CHAYANTIMES"];
-            if (!string.IsNullOrEmpty(CHAYANTIMES))
-            {
-                sql += "  CHAYANTIMES =  '" + CHAYANTIMES + "',";
-            }
-
-            string CHAYANREMARK = Request.Form["CHAYANREMARK"];
-            if (!string.IsNullOrEmpty(CHAYANREMARK))
-            {
-                sql += "  CHAYANREMARK =  '" + CHAYANREMARK + "',";
-            }
-
-            string LIHUOSIGN = Request.Form["LIHUOSIGN"];
-            if (!string.IsNullOrEmpty(LIHUOSIGN))
-            {
-                sql += "  LIHUOSIGN =  '" + LIHUOSIGN + "',";
-            }
-
-            string LIHUOTIMES = Request.Form["LIHUOTIMES"];
-            if (!string.IsNullOrEmpty(LIHUOTIMES))
-            {
-                sql += "  LIHUOTIMES =  '" + LIHUOTIMES + "',";
-            }
-
-            string KOUHUOSIGN = Request.Form["KOUHUOSIGN"];
-            if (!string.IsNullOrEmpty(KOUHUOSIGN))
-            {
-                sql += "  KOUHUOSIGN =  '" + KOUHUOSIGN + "',";
-
+                sql += "  KOUHUOSIGN =  '" + Request.Form["KOUHUOSIGN"] + "',";
                 sql += "  KOUHUOTIME = sysdate ,";
             }
 
-            //string KOUHUOTIME = Request.Form["KOUHUOTIME"];
-            //if (!string.IsNullOrEmpty(KOUHUOTIME))
-            //{
-            //    sql += "  KOUHUOTIME =  '" + KOUHUOTIME + "',";
-            //}
-
-            string IFTIAODANG = Request.Form["IFTIAODANG"];
-            if (!string.IsNullOrEmpty(IFTIAODANG))
+            if (Request.Params.AllKeys.Contains("IFTIAODANG"))
             {
-                sql += "  IFTIAODANG =  '" + IFTIAODANG + "',";
-            }
-            string TIAODANGTIMES = Request.Form["TIAODANGTIMES"];
-            if (!string.IsNullOrEmpty(TIAODANGTIMES))
-            {
-                sql += "  TIAODANGTIMES =  '" + TIAODANGTIMES + "',";
+                sql += "  IFTIAODANG =  '" + Request.Form["IFTIAODANG"] + "',";
             }
 
-            string DECLCARNO = Request.Form["DECLCARNO"];
-            if (!string.IsNullOrEmpty(DECLCARNO))
+            if (Request.Params.AllKeys.Contains("TIAODANGTIMES"))
             {
-                sql += "  DECLCARNO =  '" + DECLCARNO + "',";
+                sql += "  TIAODANGTIMES =  '" + Request.Form["TIAODANGTIMES"] + "',";
             }
 
-            string IFKXCHAYAN = Request.Form["IFKXCHAYAN"];
-            if (!string.IsNullOrEmpty(IFKXCHAYAN))
+            if (Request.Params.AllKeys.Contains("DECLCARNO"))
             {
-                sql += "  IFKXCHAYAN =  '" + IFKXCHAYAN + "',";
+                sql += "  DECLCARNO =  '" + Request.Form["DECLCARNO"] + "',";
             }
+
+            if (Request.Params.AllKeys.Contains("IFKXCHAYAN"))
+            {
+                sql += "  IFKXCHAYAN =  '" + Request.Form["IFKXCHAYAN"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("LIDANDESC"))
+            {
+                sql += "  LIDANDESC =  '" + Request.Form["LIDANDESC"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("LIHUOZILIAODESC"))
+            {
+                sql += "  LIHUOZILIAODESC =  '" + Request.Form["LIHUOZILIAODESC"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("BAOGUANDESC"))
+            {
+                sql += "  BAOGUANDESC =  '" + Request.Form["BAOGUANDESC"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("DANZHENGFANGXINGDESC"))
+            {
+                sql += "  DANZHENGFANGXINGDESC =  '" + Request.Form["DANZHENGFANGXINGDESC"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("CHAYANSTARTDESC"))
+            {
+                sql += "  CHAYANSTARTDESC =  '" + Request.Form["CHAYANSTARTDESC"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("CHAYANENDDESC"))
+            {
+                sql += "  CHAYANENDDESC =  '" + Request.Form["CHAYANENDDESC"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("LIHUOSTARTDESC"))
+            {
+                sql += "  LIHUOSTARTDESC =  '" + Request.Form["LIHUOSTARTDESC"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("LIHUOENDDESC"))
+            {
+                sql += "  LIHUOENDDESC =  '" + Request.Form["LIHUOENDDESC"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("SHIWUFANGXINGDESC"))
+            {
+                sql += "  SHIWUFANGXINGDESC =  '" + Request.Form["SHIWUFANGXINGDESC"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("SHIWUJIAFENGDESC"))
+            {
+                sql += "  SHIWUJIAFENGDESC =  '" + Request.Form["SHIWUJIAFENGDESC"] + "',";
+            }
+
 
 
             sql = sql.Substring(0, sql.Length - 1);

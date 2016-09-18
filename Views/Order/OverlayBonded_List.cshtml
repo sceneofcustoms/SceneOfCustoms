@@ -41,14 +41,22 @@
                     <th data-options="field:'ASSOCIATEPEDECLNO',width:140,align:'center',sortable:true">报关单号</th>
                     <th data-options="field:'SHIWUFANGXINGTIME',width:140,sortable:true,align:'center'">实物放行时间</th>
                     <th data-options="field:'text',width:100,sortable:true,align:'center'">关务状态</th>
-                    <th data-options="field:'BUSITYPE',width:100,sortable:true,align:'center'">业务类型</th>
+                    <th data-options="field:'text',width:100,sortable:true,align:'center'">转入出类别</th>
+                    <th data-options="field:'BUSITYPE',width:100,sortable:true,align:'center'">进出口类别</th>
+                    <th data-options="field:'CORRESPONDNO',width:120,sortable:true,align:'center'">对应号</th>
+                    <th data-options="field:'text',width:120,sortable:true,align:'center'">出口业务方式</th>
                     <th data-options="field:'BUSIUNITNAME',width:200,sortable:true,align:'center'">企业</th>
+                    <th data-options="field:'text',width:120,align:'center'">手册号</th>
+                    <th data-options="field:'text',width:120,align:'center'">核销单号</th>
                     <th data-options="field:'CONTRACTNO',width:100,sortable:true,align:'center'">合同/发票号</th>
                     <th data-options="field:'DECLSHEETNUM',width:70,sortable:true,align:'center'">报关单张数</th>
+                    <th data-options="field:'ASSOCIATETRADEWAY',width:100,sortable:true,align:'center'">贸易方式</th>
                     <th data-options="field:'GOODSNUM',width:50,sortable:true,align:'center'">总件数</th>
                     <th data-options="field:'GOODSWEIGHT',width:50,sortable:true,align:'center'">总重量</th>
                     <th data-options="field:'text',width:50,sortable:true,align:'center'">备注</th>
+                    <th data-options="field:'test',width:200,sortable:true,align:'center'">OPS接单时间</th>
                     <th data-options="field:'test',width:100,align:'center'">OPS接单人</th>
+                    <th data-options="field:'test',width:200,sortable:true,align:'center'">关务接单时间</th>
                     <th data-options="field:'test',width:100,align:'center'">关务接单人</th>
                     <th data-options="field:'GUOJITIME',width:200,sortable:true,align:'center'">过机时间</th>
                     <th data-options="field:'GUOJIUSERNAME',width:100,align:'center'">过机人</th>
@@ -63,14 +71,10 @@
                     <th data-options="field:'SHIWUFANGXINGTIME',width:200,sortable:true,align:'center'">实物放行时间</th>
                     <th data-options="field:'SHIWUFANGXINGUSERNAME',width:100,align:'center'">实物放行人</th>
                     <th data-options="field:'CUSTOMDISTRICTCODE',width:100,align:'center'">申报关区</th>
-                    <th data-options="field:'text',width:200,sortable:true,align:'center'">OPS接单时间</th>
-                    <th data-options="field:'text',width:200,sortable:true,align:'center'">关务接单时间</th>
-                    <th data-options="field:'text',width:80,align:'center'">打印状态</th>
                     <th data-options="field:'text',width:80,align:'center'">急货标识</th>
                     <th data-options="field:'text',width:200,sortable:true,align:'center'">出单日期</th>
-                    <th data-options="field:'INOUTTYPE',width:80,align:'center'">进出口类型</th>
+                    <th data-options="field:'text',width:100,align:'center'">报关方式</th>
                     <th data-options="field:'text',width:120,align:'center'">海关通关状态</th>
-                    <th data-options="field:'REPWAYID',width:80,align:'center'">申报方式</th>
                     <th data-options="field:'test',width:100,align:'center'">签收号</th>
                     <th data-options="field:'test',width:100,align:'center'">签收人</th>
                     <th data-options="field:'test',width:100,align:'center'">签收日期</th>
@@ -208,14 +212,15 @@
 <script type="text/javascript">
 
     $(function () {
- 
+
         //双击事件
         $('#datagrid').datagrid({
             onDblClickCell: function (index, field, value) {
                 var row = $('#datagrid').datagrid('getData').rows[index];
+
                 if (row.ID != "") {
-                    window.location.href = "/Order/SpecialSupervision_Edit?ID=" + row.ID;
-                }
+                    window.location.href = "/Order/OverlayBonded_Edit?ID=" + row.ID;
+                }  
             }
         });
 
