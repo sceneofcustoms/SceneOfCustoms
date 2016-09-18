@@ -97,7 +97,19 @@ namespace SceneOfCustoms.Controllers
             return View();
         }
 
+        //特殊监管列表
+        public ActionResult SpecialSupervision_List()
+        {
 
+            return View();
+        }
+
+        //特殊监管编辑
+        public ActionResult SpecialSupervision_Edit()
+        {
+
+            return View();
+        }
 
 
         public string Get_SBGQ()
@@ -332,7 +344,7 @@ namespace SceneOfCustoms.Controllers
                 string time = type + "TIME";
                 string userid = type + "USERID";
                 string username = type + "USERNAME";
-                sql += time + "  = sysdate ,"  + username + " ='" + jo.Value<string>("REALNAME") + "', " + userid + " =  " + jo.Value<string>("ID");
+                sql += time + "  = sysdate ," + username + " ='" + jo.Value<string>("REALNAME") + "', " + userid + " =  " + jo.Value<string>("ID");
             }
             sql += " where ID =" + ID;
 

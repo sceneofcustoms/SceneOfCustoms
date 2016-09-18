@@ -1,0 +1,229 @@
+﻿<style type="text/css">
+    #searchform table tr {
+        height: 30px;
+    }
+        /*#searchform table tr td{
+        width:20%;
+    }*/
+        #searchform table tr td label {
+            width: 100px;
+            text-align: right;
+        }
+
+        #searchform table tr td .easyui-combobox, #searchform table tr td .easyui-textbox, #searchform table tr td .easyui-datebox {
+            width: 180px;
+        }
+
+    #tb {
+        padding: 0px;
+    }
+
+        #tb .tb_search {
+            border-bottom: 1px solid #ddd;
+        }
+</style>
+
+
+<div class="ibox-content">
+    <div class="table-responsive">
+        <table id="datagrid" class="easyui-datagrid" title="数据" style="height:auto;min-height:300px;max-height:800px;"
+               data-options=" rownumbers:true,
+                                   url: '/Order/GetData',
+                                   dataType : 'json',
+                                   method:'get',
+                                   toolbar:'#tb',
+                                   pagination:true ">
+            <thead data-options="frozen:true">
+                <tr>
+                    <th data-options="field: 'ck', checkbox: true"></th>
+                    <th data-options="field:'CUSNO',width:200,sortable:true,align:'center'">收货人</th>
+                    <th data-options="field:'test',width:120,sortable:true,align:'center'">进舱编号</th>
+                    <th data-options="field:'GOODSNUM',width:80,align:'center',sortable:true">总件数</th>
+                    <th data-options="field:'GOODSWEIGHT',width:70,sortable:true,align:'center'">总重量</th>
+                </tr>
+            </thead>
+
+            <thead>
+
+                <tr>
+                    <th data-options="field:'DECLSHEETNUM',width:80,align:'center',sortable:true">报关单张数</th>
+                    <th data-options="field:'LAWCONDITION',width:80,sortable:true,align:'center'">是否法检</th>
+                    <th data-options="field:'ASSOCIATEPEDECLNO',width:120,sortable:true,align:'center'">报关单号</th>
+                    <th data-options="field:'LIDANTIME',width:100,align:'center'">理单时间</th>
+                    <th data-options="field:'BAOGUANTIME',width:100,align:'center'">报关时间</th>
+                    <th data-options="field:'SHIWUJIAFENGTIME',width:100,align:'center'">实物加封时间</th>
+                    <th data-options="field:'ASSOCIATETRADEWAY',width:100,align:'center'">贸易方式</th>
+                    <th data-options="field:'attr1',width:100,align:'center'">报关备注</th>
+                    <th data-options="field:'attr1',width:100,align:'center'">单证齐全时间</th>
+                    <th data-options="field:'SHIWUFANGXINGTIME',width:100,sortable:true,align:'center'">实物放行时间</th>
+                    <th data-options="field:'attr1',width:100,sortable:true,align:'center'">实物放行状态</th>
+                    <th data-options="field:'attr1',width:100,align:'center'">理单人</th>
+                    <th data-options="field:'YWBH',width:100,sortable:true">业务编号</th>
+                    <th data-options="field:'CONTRACTNO',width:100,sortable:true">合同/发票号</th>
+                    <th data-options="field:'TURNPRENO',width:70,sortable:true">转关预录入号</th>
+                    <th data-options="field:'attr1',width:100">作业单时间</th>
+                    <th data-options="field:'SHIWUFANGXINGUSERNAME',width:100">实物放行人</th>
+                    <th data-options="field:'attr1',width:100">关务状态</th>
+                    <th data-options="field:'attr1',width:100">关务代码</th>
+                    <th data-options="field:'attr1',width:100">通关状态</th>
+                    <th data-options="field:'attr1',width:100">OPS接单人</th>
+                    <th data-options="field:'attr1',width:100">OPS接单时间</th>
+                    <th data-options="field:'attr1',width:70">OPS接单备注</th>
+                    <th data-options="field:'attr1',width:100">海关通关状态</th>
+                    <th data-options="field:'attr1',width:100">签收号</th>
+                    <th data-options="field:'attr1',width:100">签收人</th>
+                    <th data-options="field:'attr1',width:100">签收日期</th>
+                </tr>
+
+
+
+            </thead>
+        </table>
+
+        <div id="tb">
+            <div class="tb_search">
+                <form id="searchform" method="post">
+                    <table>
+                        <tr>
+                            <td>
+                                <label>日  期:</label>
+                                <select class="easyui-combobox" panelheight="auto" name="datefiled">
+                                    <option value="java">接单日期</option>
+                                    <option value="c">理货日期</option>
+                                    <option value="basic">计划报关日期</option>
+                                    <option value="perl">理货资料齐全日期</option>
+                                    <option value="python1">报关日期</option>
+                                    <option value="python2">单证放行日期</option>
+                                    <option value="python3">实物放行日期</option>
+                                    <option value="python4">出关封日期</option>
+                                    <option value="python5">口岸放行时间</option>
+                                    <option value="python6">口岸安排报关时间</option>
+                                </select>
+                            </td>
+                            <td>
+                                <label>起:</label>
+                                <input class="easyui-datebox" name="stardate">
+                            </td>
+                            <td>
+                                <label>迄:</label>
+                                <input class="easyui-datebox" name="enddate">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>操作人:</label>
+                                <select class="easyui-combobox" panelheight="auto" name="oprname">
+                                    <option value="java">接单人</option>
+                                    <option value="c">理单人</option>
+                                    <option value="basic">理货资料齐全人</option>
+                                    <option value="perl">理货资料齐全日期</option>
+                                    <option value="python7">报关人</option>
+                                    <option value="python8">单证放行人</option>
+                                    <option value="python9">实物放行人</option>
+                                </select>
+                            </td>
+                            <td>
+                                <label for="">值:</label>
+                                <input class="easyui-textbox" type="text" name="oprvalue" />
+                            </td>
+                            <td>
+                                <label>单据号:</label>
+                                <select class="easyui-combobox" panelheight="auto" name="docno">
+                                    <option value="java">业务编号</option>
+                                    <option value="c">平台编号</option>
+                                    <option value="basic">合同.发票号</option>
+                                    <option value="perl">一程提运单号</option>
+                                    <option value="python11">二程提运单号</option>
+                                    <option value="python12">转关预录入号</option>
+                                    <option value="python13">通关单号</option>
+                                    <option value="python14">集装箱号</option>
+                                    <option value="python15">报关单号</option>
+                                    <option value="python16">签收号</option>
+                                    <option value="python17">绑定号</option>
+                                </select>
+                            </td>
+                            <td>
+                                <label>值:</label>
+                                <input class="easyui-textbox" type="text" name="docnovalue" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label>业务对象:</label>
+                                <select class="easyui-combobox" panelheight="auto" name="busiobj">
+                                    <option value="java">收货人</option>
+                                </select>
+                            </td>
+                            <td>
+                                <label>值:</label>
+                                <input class="easyui-textbox" type="text" name="busiobjvalue" />
+                            </td>
+
+                            <td>
+                                <input type="hidden" name="passflag" />
+                                <label>通关单标志:</label>
+                                <select class="easyui-combobox" panelheight="auto" name="passflagvalue">
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="hidden" name="seapassflag" />
+                                <label>海关通关状态:</label>
+                                <select class="easyui-combobox" panelheight="auto" id="seapassflagvalue">
+                                    <option value="java11">已申报</option>
+                                    <option value="java12">简化手续方式</option>
+                                    <option value="java13">同意担保放行</option>
+                                    <option value="java14">已放行</option>
+                                    <option value="java15">删单成功</option>
+                                    <option value="java16">已接单</option>
+                                    <option value="java17">已结关</option>
+                                    <option value="java18">人工审核通过</option>
+                                    <option value="java19">已退单</option>
+                                </select>
+                            </td>
+
+                        </tr>
+
+                    </table>
+                </form>
+            </div>
+            <div class="tb_but">
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-plus',plain:true" onclick="append()">新增</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-plus',plain:true" onclick="Edit()">修改</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">删除</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">保存</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">取消</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-paperclip',plain:true" onclick="importexcel()">EXCEL 导入</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-download-alt',plain:true" onclick="exportexcel()">导出 Excel</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-refresh',plain:true" onclick="reload()">刷新</a>
+            </div>
+        </div>
+
+    </div>
+    <!-- end ibox-content -->
+</div>
+
+<script type="text/javascript">
+
+
+    $(function () {
+
+        //双击事件
+        $('#datagrid').datagrid({
+            onDblClickCell: function (index, field, value) {
+                var row = $('#datagrid').datagrid('getData').rows[index];
+                if (row.ID != "") {
+                    window.location.href = "/Order/SeaOut_Edit?ID=" + row.ID;
+                }
+            }
+        });
+
+    });
+
+
+
+</script>
+
+
