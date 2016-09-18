@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Common;
-using System.Data; 
+using System.Data;
 using System.Reflection;
 
 namespace SceneOfCustoms.Common
@@ -35,7 +35,7 @@ namespace SceneOfCustoms.Common
             }
             catch (Exception e)
             {
-                
+
             }
             finally
             {
@@ -48,29 +48,18 @@ namespace SceneOfCustoms.Common
         {
             DataSet ds = new DataSet();
             OracleConnection orclCon = null;
-            try
+            using (orclCon = new OracleConnection(ConnectionString))
             {
-                using (orclCon = new OracleConnection(ConnectionString))
+                DbCommand oc = orclCon.CreateCommand();
+                oc.CommandText = sql;
+                if (orclCon.State.ToString().Equals("Open"))
                 {
-                    DbCommand oc = orclCon.CreateCommand();
-                    oc.CommandText = sql;
-                    if (orclCon.State.ToString().Equals("Open"))
-                    {
-                        orclCon.Close();
-                    }
-                    orclCon.Open();
-                    DbDataAdapter adapter = new OracleDataAdapter();
-                    adapter.SelectCommand = oc;
-                    adapter.Fill(ds);
+                    orclCon.Close();
                 }
-            }
-            catch (Exception e)
-            {
-                //log.Error(e.Message + e.StackTrace);
-            }
-            finally
-            {
-                orclCon.Close();
+                orclCon.Open();
+                DbDataAdapter adapter = new OracleDataAdapter();
+                adapter.SelectCommand = oc;
+                adapter.Fill(ds);
             }
             return ds.Tables[0];
         }

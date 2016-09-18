@@ -23,7 +23,7 @@ namespace SceneOfCustoms.Controllers
             JObject json_user = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
             return json_user.GetValue("REALNAME") + "";          
         }
-        public void ImportOrder()
+        public void ImportOrder_AirIn()
         {
             string sql = "select t.*, t.rowid from list_order t where t.busitype='11'";
             DataTable dt = DB_BaseData.GetDataTable(sql);
@@ -55,6 +55,49 @@ namespace SceneOfCustoms.Controllers
                    dr["BUSISHORTNAME"], dr["SCENEDECLAREID"], dr["SCENEINSPECTID"], "to_date('" + dr["SUBMITTIME"] + "','yyyy-MM-dd HH24:mi:ss')");
                 DBMgr.ExecuteNonQuery(sql);
             } 
+        }
+        public void ImportOrder()
+        {
+            // and createtime>to_date('2016/9/18 00:00:00','yyyy-mm-dd hh24:mi:ss')
+            string sql = "select t.*, t.rowid from list_order t where (t.busitype='41' or t.busitype='40') and createtime>to_date('2016/8/1 00:00:00','yyyy-mm-dd hh24:mi:ss')";
+            DataTable dt = DB_BaseData.GetDataTable(sql);
+            foreach (DataRow dr in dt.Rows)
+            {
+                sql = @"INSERT INTO LIST_ORDER (
+                ID,BUSITYPE,CODE,CUSNO,BUSIUNITCODE,BUSIUNITNAME,
+                CONTRACTNO,TOTALNO,DIVIDENO,TURNPRENO,GOODSNUM,GOODSWEIGHT,
+                WOODPACKINGID,CLEARANCENO,LAWCONDITION,ENTRUSTTYPEID,REPWAYID,CUSTOMDISTRICTCODE,
+                CUSTOMDISTRICTNAME,REPUNITCODE,REPUNITNAME,DECLWAY,PORTCODE,PORTNAME,
+                INSPUNITCODE,INSPUNITNAME,ENTRUSTREQUEST,CREATEUSERID,CREATEUSERNAME,STATUS,
+                SUBMITUSERID,SUBMITUSERNAME,SUBMITUSERPHONE,CUSTOMERCODE,CUSTOMERNAME,DECLCARNO,
+                TRADEWAYCODES,TRADEWAYCODES1,GOODSGW,GOODSNW,PACKKIND, CLEARUNIT,
+                CLEARUNITNAME,CREATETIME,SPECIALRELATIONSHIP,PRICEIMPACT,PAYPOYALTIES,SCENEDECLAREID,
+              SCENEINSPECTID,CORRESPONDNO,ASSOCIATENO,IETYPE
+                ) VALUES (LIST_ORDER_id.Nextval,'{0}','{1}','{2}','{3}','{4}',
+              '{5}','{6}','{7}','{8}','{9}','{10}',
+              '{11}','{12}','{13}','{14}','{15}','{16}',
+              '{17}','{18}','{19}','{20}','{21}','{22}',
+              '{23}','{24}','{25}','{26}','{27}','{28}',
+              '{29}','{30}','{31}','{32}','{33}','{34}', 
+              '{35}', '{36}','{37}','{38}','{39}','{40}',
+'{41}',sysdate, '{42}','{43}','{44}','{45}',
+              '{46}','{47}','{48}','{49}')";
+
+               
+                sql = string.Format(sql, dr["BUSITYPE"], dr["CODE"], dr["CUSNO"], dr["BUSIUNITCODE"], dr["BUSIUNITNAME"],
+                   dr["CONTRACTNO"], dr["TOTALNO"], dr["DIVIDENO"], dr["TURNPRENO"],dr["GOODSNUM"], dr["GOODSWEIGHT"],
+                  dr["WOODPACKINGID"], dr["CLEARANCENO"], dr["LAWCONDITION"], dr["ENTRUSTTYPEID"], dr["REPWAYID"], dr["CUSTOMDISTRICTCODE"],                 
+                  dr["CUSTOMDISTRICTNAME"], dr["REPUNITCODE"], dr["REPUNITCODE"],dr["DECLWAY"], dr["PORTCODE"], dr["PORTNAME"],
+                   dr["INSPUNITCODE"], dr["INSPUNITCODE"], dr["ENTRUSTREQUEST"], dr["CREATEUSERID"], dr["CREATEUSERNAME"],  dr["STATUS"],  
+                  dr["SUBMITUSERID"], dr["SUBMITUSERNAME"], dr["SUBMITUSERPHONE"],  dr["CUSTOMERCODE"], dr["CUSTOMERNAME"], dr["DECLCARNO"],                 
+                   dr["TRADEWAYCODES"], dr["TRADEWAYCODES1"], dr["GOODSGW"], dr["GOODSNW"], dr["PACKKIND"],dr["CLEARUNIT"],
+                   dr["CLEARUNITNAME"],  dr["SPECIALRELATIONSHIP"], dr["PRICEIMPACT"], dr["PAYPOYALTIES"],dr["SCENEDECLAREID"],
+
+                   dr["SCENEINSPECTID"], dr["CORRESPONDNO"], dr["ASSOCIATENO"], dr["IETYPE"]);
+                   
+                 
+                DBMgr.ExecuteNonQuery(sql);
+            }
         }
     }
 }

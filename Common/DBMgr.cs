@@ -5,13 +5,13 @@ using System.Linq;
 using System.Web;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Common;
-using System.Data; 
+using System.Data;
 using System.Reflection;
 
 namespace SceneOfCustoms.Common
 {
     public class DBMgr
-    { 
+    {
         private static readonly string ConnectionString = ConfigurationManager.AppSettings["strconn"];
 
         public static DataSet GetDataSet(string sql)
@@ -36,7 +36,7 @@ namespace SceneOfCustoms.Common
             }
             catch (Exception e)
             {
-                
+
             }
             finally
             {
@@ -80,29 +80,26 @@ namespace SceneOfCustoms.Common
         {
             int retcount = -1;
             OracleConnection orclCon = null;
-            try
+            using (orclCon = new OracleConnection(ConnectionString))
             {
-                using (orclCon = new OracleConnection(ConnectionString))
+                OracleCommand oc = new OracleCommand(sql, orclCon);
+                if (orclCon.State.ToString().Equals("Open"))
                 {
-                    OracleCommand oc = new OracleCommand(sql, orclCon);
-                    //oc.Parameters.AddRange(OraPara);, OracleParameter[] OraPara
-                    if (orclCon.State.ToString().Equals("Open"))
-                    {
-                        orclCon.Close();
-                    }
-                    orclCon.Open();
-                    retcount = oc.ExecuteNonQuery();
-                    oc.Parameters.Clear();
+                    orclCon.Close();
                 }
+                orclCon.Open();
+                retcount = oc.ExecuteNonQuery();
+                oc.Parameters.Clear();
             }
-            catch (Exception e)
-            {
-                //log.Error(e.Message + e.StackTrace);
-            }
-            finally
-            {
-                orclCon.Close();
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    //log.Error(e.Message + e.StackTrace);
+            //}
+            //finally
+            //{
+            //    orclCon.Close();
+            //}
             return retcount;
         }
 
