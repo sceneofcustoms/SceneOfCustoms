@@ -183,6 +183,25 @@ namespace SceneOfCustoms.Controllers
         //国内结转编辑
         public ActionResult DomesticKnot_Edit()
         {
+            string ID = Request["ID"];
+            string sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where id=" + ID;
+            DataTable dt = DBMgr.GetDataTable(sql);
+
+            if (!string.IsNullOrEmpty(dt.Rows[0]["ASSOCIATENO"] + ""))
+            {
+                string ASSOCIATENO = dt.Rows[0]["ASSOCIATENO"] + "";
+                string CODE = ASSOCIATENO.Replace("GL", "");
+
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE + " and BUSITYPE =41";
+                dt = DBMgr.GetDataTable(sql);
+                ViewData["id1"] = dt.Rows[0]["ID"] + "";//一单ID
+
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE =40";
+                dt = DBMgr.GetDataTable(sql);
+                ViewData["id2"] = dt.Rows[0]["ID"] + "";//二单ID
+            }
+
+
             return View();
         }
 
