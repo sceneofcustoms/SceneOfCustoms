@@ -21,7 +21,13 @@ namespace SceneOfCustoms
     public class SyncDataFromSap : System.Web.Services.WebService
     {
 
-        [WebMethod]
+        [WebMethod(Description = @"param参数说明:为json格式字符串<br>1 凭证类型(LICENSETYPE)<br>2 FWO订单号(FWONO)<br>3 FO报关服务指令号
+       (FOCUSTOMSNO)<br>4 总单号(TOTALNO)<br>5 分单号(DIVIDENO)<br>6 件数(GOODSNUM)<br>7毛重(GOODSGW)<br>8 净重(GOODSNW)<br>9 经营单位代码(BUSIUNITCODE)
+        <br>10 经营单位名称(BUSIUNITNAME)<br>11 包装种类(PACKKIND)<br>12 申报方式(REPWAYID)<br>13报关方式(DECLWAY)<br>14贸易方式(TRADEWAYCODES)
+        <br>15客户自编号(CUSNO)<br>16进/出口岸(PORTCODE)<br>17特殊关系确认(SPECIALRELATIONSHIP)<br>18价格影响确认(PRICEIMPACT)
+        <br>19支付特许权使用费确认(PAYPOYALTIES)<br>20报关申报单位代码(REPUNITCODE)<br>21报关申报单位名称(REPUNITNAME)<br>22委托人员(SUBMITUSERNAME)
+        <br>23委托时间(SUBMITTIME)<br>24委托电话(SUBMITUSERPHONE)<br>25运抵编号(ARRIVEDNO)<br>26集装箱车号信息(CONTAINERTRUCK)<br>27实际件数(ACTUALGOODSNUM)
+        <br>28实际毛重(ACTUALGOODSGW)<br>29货物类型(整箱或散箱用中文标记)(GOODSTYPE)<br>30报关提单号(SECONDLADINGBILLNO)<")]
         public string SyncData(string param)
         {
             //param 参数为json格式的字符串{LICENSETYPE:'decl',FWONO:'',FOCUSTOMSNO:'',CONTAINERDETAIL:[{}]}
@@ -31,12 +37,11 @@ namespace SceneOfCustoms
             //4 总单号      TOTALNO
             //5 分单号      DIVIDENO
             //6 件数   
-            //7 毛重
-            //8 收货方/发货方
-            //9 货物包装
-            //10申报方式
-            //11报关方式
-            //12贸易方式
+            //7 毛重 
+            //9 货物包装 
+            //10申报方式 
+            //11报关方式 
+            //12贸易方式 
             //13客户自编号
             //14进/出口岸
             //15特殊关系确认
@@ -46,17 +51,11 @@ namespace SceneOfCustoms
             //19委托人员
             //20委托时间
             //21委托电话
-            //22运抵编号
-            //23报关车号
+            //22运抵编号 
             //24实际件数
-            //25实际毛重
-            //26委托方式  这个貌似没有什么用
-            //27货物类型(整箱|散箱)
-            //28车号 取明细第一个
-            //29集装箱号 取明细第一个
-            //30集装箱|报关车号详细 CONTAINERDETAIL  以json数组形式保存
-            //31货物形态   不知道是有什么用
-            //32经营单位
+            //25实际毛重              
+            //27货物类型(整箱|散箱) 
+             
             //33报关提单号  FWO Header，海运通用信息 一程提单号/订舱提单号
             //34是否提前报关
             //35需求备注
