@@ -304,13 +304,40 @@ namespace SceneOfCustoms.Controllers
         [HttpGet]
         public string GetData()
         {
-            string sql = "select t.*, t.rowid from list_order t where t.busitype='40' or busitype='41' ";
+            string BUSITYPE = Request.Params["BUSITYPE"];
+            int PageSize = Convert.ToInt32(Request.Params["rows"]);
+            int Page = Convert.ToInt32(Request.Params["page"]);
+            int total = 0;
+
+            string sql = "select t.* from (select *　from list_order ) t where 1=1  ";
+            if (!string.IsNullOrEmpty(BUSITYPE))
+            {
+                sql += " and BUSITYPE =" + BUSITYPE;
+            }
+            //sql = "SELECT * FROM (SELECT A.*, ROWNUM RN FROM (SELECT * FROM list_order) A WHERE ROWNUM <= " + PageSize * Page + ") WHERE RN >= " + PageSize * (Page - 1);
+
+            //string where_sql = "";
+
+            sql = Extension.GetPageSql(sql, "ID", "desc", ref total, (Page - 1) * PageSize, Page * PageSize);
+
+
             DataTable dt = DBMgr.GetDataTable(sql);
             string result = JsonConvert.SerializeObject(dt);
-            result = "{\"total\":\"28\",\"rows\":" + result + "}";
+            result = "{\"total\":" + total + ",\"rows\":" + result + "}";
             return result;
 
         }
+
+
+        public int GetTotal(string where_sql)
+        {
+            string sql = "select count(1) from list_order t where 1=1 " + where_sql;
+            DataTable dt = DBMgr.GetDataTable(sql);
+            int total = Convert.ToInt32(DBMgr.GetDataTable(sql).Rows[0][0]);
+            return total;
+        }
+
+
 
         [HttpPost]
         public ActionResult SaveData(FormCollection form)

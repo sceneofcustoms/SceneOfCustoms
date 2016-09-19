@@ -37,14 +37,14 @@ namespace SceneOfCustoms.Common
                 result = db.StringGet(account);
             }
             else
-            { 
-                string sql = @"select u.* from SYS_USER u where u.name ='" + account + "'"; 
+            {
+                string sql = @"select u.* from SYS_USER u where u.name ='" + account + "'";
                 DataTable dt = DBMgr.GetDataTable(sql);
                 IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
                 iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
                 string jsonstr = JsonConvert.SerializeObject(dt, iso);
                 jsonstr = jsonstr.Replace("[", "").Replace("]", "");
-                db.StringSet(account, jsonstr); 
+                db.StringSet(account, jsonstr);
                 result = jsonstr;
             }
             return (JObject)JsonConvert.DeserializeObject(result);
@@ -102,7 +102,7 @@ namespace SceneOfCustoms.Common
 
         //订单新增或者更新时对随附文件表的操作  非国内业务都会用到  封装by panhuaguo 2016-08-03
         //originalfileids 这个字符串存储的是订单修改时原始随附文件id用逗号分隔
-   
+
         //提交后订单修改时记录字段信息变更情况
         public static void Insert_FieldUpdate_History(string ordercode, JObject json_new, JObject json_user, string busitype)
         {
@@ -189,14 +189,14 @@ namespace SceneOfCustoms.Common
         }
 
         public static string GetPageSql(string tempsql, string order, string asc, ref int totalProperty, int start, int limit)
-        { 
+        {
             string sql = "select count(1) from ( " + tempsql + " )";
-            totalProperty = DBMgr.GetDataTable(sql).Rows.Count;
+            totalProperty = Convert.ToInt32(DBMgr.GetDataTable(sql).Rows[0][0]);
             string pageSql = @"SELECT * FROM ( SELECT tt.*, ROWNUM AS rowno FROM ({0} ORDER BY {1} {2}) tt WHERE ROWNUM <= {4}) table_alias WHERE table_alias.rowno >= {3}";
-            pageSql = string.Format(pageSql, tempsql, order, asc, start + 1, limit + start);
+            pageSql = string.Format(pageSql, tempsql, order, asc, start + 1, limit);
             return pageSql;
         }
-       
+
 
     }
 }
