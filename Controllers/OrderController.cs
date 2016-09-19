@@ -121,9 +121,68 @@ namespace SceneOfCustoms.Controllers
         public ActionResult OverlayBonded_Edit()
         {
             string ID = Request["ID"];
+            string sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where id=" + ID;
+            DataTable dt = DBMgr.GetDataTable(sql);
+
+            if (!string.IsNullOrEmpty(dt.Rows[0]["CORRESPONDNO"] + ""))
+            {
+                //有2个tab
+                string correspondno = dt.Rows[0]["CORRESPONDNO"] + "";//四单关联号
+
+                string CODE1 = correspondno.Replace("GF", ""); // 第一个订单
+                string sql1 = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE1;
+                DataTable dt1 = DBMgr.GetDataTable(sql1);
+                ViewData["id1"] = dt1.Rows[0]["ID"] + "";
+
+                string ASSOCIATENO = correspondno.Replace("GF", "GL");
+                string sql2 = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !=" + CODE1;
+                DataTable dt2 = DBMgr.GetDataTable(sql2);
+                string id2 = dt2.Rows[0]["ID"] + "";// 第二个订单
+                ViewData["id2"] = id2;
+
+                string sql3 = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = 41";
+                DataTable dt3 = DBMgr.GetDataTable(sql3);
+                string id3 = dt3.Rows[0]["ID"] + "";// 第三个订单
+                ViewData["id3"] = id3;
+
+                string sql4 = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = 40";
+                DataTable dt4 = DBMgr.GetDataTable(sql4);
+                string id4 = dt4.Rows[0]["ID"] + "";// 第四个订单
+                ViewData["id4"] = id4;
+            }
+            else
+            {
+                //1个tab
+                string ASSOCIATENO = dt.Rows[0]["ASSOCIATENO"] + "";//二单关联号
+                if (!string.IsNullOrEmpty(ASSOCIATENO))
+                {
 
 
-            ViewData["name"] = "lakers";
+                    string CODE1 = ASSOCIATENO.Replace("GL", ""); // 第一个订单
+                    string sql1 = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE1;
+                    DataTable dt1 = DBMgr.GetDataTable(sql1);
+                    ViewData["id1"] = dt1.Rows[0]["ID"] + "";
+
+                    string sql2 = "select ID,CODE,ASSOCIATENO,CORRESPONDNO from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !=" + CODE1;
+                    DataTable dt2 = DBMgr.GetDataTable(sql2);
+                    string id2 = dt2.Rows[0]["ID"] + "";// 第二个订单
+                    ViewData["id2"] = id2;
+                }
+
+            }
+
+            return View();
+        }
+
+        //国内结转列表
+        public ActionResult DomesticKnot_List()
+        {
+            return View();
+        }
+
+        //国内结转编辑
+        public ActionResult DomesticKnot_Edit()
+        {
             return View();
         }
 
@@ -226,7 +285,7 @@ namespace SceneOfCustoms.Controllers
         [HttpGet]
         public string GetData()
         {
-            string sql = "select t.*, t.rowid from list_order t where t.busitype='11'";
+            string sql = "select t.*, t.rowid from list_order t where t.busitype='40' or busitype='41' ";
             DataTable dt = DBMgr.GetDataTable(sql);
             string result = JsonConvert.SerializeObject(dt);
             result = "{\"total\":\"28\",\"rows\":" + result + "}";
@@ -253,15 +312,16 @@ namespace SceneOfCustoms.Controllers
                 sql += "  CUSTOMDISTRICTCODE =  '" + Request.Form["CUSTOMDISTRICTCODE"] + "',";
             }
 
-            if (Request.Params.AllKeys.Contains("PASSMODE"))
-            {
-                sql += "  PASSMODE =  '" + Request.Form["PASSMODE"] + "',";
-            }
+            sql += "  PASSMODE =  '" + Request.Form["PASSMODE"] + "',";
 
-            if (Request.Params.AllKeys.Contains("IFCHAYAN"))
-            {
-                sql += "  IFCHAYAN =  '" + Request.Form["IFCHAYAN"] + "',";
-            }
+            sql += "  IFCHAYAN =  '" + Request.Form["IFCHAYAN"] + "',";
+
+            sql += "  KOUHUOSIGN =  '" + Request.Form["KOUHUOSIGN"] + "',";
+
+            sql += "  IFTIAODANG =  '" + Request.Form["IFTIAODANG"] + "',";
+
+            sql += "  LIHUOSIGN =  '" + Request.Form["LIHUOSIGN"] + "',";
+
 
             if (Request.Params.AllKeys.Contains("CHAYANTIMES"))
             {
@@ -273,27 +333,12 @@ namespace SceneOfCustoms.Controllers
                 sql += "  CHAYANREMARK =  '" + Request.Form["CHAYANREMARK"] + "',";
             }
 
-            if (Request.Params.AllKeys.Contains("LIHUOSIGN"))
-            {
-                sql += "  LIHUOSIGN =  '" + Request.Form["LIHUOSIGN"] + "',";
-            }
 
             if (Request.Params.AllKeys.Contains("LIHUOTIMES"))
             {
                 sql += "  LIHUOTIMES =  '" + Request.Form["LIHUOTIMES"] + "',";
             }
 
-
-            if (Request.Params.AllKeys.Contains("KOUHUOSIGN"))
-            {
-                sql += "  KOUHUOSIGN =  '" + Request.Form["KOUHUOSIGN"] + "',";
-                sql += "  KOUHUOTIME = sysdate ,";
-            }
-
-            if (Request.Params.AllKeys.Contains("IFTIAODANG"))
-            {
-                sql += "  IFTIAODANG =  '" + Request.Form["IFTIAODANG"] + "',";
-            }
 
             if (Request.Params.AllKeys.Contains("TIAODANGTIMES"))
             {
