@@ -129,26 +129,23 @@ namespace SceneOfCustoms.Controllers
                 //有2个tab
                 string correspondno = dt.Rows[0]["CORRESPONDNO"] + "";//四单关联号
 
-                string CODE1 = correspondno.Replace("GF", ""); // 第一个订单
-                string sql1 = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE1;
-                DataTable dt1 = DBMgr.GetDataTable(sql1);
-                ViewData["id1"] = dt1.Rows[0]["ID"] + "";
+                string CODE = correspondno.Replace("GF", ""); // 第一个订单
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE;
+                dt = DBMgr.GetDataTable(sql);
+                ViewData["id1"] = dt.Rows[0]["ID"] + "";
 
                 string ASSOCIATENO = correspondno.Replace("GF", "GL");
-                string sql2 = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !=" + CODE1;
-                DataTable dt2 = DBMgr.GetDataTable(sql2);
-                string id2 = dt2.Rows[0]["ID"] + "";// 第二个订单
-                ViewData["id2"] = id2;
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !=" + CODE;
+                dt = DBMgr.GetDataTable(sql);
+                ViewData["id2"] = dt.Rows[0]["ID"] + "";// 第二个订单
 
-                string sql3 = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = 41";
-                DataTable dt3 = DBMgr.GetDataTable(sql3);
-                string id3 = dt3.Rows[0]["ID"] + "";// 第三个订单
-                ViewData["id3"] = id3;
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = 41";
+                dt = DBMgr.GetDataTable(sql);
+                ViewData["id3"] = dt.Rows[0]["ID"] + "";// 第三个订单
 
-                string sql4 = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = 40";
-                DataTable dt4 = DBMgr.GetDataTable(sql4);
-                string id4 = dt4.Rows[0]["ID"] + "";// 第四个订单
-                ViewData["id4"] = id4;
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = 40";
+                dt = DBMgr.GetDataTable(sql);
+                ViewData["id4"] = dt.Rows[0]["ID"] + "";// 第四个订单
             }
             else
             {
@@ -156,17 +153,14 @@ namespace SceneOfCustoms.Controllers
                 string ASSOCIATENO = dt.Rows[0]["ASSOCIATENO"] + "";//二单关联号
                 if (!string.IsNullOrEmpty(ASSOCIATENO))
                 {
+                    string CODE = ASSOCIATENO.Replace("GL", ""); // 第一个订单
+                    sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE;
+                    dt = DBMgr.GetDataTable(sql);
+                    ViewData["id1"] = dt.Rows[0]["ID"] + "";
 
-
-                    string CODE1 = ASSOCIATENO.Replace("GL", ""); // 第一个订单
-                    string sql1 = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE1;
-                    DataTable dt1 = DBMgr.GetDataTable(sql1);
-                    ViewData["id1"] = dt1.Rows[0]["ID"] + "";
-
-                    string sql2 = "select ID,CODE,ASSOCIATENO,CORRESPONDNO from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !=" + CODE1;
-                    DataTable dt2 = DBMgr.GetDataTable(sql2);
-                    string id2 = dt2.Rows[0]["ID"] + "";// 第二个订单
-                    ViewData["id2"] = id2;
+                    sql = "select ID,CODE,ASSOCIATENO,CORRESPONDNO from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !=" + CODE;
+                    dt = DBMgr.GetDataTable(sql);
+                    ViewData["id2"] = dt.Rows[0]["ID"] + "";// 第二个订单
                 }
 
             }
@@ -263,80 +257,45 @@ namespace SceneOfCustoms.Controllers
 
 
 
-
-
-
-        [HttpGet]
-        public string GetSeaInList()
-        {
-            string sql = "select t.*, t.rowid from list_order t where 1 = 1 and t.busitype='11'";
-            string cusno = Request["CUSNO"];
-            string contractno = Request["CONTRACTNO"];
-            string sort = Request["sort"];
-            string order = Request["order"];
-            if (string.IsNullOrEmpty(sort))
-                sort = "CUSNO";
-            if (string.IsNullOrEmpty(order))
-                order = "ASC";
-            if (!string.IsNullOrEmpty(cusno))
-            {
-                sql += " and CUSNO like '%" + cusno + "%'";
-            }
-            if (!string.IsNullOrEmpty(contractno))
-            {
-                sql += "and CONTRACTNO = '" + contractno + "'";
-            }
-
-            sql += " order by " + sort + " " + order + "";
-            //string sql = "select t.*, t.rowid from list_order t where 1 = 1 and cnsno like '%" + cnsno + "%' and contractno = '" + contractno + "' t.busitype='11' order by "+sort+" "+order+"";// t.busitype='11' order by "+sort+" "+order+"";
-            DataTable dt = DBMgr.GetDataTable(sql);
-            string result = JsonConvert.SerializeObject(dt);
-            int totalRow = dt.Rows.Count;
-            var str = "{\"total\":" + totalRow + ",\"rows\":" + result + "}";
-
-            return str;
-        }
-
-
-
-
-
         [HttpGet]
         public string GetData()
         {
             string BUSITYPE = Request.Params["BUSITYPE"];
+            string TYPE = Request.Params["TYPE"];
             int PageSize = Convert.ToInt32(Request.Params["rows"]);
             int Page = Convert.ToInt32(Request.Params["page"]);
             int total = 0;
 
             string sql = "select t.* from (select *　from list_order ) t where 1=1  ";
+
             if (!string.IsNullOrEmpty(BUSITYPE))
             {
                 sql += " and BUSITYPE =" + BUSITYPE;
             }
-            //sql = "SELECT * FROM (SELECT A.*, ROWNUM RN FROM (SELECT * FROM list_order) A WHERE ROWNUM <= " + PageSize * Page + ") WHERE RN >= " + PageSize * (Page - 1);
 
-            //string where_sql = "";
+            if (TYPE == "SpecialSupervision")
+            {
+                sql += " and BUSITYPE in (50,51) "; //特殊监管
+            }
+            else if (TYPE == "OverlayBonded")
+            {
+                sql += " and BUSITYPE in (40,41) and CORRESPONDNO is not null";//叠加保税
+            }
+            else if (TYPE == "DomesticKnot")
+            {
+                sql += " and BUSITYPE in (40,41) and CORRESPONDNO is  null";//国内结转
+            }
+
 
             sql = Extension.GetPageSql(sql, "ID", "desc", ref total, (Page - 1) * PageSize, Page * PageSize);
-
-
             DataTable dt = DBMgr.GetDataTable(sql);
-            string result = JsonConvert.SerializeObject(dt);
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string result = JsonConvert.SerializeObject(dt, iso);
             result = "{\"total\":" + total + ",\"rows\":" + result + "}";
             return result;
 
         }
-
-
-        public int GetTotal(string where_sql)
-        {
-            string sql = "select count(1) from list_order t where 1=1 " + where_sql;
-            DataTable dt = DBMgr.GetDataTable(sql);
-            int total = Convert.ToInt32(DBMgr.GetDataTable(sql).Rows[0][0]);
-            return total;
-        }
-
 
 
         [HttpPost]
@@ -472,11 +431,7 @@ namespace SceneOfCustoms.Controllers
         {
             string ID = Request.Form["ID"];
             string type = Request.Form["type"];
-
-
             JObject jo = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
-
-
             string sql = "update list_order set ";
             if (type != "")
             {

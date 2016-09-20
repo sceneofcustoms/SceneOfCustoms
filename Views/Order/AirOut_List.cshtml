@@ -1,11 +1,13 @@
 ﻿<div class="ibox-content">
     <div class="table-responsive">
-        <table id="datagrid" class="easyui-datagrid" title="数据" style="height:auto;min-height:300px;max-height:800px;"
+        <table id="datagrid" class="easyui-datagrid" title="空运出口列表" style="height:auto;min-height:500px;max-height:800px"
                data-options=" rownumbers:true,
                                    url: '/Order/GetData',
+                                   queryParams:{BUSITYPE:10},
                                    dataType : 'json',
                                    method:'get',
                                    toolbar:'#tb',
+                                   pageSize:20,
                                    pagination:true ">
             <thead data-options="frozen:true">
                 <tr>
@@ -62,40 +64,78 @@
             </thead>
         </table>
 
-        <div id="tb" style="padding:2px 5px;">
+        <div id="tb">
             <div class="tb_search">
-                Date From: <input class="easyui-datebox" style="width:110px">
-                To: <input class="easyui-datebox" style="width:110px">
-                Language:
-                <select class="easyui-combobox" panelheight="auto" style="width:100px">
-                    <option value="java">Java</option>
-                    <option value="c">C</option>
-                    <option value="basic">Basic</option>
-                    <option value="perl">Perl</option>
-                    <option value="python">Python</option>
-                </select>
+                <form id="searchform" method="post">
+                    <table>
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value" type="text" name="ordercode_value" />
+                            </td>
 
-                Date From: <input class="easyui-datebox" style="width:110px">
-                To: <input class="easyui-datebox" style="width:110px">
-                Language:
-                <select class="easyui-combobox" panelheight="auto" style="width:100px">
-                    <option value="java">Java</option>
-                    <option value="c">C</option>
-                    <option value="basic">Basic</option>
-                    <option value="perl">Perl</option>
-                    <option value="python">Python</option>
-                </select>
-                <a href="#" class="easyui-linkbutton" iconcls="icon-search">Search</a>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_operator" panelheight="auto" name="oprname"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value" type="text" name="oprname_value" />
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>业务对象</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="business_object" panelheight="auto" name="business_object"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value" name="startdate" placeholder="开始时间">
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value" name="stopdate" placeholder="结束时间">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>海关通关状态</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox value" id="customs_state" style="width:130px" panelheight="auto" name="customs_state"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>是否单证放行</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="is_clearance" panelheight="auto" name="is_clearance"></select>
+                            </td>
+                        </tr>
+
+
+                    </table>
+                </form>
             </div>
             <div class="tb_but">
-                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-plus',plain:true" onclick="append()">新增</a>
-                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-plus',plain:true" onclick="Edit()">修改</a>
-                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">删除</a>
-                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">保存</a>
-                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">取消</a>
-                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-paperclip',plain:true" onclick="importexcel()">EXCEL 导入</a>
-                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-download-alt',plain:true" onclick="exportexcel()">导出 Excel</a>
-                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-refresh',plain:true" onclick="reload()">刷新</a>
+                <div class="but_left">
+                    @*<a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-refresh"></i> 重置</a>*@
+                </div>
+                <div class="but_right">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="icon-refresh"></i> 重置</a>
+                </div>
             </div>
         </div>
 
@@ -104,18 +144,6 @@
 </div>
 
 <script type="text/javascript">
-
-    $(document).ready(function () {
-
-    })
-
-
-    function Edit() {
-        debugger;
-    }
-
-    $(function () {
-
         $('#datagrid').datagrid({
             //双击事件
             onDblClickCell: function (index, field, value) {
@@ -125,7 +153,4 @@
                 }
             }
         });
-
-    });
-
 </script>

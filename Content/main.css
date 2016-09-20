@@ -1,0 +1,53 @@
+﻿#datagrid {
+    
+}
+#searchform {
+    padding: 10px 0px;
+}
+
+    #searchform table tr {
+        height: 30px;
+    }
+
+        #searchform table tr .easyui-combobox {
+            width: 100px;
+        }
+
+        #searchform table tr .easyui-textbox {
+            width: 130px;
+        }
+
+        #searchform table tr .easyui-datebox {
+            width: 100px;
+        }
+
+        #searchform table tr .combobox_width {
+            width: 130px;
+        }
+
+    #searchform .search_margin {
+        padding-left: 42px;
+    }
+
+#tb .tb_but {
+    overflow: hidden;
+    height: 28px;
+}
+
+    #tb .tb_but .but_left {
+        float: left;
+        margin: 3px 10px 0px 10px;
+    }
+
+    #tb .tb_but .but_right {
+        float: right;
+        margin: 3px 10px 0px 10px;
+    }
+
+#tb {
+    padding: 0px;
+}
+
+    #tb .tb_search {
+        border-bottom: 1px solid #ddd;
+    }

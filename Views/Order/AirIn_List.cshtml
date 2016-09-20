@@ -1,58 +1,13 @@
-﻿<style type="text/css">
-    #searchform {
-        padding: 10px 0px;
-    }
-
-        #searchform table tr {
-            height: 30px;
-        }
-
-            #searchform table tr .easyui-combobox {
-                width: 100px;
-            }
-
-            #searchform table tr .easyui-textbox {
-                width: 130px;
-            }
-
-            #searchform table tr .easyui-datebox {
-                width: 100px;
-            }
-
-    .search_margin {
-        padding-left: 42px;
-    }
-
-    /*#searchform table tr td{
-        width:20%;
-    }*/
-    /*#searchform table tr td label {
-            width: 100px;
-            text-align: right;
-        }*/
-
-    /*#searchform table tr td .easyui-combobox, #searchform table tr td .easyui-textbox, #searchform table tr td .easyui-datebox {
-            width: 180px;
-        }*/
-
-    #tb {
-        padding: 0px;
-    }
-
-        #tb .tb_search {
-            border-bottom: 1px solid #ddd;
-        }
-</style>
-
-
-<div class="ibox-content">
+﻿ <div class="ibox-content">
     <div class="table-responsive">
-        <table id="datagrid" class="easyui-datagrid" title="数据" style="height:auto;min-height:300px;max-height:800px;"
+        <table id="datagrid" class="easyui-datagrid" title="空运进口列表" style="height:auto;min-height:500px;max-height:800px"
                data-options=" rownumbers:true,
-                                   url: '/Order/GetData?BUSITYPE=11',
+                                   url: '/Order/GetData',
+                                   queryParams:{BUSITYPE:11},
                                    dataType : 'json',
                                    method:'get',
                                    toolbar:'#tb',
+                                   pageSize:20,
                                    pagination:true ">
             <thead data-options="frozen:true">
                 <tr>
@@ -107,156 +62,71 @@
                     <table>
                         <tr>
                             <td class="search_margin">
-                                <select id="OrderCode" class="easyui-combobox" panelheight="auto" name="docno">
-                                    <option value="java">业务编号</option>
-                                    <option value="c">平台编号</option>
-                                    <option value="basic">合同.发票号</option>
-                                    <option value="perl">一程提运单号</option>
-                                    <option value="python11">二程提运单号</option>
-                                    <option value="python12">转关预录入号</option>
-                                    <option value="python13">通关单号</option>
-                                    <option value="python14">集装箱号</option>
-                                    <option value="python15">报关单号</option>
-                                    <option value="python16">签收号</option>
-                                    <option value="python17">绑定号</option>
-                                </select>
+                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
                             </td>
                             <td>
-                                <input class="easyui-textbox" type="text" name="busiobjvalue" />
-                            </td>
-
-
-
-                            <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto" name="OprName">
-                                    <option value="java">接单人</option>
-                                    <option value="c">理单人</option>
-                                    <option value="basic">理货资料齐全人</option>
-                                    <option value="perl">理货资料齐全日期</option>
-                                    <option value="python7">报关人</option>
-                                    <option value="python8">单证放行人</option>
-                                    <option value="python9">实物放行人</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input class="easyui-textbox" type="text" name="busiobjvalue" />
+                                <input class="easyui-textbox value" type="text" name="ordercode_value" />
                             </td>
 
                             <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto" name="OprName">
-                                    <option value="java">接单人</option>
-                                    <option value="c">理单人</option>
-                                    <option value="basic">理货资料齐全人</option>
-                                    <option value="perl">理货资料齐全日期</option>
-                                    <option value="python7">报关人</option>
-                                    <option value="python8">单证放行人</option>
-                                    <option value="python9">实物放行人</option>
-                                </select>
+                                <select class="easyui-combobox" id="search_operator" panelheight="auto" name="oprname"></select>
                             </td>
                             <td>
-                                <input class="easyui-textbox" type="text" name="busiobjvalue" />
-                            </td>
-
-                            <td class="search_margin">
-                                <select class="easyui-combobox OrderDate" panelheight="auto" name="OrderDate"></select>
-                            </td>
-                            <td>
-                                <input class="easyui-datebox" name="startdate" placeholder="开始时间">
-                            </td>
-                            <td>
-                                <input class="easyui-datebox" name="stopdate" placeholder="结束时间">
-                            </td>
-
-                        </tr>
-
-                        <tr>
-                            <td class="search_margin">
-                                <select id="OrderCode" class="easyui-combobox" panelheight="auto" name="docno">
-                                    <option value="java">业务编号</option>
-                                    <option value="c">平台编号</option>
-                                    <option value="basic">合同.发票号</option>
-                                    <option value="perl">一程提运单号</option>
-                                    <option value="python11">二程提运单号</option>
-                                    <option value="python12">转关预录入号</option>
-                                    <option value="python13">通关单号</option>
-                                    <option value="python14">集装箱号</option>
-                                    <option value="python15">报关单号</option>
-                                    <option value="python16">签收号</option>
-                                    <option value="python17">绑定号</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input class="easyui-textbox" type="text" name="busiobjvalue" />
-                            </td>
-
-
-                            <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto" name="OprName">
-                                    <option value="java">接单人</option>
-                                    <option value="c">理单人</option>
-                                    <option value="basic">理货资料齐全人</option>
-                                    <option value="perl">理货资料齐全日期</option>
-                                    <option value="python7">报关人</option>
-                                    <option value="python8">单证放行人</option>
-                                    <option value="python9">实物放行人</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input class="easyui-textbox" type="text" name="busiobjvalue" />
-                            </td>
-
-                            <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto" name="OprName">
-                                    <option value="java">接单人</option>
-                                    <option value="c">理单人</option>
-                                    <option value="basic">理货资料齐全人</option>
-                                    <option value="perl">理货资料齐全日期</option>
-                                    <option value="python7">报关人</option>
-                                    <option value="python8">单证放行人</option>
-                                    <option value="python9">实物放行人</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input class="easyui-textbox" type="text" name="busiobjvalue" />
+                                <input class="easyui-textbox value" type="text" name="oprname_value" />
                             </td>
 
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
-                                    <option value="java">cassette阿斯达</option>
+                                    <option>业务对象</option>
                                 </select>
                             </td>
-
-                            <td class="">
-                                <select class="easyui-combobox" panelheight="auto" name="OprName">
-                                    <option value="java">接单人</option>
-                                    <option value="c">理单人</option>
-                                    <option value="basic">理货资料齐全人</option>
-                                    <option value="perl">理货资料齐全日期</option>
-                                    <option value="python7">报关人</option>
-                                    <option value="python8">单证放行人</option>
-                                    <option value="python9">实物放行人</option>
-                                </select>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="business_object" panelheight="auto" name="business_object"></select>
                             </td>
 
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value" name="startdate" placeholder="开始时间">
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value" name="stopdate" placeholder="结束时间">
+                            </td>
                         </tr>
+
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>海关通关状态</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox value" id="customs_state" style="width:130px" panelheight="auto" name="customs_state"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>是否单证放行</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="is_clearance" panelheight="auto" name="is_clearance"></select>
+                            </td>
+                        </tr>
+
 
                     </table>
                 </form>
             </div>
             <div class="tb_but">
                 <div class="but_left">
-                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-plus',plain:true" onclick="append()">新增</a>
-                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-plus',plain:true" onclick="Edit()">修改</a>
-                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">删除</a>
-                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">保存</a>
-                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">取消</a>
-                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-paperclip',plain:true" onclick="importexcel()">EXCEL 导入</a>
-                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-download-alt',plain:true" onclick="exportexcel()">导出 Excel</a>
-                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-refresh',plain:true" onclick="reload()">刷新</a>
+                    @*<a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-search"></i> 搜索</a>
+                        <a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-refresh"></i> 重置</a>*@
                 </div>
-                <div class="but_left">
-                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-plus',plain:true" onclick="append()">新增</a>
-                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-plus',plain:true" onclick="Edit()">修改</a>
+                <div class="but_right">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="icon-refresh"></i> 重置</a>
                 </div>
             </div>
         </div>
@@ -266,27 +136,6 @@
 </div>
 
 <script type="text/javascript">
-
-    $(document).ready(function () {
-
-        //debugger;
-        //$('#dg').datagrid('loadData', {
-        //    "total": 50
-        //});
-
-
-
-    })
-
-
-    function Edit() {
-
-        debugger;
-
-    }
-
-    $(function () {
-
         //双击事件
         $('#datagrid').datagrid({
             onDblClickCell: function (index, field, value) {
@@ -296,7 +145,4 @@
                 }
             }
         });
-
-    });
-
 </script>
