@@ -61,6 +61,16 @@
                 <form id="searchform" method="post">
                     <table>
                         <tr>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>业务方式</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="service_model" panelheight="auto" name="service_model"></select>
+                            </td>
+
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
                             </td>
@@ -75,14 +85,7 @@
                                 <input class="easyui-textbox value" type="text" name="oprname_value" />
                             </td>
 
-                            <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto">
-                                    <option>业务对象</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="easyui-combobox combobox_width value" id="business_object" panelheight="auto" name="business_object"></select>
-                            </td>
+
 
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
@@ -102,19 +105,56 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox value" id="customs_state" style="width:130px" panelheight="auto" name="customs_state"></select>
+                                <select class="easyui-combobox value combobox_width" id="customs_state"  panelheight="auto" name="customs_state"></select>
                             </td>
 
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
-                                    <option>是否单证放行</option>
+                                    <option>业务对象</option>
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value" id="is_clearance" panelheight="auto" name="is_clearance"></select>
+                                <select class="easyui-combobox combobox_width value" id="business_object" panelheight="auto" name="business_object"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>急货标识</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name=""></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>报关资料齐全标志</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name=""></select>
                             </td>
                         </tr>
 
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>文档类型</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox value combobox_width" id="doc_type"  panelheight="auto" name="doc_type"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>申报方式</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox value combobox_width" id="declare_type" panelheight="auto" name="declare_type"></select>
+                            </td>
+                        </tr>
 
                     </table>
                 </form>

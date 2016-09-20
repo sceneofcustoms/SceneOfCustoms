@@ -18,7 +18,7 @@
         }
 
         #searchform table tr .easyui-datebox {
-            width: 100px;
+            width: 130px;
         }
 
         #searchform table tr .combobox_width {
@@ -26,7 +26,7 @@
         }
 
     #searchform .search_margin {
-        padding-left: 42px;
+        padding-left: 30px;
     }
 
 #tb .tb_but {

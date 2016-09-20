@@ -61,10 +61,49 @@ var is_check = [
     { code: '0', name: '否' },
 ];
 
-//5 查询选择值  --是否
+//5 查询选择值  --业务对象
 var business_object = [
     { code: '1', name: '收货人' },
     { code: '0', name: '结算方' },
+];
+
+//6 查询搜索值  --业务方式
+var service_model = [
+    { code: '1', name: '进口' },
+    { code: '0', name: '出口' },
+];
+
+//7 查询文档类型
+var doc_type = [
+    { code: '1', name: '合同' },
+    { code: '1', name: '货物清单' },
+    { code: '1', name: '发票' },
+    { code: '1', name: '报关文档' },
+    { code: '1', name: '报关底单' },
+    { code: '1', name: '提运单' },
+    { code: '1', name: '委托协议' },
+    { code: '1', name: '箱单' },
+    { code: '1', name: '报检文档' },
+    { code: '1', name: '成本票据' },
+    { code: '1', name: '理货文档' },
+    { code: '1', name: '文档类型' },
+    { code: '1', name: '查检文档' }
+]
+
+//8 查询申报方式
+var declare_type = [
+       { code: '1', name: '一般出口' },
+       { code: '1', name: '提前出口' },
+       { code: '1', name: '一般进口' },
+       { code: '1', name: '提前进口' }
+];
+
+//9 查询 报关方式
+var declaration_type = [
+       { code: '1', name: '逐笔' },
+       { code: '1', name: '转厂' },
+       { code: '1', name: '集中' },
+       { code: '1', name: '作业单' }
 ];
 
 $(function () {
@@ -89,7 +128,7 @@ $(function () {
         valueField: 'code',
         textField: 'name'
     });
-    $('#searchform #is_clearance').combobox({
+    $('#searchform .is_check').combobox({
         data: is_check,
         valueField: 'code',
         textField: 'name'
@@ -99,6 +138,27 @@ $(function () {
         valueField: 'code',
         textField: 'name'
     });
+    $('#searchform #service_model').combobox({
+        data: service_model,
+        valueField: 'code',
+        textField: 'name'
+    });
+    $('#searchform #doc_type').combobox({
+        data: doc_type,
+        valueField: 'code',
+        textField: 'name'
+    });
+    $('#searchform #declare_type').combobox({
+        data: declare_type,
+        valueField: 'code',
+        textField: 'name'
+    });
+    $('#searchform #declaration_type').combobox({
+        data: declaration_type,
+        valueField: 'code',
+        textField: 'name'
+    });
+
 })
 
 
