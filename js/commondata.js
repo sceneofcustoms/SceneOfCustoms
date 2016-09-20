@@ -106,6 +106,12 @@ var declaration_type = [
        { code: '1', name: '作业单' }
 ];
 
+//10 转入 转出
+var out_in = [
+       { code: '1', name: '转出' },
+       { code: '1', name: '转入' }
+];
+
 $(function () {
 
     $('#searchform #search_condition_date').combobox({
@@ -159,6 +165,11 @@ $(function () {
         textField: 'name'
     });
 
+    $('#searchform #out_in').combobox({
+        data: out_in,
+        valueField: 'code',
+        textField: 'name'
+    });
 })
 
 

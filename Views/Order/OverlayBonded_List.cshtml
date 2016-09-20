@@ -67,6 +67,15 @@
 
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
+                                    <option>转入出类型</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="out_in" panelheight="auto" name="out_in"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
                                     <option>业务方式</option>
                                 </select>
                             </td>
@@ -80,15 +89,6 @@
                             <td>
                                 <input class="easyui-textbox value" type="text" name="ordercode_value" />
                             </td>
-
-                            <td class="search_margin">
-                                <select class="easyui-combobox" id="search_operator" panelheight="auto" name="oprname"></select>
-                            </td>
-                            <td>
-                                <input class="easyui-textbox value" type="text" name="oprname_value" />
-                            </td>
-
-
 
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
@@ -140,6 +140,13 @@
                         </tr>
 
                         <tr>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_operator" panelheight="auto" name="oprname"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value" type="text" name="oprname_value" />
+                            </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
                                     <option>文档类型</option>
