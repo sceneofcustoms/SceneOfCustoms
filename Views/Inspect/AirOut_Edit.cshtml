@@ -1,0 +1,335 @@
+﻿
+<style type="text/css">
+    #OrderFrom {
+        margin: 10px 0px;
+    }
+
+        #OrderFrom table {
+            width: 100%;
+        }
+
+            #OrderFrom table tr {
+                height: 40px;
+            }
+
+                #OrderFrom table tr td {
+                    width: 25%;
+                }
+
+                    #OrderFrom table tr td label {
+                        width: 80px;
+                        text-align: right;
+                    }
+
+                    #OrderFrom table tr td .easyui-textbox {
+                        width: 200px;
+                    }
+
+                    #OrderFrom table tr td .easyui-numberspinner {
+                        width: 200px;
+                    }
+
+                    #OrderFrom table tr td .easyui-combobox {
+                        width: 200px;
+                    }
+
+    #scene .easyui-linkbutton {
+        margin-left: -5px;
+    }
+
+    #scene .l-btn-text {
+        line-height: 20px;
+    }
+
+    #scene .time_input {
+        width: 180px !important;
+    }
+
+    .panel-title {
+        color: #3071a9;
+    }
+</style>
+
+<form id="OrderFrom" method="post">
+    <div id="" style="margin-bottom:20px" class="easyui-panel" title="订单主信息"
+         data-options="collapsible:true">
+        <input type="hidden" name="ID" />
+        <table>
+            <tr>
+                <td>
+                    <label for="name"> 平台编号:</label>
+                    <input class="easyui-textbox" type="text" name="name" disabled="disabled" />
+                </td>
+                <td>
+                    <label for="CODE">业务编号:</label>
+                    <input class="easyui-textbox" type="text" name="CODE" disabled="disabled" />
+                </td>
+                <td>
+                    <label for="name">报检编号:</label>
+                    <input class="easyui-textbox" type="text" name="" disabled="disabled" />
+                </td>
+                <td>
+                    <label for="">收货人:</label>
+                    <input class="easyui-textbox" type="text" name="" disabled="disabled" />
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    <label for="CLEARUNIT"> 结算方:</label>
+                    <input class="easyui-textbox" type="text" name="CLEARUNIT" disabled="disabled" />
+                </td>
+
+                <td>
+                    <label for="TOTALNO">总单号:</label>
+                    <input class="easyui-textbox" type="text" name="TOTALNO" disabled="disabled" />
+                </td>
+
+                <td>
+                    <label for="DIVIDENO">分单号:</label>
+                    <input class="easyui-textbox" type="text" name="DIVIDENO" disabled="disabled" />
+                </td>
+
+                <td>
+                    <label for="GOODSNUM"> 总件数:</label>
+                    <input class="easyui-textbox" type="text" name="GOODSNUM" disabled="disabled" />
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <label for="GOODSWEIGHT">总重量:</label>
+                    <input class="easyui-textbox" type="text" name="GOODSWEIGHT" disabled="disabled" />
+                </td>
+                <td>
+                    <label for="CHECKEDWEIGHT">确认重量:</label>
+                    <input class="easyui-textbox" type="text" name="CHECKEDWEIGHT" disabled="disabled" />
+                </td>
+
+                <td>
+                    <label for="text"> 航班:</label>
+                    <input class="easyui-textbox" type="text" name="text" />
+                </td>
+
+
+                <td>
+                    <label for="CONTRACTNO"> 合同/发票号:</label>
+                    <input class="easyui-textbox" type="text" name="CONTRACTNO" disabled="disabled" />
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <label for="">品名:</label>
+                    <input class="easyui-textbox" type="text" name="" disabled="disabled" />
+                </td>
+
+                <td>
+                    <label for="TURNPRENO">转关预录号:</label>
+                    <input class="easyui-textbox" type="text" name="TURNPRENO" disabled="disabled" />
+                </td>
+                <td>
+                    <label for="">转关单号:</label>
+                    <input class="easyui-textbox" type="text" name="" disabled="disabled" />
+                </td>
+                <td>
+                    <label for="">到货日期:</label>
+                    <input class="easyui-textbox" type="text" name="" disabled="disabled" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div style="text-align:center">
+                        通关单否:
+                        <input class="" type="checkbox" name="" disabled="disabled" />
+                        法检标志:
+                        <input class="" type="checkbox" name="" disabled="disabled" />
+                    </div>
+                </td>
+
+                <td>
+                    <label for="">接单人:</label>
+                    <input class="easyui-textbox" type="text" name="" disabled="disabled" />
+                </td>
+                <td>
+                    <label for=""> 接待时间:</label>
+                    <input class="easyui-textbox" type="text" name="" disabled="disabled" />
+                </td>
+                <td>
+                    <label for=""> 接待备注:</label>
+                    <input class="easyui-textbox" type="text" name="" disabled="disabled" />
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="easyui-panel" style="margin-bottom:15px" title="现场关务"
+         data-options="collapsible:true">
+        <table id="scene">
+            <tr>
+                <td>
+                    <label for="BAOJIANZHIDANTIME"> 报检制单时间:</label>
+                    <input class="easyui-textbox  time_input" id="BAOJIANZHIDANTIME" data-options="text:'填充时间'" type="text" name="BAOJIANZHIDANTIME" disabled="disabled" />
+                    <a href="javascript:void(0)" datatype="BAOJIANZHIDAN" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                </td>
+                <td>
+                    <label for="BAOJIANZHIDANUSERNAME">报检制单人:</label>
+                    <input class="easyui-textbox " type="text" id="BAOJIANZHIDANUSERNAME" name="BAOJIANZHIDANUSERNAME" disabled="disabled" />
+                </td>
+                <td>
+                    <label for="BAOJIANSHUJITIME"> 报检输机时间:</label>
+                    <input class="easyui-textbox time_input" type="text" id="BAOJIANSHUJITIME" name="BAOJIANSHUJITIME" disabled="disabled" />
+                    <a href="javascript:void(0)" datatype="BAOJIANSHUJI" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                </td>
+                <td>
+                    <label for="BAOJIANSHUJIUSERNAME">报检输机人:</label>
+                    <input class="easyui-textbox " type="text" id="BAOJIANSHUJIUSERNAME" name="BAOJIANSHUJIUSERNAME" disabled="disabled" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="BAOJIANTIME"> 报检时间:</label>
+                    <input class="easyui-textbox time_input" type="text" id="BAOJIANTIME" name="BAOJIANTIME" disabled="disabled" />
+                    <a href="javascript:void(0)" datatype="BAOJIAN" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                </td>
+                <td>
+                    <label for="BAOJIANUSERNAME">报检:</label>
+                    <input class="easyui-textbox " type="text" id="BAOJIANUSERNAME" name="BAOJIANUSERNAME" disabled="disabled" />
+                </td>
+                <td>
+                    <label for="BAOJIANFANGXINGTIME"> 报检放行时间:</label>
+                    <input class="easyui-textbox time_input" type="text" id="BAOJIANFANGXINGTIME" name="BAOJIANFANGXINGTIME" disabled="disabled" />
+                    <a href="javascript:void(0)" datatype="BAOJIANFANGXING" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                </td>
+                <td>
+                    <label for="BAOJIANFANGXINGUSERNAME">报检放行人:</label>
+                    <input class="easyui-textbox " type="text" id="BAOJIANFANGXINGUSERNAME" name="BAOJIANFANGXINGUSERNAME" disabled="disabled" />
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="text-align:center;padding:5px 0">
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="submitForm()">
+            <i class="icon-ok"></i> 保存
+        </a>
+
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="javascript: history.back(-1);">
+            <i class="icon-reply"></i> 返回
+        </a>
+    </div>
+</form>
+
+<div id="" class="easyui-panel" title="报关单信息"
+     data-options="collapsible:true">
+
+    <table id="dg" style="height:250px" class="easyui-datagrid"
+           data-options=" rownumbers:true,
+                                   dataType : 'json',
+                                   method:'get'">
+        <thead>
+            <tr>
+                <th data-options="field: 'ck', checkbox: true"></th>
+                <th data-options="field:'ID',sortable:true,width:50,align:'center'">ID</th>
+                <th data-options="field:'BUSIUNITNAME',sortable:true,width:200,align:'center'">预制报检单号</th>
+                <th data-options="field:'TOTALNO',width:100,align:'center'">通关单号</th>
+                <th data-options="field:'DIVIDENO',width:100,align:'center'">报检单号</th>
+                <th data-options="field:'DIVIDENO',width:100,align:'center'">通关单张数</th>
+                <th data-options="field:'DIVIDENO',width:100,align:'center'">核准单号</th>
+                <th data-options="field:'GOODSNUM',width:50,align:'center'">件数</th>
+                <th data-options="field:'GOODSWEIGHT',width:50,align:'center'">总重量</th>
+                <th data-options="field:'LAWCONDITION',width:50,align:'center'">删单</th>
+                <th data-options="field:'DECLSHEETNUM',width:100,align:'center'">改单次数</th>
+            </tr>
+        </thead>
+    </table>
+
+
+
+
+</div>
+
+
+
+<script type="text/javascript">
+    function submitForm() {
+
+        $('#OrderFrom ').form('submit', {
+            url: "/Order/SaveData",
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                debugger;
+                var data = eval('(' + data + ')');  // change the JSON string to javascript object
+                if (data.Success) {
+                    $.messager.alert('成功', '保存成功');
+                } else {
+                    $.messager.alert('失败', '保存失败');
+                }
+            }
+        });
+    }
+
+
+    var type;
+    $(function () {
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+        var ID = getQueryString('ID');
+
+
+        function loadsucc(data) {
+            var PASSMODE = data['PASSMODE'];
+            if (PASSMODE != "") {
+                var arr = PASSMODE.split(',');
+                for (i = 0; i < arr.length; i++) {
+                    $('input[name=PASSMODE][value=' + arr[i] + ']')[0].checked = true;
+                }
+            }
+
+        }
+
+        $('#OrderFrom').form({ onLoadSuccess: loadsucc });
+        $('#OrderFrom').form('load', '/Order/Edit_Order?ID=' + ID);
+
+
+        $('.fillingData').click(function () {
+            type = this.getAttribute("datatype");
+            $.ajax({
+                url: '/Order/Edit_Ajax_Scene',// 跳转到 action
+                data: {
+                    'ID': ID,
+                    'type': type
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success == true) {
+                        var time = "#" + type + 'TIME';
+                        var name = "#" + type + 'USERNAME';
+                        debugger;
+                        $(time).textbox('setValue', data.datetime);
+                        $(name).textbox('setValue', data.name);
+                    } else {
+                        $.messager.alert('异常', '联系管理员');
+                    }
+                },
+
+            });
+
+        });
+    })
+
+</script>

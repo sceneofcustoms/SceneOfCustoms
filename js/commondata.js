@@ -175,7 +175,9 @@ $(function () {
 
 
 //搜索列表
-function search_form() { }
+function search_form() {
+    debugger;
+}
 
 
 //重置搜索表表单
