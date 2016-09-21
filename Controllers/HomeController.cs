@@ -10,8 +10,8 @@ namespace SceneOfCustoms.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.navigator = "关务系统>>首页";
+            ViewData["crumb"] = "关务系统>>首页";
             return View();
-        } 
+        }
     }
 }
