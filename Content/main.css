@@ -32,6 +32,7 @@
 #tb .tb_but {
     overflow: hidden;
     height: 28px;
+    background:#CFDEFF;
 }
 
     #tb .tb_but .but_left {
