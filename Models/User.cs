@@ -14,7 +14,7 @@ namespace SceneOfCustoms.Models
         // [Display(Name = "Email:")]
         //[Remote("doesEmailExist", "User")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "用户名不能为空")]
-        public string NAME { get; set; }
+        public string NAME { get; set; } 
 
         //[Required]
         //[DataType(DataType.Password)]
