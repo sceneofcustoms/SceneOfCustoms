@@ -1,83 +1,56 @@
 ﻿<div class="ibox-content">
-    <div class="table-responsive">
-        <table id="datagrid" class="easyui-datagrid" title="海运进口" style="height:auto;min-height:500px;max-height:800px"
+    <div class="table-responsive"> 
+        <table id="datagrid" class="easyui-datagrid" title="陆运进口" style="height:auto;min-height:500px;max-height:800px"
                data-options=" rownumbers:true,
                                    url: '/Order/GetData',
-                                   queryParams:{BUSITYPE:21},
+                                   queryParams:{BUSITYPE:31},
                                    dataType : 'json',
                                    method:'get',
                                    toolbar:'#tb',
                                    pageSize:20,
                                    pagination:true ">
-
             <thead data-options="frozen:true">
                 <tr>
-                    <th data-options="field: 'ck', checkbox: true"></th>
-                    <th data-options="field:'CUSNO',sortable:true">收货人</th>
-                    <th data-options="field:'FIRSTLADINGBILLNO',sortable:true">一程提运单号</th>
-                    <th data-options="field:'SECONDLADINGBILLNO',sortable:true">二程提运单号</th>
+                    <th data-options="field: 'ID',width:80,checkbox:true"></th>
+                    <th data-options="field:'BUSIUNITNAME',sortable:true">收货人</th>
+                    <th data-options="field:'text',sortable:true">载货清单号</th>
+                    <th data-options="field:'text',sortable:true">万达号</th>
                     <th data-options="field:'GOODSNUM',sortable:true">总件数</th>
                     <th data-options="field:'GOODSWEIGHT',sortable:true">总重量</th>
                 </tr>
             </thead>
-
             <thead>
-
                 <tr>
                     <th data-options="field:'DECLSHEETNUM',sortable:true">报关单张数</th>
                     <th data-options="field:'LAWCONDITION',sortable:true">是否法检</th>
+                    <th data-options="field:'YWBH',sortable:true">业务编号</th>
                     <th data-options="field:'ASSOCIATEPEDECLNO',sortable:true">报关单号</th>
                     <th data-options="field:'LIDANTIME',sortable:true">理单时间</th>
                     <th data-options="field:'BAOGUANTIME',sortable:true">报关时间</th>
                     <th data-options="field:'DANZHENGFANGXINGTIME',sortable:true">单证放行时间</th>
                     <th data-options="field:'ASSOCIATETRADEWAY',sortable:true">贸易方式</th>
                     <th data-options="field:'text',sortable:true">报关备注</th>
-                    <th data-options="field:'text',sortable:true">放行时间</th>
+                    @*<th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>*@
                     <th data-options="field:'LIDANUSERNAME',sortable:true">理单人</th>
                     <th data-options="field:'text',sortable:true">单证齐全时间</th>
                     <th data-options="field:'SHIWUFANGXINGTIME',sortable:true">实物放行时间</th>
-                    <th data-options="field:'text',sortable:true">实物放行状态</th>
-                    <th data-options="field:'YWBH',sortable:true">业务编号</th>
+                    <th data-options="field:'STATUS',sortable:true">实物放行状态</th>
                     <th data-options="field:'CONTRACTNO',sortable:true">合同/发票号</th>
-                    <th data-options="field:'TURNPRENO',sortable:true">转关预录入号</th>
-                    <th data-options="field:'text',sortable:true">转关号</th>
-                    <th data-options="field:'CUSTOMDISTRICTCODE',sortable:true">申报关区</th>
-                    <th data-options="field:'text',sortable:true">OPS接单备注</th>
-                    <th data-options="field:'text',sortable:true">是否有作业单齐全时间</th>
-                    <th data-options="field:'text',sortable:true">作业单齐全时间</th>
+                    <th data-options="field:'text',sortable:true">接单备注</th>
+                    <th data-options="field:'ZUOYEDANTIME',sortable:true">作业单时间</th>
                     <th data-options="field:'DANZHENGFANGXINGUSERNAME',sortable:true">单证放行人</th>
                     <th data-options="field:'SHIWUFANGXINGUSERNAME',sortable:true">实物放行人</th>
                     <th data-options="field:'text',sortable:true">关务状态</th>
-                    <th data-options="field:'text',sortable:true">分批放行</th>
+                    <th data-options="field:'PASSMODE',sortable:true">分批放行</th>
                     <th data-options="field:'PASSMODE',sortable:true">申请放行</th>
-                    <th data-options="field:'CUSTOMDISTRICTCODE',sortable:true">关区代码</th>
-                    <th data-options="field:'text',sortable:true">平台编号</th>
-                    <th data-options="field:'text',sortable:true">关务编号</th>
-                    <th data-options="field:'CLEARUNITNAME',sortable:true">结算方</th>
-                    <th data-options="field:'text',sortable:true">报检接单时间</th>
-                    <th data-options="field:'text',sortable:true">通关单标志</th>
-                    <th data-options="field:'text',sortable:true">报检标志</th>
-                    <th data-options="field:'text',sortable:true">制单备注</th>
-                    <th data-options="field:'GUOJIUSERNAME',sortable:true">过机人</th>
-                    <th data-options="field:'BAOGUANUSERNAME',sortable:true">报关人</th>
-                    <th data-options="field:'text',sortable:true">手册在否</th>
-                    <th data-options="field:'text',sortable:true">手册号</th>
-                    <th data-options="field:'text',sortable:true">出保</th>
-                    <th data-options="field:'text',sortable:true">OPS接单人</th>
+                    <th data-options="field:'text',sortable:true">OPS接单备注</th>
                     <th data-options="field:'text',sortable:true">OPS接单时间</th>
-                    <th data-options="field:'text',sortable:true">出关封时间</th>
-                    <th data-options="field:'text',sortable:true">口岸放行时间</th>
-                    <th data-options="field:'text',sortable:true">口岸安排报关时间</th>
-                    <th data-options="field:'text',sortable:true">通关状态</th>
-                    <th data-options="field:'text',sortable:true">操作点</th>
+                    <th data-options="field:'CUSTOMDISTRICTCODE',sortable:true">申报关区</th>
                     <th data-options="field:'text',sortable:true">海关通关状态</th>
                     <th data-options="field:'text',sortable:true">签收号</th>
                     <th data-options="field:'text',sortable:true">签收人</th>
                     <th data-options="field:'text',sortable:true">签收日期</th>
                 </tr>
-
-
-
             </thead>
         </table>
 
@@ -136,7 +109,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value is_check"  panelheight="auto" name="is_clearance"></select>
+                                <select class="easyui-combobox combobox_width is_check"   panelheight="auto" name="is_clearance"></select>
                             </td>
                         </tr>
 
@@ -165,10 +138,8 @@
             onDblClickCell: function (index, field, value) {
                 var row = $('#datagrid').datagrid('getData').rows[index];
                 if (row.ID != "") {
-                    window.location.href = "/Order/SeaIn_Edit?ID=" + row.ID;
+                    window.location.href = "/Inspect/LandIn_Edit?ID=" + row.ID;
                 }
             }
         });
 </script>
-
-

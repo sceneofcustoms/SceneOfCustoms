@@ -138,7 +138,7 @@
             onDblClickCell: function (index, field, value) {
                 var row = $('#datagrid').datagrid('getData').rows[index];
                 if (row.ID != "") {
-                    window.location.href = "/Order/LandOut_Edit?ID=" + row.ID;
+                    window.location.href = "/Declare/LandOut_Edit?ID=" + row.ID;
                 }
             }
         });
