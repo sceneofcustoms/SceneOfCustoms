@@ -28,8 +28,12 @@ namespace SceneOfCustoms
         <br>19支付特许权使用费确认(PAYPOYALTIES)<br>20报关申报单位代码(REPUNITCODE)<br>21报关申报单位名称(REPUNITNAME)<br>22委托人员(SUBMITUSERNAME)
         <br>23委托时间(SUBMITTIME)<br>24委托电话(SUBMITUSERPHONE)<br>25运抵编号(ARRIVEDNO)<br>26集装箱车号信息(CONTAINERTRUCK)<br>27实际件数(ACTUALGOODSNUM)
         <br>28实际毛重(ACTUALGOODSGW)<br>29货物类型(整箱或散箱用中文标记)(GOODSTYPE)<br>30报关提单号(SECONDLADINGBILLNO)<")]
-        public string SyncData(string param)
+        public string SyncData(List<Order> ld)
         {
+            foreach (Order oentity in ld)
+            { 
+            //oentity.
+            }
             //param 参数为json格式的字符串{LICENSETYPE:'decl',FWONO:'',FOCUSTOMSNO:'',CONTAINERDETAIL:[{}]}
             //1 凭证类型    LICENSETYPE 对应本系统的业务类型
             //2 FWO订单号   FWONO
@@ -65,19 +69,19 @@ namespace SceneOfCustoms
             //------报检这边不一样的字段--------
             //39木质包装
             //40报检申报单位
-            JObject json = JsonConvert.DeserializeObject<JObject>(param);
-            //foreach (JProperty jp in json.Properties())
-            //{ 
+//            JObject json = JsonConvert.DeserializeObject<JObject>(param);
+//            //foreach (JProperty jp in json.Properties())
+//            //{ 
 
-            //}
-            string sql = @"insert into List_Order(ID,FWONO,FOCUSTOMSNO,FOINSPECTNO,BUSITYPE) VALUES(LIST_ORDER_ID.Nextval,'{0}','{1}','{2}',
-            '{3}')";
-            sql = string.Format(sql, json.Value<string>("FWONO"), json.Value<string>("FOCUSTOMSNO"), json.Value<string>("FOINSPECTNO"),
-            json.Value<string>("BUSITYPE"));
-            DBMgr.ExecuteNonQuery(sql);
-            IDatabase db = SeRedis.redis.GetDatabase();//先将报文数据保存至缓存数据库
-            string type = string.IsNullOrEmpty(json.Value<string>("FOCUSTOMSNO")) ? "报检" : "报关";
-            db.ListRightPush("SyncDataFromSap", "{data:" + param + ",createtime:'" + DateTime.Now + "',from:'SAP',type:'" + type + "'}");
+//            //}
+//            string sql = @"insert into List_Order(ID,FWONO,FOCUSTOMSNO,FOINSPECTNO,BUSITYPE) VALUES(LIST_ORDER_ID.Nextval,'{0}','{1}','{2}',
+//            '{3}')";
+//            sql = string.Format(sql, json.Value<string>("FWONO"), json.Value<string>("FOCUSTOMSNO"), json.Value<string>("FOINSPECTNO"),
+//            json.Value<string>("BUSITYPE"));
+//            DBMgr.ExecuteNonQuery(sql);
+//            IDatabase db = SeRedis.redis.GetDatabase();//先将报文数据保存至缓存数据库
+//            string type = string.IsNullOrEmpty(json.Value<string>("FOCUSTOMSNO")) ? "报检" : "报关";
+//            db.ListRightPush("SyncDataFromSap", "{data:" + param + ",createtime:'" + DateTime.Now + "',from:'SAP',type:'" + type + "'}");
             return "true";
         }
     }

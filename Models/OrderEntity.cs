@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SceneOfCustoms.Models
 {
-    public class Order
+    public class OrderEntity
     {
         public int ID { get; set; }
 
