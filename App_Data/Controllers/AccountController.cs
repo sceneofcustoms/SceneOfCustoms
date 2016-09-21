@@ -62,29 +62,38 @@ namespace SceneOfCustoms.Controllers
         }
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult DoLogin(Models.User u)
-        { 
-            string sql = "select * from sys_user where name = '" + u.NAME + "' and password = '" + Extension.ToSHA1(u.PASSWORD) + "'";
-            DataTable dt = DBMgr.GetDataTable(sql);
-            string msg = "";
-            if (dt.Rows.Count > 0)
-            { 
-                if (dt.Rows[0]["STATUS"] + "" != "1")
-                {
-                    msg = "账号已停用!";
-                }
-                if (string.IsNullOrEmpty(msg))
-                {
-                    FormsAuthentication.SetAuthCookie(u.NAME, false);
-                    Response.Redirect("/Home/Index"); 
-                    //Response.Redirect(Request["returnUrl"]);
-                }
-            }
-            else
+        public ActionResult Login(Models.User u)
+        {
+            string returnUrl = Request["ReturnUrl"] + "";
+            if (ModelState.IsValid)
             {
-                msg = "账号/密码错误!";
+                string sql = "select * from sys_user where name = '" + u.NAME + "' and password = '" + Extension.ToSHA1(u.PASSWORD) + "'";
+                DataTable dt = DBMgr.GetDataTable(sql);
+                string msg = "";
+                if (dt.Rows.Count > 0)
+                {
+                    if (dt.Rows[0]["STATUS"] + "" != "1")
+                    {
+                        ModelState.AddModelError("ERROR", "账号已停用！");
+                        return View(u);
+                    }
+                    FormsAuthentication.SetAuthCookie(u.NAME, false);
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        Response.Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        Response.Redirect("/Home/Index");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("ERROR", "账号/密码错误！");
+                    return View(u);
+                }                
             }
-            return View();
+            return View(u);
         }
         public void SignOut()
         {

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using SceneOfCustoms.Common;
+using SceneOfCustoms.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -137,7 +138,7 @@ namespace SceneOfCustoms.Controllers
                    dr["SCENEINSPECTID"], dr["CORRESPONDNO"], dr["ASSOCIATENO"], dr["IETYPE"]);
 
 
-                DBMgr.ExecuteNonQuery(sql);
+                DBMgr.ExecuteNonQuery(sql); 
             }
         }
     }
