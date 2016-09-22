@@ -1,14 +1,12 @@
-﻿<div class="ibox-content">
+﻿<script type="text/javascript">
+    $(function () {
+        loadListGrid('AirOut_Edit');
+    })
+</script>
+<div class="ibox-content">
     <div class="table-responsive">
         <table id="datagrid" class="easyui-datagrid" title="空运出口" style="height:auto;min-height:500px;max-height:800px"
-               data-options=" rownumbers:true,
-                                   url: '/Order/GetData',
-                                   queryParams:{BUSITYPE:10},
-                                   dataType : 'json',
-                                   method:'get',
-                                   toolbar:'#tb',
-                                   pageSize:20,
-                                   pagination:true ">
+               data-options="queryParams:{BUSITYPE:10}">
             <thead data-options="frozen:true">
                 <tr>
                     <th data-options="field:'ID',width:80,checkbox:true">id</th>
@@ -142,15 +140,3 @@
     </div>
     <!-- end ibox-content -->
 </div>
-
-<script type="text/javascript">
-        $('#datagrid').datagrid({
-            //双击事件
-            onDblClickCell: function (index, field, value) {
-                var row = $('#datagrid').datagrid('getData').rows[index];
-                if (row.ID != "") {
-                    window.location.href = "/Declare/AirOut_Edit?ID=" + row.ID;
-                }
-            }
-        });
-</script>

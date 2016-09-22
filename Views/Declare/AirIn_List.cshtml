@@ -1,14 +1,12 @@
-﻿ <div class="ibox-content">
+﻿<script type="text/javascript">
+    $(function () {
+        loadListGrid('AirIn_Edit');
+    })
+</script>
+<div class="ibox-content">
     <div class="table-responsive">
         <table id="datagrid" class="easyui-datagrid" title="空运进口" style="height:auto;min-height:500px;max-height:800px"
-               data-options=" rownumbers:true,
-                                   url: '/Order/GetData',
-                                   queryParams:{BUSITYPE:11},
-                                   dataType : 'json',
-                                   method:'get',
-                                   toolbar:'#tb',
-                                   pageSize:20,
-                                   pagination:true ">
+               data-options="queryParams:{BUSITYPE:11}">
             <thead data-options="frozen:true">
                 <tr>
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
@@ -58,7 +56,7 @@
 
         <div id="tb">
             <div class="tb_search">
-                <div id="searchform" method="post">
+                <form id="searchform" method="post">
                     <table>
                         <tr>
                             <td class="search_margin">
@@ -117,7 +115,7 @@
 
 
                     </table>
-                </div>
+                </form>
             </div>
             <div class="tb_but">
                 <div class="but_left">
@@ -134,15 +132,3 @@
     </div>
     <!-- end ibox-content -->
 </div>
-
-<script type="text/javascript">
-        //双击事件
-        $('#datagrid').datagrid({
-            onDblClickCell: function (index, field, value) {
-                var row = $('#datagrid').datagrid('getData').rows[index];
-                if (row.ID != "") {
-                    window.location.href = "/Declare/AirIn_Edit?ID=" + row.ID;
-                }
-            }
-        });
-</script>

@@ -179,7 +179,7 @@ $(function () {
 
     function loadsucc(data) {
         if (data['PASSMODE'] != "" && data['PASSMODE'] != null) {
-        var PASSMODE = data['PASSMODE'];
+            var PASSMODE = data['PASSMODE'];
             var arr = PASSMODE.split(',');
             for (i = 0; i < arr.length; i++) {
                 $('input[name=PASSMODE][value=' + arr[i] + ']')[0].checked = true;
@@ -306,7 +306,7 @@ function submitForm() {
     });
 }
 
- //加载单个form
+//加载单个form
 function Edit() {
     var ID = getQueryString('ID');
     $('#OrderFrom').form('load', '/Order/Edit_Order?ID=' + ID);
@@ -351,7 +351,7 @@ function manyEditForm() {
         $(formid).form({
             onLoadSuccess: function (data) {
                 if (data['PASSMODE'] != "" && data['PASSMODE'] != null) {
-                var PASSMODE = data['PASSMODE'];
+                    var PASSMODE = data['PASSMODE'];
                     var arr = PASSMODE.split(',');
                     for (i = 0; i < arr.length; i++) {
                         var str = formid + ' input[name=PASSMODE][value=' + arr[i] + ']';
@@ -361,5 +361,24 @@ function manyEditForm() {
             }
         });
         $(formid).form('load', '/Order/Edit_Order?ID=' + id);
+    });
+}
+
+//加载grid
+function loadListGrid(page) {
+    $('#datagrid').datagrid({
+        url: '/Order/GetData',
+        rownumbers: true,
+        dataType: 'json',
+        method: 'get',
+        toolbar: '#tb',
+        pageSize: 20,
+        pagination: true,
+        onDblClickCell: function (index, field, value) {
+            var row = $('#datagrid').datagrid('getData').rows[index];
+            if (row.ID != "") {
+                window.location.href = "/Declare/" + page + "?ID=" + row.ID;
+            }
+        }
     });
 }

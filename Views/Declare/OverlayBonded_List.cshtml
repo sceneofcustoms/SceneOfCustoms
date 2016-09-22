@@ -1,14 +1,12 @@
-﻿ <div class="ibox-content">
+﻿<script type="text/javascript">
+    $(function () {
+        loadListGrid('OverlayBonded_Edit');
+    })
+</script> 
+<div class="ibox-content">
     <div class="table-responsive">
         <table id="datagrid" class="easyui-datagrid" title="叠加保税" style="height:auto;min-height:500px;max-height:800px"
-               data-options=" rownumbers:true,
-                                   url: '/Order/GetData',
-                                   queryParams:{TYPE:'OverlayBonded'},
-                                   dataType : 'json',
-                                   method:'get',
-                                   toolbar:'#tb',
-                                   pageSize:20,
-                                   pagination:true ">
+               data-options="queryParams:{TYPE:'OverlayBonded'}">
             <thead>
                 <tr>
                     <th data-options="field: 'ck', checkbox: true"></th>
@@ -183,18 +181,5 @@
 
     </div>
 </div>
-
-<script type="text/javascript">
-        //双击事件
-        $('#datagrid').datagrid({
-            onDblClickCell: function (index, field, value) {
-                var row = $('#datagrid').datagrid('getData').rows[index];
-
-                if (row.ID != "") {
-                    window.location.href = "/Declare/OverlayBonded_Edit?ID=" + row.ID;
-                }  
-            }
-        });
-</script>
 
 

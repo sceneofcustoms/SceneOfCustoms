@@ -1,14 +1,12 @@
-﻿<div class="ibox-content">
+﻿<script type="text/javascript">
+    $(function () {
+        loadListGrid('SpecialSupervision_Edit');
+    })
+</script> 
+<div class="ibox-content">
     <div class="table-responsive">
         <table id="datagrid" class="easyui-datagrid" title="特殊监管" style="height:auto;min-height:500px;max-height:800px"
-               data-options=" rownumbers:true,
-                                   url: '/Order/GetData',
-                                   queryParams:{TYPE:'SpecialSupervision'},
-                                   dataType : 'json',
-                                   method:'get',
-                                   toolbar:'#tb',
-                                   pageSize:20,
-                                   pagination:true ">
+               data-options="queryParams:{TYPE:'SpecialSupervision'}">
             <thead>
                 <tr>
                     <th data-options="field: 'ck', checkbox: true"></th>
@@ -174,17 +172,4 @@
     </div>
     <!-- end ibox-content -->
 </div>
-
-<script type="text/javascript">
-        //双击事件
-        $('#datagrid').datagrid({
-            onDblClickCell: function (index, field, value) {
-                var row = $('#datagrid').datagrid('getData').rows[index];
-                if (row.ID != "") {
-                    window.location.href = "/Declare/SpecialSupervision_Edit?ID=" + row.ID;
-                }
-            }
-        });
-</script>
-
 
