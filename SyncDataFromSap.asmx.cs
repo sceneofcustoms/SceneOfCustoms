@@ -7,10 +7,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.Services;
 
 namespace SceneOfCustoms
 {
+    public class obj
+    {
+        public string Message { get; set; }
+        public bool Success { get; set; }
+    }
+
     /// <summary>
     /// SyncDataFromSap 的摘要说明
     /// </summary>
@@ -21,16 +28,18 @@ namespace SceneOfCustoms
     // [System.Web.Script.Services.ScriptService]
     public class SyncDataFromSap : System.Web.Services.WebService
     {
+        //param参数说明:为json格式字符串
 
-        [WebMethod(Description = @"param参数说明:为json格式字符串<br>1 凭证类型(LICENSETYPE)<br>2 FWO订单号(FWONO)<br>3 FO报关服务指令号
+        [WebMethod(Description = @"param参数说明:订单集合<br>返回值:一个对象, Success true/false, Message 消息<br>1 凭证类型(LICENSETYPE)<br>2 FWO订单号(FWONO)<br>3 FO报关服务指令号
        (FOCUSTOMSNO)<br>4 总单号(TOTALNO)<br>5 分单号(DIVIDENO)<br>6 件数(GOODSNUM)<br>7毛重(GOODSGW)<br>8 净重(GOODSNW)<br>9 经营单位代码(BUSIUNITCODE)
         <br>10 经营单位名称(BUSIUNITNAME)<br>11 包装种类(PACKKIND)<br>12 申报方式(REPWAYID)<br>13报关方式(DECLWAY)<br>14贸易方式(TRADEWAYCODES)
         <br>15客户自编号(CUSNO)<br>16进/出口岸(PORTCODE)<br>17特殊关系确认(SPECIALRELATIONSHIP)<br>18价格影响确认(PRICEIMPACT)
         <br>19支付特许权使用费确认(PAYPOYALTIES)<br>20报关申报单位代码(REPUNITCODE)<br>21报关申报单位名称(REPUNITNAME)<br>22委托人员(SUBMITUSERNAME)
         <br>23委托时间(SUBMITTIME)<br>24委托电话(SUBMITUSERPHONE)<br>25运抵编号(ARRIVEDNO)<br>26集装箱车号信息(CONTAINERTRUCK)<br>27实际件数(ACTUALGOODSNUM)
-        <br>28实际毛重(ACTUALGOODSGW)<br>29货物类型(整箱或散箱用中文标记)(GOODSTYPE)<br>30报关提单号(SECONDLADINGBILLNO)<")]
-        public string SyncData(List<OrderEntity> ld)
+        <br>28实际毛重(ACTUALGOODSGW)<br>29货物类型(整箱或散箱用中文标记)(GOODSTYPE)<br>30报关提单号(SECONDLADINGBILLNO)")]
+        public Object SyncData(List<OrderEntity> ld)
         {
+
             foreach (OrderEntity oentity in ld)
             {
                 //oentity.
@@ -83,7 +92,21 @@ namespace SceneOfCustoms
             //            IDatabase db = SeRedis.redis.GetDatabase();//先将报文数据保存至缓存数据库
             //            string type = string.IsNullOrEmpty(json.Value<string>("FOCUSTOMSNO")) ? "报检" : "报关";
             //            db.ListRightPush("SyncDataFromSap", "{data:" + param + ",createtime:'" + DateTime.Now + "',from:'SAP',type:'" + type + "'}");
-            return "true";
+            //return "true";
+
+            obj values = new obj();
+            values.Success = true;
+            values.Message = "成功";
+            return values;
+
+            //return Json(new { Success = true, Message = "成功" }, JsonRequestBehavior.AllowGet);
+            //new { Success = true, Message = "成功" }
+            //return Json(new { Success = true, Message = "成功" }, JsonRequestBehavior.AllowGet);
+        }
+
+        private ActionResult Json(object p, JsonRequestBehavior jsonRequestBehavior)
+        {
+            throw new NotImplementedException();
         }
     }
 }
