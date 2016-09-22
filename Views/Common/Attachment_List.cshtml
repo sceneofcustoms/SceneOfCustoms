@@ -1,0 +1,74 @@
+﻿<link href="/js/Extjs42/resources/css/ext-all-gray.css" rel="stylesheet" type="text/css" />
+<script src="/js/Extjs42/bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript">
+    Ext.onReady(function () {
+        var store = Ext.create('Ext.data.JsonStore', {
+            fields: ['ID', 'FWONO', 'FOONO', 'FILENAME', 'SIZES', 'CREATETIME', 'CREATENAME', 'STATUS'],
+            pageSize: 20,
+            proxy: {
+                type: 'ajax',
+                url: '/Common/LoadAttachmentList',
+                reader: {
+                    root: 'rows',
+                    type: 'json',
+                    totalProperty: 'total'
+                }
+            },
+            autoLoad: true,
+            listeners: {
+                //beforeload: function () {
+                //    store_Trade.getProxy().extraParams = {
+                //        busitypeid: 11,
+                //        OnlySelf: Ext.get('OnlySelfi').el.dom.className,
+                //        seniorsearch: seniorcondition,
+                //        CONDITION1: Ext.getCmp('CONDITION1').getValue(), VALUE1: Ext.getCmp("CONDITION1_1").getValue(),
+                //        CONDITION2: Ext.getCmp('CONDITION2').getValue(), VALUE2: Ext.getCmp("CONDITION2_1").getValue(),
+                //        CONDITION3: Ext.getCmp('CONDITION3').getValue(), VALUE3: Ext.getCmp("CONDITION3_1").getValue(),
+                //        CONDITION4: Ext.getCmp('CONDITION4').getValue(), VALUE4_1: Ext.Date.format(Ext.getCmp("CONDITION4_1").getValue(), 'Y-m-d H:i:s'), VALUE4_2: Ext.Date.format(Ext.getCmp("CONDITION4_2").getValue(), 'Y-m-d H:i:s'),
+                //        CONDITION5: Ext.getCmp('CONDITION5').getValue(), VALUE5: Ext.getCmp("CONDITION5_1").getValue(),
+                //        CONDITION6: Ext.getCmp('CONDITION6').getValue(), VALUE6: Ext.getCmp("CONDITION6_1").getValue(),
+                //        CONDITION7: Ext.getCmp('CONDITION7').getValue(), VALUE7: Ext.getCmp("CONDITION7_1").getValue(),
+                //        CONDITION8: Ext.getCmp('CONDITION8').getValue(), VALUE8_1: Ext.Date.format(Ext.getCmp("CONDITION8_1").getValue(), 'Y-m-d H:i:s'), VALUE8_2: Ext.Date.format(Ext.getCmp("CONDITION8_2").getValue(), 'Y-m-d H:i:s')
+                //    }
+                //}
+            }
+        })
+
+        var pgbar = Ext.create('Ext.toolbar.Paging', {
+            displayMsg: '显示 {0} - {1} 条,共计 {2} 条',
+            store: store,
+            id: 'pagebar',
+            displayInfo: true
+        })
+        var gridpanel = Ext.create('Ext.grid.Panel', {
+            renderTo: "div_attachment",
+            store: store,
+            height: 500,
+            selModel: { selType: 'checkboxmodel' },
+            bbar: pgbar,
+            enableColumnHide: false,
+            columns: [
+            { xtype: 'rownumberer', width: 35 },
+            { header: 'ID', dataIndex: 'ID', hidden: true  },
+            { header: 'FWO订单号', dataIndex: 'FWONO', width: 120  },
+            { header: 'FOO指令服务号', dataIndex: 'FOONO', width: 120  },
+            { header: '文件名称',  dataIndex: 'FILENAME', flex:1 },            
+            { header: '上传人', dataIndex: 'CREATENAME', width: 100 },
+            { header: '上传时间', dataIndex: 'CREATETIME', width: 130 }
+            ],
+            listeners:
+            {
+                'itemdblclick': function (view, record, item, index, e) {
+                    opencenterwin("/Common/Attachment_Edit?FWONO=" + record.data.FWONO + "&FOONO=" + record.data.FOONO, 1000, 600);
+                }
+            },
+            viewConfig: {
+                enableTextSelection: true
+            }
+        })
+    })
+</script>
+
+<div id="div_attachment">
+
+</div> 
