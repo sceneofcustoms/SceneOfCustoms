@@ -1,58 +1,65 @@
-﻿<script type="text/javascript">
-    $(function () {
-        loadListGrid('Declare/OverlayBonded_Edit');
-    })
-</script> 
-<div class="ibox-content">
+﻿<div class="ibox-content">
     <div class="table-responsive">
-        <table id="datagrid" class="easyui-datagrid" title="叠加保税" style="height:auto;min-height:500px;max-height:800px"
-               data-options="queryParams:{TYPE:'OverlayBonded'}">
+        <table id="datagrid" class="easyui-datagrid" title="退单管理" style="height:auto;min-height:500px;max-height:800px"
+               data-options=" rownumbers:true,
+                                   url: '/Order/GetData',
+                                   queryParams:{TYPE:'OverlayBonded'},
+                                   dataType : 'json',
+                                   method:'get',
+                                   toolbar:'#tb',
+                                   pageSize:20,
+                                   pagination:true ">
             <thead>
                 <tr>
-                    <th data-options="field: 'ck', checkbox: true"></th>
-                    <th data-options="field:'CODE',sortable:true">业务编号</th>
-                    <th data-options="field:'text',sortable:true">关务编号</th>
+                    <th data-options="field: 'ID',width:80,checkbox:true"></th>
+                    <th data-options="field:'text',sortable:true,">退单签收流水号</th>
+                    <th data-options="field:'text',sortable:true">退单流水号</th>
+                    <th data-options="field:'YWBH',sortable:true">业务编号</th>
+                    <th data-options="field:'text',sortable:true">业务销账标志</th>
+                    <th data-options="field:'text',sortable:true">企业简称</th>
                     <th data-options="field:'ASSOCIATEPEDECLNO',sortable:true">报关单号</th>
-                    <th data-options="field:'text',sortable:true">关务状态</th>
-                    <th data-options="field:'text',sortable:true">转入出类别</th>
-                    <th data-options="field:'BUSITYPE',sortable:true">进出口类别</th>
-                    <th data-options="field:'CORRESPONDNO',sortable:true">对应号</th>
-                    <th data-options="field:'text',sortable:true">出口业务方式</th>
-                    <th data-options="field:'BUSIUNITNAME',sortable:true">企业</th>
-                    <th data-options="field:'text',sortable:true">手册号</th>
-                    <th data-options="field:'text',sortable:true">核销单号</th>
-                    <th data-options="field:'CONTRACTNO',sortable:true">合同/发票号</th>
-                    <th data-options="field:'DECLSHEETNUM',sortable:true">报关单张数</th>
-                    <th data-options="field:'ASSOCIATETRADEWAY',sortable:true">贸易方式</th>
-                    <th data-options="field:'GOODSNUM',sortable:true">总件数</th>
-                    <th data-options="field:'GOODSWEIGHT',sortable:true">总重量</th>
-                    <th data-options="field:'text',sortable:true">备注</th>
-                    <th data-options="field:'text',sortable:true">OPS接单时间</th>
-                    <th data-options="field:'text',sortable:true">OPS接单人</th>
-                    <th data-options="field:'text',sortable:true">关务接单时间</th>
-                    <th data-options="field:'text',sortable:true">关务接单人</th>
-                    <th data-options="field:'GUOJITIME',sortable:true">过机时间</th>
-                    <th data-options="field:'GUOJIUSERNAME',sortable:true">过机人</th>
-                    <th data-options="field:'LIDANTIME',sortable:true">理单时间</th>
-                    <th data-options="field:'LIDANUSERNAME',sortable:true">理单人</th>
-                    <th data-options="field:'LIHUOZILIAOTIME',sortable:true">理单资料时间</th>
-                    <th data-options="field:'LIHUOZILIAOUSERNAME',sortable:true">理单资料人</th>
-                    <th data-options="field:'BAOGUANTIME',sortable:true">报关时间</th>
-                    <th data-options="field:'BAOGUANUSERNAME',sortable:true">报关人</th>
-                    <th data-options="field:'DANZHENGFANGXINGTIME',sortable:true">单证放行时间</th>
-                    <th data-options="field:'DANZHENGFANGXINGUSERNAME',sortable:true">单证放行人</th>
-                    <th data-options="field:'SHIWUFANGXINGTIME',sortable:true">实物放行时间</th>
-                    <th data-options="field:'SHIWUFANGXINGUSERNAME',sortable:true">实物放行人</th>
-                    <th data-options="field:'CUSTOMDISTRICTCODE',sortable:true">申报关区</th>
-                    <th data-options="field:'text',sortable:true">急货标识</th>
-                    <th data-options="field:'text',sortable:true">出单日期</th>
-                    <th data-options="field:'text',sortable:true">报关方式</th>
                     <th data-options="field:'text',sortable:true">海关通关状态</th>
-                    <th data-options="field:'text',sortable:true">签收号</th>
-                    <th data-options="field:'text',sortable:true">签收人</th>
-                    <th data-options="field:'text',sortable:true">签收日期</th>
-                    <th data-options="field:'text',sortable:true">报关资料齐全标志</th>
-                    <th data-options="field:'text',sortable:true">文档类别</th>
+                    <th data-options="field:'CLEARUNITNAME',sortable:true">结算方</th>
+                    <th data-options="field:'SUBMITUSERNAME',sortable:true">委托方</th>
+                    <th data-options="field:'CUSNO',sortable:true">客户编号</th>
+                    <th data-options="field:'BUSITYPE',sortable:true">业务类型</th>
+                    <th data-options="field:'DECLWAY',sortable:true">报关方式</th>
+                    <th data-options="field:'ASSOCIATETRADEWAY',sortable:true">贸易方式</th>
+                    <th data-options="field:'BUSITYPE',sortable:true">业务种类</th>
+                    <th data-options="field:'text',sortable:true">OPS接单人</th>
+                    <th data-options="field:'FIRSTLADINGBILLNO',sortable:true">一程提单号</th>
+                    <th data-options="field:'SECONDLADINGBILLNO',sortable:true">二程提单号</th>
+                    <th data-options="field:'LADINGBILLNO',sortable:true">提单号</th>
+                    <th data-options="field:'TOTALNO',sortable:true">总单号</th>
+                    <th data-options="field:'DIVIDENO',sortable:true">分单号</th>
+                    <th data-options="field:'MANIFEST',sortable:true">载货清单号</th>
+                    <th data-options="field:'text',sortable:true">万达号</th>
+                    <th data-options="field:'LIDANTIME',sortable:true">理单时间</th>
+                    <th data-options="field:'BAOGUANTIME',sortable:true">报关时间</th>
+                    <th data-options="field:'LIHUOENDTIME',sortable:true">理货资料齐全时间</th>
+                    <th data-options="field:'SHIWUFANGXINGTIME',sortable:true">实物放行时间</th>
+                    <th data-options="field:'DANZHENGFANGXINGTIME',sortable:true">单证放行时间</th>
+                    <th data-options="field:'text',sortable:true">退单时效</th>
+                    <th data-options="field:'text',sortable:true">送单时效</th>
+                    <th data-options="field:'text',sortable:true">海关理单时效</th>
+                    <th data-options="field:'text',sortable:true">退单整理单时间</th>
+                    <th data-options="field:'text',sortable:true">退单申请时间</th>
+                    <th data-options="field:'text',sortable:true">退单签发时间</th>
+                    <th data-options="field:'text',sortable:true">送单时间</th>
+                    <th data-options="field:'text',sortable:true">回单时间</th>
+                    <th data-options="field:'text',sortable:true">送关封时间</th>
+                    <th data-options="field:'CONTRACTNO',sortable:true">合同发票号</th>
+                    <th data-options="field:'GOODSNUM',sortable:true">件数</th>
+                    <th data-options="field:'GOODSWEIGHT',sortable:true">重量</th>
+                    <th data-options="field:'text',sortable:true">金额</th>
+                    <th data-options="field:'text',sortable:true">品名</th>
+                    <th data-options="field:'DECLSHEETNUM',sortable:true">报关单张数</th>
+                    <th data-options="field:'text',sortable:true">删单</th>
+                    <th data-options="field:'text',sortable:true">改单</th>
+                    <th data-options="field:'CUSTOMDISTRICTCODE',sortable:true">关区代码</th>
+                    <th data-options="field:'text',sortable:true">退单备注</th>
+                    <th data-options="field:'text',sortable:true">退单签收备注</th>
+                    <th data-options="field:'text',sortable:true">放行状态</th>
                 </tr>
             </thead>
         </table>
@@ -170,7 +177,7 @@
             <div class="tb_but">
                 <div class="but_left">
                     @*<a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-search"></i> 搜索</a>
-                    <a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-refresh"></i> 重置</a>*@
+                        <a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-refresh"></i> 重置</a>*@
                 </div>
                 <div class="but_right">
                     <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-search"></i> 搜索</a>
@@ -181,5 +188,18 @@
 
     </div>
 </div>
+
+<script type="text/javascript">
+    //双击事件
+    $('#datagrid').datagrid({
+        onDblClickCell: function (index, field, value) {
+            var row = $('#datagrid').datagrid('getData').rows[index];
+
+            if (row.ID != "") {
+                window.location.href = "/Order/OverlayBonded_Edit?ID=" + row.ID;
+            }
+        }
+    });
+</script>
 
 

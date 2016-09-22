@@ -112,6 +112,10 @@ var out_in = [
        { code: '1', name: '转入' }
 ];
 
+
+
+
+
 $(function () {
 
     $('#searchform #search_condition_date').combobox({
@@ -170,6 +174,81 @@ $(function () {
         valueField: 'code',
         textField: 'name'
     });
+
+
+
+    function loadsucc(data) {
+        if (data['PASSMODE'] != "" && data['PASSMODE'] != null) {
+            var PASSMODE = data['PASSMODE'];
+            var arr = PASSMODE.split(',');
+            for (i = 0; i < arr.length; i++) {
+                $('input[name=PASSMODE][value=' + arr[i] + ']')[0].checked = true;
+            }
+        }
+    }
+
+    $('#OrderFrom').form({ onLoadSuccess: loadsucc });
+
+
+    $('#OrderFrom .fillingData').click(function () {
+        debugger;
+        var type = this.getAttribute("datatype");
+        var ID = getQueryString('ID');
+        $.ajax({
+            url: '/Order/Edit_Ajax_Scene',// 跳转到 action
+            data: {
+                'ID': ID,
+                'type': type
+            },
+            type: 'post',
+            dataType: 'json',
+            success: function (data) {
+                if (data.Success == true) {
+                    var time = "#" + type + 'TIME';
+                    var name = "#" + type + 'USERNAME';
+                    debugger;
+                    $(time).textbox('setValue', data.datetime);
+                    $(name).textbox('setValue', data.name);
+                } else {
+                    $.messager.alert('异常', '联系管理员');
+                }
+            },
+
+        });
+
+    });
+
+
+    $('#many_form .fillingData').click(function () {
+        debugger;
+        var type = this.getAttribute("datatype");
+        var form = $(this).parents('.OrderFrom').attr('id');//查找哪个form
+        var findname = "#" + form + " input[name=ID]";
+        var ID = $(findname).val();
+        $.ajax({
+            url: '/Order/Edit_Ajax_Scene',// 跳转到 action
+            data: {
+                'ID': ID,
+                'type': type
+            },
+            type: 'post',
+            dataType: 'json',
+            success: function (data) {
+                debugger;
+                if (data.Success == true) {
+                    var time = "#" + form + " #" + type + 'TIME';
+                    var name = "#" + form + " #" + type + 'USERNAME';
+                    $(time).textbox('setValue', data.datetime);
+                    $(name).textbox('setValue', data.name);
+                } else {
+                    $.messager.alert('异常', '联系管理员');
+                }
+            },
+
+        });
+
+    });
+
 })
 
 
@@ -188,5 +267,118 @@ function reset_form() {
         //} else if ($(this).hasClass('easyui-datebox')) {
         //}
         $(this).textbox('setValue', '');
+    });
+}
+
+
+function formatItem(row) {
+    var s = '<span style="font-weight:bold">' + row.CODE + '</span> &nbsp;&nbsp;' +
+            '<span style="color:#888">' + row.NAME + '</span>';
+    return s;
+}
+
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}
+
+function submitForm() {
+    debugger;
+    $('#OrderFrom').form('submit', {
+        url: "/Order/SaveData",
+        onSubmit: function () {
+            if ($(this).form('enableValidation').form('validate')) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        success: function (data) {
+            debugger;
+            var data = eval('(' + data + ')');  // change the JSON string to javascript object
+            if (data.Success) {
+                $.messager.alert('成功', '保存成功');
+            } else {
+                $.messager.alert('失败', '保存失败');
+            }
+        }
+    });
+}
+
+//加载单个form
+function Edit() {
+    var ID = getQueryString('ID');
+    $('#OrderFrom').form('load', '/Order/Edit_Order?ID=' + ID);
+}
+
+
+
+//多个form
+function manySubmitForm() {
+    var is_success = true;
+    $('#many_form .OrderFrom').form('submit', {
+        url: "/Order/SaveData",
+        onSubmit: function () {
+            if ($(this).form('enableValidation').form('validate')) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        success: function (data) {
+            var data = eval('(' + data + ')');  // change the JSON string to javascript object
+            if (!data.Success) {
+                is_success = false;
+            }
+        }
+    });
+
+    if (is_success) {
+        $.messager.alert('成功', '保存成功');
+    }
+}
+
+
+
+
+
+function manyEditForm() {
+    $('#many_form form').each(function (i) {
+        var formid = "#" + this.id;
+        var findid = formid + " input[name=ID]";
+        var id = $(findid).val();
+        $(formid).form({
+            onLoadSuccess: function (data) {
+                if (data['PASSMODE'] != "" && data['PASSMODE'] != null) {
+                    var PASSMODE = data['PASSMODE'];
+                    var arr = PASSMODE.split(',');
+                    for (i = 0; i < arr.length; i++) {
+                        var str = formid + ' input[name=PASSMODE][value=' + arr[i] + ']';
+                        $(str)[0].checked = true;
+                    }
+                }
+            }
+        });
+        $(formid).form('load', '/Order/Edit_Order?ID=' + id);
+    });
+}
+
+//加载grid
+function loadListGrid(page) {
+    $('#datagrid').datagrid({
+        url: '/Order/GetData',
+        rownumbers: true,
+        dataType: 'json',
+        method: 'get',
+        toolbar: '#tb',
+        pageSize: 20,
+        pagination: true,
+        onDblClickCell: function (index, field, value) {
+            var row = $('#datagrid').datagrid('getData').rows[index];
+            if (row.ID != "") {
+                window.location.href = "/" + page + "?ID=" + row.ID;
+            }
+        }
     });
 }

@@ -52,3 +52,104 @@
     #tb .tb_search {
         border-bottom: 1px solid #ddd;
     }
+
+
+
+        #OrderFrom {
+        margin: 10px 0px;
+    }
+
+        #OrderFrom table {
+            width: 100%;
+        }
+
+            #OrderFrom table tr {
+                height: 40px;
+            }
+
+                #OrderFrom table tr td {
+                    width: 25%;
+                }
+
+                    #OrderFrom table tr td label {
+                        width: 80px;
+                        text-align: right;
+                    }
+
+                    #OrderFrom table tr td .easyui-textbox {
+                        width: 200px;
+                    }
+
+                    #OrderFrom table tr td .easyui-numberspinner {
+                         width: 200px;
+                    }
+
+                    #OrderFrom table tr td .easyui-combobox {
+                        width: 200px;
+                    }
+
+    #scene .easyui-linkbutton {
+        margin-left: -5px;
+    }
+
+    #scene .l-btn-text {
+        line-height: 20px;
+    }
+
+    #scene .time_input {
+        width: 180px !important;
+    }
+
+
+    .OrderFrom {
+        margin: 10px 0px;
+    }
+
+        .OrderFrom table {
+            width: 100%;
+        }
+
+            .OrderFrom table tr {
+                height: 40px !important;
+            }
+
+    .OrderFromtable tr td {
+        width: 25%;
+    }
+
+    .OrderFrom table tr td label {
+        width: 80px;
+        text-align: right;
+    }
+
+    .OrderFrom table tr td .easyui-textbox {
+        width: 200px;
+    }
+
+    .OrderFrom table tr td .easyui-numberspinner {
+        width: 200px;
+    }
+
+    .OrderFrom table tr td .easyui-combobox {
+        width: 200px;
+    }
+
+    .scene .easyui-linkbutton {
+        margin-left: -5px;
+    }
+
+    .scene .l-btn-text {
+        line-height: 20px;
+    }
+
+    .scene .time_input {
+        width: 180px !important;
+    }
+
+    .panel-title {
+        color: #3071a9;
+    }
+
+    .tabs-wrap .tabs span{
+        color: #3071a9;
+    }
