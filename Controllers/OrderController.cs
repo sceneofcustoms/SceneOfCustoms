@@ -17,14 +17,10 @@ namespace SceneOfCustoms.Controllers
 
     public class OrderController : Controller
     {
-
-
         //public string test()
         //{
         // ServiceReference1 s1=      
-    
         //}
-    
 
         public string Get_SBGQ()
         {

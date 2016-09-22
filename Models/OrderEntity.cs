@@ -662,5 +662,24 @@ namespace SceneOfCustoms.Models
         public string SHIWUFANGXINGDESC { get; set; }
 
         public string SHIWUJIAFENGDESC { get; set; }
+
+        //FO报关服务指令号
+        public string FOONO { get; set; }
+
+        //收货方/发货方
+        public string SFGOODSUNIT { get; set; }
+
+        //集装箱车号组信息
+        public string CONTAINERTRUCKS { get; set; }
+
+        //货物形态
+        public string GOODSXT { get; set; }
+
+        //是否提前报关
+        public string ISPREDECLARE { get; set; }
+
+        //二线合同专用发票号
+        public string INVOICENO { get; set; }
+
     }
 }
