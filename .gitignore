@@ -1,11 +1,9 @@
 bin/SceneOfCustoms.dll
 bin/SceneOfCustoms.pdb
+bin/SceneOfCustoms.dll.config
 obj/Debug/
 SceneOfCustoms.v12.suo
 SceneOfCustoms.csproj
 SceneOfCustoms.csproj.user
 *.bak
-*.svcinfo
-Service References/ServiceReference1/configuration91.svcinfo
-*.cs
-bin/SceneOfCustoms.dll.config
+Upload/
