@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using SceneOfCustoms.Common;
 using SceneOfCustoms.Models;
 using System;
@@ -13,23 +15,36 @@ namespace SceneOfCustoms.Controllers
     [Authorize]
     public class CommonController : Controller
     {
-        //
-        // GET: /Common/
+        int total = 0;
         public ActionResult Index()
         {
             return View();
         }
+        public ActionResult Attachment_List()
+        {
+            ViewData["crumb"] = "后台管理-->随附文件";
+            return View();
+        }
+        public string LoadAttachmentList()
+        {
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string sql = @"select * from LIST_ATTACHMENT";
+            DataTable dt = DBMgr.GetDataTable(Extension.GetPageSql(sql, "createtime", "desc", ref total, Convert.ToInt32(Request["start"]), Convert.ToInt32(Request["limit"])));
+            string filedata = JsonConvert.SerializeObject(dt, iso);
+            return "{rows:" + filedata + ",total:" + total + "}";
+        }
         public string CurrentUser()
         {
             JObject json_user = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
-            return json_user.GetValue("REALNAME") + "";          
+            return json_user.GetValue("REALNAME") + "";
         }
         public void ImportOrder_AirIn()
         {
             string sql = "select t.*, t.rowid from list_order t where t.busitype='11'";
             DataTable dt = DB_BaseData.GetDataTable(sql);
             foreach (DataRow dr in dt.Rows)
-            { 
+            {
                 sql = @"INSERT INTO LIST_ORDER (
                 ID,BUSITYPE,CODE,CUSNO,BUSIUNITCODE,BUSIUNITNAME,CONTRACTNO,TOTALNO,DIVIDENO,TURNPRENO,GOODSNUM,GOODSWEIGHT,
                 WOODPACKINGID,CLEARANCENO,LAWCONDITION,ENTRUSTTYPEID,REPWAYID,CUSTOMDISTRICTCODE,CUSTOMDISTRICTNAME,REPUNITCODE,
@@ -45,20 +60,20 @@ namespace SceneOfCustoms.Controllers
                    dr["CONTRACTNO"], dr["TOTALNO"], dr["DIVIDENO"], dr["TURNPRENO"],
                    dr["GOODSNUM"], dr["GOODSWEIGHT"], dr["WOODPACKINGID"], dr["CLEARANCENO"],
                   dr["LAWCONDITION"], dr["ENTRUSTTYPEID"], dr["REPWAYID"], dr["CUSTOMDISTRICTCODE"],
-                  dr["CUSTOMDISTRICTNAME"],dr["REPUNITCODE"], dr["REPUNITCODE"],
+                  dr["CUSTOMDISTRICTNAME"], dr["REPUNITCODE"], dr["REPUNITCODE"],
                    dr["DECLWAY"], dr["PORTCODE"], dr["PORTNAME"], dr["INSPUNITCODE"],
                    dr["INSPUNITCODE"], dr["ENTRUSTREQUEST"], dr["ID"], dr["CREATEUSERNAME"],
-                   dr["STATUS"],dr["SUBMITUSERID"],dr["SUBMITUSERNAME"], dr["SUBMITUSERPHONE"],
-                   dr["CSPHONE"],dr["CUSTOMERCODE"], dr["CUSTOMERNAME"], dr["DECLCARNO"],
+                   dr["STATUS"], dr["SUBMITUSERID"], dr["SUBMITUSERNAME"], dr["SUBMITUSERPHONE"],
+                   dr["CSPHONE"], dr["CUSTOMERCODE"], dr["CUSTOMERNAME"], dr["DECLCARNO"],
                    dr["TRADEWAYCODES"], dr["TRADEWAYCODES1"], dr["GOODSGW"], dr["GOODSNW"],
-                   dr["PACKKIND"], "001", "1",dr["CLEARUNIT"], dr["CLEARUNITNAME"], dr["BUSISHORTCODE"],
-                   dr["SPECIALRELATIONSHIP"],dr["PRICEIMPACT"],dr["PAYPOYALTIES"],
+                   dr["PACKKIND"], "001", "1", dr["CLEARUNIT"], dr["CLEARUNITNAME"], dr["BUSISHORTCODE"],
+                   dr["SPECIALRELATIONSHIP"], dr["PRICEIMPACT"], dr["PAYPOYALTIES"],
                    dr["BUSISHORTNAME"], dr["SCENEDECLAREID"], dr["SCENEINSPECTID"], "to_date('" + dr["SUBMITTIME"] + "','yyyy-MM-dd HH24:mi:ss')");
                 DBMgr.ExecuteNonQuery(sql);
-            } 
+            }
         }
         public void ImportOrder_GuoNei()
-        { 
+        {
             string sql = "select t.*, t.rowid from list_order t where (t.busitype='41' or t.busitype='40') and createtime>to_date('2016/8/1 00:00:00','yyyy-mm-dd hh24:mi:ss')";
             DataTable dt = DB_BaseData.GetDataTable(sql);
             foreach (DataRow dr in dt.Rows)
@@ -83,19 +98,19 @@ namespace SceneOfCustoms.Controllers
 '{41}',sysdate, '{42}','{43}','{44}','{45}',
               '{46}','{47}','{48}','{49}')";
 
-               
+
                 sql = string.Format(sql, dr["BUSITYPE"], dr["CODE"], dr["CUSNO"], dr["BUSIUNITCODE"], dr["BUSIUNITNAME"],
-                   dr["CONTRACTNO"], dr["TOTALNO"], dr["DIVIDENO"], dr["TURNPRENO"],dr["GOODSNUM"], dr["GOODSWEIGHT"],
-                  dr["WOODPACKINGID"], dr["CLEARANCENO"], dr["LAWCONDITION"], dr["ENTRUSTTYPEID"], dr["REPWAYID"], dr["CUSTOMDISTRICTCODE"],                 
-                  dr["CUSTOMDISTRICTNAME"], dr["REPUNITCODE"], dr["REPUNITCODE"],dr["DECLWAY"], dr["PORTCODE"], dr["PORTNAME"],
-                   dr["INSPUNITCODE"], dr["INSPUNITCODE"], dr["ENTRUSTREQUEST"], dr["CREATEUSERID"], dr["CREATEUSERNAME"],  dr["STATUS"],  
-                  dr["SUBMITUSERID"], dr["SUBMITUSERNAME"], dr["SUBMITUSERPHONE"],  dr["CUSTOMERCODE"], dr["CUSTOMERNAME"], dr["DECLCARNO"],                 
-                   dr["TRADEWAYCODES"], dr["TRADEWAYCODES1"], dr["GOODSGW"], dr["GOODSNW"], dr["PACKKIND"],dr["CLEARUNIT"],
-                   dr["CLEARUNITNAME"],  dr["SPECIALRELATIONSHIP"], dr["PRICEIMPACT"], dr["PAYPOYALTIES"],dr["SCENEDECLAREID"],
+                   dr["CONTRACTNO"], dr["TOTALNO"], dr["DIVIDENO"], dr["TURNPRENO"], dr["GOODSNUM"], dr["GOODSWEIGHT"],
+                  dr["WOODPACKINGID"], dr["CLEARANCENO"], dr["LAWCONDITION"], dr["ENTRUSTTYPEID"], dr["REPWAYID"], dr["CUSTOMDISTRICTCODE"],
+                  dr["CUSTOMDISTRICTNAME"], dr["REPUNITCODE"], dr["REPUNITCODE"], dr["DECLWAY"], dr["PORTCODE"], dr["PORTNAME"],
+                   dr["INSPUNITCODE"], dr["INSPUNITCODE"], dr["ENTRUSTREQUEST"], dr["CREATEUSERID"], dr["CREATEUSERNAME"], dr["STATUS"],
+                  dr["SUBMITUSERID"], dr["SUBMITUSERNAME"], dr["SUBMITUSERPHONE"], dr["CUSTOMERCODE"], dr["CUSTOMERNAME"], dr["DECLCARNO"],
+                   dr["TRADEWAYCODES"], dr["TRADEWAYCODES1"], dr["GOODSGW"], dr["GOODSNW"], dr["PACKKIND"], dr["CLEARUNIT"],
+                   dr["CLEARUNITNAME"], dr["SPECIALRELATIONSHIP"], dr["PRICEIMPACT"], dr["PAYPOYALTIES"], dr["SCENEDECLAREID"],
 
                    dr["SCENEINSPECTID"], dr["CORRESPONDNO"], dr["ASSOCIATENO"], dr["IETYPE"]);
-                   
-                 
+
+
                 DBMgr.ExecuteNonQuery(sql);
             }
         }
@@ -138,7 +153,7 @@ namespace SceneOfCustoms.Controllers
                    dr["SCENEINSPECTID"], dr["CORRESPONDNO"], dr["ASSOCIATENO"], dr["IETYPE"]);
 
 
-                DBMgr.ExecuteNonQuery(sql); 
+                DBMgr.ExecuteNonQuery(sql);
             }
         }
     }
