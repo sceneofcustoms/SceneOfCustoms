@@ -1,0 +1,293 @@
+ <div class="ibox-content">
+    <div class="table-responsive">
+        <table id="datagrid" class="easyui-datagrid" title="空运进口" style="height:auto;min-height:500px;max-height:800px"
+               data-options=" rownumbers:true,
+                                   url: '/Order/GetData',
+                                   queryParams:{BUSITYPE:11},
+                                   dataType : 'json',
+                                   method:'get',
+                                   toolbar:'#tb',
+                                   pageSize:20,
+                                   pagination:true ">
+            <thead data-options="frozen:true">
+                <tr>
+                    <th data-options="field: 'ID',width:80,checkbox:true"></th>
+                    <th data-options="field:'BUSIUNITNAME',sortable:true,">收货人</th>
+                    <th data-options="field:'TOTALNO',sortable:true">总单号</th>
+                    <th data-options="field:'DIVIDENO',sortable:true">分单号</th>
+                    <th data-options="field:'GOODSNUM',sortable:true">总件数</th>
+                    <th data-options="field:'GOODSWEIGHT',sortable:true">总重量</th>
+                </tr>
+            </thead>
+            <thead>
+                <tr>
+                    <th data-options="field:'DECLSHEETNUM',sortable:true">报关单张数</th>
+                    <th data-options="field:'LAWCONDITION',sortable:true">是否法检</th>
+                    <th data-options="field:'ASSOCIATEPEDECLNO',sortable:true">报关单号</th>
+                    <th data-options="field:'LIDANTIME',sortable:true">理单时间</th>
+                    <th data-options="field:'BAOGUANTIME',sortable:true">报关时间</th>
+                    <th data-options="field:'DANZHENGFANGXINGTIME',sortable:true">单证放行时间</th>
+                    <th data-options="field:'ASSOCIATETRADEWAY',sortable:true">贸易方式</th>
+                    <th data-options="field:'text',sortable:true">报关备注</th>
+                    <th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
+                    <th data-options="field:'LIDANUSERNAME',sortable:true">理单人</th>
+                    <th data-options="field:'text',sortable:true">单证齐全时间</th>
+                    <th data-options="field:'SHIWUFANGXINGTIME',sortable:true">实物放行时间</th>
+                    <th data-options="field:'STATUS',sortable:true">实物放行状态</th>
+                    <th data-options="field:'YWBH',sortable:true">业务编号</th>
+                    <th data-options="field:'CONTRACTNO',sortable:true">合同/发票号</th>
+                    <th data-options="field:'TURNPRENO',sortable:true">转关转录单号</th>
+                    <th data-options="field:'text',sortable:true">转关号</th>
+                    <th data-options="field:'text',sortable:true">OPS接单备注</th>
+                    <th data-options="field:'ZUOYEDANTIME',sortable:true">作业单时间</th>
+                    <th data-options="field:'text',sortable:true">普货</th>
+                    <th data-options="field:'text',sortable:true">快件</th>
+                    <th data-options="field:'DANZHENGFANGXINGUSERNAME',sortable:true">单证放行人</th>
+                    <th data-options="field:'SHIWUFANGXINGUSERNAME',sortable:true">实物放行人</th>
+                    <th data-options="field:'text',sortable:true">关务状态</th>
+                    <th data-options="field:'PASSMODE',sortable:true">分批放行</th>
+                    <th data-options="field:'PASSMODE',sortable:true">申请放行</th>
+                    <th data-options="field:'CUSTOMDISTRICTCODE',sortable:true">关区代码</th>
+                    <th data-options="field:'text',sortable:true">海关通关状态</th>
+                    <th data-options="field:'text',sortable:true">签收号</th>
+                    <th data-options="field:'text',sortable:true">签收人</th>
+                    <th data-options="field:'text',sortable:true">签收日期</th>
+                </tr>
+            </thead>
+        </table>
+
+        <div id="tb">
+            <div class="tb_search">
+                <form id="searchform" method="post">
+                    <table>
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value" type="text" name="ordercode_value" />
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_operator" panelheight="auto" name="oprname"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value" type="text" name="oprname_value" />
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>业务对象</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="business_object" panelheight="auto" name="business_object"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value" name="startdate" placeholder="开始时间">
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value" name="stopdate" placeholder="结束时间">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>海关通关状态</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox value" id="customs_state" style="width:130px" panelheight="auto" name="customs_state"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>是否单证放行</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name="is_clearance"></select>
+                            </td>
+                        </tr>
+
+
+                    </table>
+                </form>
+            </div>
+            <div class="tb_but">
+                <div class="but_left">
+                    @*<a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-search"></i> 搜索</a>
+                        <a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-refresh"></i> 重置</a>*@
+                </div>
+                <div class="but_right">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="icon-refresh"></i> 重置</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- end ibox-content -->
+</div>
+
+<script type="text/javascript">
+        //双击事件
+        $('#datagrid').datagrid({
+            onDblClickCell: function (index, field, value) {
+                var row = $('#datagrid').datagrid('getData').rows[index];
+                if (row.ID != "") {
+                    window.location.href = "/Declare/AirIn_Edit?ID=" + row.ID;
+                }
+            }
+        });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div id="tb">
+            <div class="tb_search">
+                <form id="searchform" method="post">
+                    <table>
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value" type="text" name="ordercode_value" />
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_operator" panelheight="auto" name="oprname"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value" type="text" name="oprname_value" />
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>业务对象</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="business_object" panelheight="auto" name="business_object"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value" name="startdate" placeholder="开始时间">
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value" name="stopdate" placeholder="结束时间">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>海关通关状态</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox value" id="customs_state" style="width:130px" panelheight="auto" name="customs_state"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>是否单证放行</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name="is_clearance"></select>
+                            </td>
+                        </tr>
+
+
+                    </table>
+                </form>
+            </div>
+            <div class="tb_but">
+                <div class="but_left">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-refresh"></i> 重置</a>
+                </div>
+                <div class="but_right">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="icon-refresh"></i> 重置</a>
+                </div>
+            </div>
+        </div>

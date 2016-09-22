@@ -12,10 +12,19 @@ using System.Web.Mvc;
 
 namespace SceneOfCustoms.Controllers
 {
+
     //订单方法
 
     public class OrderController : Controller
     {
+
+
+        //public string test()
+        //{
+        // ServiceReference1 s1=      
+    
+        //}
+    
 
         public string Get_SBGQ()
         {

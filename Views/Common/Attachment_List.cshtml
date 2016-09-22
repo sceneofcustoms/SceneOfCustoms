@@ -59,7 +59,8 @@
             listeners:
             {
                 'itemdblclick': function (view, record, item, index, e) {
-                    opencenterwin("/Common/Attachment_Edit?FWONO=" + record.data.FWONO + "&FOONO=" + record.data.FOONO, 1000, 600);
+                    window.open("/Common/Attachment_Edit?FWONO=" + record.data.FWONO + "&FOONO=" + record.data.FOONO, '', 'width=1000,height=600');
+                    //opencenterwin("/Common/Attachment_Edit?FWONO=" + record.data.FWONO + "&FOONO=" + record.data.FOONO, 1000, 600);
                 }
             },
             viewConfig: {
