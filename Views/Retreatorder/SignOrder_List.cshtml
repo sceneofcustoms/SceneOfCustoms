@@ -1,0 +1,134 @@
+﻿<div class="ibox-content">
+    <div class="table-responsive">
+        <table id="datagrid" class="easyui-datagrid" title="签收操作" style="height:auto;min-height:500px;max-height:800px"
+               data-options=" rownumbers:true,
+                                   url: '/Order/GetData',
+                                   queryParams:{BUSITYPE:11},
+                                   dataType : 'json',
+                                   method:'get',
+                                   toolbar:'#tb',
+                                   pageSize:20,
+                                   pagination:true ">
+            <thead data-options="frozen:true">
+                <tr>
+                    <th data-options="field: 'ID',width:80,checkbox:true"></th>
+                    <th data-options="field:'text',sortable:true,">退单签收流水号</th>
+                    <th data-options="field:'ASSOCIATEPEDECLNO',sortable:true">报关单号</th>
+                    <th data-options="field:'BUSITYPE',sortable:true">业务类型</th>
+                    <th data-options="field:'ASSOCIATETRADEWAY',sortable:true">贸易方式</th>
+                    <th data-options="field:'text',sortable:true">企业简称</th>
+                </tr>
+            </thead>
+            <thead>
+                <tr>
+                    <th data-options="field:'CLEARUNITNAME',sortable:true">结算方</th>
+                    <th data-options="field:'SUBMITUSERNAME',sortable:true">委托方</th>
+                    <th data-options="field:'CUSNO',sortable:true">客户编号</th>
+                    <th data-options="field:'text',sortable:true">送单时间</th>
+                    <th data-options="field:'text',sortable:true">送单人</th>
+                    <th data-options="field:'text',sortable:true">回单时间</th>
+                    <th data-options="field:'text',sortable:true">回单人</th>
+                    <th data-options="field:'text',sortable:true">退单签收备注</th>
+                    <th data-options="field:'text',sortable:true">送关封时间</th>
+                    <th data-options="field:'text',sortable:true">送关封人</th>
+                    <th data-options="field:'LIDANTIME',sortable:true">理单日期</th>
+                    <th data-options="field:'BAOGUANTIME',sortable:true">报关日期</th>
+                    <th data-options="field:'DECLSHEETNUM',sortable:true">报关单张数</th>
+                    <th data-options="field:'CUSTOMDISTRICTCODE',sortable:true">关区代码</th>
+                    <th data-options="field:'CONTRACTNO',sortable:true">合同发票号</th>
+                    <th data-options="field:'TOTALNO',sortable:true">总单号</th>
+                    <th data-options="field:'DIVIDENO',sortable:true">分单号</th>
+                </tr>
+            </thead>
+        </table>
+
+        <div id="tb">
+            <div class="tb_search">
+                <form id="searchform" method="post">
+                    <table>
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value" type="text" name="ordercode_value" />
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_operator" panelheight="auto" name="oprname"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value" type="text" name="oprname_value" />
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>业务对象</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="business_object" panelheight="auto" name="business_object"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value" name="startdate" placeholder="开始时间">
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value" name="stopdate" placeholder="结束时间">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>海关通关状态</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox value" id="customs_state" style="width:130px" panelheight="auto" name="customs_state"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>是否单证放行</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name="is_clearance"></select>
+                            </td>
+                        </tr>
+
+
+                    </table>
+                </form>
+            </div>
+            <div class="tb_but">
+                <div class="but_left">
+                    @*<a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-search"></i> 搜索</a>
+                        <a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-refresh"></i> 重置</a>*@
+                </div>
+                <div class="but_right">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="icon-refresh"></i> 重置</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- end ibox-content -->
+</div>
+
+<script type="text/javascript">
+        //双击事件
+        $('#datagrid').datagrid({
+            onDblClickCell: function (index, field, value) {
+                var row = $('#datagrid').datagrid('getData').rows[index];
+                if (row.ID != "") {
+                    window.location.href = "/Order/AirIn_Edit?ID=" + row.ID;
+                }
+            }
+        });
+</script>
