@@ -203,7 +203,6 @@ namespace SceneOfCustoms.Controllers
                 ViewData["id2"] = dt.Rows[0]["ID"] + "";//二单ID
             }
 
-
             return View();
         }
     }

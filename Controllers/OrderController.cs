@@ -84,7 +84,7 @@ namespace SceneOfCustoms.Controllers
             int Page = Convert.ToInt32(Request.Params["page"]);
             int total = 0;
 
-            string sql = "select t.* from (select *　from list_order ) t where 1=1  "; 
+            string sql = "select t.* from list_order  t where 1=1  "; 
             if (!string.IsNullOrEmpty(BUSITYPE))
             {
                 sql += " and BUSITYPE =" + BUSITYPE;
