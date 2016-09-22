@@ -8,3 +8,4 @@ SceneOfCustoms.csproj.user
 *.svcinfo
 Service References/ServiceReference1/configuration91.svcinfo
 *.cs
+bin/SceneOfCustoms.dll.config
