@@ -11,53 +11,34 @@
                 <tr>
                     <th data-options="field:'ID',width:80,checkbox:true">id</th>
                     <th data-options="field:'text',sortable:true">发货人</th>
-                    <th data-options="field:'CONTRACTNO',sortable:true">合同/发票号</th>
-                    <th data-options="field:'text',sortable:true">运输车号</th>
+                    <th data-options="field:'TOTALNO',sortable:true">总单号</th>
+                    <th data-options="field:'DIVIDENO',sortable:true">分单号</th>
+                    <th data-options="field:'GOODSNUM',sortable:true">总件数</th>
+                    <th data-options="field:'GOODSWEIGHT',sortable:true">总重量</th>
                 </tr>
             </thead>
             <thead>
                 <tr>
-                    <th data-options="field:'DECLCARNO',sortable:true">报关车号</th>
-                    <th data-options="field:'text',sortable:true">确认车号</th>
-                    <th data-options="field:'text',sortable:true">通关方式</th>
-                    <th data-options="field:'GOODSNUM',sortable:true">总件数</th>
-                    <th data-options="field:'GOODSWEIGHT',sortable:true">总重量</th>
-                    <th data-options="field:'DECLSHEETNUM',sortable:true">报关单张数</th>
-                    <th data-options="field:'LAWCONDITION',sortable:true">是否法检</th>
-                    <th data-options="field:'ASSOCIATEPEDECLNO',sortable:true">报关单号</th>
-                    <th data-options="field:'LIDANTIME',sortable:true">理单时间</th>
-                    <th data-options="field:'LIHUOZILIAOTIME',sortable:true">理货资料时间</th>
-                    <th data-options="field:'BAOGUANTIME',sortable:true">报关时间</th>
+                    <th data-options="field:'text',sortable:true">急货标志</th>
+                    <th data-options="field:'text',sortable:true">报检单号</th>
+                    <th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
+                    <th data-options="field:'text',sortable:true">报检输机时间</th>
+                    <th data-options="field:'MOSTARTTIME',sortable:true">报检制单时间</th>
+                    <th data-options="field:'text',sortable:true">报检时间</th>
+                    <th data-options="field:'text',sortable:true">报检人</th>
+                    <th data-options="field:'SHIWUFANGXINGTIME',sortable:true">放行时间</th>
+                    <th data-options="field:'SHIWUFANGXINGUSERNAME',sortable:true">放行人</th>
+                    <th data-options="field:'text',sortable:true">法检标志</th>
+                    <th data-options="field:'text',sortable:true">通关单标志</th>
+                    <th data-options="field:'text',sortable:true">报检接单时间</th>
                     <th data-options="field:'DANZHENGFANGXINGTIME',sortable:true">单证放行时间</th>
-                    <th data-options="field:'text',sortable:true">事物加封时间</th>
-                    <th data-options="field:'SHIWUFANGXINGTIME',sortable:true">实物放行时间</th>
-                    <th data-options="field:'ASSOCIATETRADEWAY',sortable:true">贸易方式</th>
-                    <th data-options="field:'text',sortable:true">报关备注</th>
-                    @*<th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>*@
-                    <th data-options="field:'LIDANUSERNAME',sortable:true">理单人</th>
-                    <th data-options="field:'STATUS',sortable:true">实物放行状态</th>
+                    <th data-options="field:'text',sortable:true">货物放行时间</th>
                     <th data-options="field:'YWBH',sortable:true">业务编号</th>
-                    <th data-options="field:'CUSTOMDISTRICTCODE',sortable:true">申报关区</th>
-                    <th data-options="field:'text',sortable:true">接单备注</th>
-                    <th data-options="field:'ZUOYEDANTIME',sortable:true">作业单时间</th>
-                    <th data-options="field:'GOODSTYPEID',sortable:true">货物类型</th>
-                    <th data-options="field:'DANZHENGFANGXINGUSERNAME',sortable:true">单证放行人</th>
-                    <th data-options="field:'SHIWUFANGXINGUSERNAME',sortable:true">实物放行人</th>
-                    <th data-options="field:'text',sortable:true">关务状态</th>
-                    <th data-options="field:'PASSMODE',sortable:true">分批放行</th>
-                    <th data-options="field:'PASSMODE',sortable:true">申请放行</th>
-                    <th data-options="field:'text',sortable:true">OPS接单备注</th>
-                    <th data-options="field:'text',sortable:true">海关通关状态</th>
-                    <th data-options="field:'text',sortable:true">签收号</th>
-                    <th data-options="field:'text',sortable:true">签收人</th>
-                    <th data-options="field:'text',sortable:true">签收日期</th>
-                    @*<th data-options="field:'text',sortable:true">单证齐全时间</th>
                     <th data-options="field:'CONTRACTNO',sortable:true">合同/发票号</th>
-                    <th data-options="field:'TURNPRENO',sortable:true">转关转录单号</th>
-                    <th data-options="field:'text',sortable:true">转关号</th>
-                    <th data-options="field:'text',width:60,align:'center'">普货</th>
-                    <th data-options="field:'text',width:60,align:'center'">快件</th>
-                    <th data-options="field:'CUSTOMDISTRICTCODE',sortable:true">关区代码</th>*@
+                    <th data-options="field:'ZUOYEDANTIME',sortable:true">作业单时间</th>
+                    <th data-options="field:'DECLSTATUS',sortable:true">报关状态</th>
+                    <th data-options="field:'INSPSTATUS',sortable:true">报检状态</th>
+                    <th data-options="field:'CUSTOMDISTRICTCODE',sortable:true">关区代码</th>
                 </tr>
             </thead>
         </table>
