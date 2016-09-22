@@ -377,7 +377,7 @@ function loadListGrid(page) {
         onDblClickCell: function (index, field, value) {
             var row = $('#datagrid').datagrid('getData').rows[index];
             if (row.ID != "") {
-                window.location.href = "/Declare/" + page + "?ID=" + row.ID;
+                window.location.href = "/" + page + "?ID=" + row.ID;
             }
         }
     });
