@@ -1,0 +1,127 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>随附文件</title>
+    <link href="/js/Extjs42/resources/css/ext-all-gray.css" rel="stylesheet" type="text/css" />
+    <script src="/js/Extjs42/bootstrap.js" type="text/javascript"></script>
+    <link href="~/Content/bootstrap32/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/js/jquery-1.8.2.min.js"></script>
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <script src="~/js/upload/plupload.full.min.js"></script>
+    <style type="text/css">
+        .fl {
+            float: left;
+        }
+
+        .x-item-selected {
+            border: 1px solid;
+        }
+
+        .thumb-wrap {
+            color: #57638b;
+        }
+    </style>
+    <script type="text/javascript">
+        var file_store;
+        Ext.onReady(function () {
+            file_store = Ext.create('Ext.data.JsonStore', {
+                fields: ['ID', 'FILENAME', 'FILEPATH', 'CREATETIME', 'SIZES', 'IETYPE'],
+                listeners: {
+                    datachanged: function (sf_1, eOpts) {
+                        //if (file_store.data.length > 0 && Ext.getCmp('field_STATUS').getValue() == 1) {
+                        //    Ext.getCmp('field_STATUS').setValue(10);
+                        //}
+                        //if (file_store.data.length == 0 && Ext.getCmp('field_STATUS').getValue() == 10) {
+                        //    Ext.getCmp('field_STATUS').setValue(1);
+                        //}
+                    }
+                }
+            })
+            var tmp = new Ext.XTemplate(
+                 '<tpl for=".">',
+                '<div class="panel panel-default thumb-wrap fl" style="margin-top:5px;margin-left:5px;width:240px">',
+                '<div class="panel-heading" style="padding-left:5px;padding-right:5px">{[values.FILENAME.substr(0,23)]}<div style="float:right"><span class="glyphicon glyphicon-paperclip"></span></div></div>',
+                '<div class="panel-body" style="padding-left:5px;">{FILETYPENAME}|',
+                '<tpl>{[values.SIZES/1024 > 1024?Math.round(values.SIZES/(1024*1024))+"M":Math.round(values.SIZES/1024)+"K"]}</tpl>',
+                //'|{[values.UPLOADTIME.substr(0,values.UPLOADTIME.indexOf("T"))]}</div></div>',
+                '|{[values.CREATETIME]}</div></div>',
+                '</tpl>'
+                )
+            var fileview = Ext.create('Ext.view.View', {
+                id: 'w_fileview',
+                store: file_store,
+                tpl: tmp,
+                itemSelector: 'div.thumb-wrap',
+                multiSelect: true
+            })
+            var panel = Ext.create('Ext.panel.Panel', {
+                title: '随附文件',
+                renderTo: "div_panel",
+                // border: 0,
+                //width: '62%',
+                minHeight: 200,
+                items: [fileview]
+            })
+            upload_ini();
+        })
+        function upload_ini() {
+            uploader = new plupload.Uploader({
+                runtimes: 'html5,flash,silverlight,html4',
+                browse_button: 'pickfiles', // you can pass an id...
+                url: '/Common/UploadFile',
+                flash_swf_url: '/js/upload/Moxie.swf',
+                silverlight_xap_url: '/js/upload/Moxie.xap',
+                unique_names: true,
+                filters: {
+                    max_file_size: '5000mb',
+                    mime_types: [
+                        { title: "Image files", extensions: "*" },
+                        { title: "Zip files", extensions: "zip,rar" }
+                    ]
+                }
+            });
+            uploader.init();
+            uploader.bind('FilesAdded', function (up, files) {
+                uploader.start();
+            });
+            uploader.bind('FileUploaded', function (up, file) {
+
+                //var filetype = Ext.getCmp('combo_filetype').getValue();
+                //var filetypename = Ext.getCmp('combo_filetype').getRawValue();
+
+                var timestamp = Ext.Date.now();  //1351666679575  这个方法只是获取的时间戳
+                var date = new Date(timestamp);
+                file_store.insert(file_store.data.length,
+               { FILEPATH: '/Upload/' + file.target_name, FILENAME: file.target_name, SIZES: file.size, CREATETIME: Ext.Date.format(date, 'Y-m-d H:i:s') });
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container" style="width:540px">
+
+        <div class="input-group" style="width:100%;margin:10px 0px">
+            <span class="input-group-addon" style="width:120px">FWO订单号</span>
+            <input type="text" class="form-control" placeholder="twitterhandle">
+        </div>
+        <div class="input-group" style="width: 100%; margin: 10px 0px">
+            <span class="input-group-addon" style="width:120px">FOO指令服务号</span>
+            <input type="text" class="form-control">
+        </div>
+
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-primary btn-sm" id="pickfiles"><i class="fa fa-upload"></i>&nbsp;上传文件</button>
+            <button type="button"  class="btn btn-primary btn-sm"><i class="fa fa-exchange fa-fw"></i>&nbsp;浏览文件</button>
+            <button type="button"  class="btn btn-primary btn-sm" id="deletefile"><i class="fa fa-trash-o"></i>&nbsp;删除文件</button>
+        </div>
+        <div id="div_panel">
+        </div>
+    </div>
+</body>
+</html>

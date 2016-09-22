@@ -59,7 +59,7 @@
             listeners:
             {
                 'itemdblclick': function (view, record, item, index, e) {
-                    opencenterwin("/Common/Create?ordercode=" + record.data.CODE + "&OrderId=" + record.data.ID, 1600, 900);
+                    opencenterwin("/Common/Attachment_Edit?FWONO=" + record.data.FWONO + "&FOONO=" + record.data.FOONO, 1000, 600);
                 }
             },
             viewConfig: {

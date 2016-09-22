@@ -6,6 +6,7 @@ using SceneOfCustoms.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -33,6 +34,24 @@ namespace SceneOfCustoms.Controllers
             DataTable dt = DBMgr.GetDataTable(Extension.GetPageSql(sql, "createtime", "desc", ref total, Convert.ToInt32(Request["start"]), Convert.ToInt32(Request["limit"])));
             string filedata = JsonConvert.SerializeObject(dt, iso);
             return "{rows:" + filedata + ",total:" + total + "}";
+        }
+        public ActionResult Attachment_Edit()
+        {
+            return View();
+        }
+        //文件上传
+        public ActionResult UploadFile(int? chunk, string name)
+        {
+            var fileUpload = Request.Files[0];
+            var uploadPath = Server.MapPath("/Upload/");
+            chunk = chunk ?? 0;
+            using (var fs = new FileStream(Path.Combine(uploadPath, name), chunk == 0 ? FileMode.Create : FileMode.Append))
+            {
+                var buffer = new byte[fileUpload.InputStream.Length];
+                fileUpload.InputStream.Read(buffer, 0, buffer.Length);
+                fs.Write(buffer, 0, buffer.Length);
+            }
+            return Content("chunk uploaded", "text/plain");
         }
         public string CurrentUser()
         {
