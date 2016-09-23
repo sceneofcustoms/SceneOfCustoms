@@ -18,6 +18,7 @@ namespace SceneOfCustoms.Controllers
 
     public class OrderController : Controller
     {
+
         public string Get_SBGQ()
         {
             IDatabase db = SeRedis.redis.GetDatabase();
