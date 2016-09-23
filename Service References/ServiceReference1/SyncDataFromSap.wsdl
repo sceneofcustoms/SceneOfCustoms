@@ -226,6 +226,12 @@
           <s:element minOccurs="0" maxOccurs="1" name="LIHUOENDDESC" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="SHIWUFANGXINGDESC" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="SHIWUJIAFENGDESC" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FOONO" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SFGOODSUNIT" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CONTAINERTRUCKS" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GOODSXT" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ISPREDECLARE" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="INVOICENO" type="s:string" />
         </s:sequence>
       </s:complexType>
       <s:element name="SyncDataResponse">
@@ -251,7 +257,7 @@
         &lt;br&gt;15客户自编号(CUSNO)&lt;br&gt;16进/出口岸(PORTCODE)&lt;br&gt;17特殊关系确认(SPECIALRELATIONSHIP)&lt;br&gt;18价格影响确认(PRICEIMPACT)
         &lt;br&gt;19支付特许权使用费确认(PAYPOYALTIES)&lt;br&gt;20报关申报单位代码(REPUNITCODE)&lt;br&gt;21报关申报单位名称(REPUNITNAME)&lt;br&gt;22委托人员(SUBMITUSERNAME)
         &lt;br&gt;23委托时间(SUBMITTIME)&lt;br&gt;24委托电话(SUBMITUSERPHONE)&lt;br&gt;25运抵编号(ARRIVEDNO)&lt;br&gt;26集装箱车号信息(CONTAINERTRUCK)&lt;br&gt;27实际件数(ACTUALGOODSNUM)
-        &lt;br&gt;28实际毛重(ACTUALGOODSGW)&lt;br&gt;29货物类型(整箱或散箱用中文标记)(GOODSTYPE)&lt;br&gt;30报关提单号(SECONDLADINGBILLNO)&lt;</wsdl:documentation>
+        &lt;br&gt;28实际毛重(ACTUALGOODSGW)&lt;br&gt;29货物类型(整箱或散箱用中文标记)(GOODSTYPE)&lt;br&gt;30报关提单号(SECONDLADINGBILLNO)</wsdl:documentation>
       <wsdl:input message="tns:SyncDataSoapIn" />
       <wsdl:output message="tns:SyncDataSoapOut" />
     </wsdl:operation>
