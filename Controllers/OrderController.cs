@@ -246,7 +246,7 @@ namespace SceneOfCustoms.Controllers
             {
                 return Json(new { Success = false, sql = sql }, JsonRequestBehavior.AllowGet);
             }
-
+             
         }
 
         [HttpPost]
