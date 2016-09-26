@@ -16,8 +16,8 @@
 //];
 
 //2 查询条件  --单据号
-//var search_code = [
-//    {
+//var search_code = [ 
+//    { 
 //        code: 'jiedan', name: '分单号', selected: true
 //    },
 //    { code: 'lihuo', name: '总单号' },
