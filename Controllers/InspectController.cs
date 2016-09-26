@@ -132,5 +132,17 @@ namespace SceneOfCustoms.Controllers
             return View();
         }
 
+        //一线进口
+
+        public ActionResult OnelineIn_List()
+        {
+
+
+            ViewData["crumb"] = "报检操作-->一线进口";
+            return View();
+        }
+
+
+
     }
 }

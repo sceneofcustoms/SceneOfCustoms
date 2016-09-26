@@ -39,6 +39,8 @@ namespace SceneOfCustoms
         <br>28实际毛重(ACTUALGOODSGW)<br>29货物类型(整箱或散箱用中文标记)(GOODSTYPE)<br>30报关提单号(SECONDLADINGBILLNO)")]
         public Object SyncData(List<OrderEntity> ld)
         {
+            IDatabase db = SeRedis.redis.GetDatabase();//先将报文数据保存至缓存数据库
+            db.ListRightPush("SyncDataFromSap", ld.ToString());
 
             if (ld.Count() == 0)
             {
@@ -222,9 +224,7 @@ namespace SceneOfCustoms
             //            sql = string.Format(sql, json.Value<string>("FWONO"), json.Value<string>("FOCUSTOMSNO"), json.Value<string>("FOINSPECTNO"),
             //            json.Value<string>("BUSITYPE"));
             //            DBMgr.ExecuteNonQuery(sql);
-            //            IDatabase db = SeRedis.redis.GetDatabase();//先将报文数据保存至缓存数据库
-            //            string type = string.IsNullOrEmpty(json.Value<string>("FOCUSTOMSNO")) ? "报检" : "报关";
-            //            db.ListRightPush("SyncDataFromSap", "{data:" + param + ",createtime:'" + DateTime.Now + "',from:'SAP',type:'" + type + "'}");
+
             //return "true";
 
             obj values = new obj();
