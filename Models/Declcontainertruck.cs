@@ -7,7 +7,6 @@ namespace SceneOfCustoms.Models
 {
     public class Declcontainertruck
     {
-           
         public int ID { get; set; }
 
         //订单号
