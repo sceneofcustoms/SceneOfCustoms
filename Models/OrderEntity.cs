@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
@@ -680,6 +680,10 @@ namespace SceneOfCustoms.Models
 
         //二线合同专用发票号
         public string INVOICENO { get; set; }
+
+
+        //报关集装箱车辆信息表
+        public List<Declcontainertruck> Declcontainertruck { get; set; }
 
     }
 }

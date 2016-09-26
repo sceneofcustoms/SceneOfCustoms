@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using SceneOfCustoms.Common;
+using SceneOfCustoms.Models;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,6 @@ namespace SceneOfCustoms.Controllers
 
     public class OrderController : Controller
     {
-        //public string test()
-        //{
-        // ServiceReference1 s1=      
-        //}
 
         public string Get_SBGQ()
         {
