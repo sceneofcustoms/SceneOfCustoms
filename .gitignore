@@ -1,7 +1,9 @@
 bin/SceneOfCustoms.dll
 bin/SceneOfCustoms.pdb
+bin/SceneOfCustoms.dll.config
 obj/Debug/
 SceneOfCustoms.v12.suo
 SceneOfCustoms.csproj
 SceneOfCustoms.csproj.user
 *.bak
+Upload/

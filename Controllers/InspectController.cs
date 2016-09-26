@@ -1,4 +1,4 @@
-﻿using SceneOfCustoms.Common;
+﻿﻿using SceneOfCustoms.Common;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,7 +15,7 @@ namespace SceneOfCustoms.Controllers
         //空进列表
         public ActionResult AirIn_List()
         {
-            ViewData["crumb"] = "报检操作-->空运进口"; 
+            ViewData["crumb"] = "报检操作-->空运进口";
             return View();
         }
 

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using SceneOfCustoms.Common;
@@ -246,7 +246,7 @@ namespace SceneOfCustoms.Controllers
             {
                 return Json(new { Success = false, sql = sql }, JsonRequestBehavior.AllowGet);
             }
-             
+
         }
 
         [HttpPost]

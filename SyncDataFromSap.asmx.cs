@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SceneOfCustoms.Common;
 using SceneOfCustoms.Models;
@@ -28,7 +28,7 @@ namespace SceneOfCustoms
     // [System.Web.Script.Services.ScriptService]
     public class SyncDataFromSap : System.Web.Services.WebService
     {
-        //param参数说明:为json格式字符串 
+        //param参数说明:为json格式字符串
 
         [WebMethod(Description = @"param参数说明:订单集合<br>返回值:一个对象, Success true/false, Message 消息<br>1 凭证类型(LICENSETYPE)<br>2 FWO订单号(FWONO)<br>3 FO报关服务指令号
        (FOCUSTOMSNO)<br>4 总单号(TOTALNO)<br>5 分单号(DIVIDENO)<br>6 件数(GOODSNUM)<br>7毛重(GOODSGW)<br>8 净重(GOODSNW)<br>9 经营单位代码(BUSIUNITCODE)
