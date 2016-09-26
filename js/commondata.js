@@ -127,6 +127,27 @@ var out_in = [
 
 $(function () {
 
+
+     $('#searchform #search_operator').combobox({
+        data: search_operator,
+        valueField: 'code',
+        textField: 'name'
+    });
+
+     $('#searchform #CUSTOMDISTRICTCODE').combobox({
+        url: '/Order/Get_SBGQ',
+        method: 'get',
+        valueField: 'CODE',
+        textField: 'NAME',
+        panelWidth: 200,
+        panelHeight: 'auto',
+        formatter: formatItem,
+        label: 'CUSTOMDISTRICTCODE:',
+        panelHeight:'200',
+        labelPosition: 'top'
+    });
+
+
     //$('#searchform #search_condition_date').combobox({
     //    data: search_condition_date,
     //    valueField: 'code',
