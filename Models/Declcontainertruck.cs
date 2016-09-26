@@ -24,7 +24,7 @@ namespace SceneOfCustoms.Models
 
         //集装箱重量
         public decimal CONTAINERWEIGHT { get; set; }
-
+         
         //集装箱类型
         public string CONTAINERTYPE { get; set; }
 
