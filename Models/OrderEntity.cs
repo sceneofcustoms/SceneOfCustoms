@@ -682,7 +682,7 @@ namespace SceneOfCustoms.Models
         public string INVOICENO { get; set; }
 
 
-        //报关集装箱车辆信息表
+        //报关集装箱车辆信息表 
         public List<Declcontainertruck> Declcontainertruck { get; set; }
 
     }
