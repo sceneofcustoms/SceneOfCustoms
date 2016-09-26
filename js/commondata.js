@@ -1,36 +1,37 @@
 ﻿//公共静态数据
 
 //1 查询条件 --日期
-var search_condition_date = [
-    { code: 'jiedan', name: '接单日期', selected: true },
-    { code: 'lihuo', name: '理货日期' },
-    { code: 'jihuabaoguan', name: '计划报关日期' },
-    { code: 'lihuoziliaoqiquan', name: '理货资料齐全日期' },
-    { code: 'baoguan', name: '报关日期' },
-    { code: 'danzhengfangxing', name: '单证放行日期' },
-    { code: 'shiwufangxing', name: '实物放行日期' },
-    { code: 'chuguanfeng', name: '出关封日期' },
-    { code: 'koufangxing', name: '口岸放行时间' },
-    { code: 'koufangxing', name: '口岸安排报关时间' }
-];
+//var search_condition_date = [
+//    { code: 'guanwujieshou', name: '关务接受日期', selected: true },
+//    { code: 'baoruhaiguan', name: '报入海关日期' },
+//    { code: 'shandankaishi', name: '删单开始日期' },
+//    { code: 'shandanwancheng', name: '删单完成日期' },
+//    { code: 'gaidankaishi', name: '改单开始日期' },
+//    { code: 'gaidanwancheng', name: '改单完成日期' },
+//    { code: 'chayanzhilingxiafa', name: '查验指令下发日期' },
+//    { code: 'chayankaishi', name: '查验开始日期' },
+//    { code: 'chayanwancheng', name: '查验完成日期' },
+//    { code: 'danzhengfangxing', name: '单证放行日期' },
+//    { code: 'shiwufangxing', name: '实物放行日期' },
+//];
 
-//2 查询条件  --号
-var search_code = [
-    {
-        code: 'jiedan', name: '分单号', selected: true
-    },
-    { code: 'lihuo', name: '总单号' },
-    { code: 'jihuabaoguan', name: '平台编号' },
-    { code: 'lihuoziliaoqiquan', name: '业务编号' },
-    { code: 'baoguan', name: '合同/发票号' },
-    { code: 'danzhengfangxing', name: '转关预录入号' },
-    { code: 'shiwufangxing', name: '转关号' },
-    { code: 'chuguanfeng', name: '通关单号' },
-    { code: 'koufangxing', name: '手册号' },
-    { code: 'koufangxing', name: '报关单号' },
-    { code: 'koufangxing', name: '签收号' },
-    { code: 'koufangxing', name: '绑定号' }
-];
+//2 查询条件  --单据号
+//var search_code = [
+//    {
+//        code: 'jiedan', name: '分单号', selected: true
+//    },
+//    { code: 'lihuo', name: '总单号' },
+//    { code: 'jihuabaoguan', name: '万达号' },
+//    { code: 'lihuoziliaoqiquan', name: '业务编号' },
+//    { code: 'baoguan', name: '集装箱号' },
+//    { code: 'danzhengfangxing', name: '转关预录入号' },
+//    { code: 'shiwufangxing', name: '一程提运单号' },
+//    { code: 'chuguanfeng', name: '二程提运单号' },
+//    { code: 'koufangxing', name: '载货清单号' },
+//    { code: 'koufangxing', name: '报关单号' },
+//    { code: 'koufangxing', name: 'FWO订单号' },
+//    { code: 'koufangxing', name: 'FO号' }
+//];
 
 //3 查询条件  --操作人
 var search_operator = [
@@ -55,16 +56,24 @@ var search_customs_state = [
     { code: 'jiedan', name: '人工退单' }
 ];
 
-//5 查询选择值  --是否
+//5 查询选择值  --关代码
 var is_check = [
-    { code: '1', name: '是' },
-    { code: '0', name: '否' },
+    { code: '1', name: '2369' },
+    { code: '0', name: '2325' },
 ];
 
-//5 查询选择值  --业务对象
-var business_object = [
-    { code: '1', name: '收货人' },
-    { code: '0', name: '结算方' },
+//5 查询选择值  --业务类型
+var businessin_object = [
+    { code: '0', name: '空进' },
+    { code: '1', name: '海进' },
+    { code: '2', name: '陆进' },
+];
+
+//5 查询选择值  --业务类型
+var businessout_object = [
+    { code: '0', name: '空出' },
+    { code: '1', name: '海出' },
+    { code: '2', name: '陆出' },
 ];
 
 //6 查询搜索值  --业务方式
@@ -101,9 +110,9 @@ var declare_type = [
 //9 查询 报关方式
 var declaration_type = [
        { code: '1', name: '逐笔' },
-       { code: '1', name: '转厂' },
-       { code: '1', name: '集中' },
-       { code: '1', name: '作业单' }
+       { code: '2', name: '转厂' },
+       { code: '3', name: '集中' },
+       { code: '4', name: '作业单' }
 ];
 
 //10 转入 转出
@@ -118,16 +127,16 @@ var out_in = [
 
 $(function () {
 
-    $('#searchform #search_condition_date').combobox({
-        data: search_condition_date,
-        valueField: 'code',
-        textField: 'name'
-    });
-    $('#searchform #search_code').combobox({
-        data: search_code,
-        valueField: 'code',
-        textField: 'name'
-    });
+    //$('#searchform #search_condition_date').combobox({
+    //    data: search_condition_date,
+    //    valueField: 'code',
+    //    textField: 'name'
+    //});
+    //$('#searchform #search_code').combobox({
+    //    data: search_code,
+    //    valueField: 'code',
+    //    textField: 'name'
+    //});
     $('#searchform #search_operator').combobox({
         data: search_operator,
         valueField: 'code',
@@ -143,8 +152,13 @@ $(function () {
         valueField: 'code',
         textField: 'name'
     });
-    $('#searchform #business_object').combobox({
-        data: business_object,
+    $('#searchform #businessin_object').combobox({
+        data: businessin_object,
+        valueField: 'code',
+        textField: 'name'
+    });
+    $('#searchform #businessout_object').combobox({
+        data: businessout_object,
         valueField: 'code',
         textField: 'name'
     });
