@@ -58,8 +58,8 @@ var search_customs_state = [
 
 //5 查询选择值  --关代码
 var is_check = [
-    { code: '1', name: '2369' },
-    { code: '0', name: '2325' },
+    { code: '1', name: '是' },
+    { code: '0', name: '否' },
 ];
 
 //5 查询选择值  --业务类型

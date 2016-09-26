@@ -1,5 +1,44 @@
 ﻿<script type="text/javascript">
+    //1 查询条件 --日期
+    var search_condition_date = [
+        { code: 'guanwujieshou', name: '查检日期', selected: true },
+        { code: 'baoruhaiguan', name: '查检放行日期' },
+        { code: 'shandankaishi', name: '熏蒸日期' },
+        { code: 'shandanwancheng', name: '删单日期' },
+        { code: 'gaidankaishi', name: '改单日期' },
+        { code: 'gaidanwancheng', name: '报检日期' },
+        { code: 'chayanzhilingxiafa', name: '报检放行日期' }
+    ];
+
+    //2 查询条件  --单据号
+    var search_code = [ 
+        { 
+            code: 'jiedan', name: 'FWO订单号', selected: true
+        },
+        { code: 'koufangxing', name: 'FO号' },
+        { code: 'lihuo', name: '总单号' },
+        { code: 'jihuabaoguan', name: '万达号' },
+        { code: 'koufangxing', name: '载货清单号' },
+        { code: 'koufangxing', name: '报检单号' },
+        { code: 'koufangxing', name: '业务编号' },
+        { code: 'shiwufangxing', name: '一程提运单号' },
+        { code: 'chuguanfeng', name: '二程提运单号' },
+        { code: 'chuguanfeng', name: '通关单号' },
+        { code: 'baoguan', name: '集装箱号' }
+    ];
+
+
     $(function () {
+        $('#searchform #search_condition_date').combobox({
+            data: search_condition_date,
+            valueField: 'code',
+            textField: 'name'
+        });
+        $('#searchform #search_code').combobox({
+            data: search_code,
+            valueField: 'code',
+            textField: 'name'
+        });
         loadListGrid('Inspect/OnelineIn_Edit');
     })
 </script>
@@ -47,6 +86,16 @@
                 <div id="searchform" method="post">
                     <table>
                         <tr>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>业务类型</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="businessin_object" panelheight="auto" name="businessin_object"></select>
+                            </td>
+
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
                             </td>
@@ -61,14 +110,7 @@
                                 <input class="easyui-textbox value" type="text" name="oprname_value" />
                             </td>
 
-                            <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto">
-                                    <option>业务对象</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="easyui-combobox combobox_width value" id="business_object" panelheight="auto" name="business_object"></select>
-                            </td>
+
 
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
@@ -93,7 +135,7 @@
 
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
-                                    <option>是否单证放行</option>
+                                    <option>是否单证放行1</option>
                                 </select>
                             </td>
                             <td>
