@@ -1,0 +1,136 @@
+﻿@{
+    Layout = null;
+}
+ 
+<style type="text/css">
+    .window .window-body {
+        border-width:0px;
+    }
+</style>
+
+<form id="OrderFrom" method="post">
+
+
+    <div class="easyui-panel" style="margin-bottom:15px" title="主信息"
+         data-options="collapsible:true">
+        <input type="hidden" name="ID" />
+        <table class="scene">
+            <tr>
+                <td>
+                    <label for="CODE">业务编号:</label>
+                    <input class="easyui-textbox" type="text" name="CODE" disabled="disabled" />
+                </td>
+                <td>
+                    <label for="FOCUSTOMSNO">关务操作:</label>
+                    <input class="easyui-textbox" type="text" name="FOCUSTOMSNO" disabled="disabled" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="CODE">报检编号:</label>
+                    <input class="easyui-textbox" type="text" name="CODE" disabled="disabled" />
+                </td>
+                <td>
+                    <label for="BUSITYPE">业务类型:</label>
+                    <input class="easyui-textbox" type="text" name="BUSITYPE" disabled="disabled" />
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="easyui-panel" style="margin-bottom:15px" title="登记项"
+         data-options="collapsible:true">
+        <table class="scene">
+            <tr>
+                <td>
+                    <label for="CODE">异常提交人:</label>
+                    <input class="easyui-textbox" type="text" name="CODE" />
+                </td>
+                <td>
+                    <label for="FOCUSTOMSNO">提交时间:</label>
+                    <input class="easyui-datetimebox"  style="width:200px" type="text" name="FOCUSTOMSNO" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="CODE">一级异常:</label>
+                    <select class="easyui-combobox" panelheight="auto" name="oprname">
+                        <option>请选择</option>
+                    </select>
+                </td>
+                <td>
+                    <label for="BUSITYPE">二级异常:</label>
+                    <select class="easyui-combobox" panelheight="auto" name="oprname">
+                        <option>请选择</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="CODE">相关责任人:</label>
+                    <input class="easyui-textbox" type="text" name="CODE"  />
+                </td>
+                <td>
+                    <label for="BUSITYPE">联系方式:</label>
+                    <input class="easyui-textbox" type="text" name="CODE" />
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <label for="CODE">异常备注:</label>
+                    <textarea style="width:593px;height:80px;"></textarea>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+    <div class="easyui-panel" style="margin-bottom:15px" title="回复项"
+         data-options="collapsible:true">
+        <table class="scene">
+            <tr>
+                <td>
+                    <label for="CODE">异常回复部门:</label>
+                    <input class="easyui-textbox" type="text" name="CODE" />
+                </td>
+                <td>
+                    <label for="FOCUSTOMSNO">异常处理人:</label>
+                    <input class="easyui-textbox" type="text" name="CODE" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="CODE">异常处理时间:</label>
+                    <input class="easyui-datetimebox" style="width:200px" type="text" name="FOCUSTOMSNO" />
+                </td>
+                <td>
+                    <label for="CODE">异常处理结果:</label>
+                    <select class="easyui-combobox" panelheight="auto" name="oprname">
+                        <option>请选择</option>
+                        <option>完成</option>
+                        <option>未完成</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <label for="CODE">异常处理备注:</label>
+                    <textarea style="width:593px;height:80px;"></textarea>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="text-align:center;padding:5px 0">
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="submitForm()">
+            <i class="icon-ok"></i> 保存
+        </a>
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="javascript: history.back(-1);">
+            <i class="icon-reply"></i> 返回
+        </a>
+    </div>
+</form>
+
+

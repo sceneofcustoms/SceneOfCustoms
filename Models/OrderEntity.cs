@@ -7,7 +7,7 @@ namespace SceneOfCustoms.Models
 {
     public class OrderEntity
     {
-        public int ID { get; set; }
+        public string ID { get; set; }
 
         //编号
         public string CODE { get; set; }
@@ -44,16 +44,16 @@ namespace SceneOfCustoms.Models
         public string WOODPACKINGID { get; set; }
 
         //法检状况
-        public int LAWCONDITION { get; set; }
+        public string LAWCONDITION { get; set; }
 
 
 
         //件数
-        public decimal GOODSNUM { get; set; }
+        public string GOODSNUM { get; set; }
 
 
         //重量
-        public decimal GOODSWEIGHT { get; set; }
+        public string GOODSWEIGHT { get; set; }
 
 
         //华东主单号
@@ -82,16 +82,16 @@ namespace SceneOfCustoms.Models
         public string CUSTOMERCODE { get; set; }
 
         //创建人ID
-        public int CREATEUSERID { get; set; }
+        public string CREATEUSERID { get; set; }
 
         //创建人
         public string CREATEUSERNAME { get; set; }
 
         //创建时间
-        public DateTime CREATETIME { get; set; }
+        public string  CREATETIME { get; set; }
 
         //委托人ID
-        public int SUBMITUSERID { get; set; }
+        public string SUBMITUSERID { get; set; }
 
         //委托人
         public string SUBMITUSERNAME { get; set; }
@@ -101,7 +101,7 @@ namespace SceneOfCustoms.Models
 
 
         //客服认领人ID
-        public int CSACCEPTUSERID { get; set; }
+        public string CSACCEPTUSERID { get; set; }
 
         //客服认领人
         public string CSACCEPTUSERNAME { get; set; }
@@ -131,7 +131,7 @@ namespace SceneOfCustoms.Models
 
 
         //优先级
-        public int PRIORITY { get; set; }
+        public string PRIORITY { get; set; }
 
 
         //贸易方式代码
@@ -159,10 +159,10 @@ namespace SceneOfCustoms.Models
 
 
         //毛重
-        public decimal GOODSGW { get; set; }
+        public string GOODSGW { get; set; }
 
         //净重
-        public decimal GOODSNW { get; set; }
+        public string GOODSNW { get; set; }
 
         //运抵编号
         public string ARRIVEDNO { get; set; }
@@ -181,40 +181,40 @@ namespace SceneOfCustoms.Models
 
         //当前客服ID
         [MaxLength(50)]
-        public int CSID { get; set; }
+        public string CSID { get; set; }
 
         //当前客服
         public string CSNAME { get; set; }
 
 
         //客服认领时间
-        public DateTime CSACCEPTTIME { get; set; }
+        public string  CSACCEPTTIME { get; set; }
 
         //客服提交时间
-        public DateTime CSSUBMITTIME { get; set; }
+        public string  CSSUBMITTIME { get; set; }
 
         //当前制单ID
-        public int MOID { get; set; }
+        public string MOID { get; set; }
 
         //当前制单
         public string MONAME { get; set; }
 
 
         //制单认领时间
-        public DateTime MOACCEPTTIME { get; set; }
+        public string  MOACCEPTTIME { get; set; }
 
         //当前审单ID
-        public int COID { get; set; }
+        public string COID { get; set; }
 
         //当前审单
         public string CONAME { get; set; }
 
 
         //审单认领时间
-        public DateTime COACCEPTTIME { get; set; }
+        public string  COACCEPTTIME { get; set; }
 
         //是否作废
-        public int ISINVALID { get; set; }
+        public string ISINVALID { get; set; }
 
         //一程提单号
         [MaxLength(255)]
@@ -225,7 +225,7 @@ namespace SceneOfCustoms.Models
 
 
         //货物类型ID
-        public int GOODSTYPEID { get; set; }
+        public string GOODSTYPEID { get; set; }
 
         //货物类型
         public string GOODSTYPENAME { get; set; }
@@ -235,7 +235,7 @@ namespace SceneOfCustoms.Models
         public string CONTAINERNO { get; set; }
 
         //是否二次转关
-        public int SECONDTRANSIT { get; set; }
+        public string SECONDTRANSIT { get; set; }
 
         //关联编号，两单关联
         public string ASSOCIATENO { get; set; }
@@ -244,7 +244,7 @@ namespace SceneOfCustoms.Models
         public string CORRESPONDNO { get; set; }
 
         //附加状态
-        public int EXTRASTATUS { get; set; }
+        public string EXTRASTATUS { get; set; }
 
         //内部类型进口/出口
         public string INTERNALTYPE { get; set; }
@@ -278,29 +278,29 @@ namespace SceneOfCustoms.Models
 
 
         //订单开始时间
-        public DateTime CSSTARTTIME { get; set; }
+        public string  CSSTARTTIME { get; set; }
 
 
         //订单时长
-        public int CSTIME { get; set; }
+        public string CSTIME { get; set; }
 
 
         //套数
-        public int SETNUM { get; set; }
+        public string SETNUM { get; set; }
 
 
         //张数
-        public int PAPERNUM { get; set; }
+        public string PAPERNUM { get; set; }
 
 
         //制单认领人ID
-        public int MOACCEPTUSERID { get; set; }
+        public string MOACCEPTUSERID { get; set; }
 
         //制单认领人
         public string MOACCEPTUSERNAME { get; set; }
 
         //审单认领人ID
-        public int COACCEPTUSERID { get; set; }
+        public string COACCEPTUSERID { get; set; }
 
         //审单认领人
         public string COACCEPTUSERNAME { get; set; }
@@ -311,7 +311,7 @@ namespace SceneOfCustoms.Models
 
         //预制单异常（0正常，1异常），预制单异常的汇总
         //预制单异常
-        public int ISPAUSE { get; set; }
+        public string ISPAUSE { get; set; }
 
 
         //关联贸易方式
@@ -319,56 +319,56 @@ namespace SceneOfCustoms.Models
 
 
         //报关状态
-        public int DECLSTATUS { get; set; }
+        public string DECLSTATUS { get; set; }
 
 
         //报检状态
-        public int INSPSTATUS { get; set; }
+        public string INSPSTATUS { get; set; }
 
 
         //报关单套数
-        public int DECLSETNUM { get; set; }
+        public string DECLSETNUM { get; set; }
 
 
         //报检单套数
-        public int INSPSETNUM { get; set; }
+        public string INSPSETNUM { get; set; }
 
 
         //报关单张数
-        public int DECLSHEETNUM { get; set; }
+        public string DECLSHEETNUM { get; set; }
 
 
         //报关草单套数
-        public int PREDECLSETNUM { get; set; }
+        public string PREDECLSETNUM { get; set; }
 
 
         //报检草单套数
-        public int PREINSPSETNUM { get; set; }
+        public string PREINSPSETNUM { get; set; }
 
 
         //制单开始时间
-        public DateTime MOSTARTTIME { get; set; }
+        public string  MOSTARTTIME { get; set; }
 
 
         //制单结束时间
-        public DateTime MOENDTIME { get; set; }
+        public string  MOENDTIME { get; set; }
 
         //审单开始时间
-        public DateTime COSTARTTIME { get; set; }
+        public string  COSTARTTIME { get; set; }
 
         //审单结束时间
-        public DateTime COENDTIME { get; set; }
+        public string  COENDTIME { get; set; }
 
         //审单时长
-        public int COTIME { get; set; }
+        public string COTIME { get; set; }
 
         //报关暂存（0非暂存，1暂存），报关异常的汇总
         //报关暂存
-        public int DECLPAUSE { get; set; }
+        public string DECLPAUSE { get; set; }
 
         //报检暂存（0非暂存，1暂存），报检异常的汇总
         //报检暂存
-        public int INSPPAUSE { get; set; }
+        public string INSPPAUSE { get; set; }
 
 
         //口岸名称
@@ -387,15 +387,15 @@ namespace SceneOfCustoms.Models
         public string YWBH { get; set; }
 
         //订单交付时间
-        public DateTime FINISHTIME { get; set; }
+        public string  FINISHTIME { get; set; }
 
         //审单是否退回（0未退回，1退回到制单环节从新拆分）
 
         //审单是否退回
-        public decimal COBACK { get; set; }
+        public string COBACK { get; set; }
 
         //暂存次数
-        public decimal PAUSENUM { get; set; }
+        public string PAUSENUM { get; set; }
 
         //作废原因
         public string INVALIDREASON { get; set; }
@@ -407,87 +407,87 @@ namespace SceneOfCustoms.Models
         public string BUSISHORTCODE { get; set; }
 
         //客服订单交接
-        public decimal CSISBACK { get; set; }
+        public string CSISBACK { get; set; }
 
         //制单订单交接
-        public decimal MOISBACK { get; set; }
+        public string MOISBACK { get; set; }
 
         //审单订单交接
-        public decimal COISBACK { get; set; }
+        public string COISBACK { get; set; }
 
         //进出口类型
         public string INOUTTYPE { get; set; }
 
         //制单提交时间
-        public DateTime MOSUBMITTIME { get; set; }
+        public string  MOSUBMITTIME { get; set; }
 
         //审单提交时间
-        public DateTime COSUBMITTIME { get; set; }
+        public string  COSUBMITTIME { get; set; }
 
         //进出口类型(国内结转专用)
         public string IETYPE { get; set; }
 
         //客服提交人id
-        public int CSSUBMITUSERID { get; set; }
+        public string CSSUBMITUSERID { get; set; }
 
         //客服提交人姓名
         public string CSSUBMITUSERNAME { get; set; }
 
         //特殊关系确认
-        public int SPECIALRELATIONSHIP { get; set; }
+        public string SPECIALRELATIONSHIP { get; set; }
 
         //价格影响确认
-        public int PRICEIMPACT { get; set; }
+        public string PRICEIMPACT { get; set; }
 
         //支付特许权使用费确认
-        public int PAYPOYALTIES { get; set; }
+        public string PAYPOYALTIES { get; set; }
 
         //草单异常（0正常，1异常），草单异常的汇总
         //草单异常
-        public int PREISPAUSE { get; set; }
+        public string PREISPAUSE { get; set; }
 
         //现场报关单位ID
-        public int SCENEDECLAREID { get; set; }
+        public string SCENEDECLAREID { get; set; }
 
         //现场报检单位ID
-        public int SCENEINSPECTID { get; set; }
+        public string SCENEINSPECTID { get; set; }
 
         //pdf是否关联（提前PDF/报关单PDF，0未关联，1已关联）
         //pdf是否关联
-        public int DECLPDF { get; set; }
+        public string DECLPDF { get; set; }
 
 
 
         //CHECKPDF
-        public int CHECKPDF { get; set; }
+        public string CHECKPDF { get; set; }
 
         //PREPDF
-        public int PREPDF { get; set; }
+        public string PREPDF { get; set; }
 
         //转关单是否关联（0 未关联，1关联）
         //转关单是否关联
-        public int ISTURNPRE { get; set; }
+        public string ISTURNPRE { get; set; }
 
         //DECLFINISHTIME
-        public DateTime DECLFINISHTIME { get; set; }
+        public string  DECLFINISHTIME { get; set; }
 
         //INSPFINISHTIME
-        public DateTime INSPFINISHTIME { get; set; }
+        public string  INSPFINISHTIME { get; set; }
 
         //拆分条数
-        public int SPLITNUM { get; set; }
+        public string SPLITNUM { get; set; }
 
         //是否需要自审（0不需要自审；1需自审）
         //是否需要自审
-        public int SELFCHECK { get; set; }
+        public string SELFCHECK { get; set; }
 
         //自审确认（0自审未确认；1自审已确认）
         //自审确认
-        public int ISSELFCHECK { get; set; }
+        public string ISSELFCHECK { get; set; }
 
 
         //自审确认日期
-        public DateTime SELFCHECKTIME { get; set; }
+        public string  SELFCHECKTIME { get; set; }
 
         //自审确认人
         public string SELFCHECKUSERCODE { get; set; }
@@ -497,14 +497,14 @@ namespace SceneOfCustoms.Models
 
         //是否需要重量确认（0不需要重量确认；1需重量确认）
         //是否需要重量确认
-        public int WEIGHTCHECK { get; set; }
+        public string WEIGHTCHECK { get; set; }
 
         //重量确认（0重量未确认；1重量已确认）
         //重量确认
-        public int ISWEIGHTCHECK { get; set; }
+        public string ISWEIGHTCHECK { get; set; }
 
         //重量确认日期
-        public DateTime WEIGHTCHECKTIME { get; set; }
+        public string  WEIGHTCHECKTIME { get; set; }
 
         //重量确认人
         public string WEIGHTCHECKUSERCODE { get; set; }
@@ -513,84 +513,84 @@ namespace SceneOfCustoms.Models
         public string WEIGHTCHECKUSERNAME { get; set; }
 
         //确认件数
-        public int CHECKEDGOODSNUM { get; set; }
+        public string CHECKEDGOODSNUM { get; set; }
 
         //确认重量
-        public decimal CHECKEDWEIGHT { get; set; }
+        public string CHECKEDWEIGHT { get; set; }
 
         //打印状态
-        public int PRINTSTATUS { get; set; }
+        public string PRINTSTATUS { get; set; }
 
         //作业单时间
-        public DateTime ZUOYEDANTIME { get; set; }
+        public string  ZUOYEDANTIME { get; set; }
 
         //过机时间
-        public DateTime GUOJITIME { get; set; }
+        public string  GUOJITIME { get; set; }
 
-        public int GUOJIUSERID { get; set; }
+        public string GUOJIUSERID { get; set; }
 
         public string GUOJIUSERNAME { get; set; }
 
         //理单时间
-        public DateTime LIDANTIME { get; set; }
+        public string  LIDANTIME { get; set; }
 
-        public int LIDANUSERID { get; set; }
+        public string LIDANUSERID { get; set; }
 
         public string LIDANUSERNAME { get; set; }
 
         //理货资料时间
-        public DateTime LIHUOZILIAOTIME { get; set; }
+        public string  LIHUOZILIAOTIME { get; set; }
 
-        public int LIHUOZILIAOUSERID { get; set; }
+        public string LIHUOZILIAOUSERID { get; set; }
 
         public string LIHUOZILIAOUSERNAME { get; set; }
 
         //报关时间
-        public DateTime BAOGUANTIME { get; set; }
+        public string  BAOGUANTIME { get; set; }
 
-        public int BAOGUANUSERID { get; set; }
+        public string BAOGUANUSERID { get; set; }
 
         public string BAOGUANUSERNAME { get; set; }
 
         //单证放行时间
-        public DateTime DANZHENGFANGXINGTIME { get; set; }
+        public string  DANZHENGFANGXINGTIME { get; set; }
 
-        public int DANZHENGFANGXINGUSERID { get; set; }
+        public string DANZHENGFANGXINGUSERID { get; set; }
 
         public string DANZHENGFANGXINGUSERNAME { get; set; }
 
         //查验起始时间
-        public DateTime CHAYANSTARTTIME { get; set; }
+        public string  CHAYANSTARTTIME { get; set; }
 
-        public int CHAYANSTARTUSERID { get; set; }
+        public string CHAYANSTARTUSERID { get; set; }
 
         public string CHAYANSTARTUSERNAME { get; set; }
 
         //查验完成时间
-        public DateTime CHAYANENDTIME { get; set; }
+        public string  CHAYANENDTIME { get; set; }
 
-        public int CHAYANENDUSERID { get; set; }
+        public string CHAYANENDUSERID { get; set; }
 
         public string CHAYANENDUSERNAME { get; set; }
 
         //理货起始时间
-        public DateTime LIHUOSTARTTIME { get; set; }
+        public string  LIHUOSTARTTIME { get; set; }
 
-        public int LIHUOSTARTUSERID { get; set; }
+        public string LIHUOSTARTUSERID { get; set; }
 
         public string LIHUOSTARTUSERNAME { get; set; }
 
         //理货完成时间
-        public DateTime LIHUOENDTIME { get; set; }
+        public string  LIHUOENDTIME { get; set; }
 
-        public int LIHUOENDUSERID { get; set; }
+        public string LIHUOENDUSERID { get; set; }
 
         public string LIHUOENDUSERNAME { get; set; }
 
         //实物放行时间
-        public DateTime SHIWUFANGXINGTIME { get; set; }
+        public string  SHIWUFANGXINGTIME { get; set; }
 
-        public int SHIWUFANGXINGUSERID { get; set; }
+        public string SHIWUFANGXINGUSERID { get; set; }
 
         public string SHIWUFANGXINGUSERNAME { get; set; }
 
@@ -601,7 +601,7 @@ namespace SceneOfCustoms.Models
         public string IFCHAYAN { get; set; }
 
         //查验次数
-        public int CHAYANTIMES { get; set; }
+        public string CHAYANTIMES { get; set; }
 
         //查验备注
         public string CHAYANREMARK { get; set; }
@@ -610,26 +610,26 @@ namespace SceneOfCustoms.Models
         public string LIHUOSIGN { get; set; }
 
         //理货次数
-        public int LIHUOTIMES { get; set; }
+        public string LIHUOTIMES { get; set; }
 
         //扣货标识
         public string KOUHUOSIGN { get; set; }
 
         //扣货时间
-        public DateTime KOUHUOTIME { get; set; }
+        public string  KOUHUOTIME { get; set; }
 
         //是否调档
         public string IFTIAODANG { get; set; }
 
         //调档时间
-        public DateTime TIAODANGTIMES { get; set; }
+        public string  TIAODANGTIMES { get; set; }
 
         //实物加封时间
-        public DateTime SHIWUJIAFENGTIME { get; set; }
+        public string  SHIWUJIAFENGTIME { get; set; }
 
         public string SHIWUJIAFENGUSERNAME { get; set; }
 
-        public int SHIWUJIAFENGUSERID { get; set; }
+        public string SHIWUJIAFENGUSERID { get; set; }
 
         //FWO订单号
         public string FWONO { get; set; }
@@ -682,7 +682,7 @@ namespace SceneOfCustoms.Models
         public string INVOICENO { get; set; }
 
 
-        //报关集装箱车辆信息表 
+        //报关集装箱车辆信息表
         public List<Declcontainertruck> Declcontainertruck { get; set; }
 
     }

@@ -1,0 +1,237 @@
+﻿<script src="~/js/datagrid-detailview.js"></script>
+
+<link href="~/js/kindeditor/themes/default/default.css" rel="stylesheet" />
+<script src="~/js/kindeditor/kindeditor-min.js"></script>
+<script src="~/js/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript">
+
+    //1 查询条件 --日期
+    var search_condition_date = [
+        { code: 'guanwujieshou', name: '提交日期', selected: true },
+        { code: 'guanwujieshou', name: '处理日期' }
+    ];
+
+    //2 查询条件  --单据号
+    var search_code = [
+        {
+            code: 'jiedan', name: '报关单号', selected: true
+        },
+        { code: 'koufangxing', name: '报检单号' },
+        { code: 'lihuo', name: '总单号' },
+        { code: 'lihuo', name: '分单号' },
+        { code: 'shiwufangxing', name: '一程提运单号' },
+        { code: 'chuguanfeng', name: '二程提运单号' },
+        { code: 'jihuabaoguan', name: '万达号' },
+        { code: 'koufangxing', name: '载货清单号' }
+    ];
+
+
+
+    //3 查询条件 --
+    var BUSITYPE = [
+        { code: 'guanwujieshou', name: '空运进口' },
+        { code: 'guanwujieshou', name: '空运出口' },
+        { code: 'guanwujieshou', name: '海运进口' },
+        { code: 'guanwujieshou', name: '海运出口' },
+        { code: 'guanwujieshou', name: '陆运进口' },
+        { code: 'guanwujieshou', name: '陆运出口' },
+        { code: 'guanwujieshou', name: '国内结转' },
+        { code: 'baoruhaiguan', name: '叠加保税' },
+        { code: 'chayanzhilingxiafa', name: '特殊监管区' }
+    ];
+
+
+    
+    var Abnormaltype = [
+        { code: 'baoruhaiguan', name: '一级异常' },
+        { code: 'chayanzhilingxiafa', name: '二级异常' }
+    ];
+
+    $(function () {
+        $('#searchform #BUSITYPE').combobox({
+            data: BUSITYPE,
+            valueField: 'code',
+            textField: 'name'
+        });
+
+        $('#searchform #search_condition_date').combobox({
+            data: search_condition_date,
+            valueField: 'code',
+            textField: 'name'
+        });
+        $('#searchform #search_code').combobox({
+            data: search_code,
+            valueField: 'code',
+            textField: 'name'
+        });
+
+        $('#searchform #Abnormaltype').combobox({
+            data: Abnormaltype,
+            valueField: 'code',
+            textField: 'name'
+        });
+
+        $('#Abnormallogdatagrid').datagrid({
+            url: '/Order/GetData',
+            rownumbers: true,
+            dataType: 'json',
+            method: 'get',
+            toolbar: '#tb',
+            pageSize: 20,
+            pagination: true,
+            remoteSort: false,
+            nowrap: false,
+            fitColumns: true,
+            view: detailview,
+            detailFormatter: function (rowIndex, rowData) {
+                return '123123';
+            }
+            //,
+            //onDblClickCell: function (index, field, value) {
+            //    var row = $('#datagrid').datagrid('getData').rows[index];
+            //    if (row.ID != "") {
+            //        window.location.href = "/" + page + "?ID=" + row.ID;
+            //    }
+            //}
+        });
+
+        //loadListGrid('Inspect/DomesticKnot_Edit');
+    })
+</script>
+<div class="ibox-content">
+    <div class="table-responsive">
+        <table id="Abnormallogdatagrid" class="easyui-datagrid" title="异常登记" style="height:auto;min-height:500px;max-height:800px"
+               data-options="queryParams:{TYPE:'DomesticKnot'}">
+            <thead>
+                <tr>
+                    <th data-options="field: 'ck', checkbox: true"></th>
+                    <th data-options="field:'CODE',sortable:true">业务编号</th>
+                    <th data-options="field:'text',sortable:true">异常数量</th>
+                    <th data-options="field:'text',sortable:true">处理数量</th>
+                    <th data-options="field:'text',sortable:true">报检编号</th>
+                    <th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
+                    <th data-options="field:'text',sortable:true">报检单号</th>
+                    <th data-options="field:'text',sortable:true">业务种类</th>
+                    <th data-options="field:'CUSNO',sortable:true">收货人</th>
+                    <th data-options="field:'ASSOCIATEPEDECLNO',sortable:true">报关单号</th>
+                    <th data-options="field:'text',sortable:true">QP标志</th>
+                    <th data-options="field:'INOUTTYPE',sortable:true">进出口类别</th>
+                    <th data-options="field:'text',sortable:true">货物流向</th>
+                    <th data-options="field:'GOODSNUM',sortable:true">总件数</th>
+                    <th data-options="field:'GOODSWEIGHT',sortable:true">总重量</th>
+                    <th data-options="field:'ASSOCIATETRADEWAY',sortable:true">贸易方式</th>
+                    <th data-options="field:'text',sortable:true">法检标志</th>
+                    <th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
+                    <th data-options="field:'INSPSTATUS',sortable:true">报检状态</th>
+                    <th data-options="field:'DECLSTATUS',sortable:true">报关状态</th>
+                    <th data-options="field:'ISINVALID',sortable:true">作废标志</th>
+                    <th data-options="field:'text',sortable:true">作废时间</th>
+                    <th data-options="field:'text',sortable:true">OPS接单时间</th>
+                    <th data-options="field:'text',sortable:true">OPS接单人</th>
+                    <th data-options="field:'text',sortable:true">OPS接单备注</th>
+                    <th data-options="field:'text',sortable:true">报检接单时间</th>
+                    <th data-options="field:'text',sortable:true">报检接单人</th>
+                    <th data-options="field:'MOACCEPTTIME',sortable:true">制单时间</th>
+                    <th data-options="field:'SHIWUFANGXINGTIME',sortable:true">放行时间</th>
+                    <th data-options="field:'text',sortable:true">报检时间</th>
+                    <th data-options="field:'text',sortable:true">输机时间</th>
+                    <th data-options="field:'MOACCEPTUSERNAME',sortable:true">制单人</th>
+                    <th data-options="field:'SHIWUFANGXINGUSERNAME',sortable:true">放行人</th>
+                    <th data-options="field:'text',sortable:true">报检人</th>
+                    <th data-options="field:'text',sortable:true">输机人</th>
+                    @*<th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
+                    <th data-options="field:'text',sortable:true">报检单号</th>*@
+                    <th data-options="field:'CONTRACTNO',sortable:true">合同发票号</th>
+                    <th data-options="field:'text',sortable:true">异常登记</th>
+                    <th data-options="field:'text',sortable:true">异常回复</th>
+                </tr>
+            </thead>
+        </table>
+
+        <div id="tb">
+            <div class="tb_search">
+                <form id="searchform" method="post">
+                    <table>
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>业务类型</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="BUSITYPE" panelheight="auto" name="BUSITYPE"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value" type="text" name="ordercode_value" />
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>异常类型</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="Abnormaltype" panelheight="auto" name=""></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value" name="startdate" placeholder="开始时间">
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value" name="stopdate" placeholder="结束时间">
+                            </td>
+                        </tr>
+
+                        <tr>
+
+
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>已完成标志</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name="LAWCONDITION"></select>
+                            </td>
+                        </tr>
+
+                    </table>
+                </form>
+            </div>
+
+            <div class="tb_but">
+                <div class="but_left">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="AbnormallogEdit()"><i class="icon-plus"></i> 添加异常</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="fa fa-share-square-o" aria-hidden="true"></i> 导出</a>
+                </div>
+                <div class="but_right">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="icon-refresh"></i> 重置</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div id="AbnormallogEdit" style="display:none"></div>
+    <script type="text/javascript">
+        function AbnormallogEdit() {
+            $('#AbnormallogEdit').dialog({
+                title: '异常登记',
+                width: 800,
+                height: 720,
+                modal: true,
+                href: '/Abnormalmodule/AbnormallogEdit'
+            });
+        }
+    </script>

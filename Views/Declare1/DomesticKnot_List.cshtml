@@ -1,0 +1,182 @@
+﻿<script type="text/javascript">
+    $(function () {
+        loadListGrid('Declare/DomesticKnot_Edit');
+    })
+</script>
+<div class="ibox-content">
+    <div class="table-responsive">
+        <table id="datagrid" class="easyui-datagrid" title="国内结转" style="height:auto;min-height:500px;max-height:800px"
+               data-options="queryParams:{TYPE:'DomesticKnot'}">
+            <thead>
+                <tr>
+                    <th data-options="field: 'ck', checkbox: true"></th>
+                    <th data-options="field:'CODE',sortable:true">业务编号</th>
+                    <th data-options="field:'ASSOCIATEPEDECLNO',sortable:true">报关单号</th>
+                    <th data-options="field:'text',sortable:true">关务状态</th>
+                    <th data-options="field:'text',sortable:true">业务类型</th>
+                    <th data-options="field:'BUSIUNITNAME',sortable:true">企业</th>
+                    <th data-options="field:'CONTRACTNO',sortable:true">合同/发票号</th>
+                    @*<th data-options="field:'text',sortable:true">转入出类别</th>
+                    <th data-options="field:'BUSITYPE',sortable:true">进出口类别</th>
+                    <th data-options="field:'CORRESPONDNO',sortable:true">对应号</th>
+                    <th data-options="field:'text',sortable:true">出口业务方式</th>
+                    <th data-options="field:'text'">手册号</th>
+                    <th data-options="field:'text'">核销单号</th>*@
+                    <th data-options="field:'DECLSHEETNUM',sortable:true">报关单张数</th>
+                    <th data-options="field:'ASSOCIATETRADEWAY',sortable:true">贸易方式</th>
+                    <th data-options="field:'GOODSNUM',sortable:true">总件数</th>
+                    <th data-options="field:'GOODSWEIGHT',sortable:true">总重量</th>
+                    <th data-options="field:'text',sortable:true">备注</th>
+                    <th data-options="field:'text',sortable:true">OPS接单时间</th>
+                    <th data-options="field:'text',sortable:true">OPS接单人</th>
+                    <th data-options="field:'text',sortable:true">关务接单时间</th>
+                    <th data-options="field:'text',sortable:true">关务接单人</th>
+                    <th data-options="field:'GUOJITIME',sortable:true">过机时间</th>
+                    <th data-options="field:'GUOJIUSERNAME',sortable:true">过机人</th>
+                    <th data-options="field:'LIDANTIME',sortable:true">理单时间</th>
+                    <th data-options="field:'LIDANUSERNAME',sortable:true">理单人</th>
+                    <th data-options="field:'LIHUOZILIAOTIME',sortable:true">理单资料时间</th>
+                    <th data-options="field:'LIHUOZILIAOUSERNAME',sortable:true">理单资料人</th>
+                    <th data-options="field:'BAOGUANTIME',sortable:true">报关时间</th>
+                    <th data-options="field:'BAOGUANUSERNAME',sortable:true">报关人</th>
+                    <th data-options="field:'DANZHENGFANGXINGTIME',sortable:true">单证放行时间</th>
+                    <th data-options="field:'DANZHENGFANGXINGUSERNAME',sortable:true">单证放行人</th>
+                    <th data-options="field:'SHIWUFANGXINGTIME',sortable:true">实物放行时间</th>
+                    <th data-options="field:'SHIWUFANGXINGUSERNAME',sortable:true">实物放行人</th>
+                    <th data-options="field:'CUSTOMDISTRICTCODE',sortable:true">申报关区</th>
+                    <th data-options="field:'text',sortable:true">打印状态</th>
+                    <th data-options="field:'text',sortable:true">报检状态</th>
+                    <th data-options="field:'text',sortable:true">关务编号</th>
+                    <th data-options="field:'text',sortable:true">急货标识</th>
+                    <th data-options="field:'text',sortable:true">出单日期</th>
+                    <th data-options="field:'text',sortable:true">报关方式</th>
+                    <th data-options="field:'text',sortable:true">海关通关状态</th>
+                    <th data-options="field:'text',sortable:true">签收号</th>
+                    <th data-options="field:'text',sortable:true">签收人</th>
+                    <th data-options="field:'text',sortable:true">签收日期</th>
+                    <th data-options="field:'text',sortable:true">报关资料齐全标志</th>
+                    <th data-options="field:'text',sortable:true">文档类别</th>
+                </tr>
+            </thead>
+        </table>
+
+        <div id="tb">
+            <div class="tb_search">
+                <form id="searchform" method="post">
+                    <table>
+                        <tr>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>业务方式</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="service_model" panelheight="auto" name="service_model"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value" type="text" name="ordercode_value" />
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_operator" panelheight="auto" name="oprname"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value" type="text" name="oprname_value" />
+                            </td>
+
+
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value" name="startdate" placeholder="开始时间">
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value" name="stopdate" placeholder="结束时间">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>海关通关状态</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox value combobox_width" id="customs_state" panelheight="auto" name="customs_state"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>业务对象</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="business_object" panelheight="auto" name="business_object"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>急货标识</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name=""></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>报关资料齐全标志</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name=""></select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>文档类型</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox value combobox_width" id="doc_type" panelheight="auto" name="doc_type"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>报关方式</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox value combobox_width" id="declaration_type" panelheight="auto" name="declaration_type"></select>
+                            </td>
+                        </tr>
+
+                    </table>
+                </form>
+            </div>
+            <div class="tb_but">
+                <div class="but_left">
+                    @*<a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-refresh"></i> 重置</a>*@
+                </div>
+                <div class="but_right">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="icon-refresh"></i> 重置</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+ 
+</div>
+
+

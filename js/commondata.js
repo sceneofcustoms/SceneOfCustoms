@@ -123,10 +123,7 @@ var out_in = [
 
 
 
-
-
 $(function () {
-
 
      $('#searchform #search_operator').combobox({
         data: search_operator,

@@ -12,15 +12,13 @@ using System.Web.Services;
 
 namespace SceneOfCustoms
 {
-    public class obj
-    {
-        public string Message { get; set; }
-        public bool Success { get; set; }
-    }
+
 
     /// <summary>
     /// SyncDataFromSap 的摘要说明
     /// </summary>
+    //[System.Xml.Serialization.XmlInclude(typeof(OrderEntity))]
+    //[System.Xml.Serialization.XmlInclude(typeof(OrderEntity))]
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
@@ -37,21 +35,23 @@ namespace SceneOfCustoms
         <br>19支付特许权使用费确认(PAYPOYALTIES)<br>20报关申报单位代码(REPUNITCODE)<br>21报关申报单位名称(REPUNITNAME)<br>22委托人员(SUBMITUSERNAME)
         <br>23委托时间(SUBMITTIME)<br>24委托电话(SUBMITUSERPHONE)<br>25运抵编号(ARRIVEDNO)<br>26集装箱车号信息(CONTAINERTRUCK)<br>27实际件数(ACTUALGOODSNUM)
         <br>28实际毛重(ACTUALGOODSGW)<br>29货物类型(整箱或散箱用中文标记)(GOODSTYPE)<br>30报关提单号(SECONDLADINGBILLNO)")]
-        public Object SyncData(List<OrderEntity> ld)
+        public Msgobj[] SyncData(List<OrderEntity> ld)
         {
+            Msgobj MO = new Msgobj();
             IDatabase db = SeRedis.redis.GetDatabase();//先将报文数据保存至缓存数据库
             db.ListRightPush("SyncDataFromSap", ld.ToString());
 
             if (ld.Count() == 0)
             {
                 OrderEntity obj = new OrderEntity();
+
                 obj.BUSITYPE = "1";
                 obj.CODE = "2";
                 obj.FOONO = "3";
                 obj.TOTALNO = "4";
                 obj.DIVIDENO = "5";
-                obj.GOODSNUM = 6;
-                obj.GOODSWEIGHT = 7;
+                obj.GOODSNUM = "6";
+                obj.GOODSWEIGHT = "7";
                 obj.PACKKIND = "8";
                 obj.REPWAYID = "9";
                 obj.DECLWAY = "10";
@@ -59,19 +59,19 @@ namespace SceneOfCustoms
                 obj.CUSNO = "12";
                 obj.CUSTOMDISTRICTCODE = "13";
                 obj.PORTCODE = "14";
-                obj.PRICEIMPACT = 15;
-                obj.PAYPOYALTIES = 16;
+                obj.PRICEIMPACT = "15";
+                obj.PAYPOYALTIES = "16";
                 obj.SFGOODSUNIT = "17";
                 obj.REPUNITCODE = "18";
                 obj.CREATEUSERNAME = "19";
-                obj.CREATETIME = DateTime.Now.ToLocalTime();
+                obj.CREATETIME = DateTime.Now.ToLocalTime().ToString();
                 obj.ARRIVEDNO = "20";
-                obj.CHECKEDGOODSNUM = 21;
-                obj.CHECKEDWEIGHT = 22;
+                obj.CHECKEDGOODSNUM = "21";
+                obj.CHECKEDWEIGHT = "22";
                 obj.ENTRUSTTYPEID = "23";
                 obj.GOODSXT = "24";
                 obj.BUSIUNITNAME = "25";
-                obj.GOODSTYPEID = 26;
+                obj.GOODSTYPEID = "26";
                 obj.LADINGBILLNO = "27";
                 obj.ISPREDECLARE = "28";
                 obj.ENTRUSTREQUEST = "29";
@@ -80,14 +80,14 @@ namespace SceneOfCustoms
                 obj.SECONDLADINGBILLNO = "32";
                 obj.MANIFEST = "33";
                 obj.WOODPACKINGID = "34";
-                obj.WEIGHTCHECK = 35;
-                obj.ISWEIGHTCHECK = 36;
+                obj.WEIGHTCHECK = "35";
+                obj.ISWEIGHTCHECK = "36";
                 obj.SHIPNAME = "37";
                 obj.FILGHTNO = "38";
                 obj.INSPUNITNAME = "39";
                 obj.TURNPRENO = "40";
                 obj.INVOICENO = "41";
-                obj.SPECIALRELATIONSHIP = 42;
+                obj.SPECIALRELATIONSHIP = "42";
 
 
                 OrderEntity obj1 = new OrderEntity();
@@ -96,8 +96,8 @@ namespace SceneOfCustoms
                 obj1.FOONO = "123123123";
                 obj1.TOTALNO = "123123123111aaaa";
                 obj1.DIVIDENO = "123123123111aaaa";
-                obj1.GOODSNUM = 123;
-                obj1.GOODSWEIGHT = 123123;
+                obj1.GOODSNUM = "123";
+                obj1.GOODSWEIGHT = "123123";
                 obj1.SFGOODSUNIT = "bb";
                 obj1.PACKKIND = "123123123";
                 obj1.REPWAYID = "123123123";
@@ -106,18 +106,18 @@ namespace SceneOfCustoms
                 obj1.CUSNO = "123123123";
                 obj1.CUSTOMDISTRICTCODE = "123123123";
                 obj1.PORTCODE = "123123123";
-                obj1.PRICEIMPACT = 1231231;
-                obj1.PAYPOYALTIES = 123123;
+                obj1.PRICEIMPACT = "1231231";
+                obj1.PAYPOYALTIES = "123123";
                 obj1.REPUNITCODE = "123123123";
                 obj1.CREATEUSERNAME = "123123123";
-                obj1.CREATETIME = DateTime.Now.ToLocalTime();
+                obj1.CREATETIME = DateTime.Now.ToLocalTime().ToString();
                 obj1.ARRIVEDNO = "123";
-                obj1.CHECKEDGOODSNUM = 123;
-                obj1.CHECKEDWEIGHT = 123;
+                obj1.CHECKEDGOODSNUM = "123";
+                obj1.CHECKEDWEIGHT = "123";
                 obj1.ENTRUSTTYPEID = "123";
                 obj1.GOODSXT = "123";
                 obj1.BUSIUNITNAME = "123";
-                obj1.GOODSTYPEID = 123;
+                obj1.GOODSTYPEID = "123";
                 obj1.LADINGBILLNO = "123";
                 obj1.ISPREDECLARE = "123";
                 obj1.ENTRUSTREQUEST = "123";
@@ -126,14 +126,14 @@ namespace SceneOfCustoms
                 obj1.SECONDLADINGBILLNO = "123";
                 obj1.MANIFEST = "123";
                 obj1.WOODPACKINGID = "123";
-                obj1.WEIGHTCHECK = 123;
-                obj1.ISWEIGHTCHECK = 123;
+                obj1.WEIGHTCHECK = "123";
+                obj1.ISWEIGHTCHECK = "123";
                 obj1.SHIPNAME = "123";
                 obj1.FILGHTNO = "123";
                 obj1.INSPUNITNAME = "123";
                 obj1.TURNPRENO = "123";
                 obj1.INVOICENO = "123";
-                obj1.SPECIALRELATIONSHIP = 42;
+                obj1.SPECIALRELATIONSHIP = "42";
 
                 //List<OrderEntity> ld = new List<OrderEntity>();
                 ld.Add(obj);
@@ -227,12 +227,19 @@ namespace SceneOfCustoms
 
             //return "true";
 
-            obj values = new obj();
-            values.Success = true;
-            values.Message = "成功";
-            return values;
+            MO.MSG_TYPE = "S";
+            MO.MSG_ID = 1;
+            MO.MSG_TXT = "测试";
+            MO.CODE = "12312312312";
+            Msgobj[] _MO = new Msgobj[1];
+            _MO[0] = MO;
+            return _MO;
 
             //return Json(new { Success = true, Message = "成功" }, JsonRequestBehavior.AllowGet);
+
+
+
+
             //new { Success = true, Message = "成功" }
             //return Json(new { Success = true, Message = "成功" }, JsonRequestBehavior.AllowGet);
         }

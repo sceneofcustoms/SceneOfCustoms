@@ -82,8 +82,10 @@ namespace SceneOfCustoms.Controllers
         {
             string BUSITYPE = Request.Params["BUSITYPE"];
             string TYPE = Request.Params["TYPE"];
-            int PageSize = Convert.ToInt32(Request.Params["rows"]);
-            int Page = Convert.ToInt32(Request.Params["page"]);
+            //int PageSize = Convert.ToInt32(Request.Params["rows"]);
+            int PageSize = 20;
+            //int Page = Convert.ToInt32(Request.Params["page"]);
+            int Page = 1;
             int total = 0;
 
             string sql = "select t.* from list_order  t where 1=1  ";
@@ -233,6 +235,53 @@ namespace SceneOfCustoms.Controllers
             }
 
 
+            if (Request.Params.AllKeys.Contains("SHANDANTOTAL"))
+            {
+                sql += "  SHANDANTOTAL =  '" + Request.Form["SHANDANTOTAL"] + "',";
+            }
+            if (Request.Params.AllKeys.Contains("SHANDANDESC"))
+            {
+                sql += "  SHANDANDESC =  '" + Request.Form["SHANDANDESC"] + "',";
+            }
+            if (Request.Params.AllKeys.Contains("GAIDANTOTAL"))
+            {
+                sql += "  GAIDANTOTAL =  '" + Request.Form["GAIDANTOTAL"] + "',";
+            }
+            if (Request.Params.AllKeys.Contains("GAIDANDESC"))
+            {
+                sql += "  GAIDANDESC =  '" + Request.Form["GAIDANDESC"] + "',";
+            }
+
+            //SYY 9-27
+            if (Request.Params.AllKeys.Contains("CHAYANZHILINGXIAFATIME"))
+            {
+                sql += "  CHAYANZHILINGXIAFATIME =  to_date('" + Request.Form["CHAYANZHILINGXIAFATIME"] + "','yyyy-MM-dd'),";
+            }
+            if (Request.Params.AllKeys.Contains("KOUHUOTIME"))
+            {
+                sql += "  KOUHUOTIME =  to_date('" + Request.Form["KOUHUOTIME"] + "','yyyy-MM-dd'),";
+            }
+
+            //lakers
+            if (Request.Params.AllKeys.Contains("IFXUNZHENG"))
+            {
+                sql += "  IFXUNZHENG =  '" + Request.Form["IFXUNZHENG"] + "',";
+            }
+
+            if (Request.Params.AllKeys.Contains("XUNZHENGDESC"))
+            {
+                sql += "  XUNZHENGDESC =  '" + Request.Form["XUNZHENGDESC"] + "',";
+            }
+            if (Request.Params.AllKeys.Contains("CHAYANTYPE"))
+            {
+                sql += "  CHAYANTYPE =  '" + Request.Form["CHAYANTYPE"] + "',";
+            }
+
+
+            sql += "  IFSHANDAN =  '" + Request.Form["IFSHANDAN"] + "',";
+            sql += "  IFGAIDAN =  '" + Request.Form["IFGAIDAN"] + "',";
+            sql += "  IFYIJIAO =  '" + Request.Form["IFYIJIAO"] + "',";
+            sql += "  LAWCONDITION =  '" + Request.Form["LAWCONDITION"] + "',";
 
             sql = sql.Substring(0, sql.Length - 1);
             sql += " where ID =" + ID;

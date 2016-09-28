@@ -1,5 +1,4 @@
-﻿
-<form id="OrderFrom" method="post">
+﻿<form id="OrderFrom" method="post">
     <div id="" style="margin-bottom:20px" class="easyui-panel" title="订单主信息"
          data-options="collapsible:true">
         <input type="hidden" name="ID" />
@@ -7,95 +6,43 @@
 
             <tr>
                 <td>
-                    <label for="FWONO">FWO订单号:</label>
-                    <input class="easyui-textbox" type="text" name="FWONO" disabled="disabled" />
+                    <label>FWO号:</label>
+                    <input class="easyui-textbox" type="text" name="CODE" disabled="disabled" />
                 </td>
+
                 <td>
-                    <label for="FOONO">FO号:</label>
+                    <label>FOO号:</label>
                     <input class="easyui-textbox" type="text" name="FOONO" disabled="disabled" />
                 </td>
-                <td>
-                    <label for="TOTALNO">总单号:</label>
-                    <input class="easyui-textbox" type="text" name="TOTALNO" disabled="disabled" />
-                </td>
-                <td>
-                    <label for="DIVIDENO">分单号:</label>
-                    <input class="easyui-textbox" type="text" name="DIVIDENO" disabled="disabled" />
-                </td>
-            </tr>
 
-            <tr>
-                <td>
-                    <label for="text">万达号:</label>
-                    <input class="easyui-textbox" type="text" name="text" disabled="disabled" />
-                </td>
-                <td>
-                    <label for="MANIFEST">载货清单号:</label>
-                    <input class="easyui-textbox" type="text" name="MANIFEST" disabled="disabled" />
-                </td>
-                <td>
-                    <div style="text-align:center">
-                        散货:
-                        <input class="" type="radio" name="" disabled="disabled" />
-                        整箱:
-                        <input class="" type="radio" name="" disabled="disabled" />
-                        拼箱:
-                        <input class="" type="radio" name="" disabled="disabled" />
-                    </div>
-                </td>
-
-                <td>
-                    <div style="text-align:center">
-                        木质包装:
-                        <input class="" type="checkbox" name="" disabled="disabled" />
-                        通关单否:
-                        <input class="" type="checkbox" name="" disabled="disabled" />
-                        法检标志:
-                        <input class="" type="checkbox" name="" disabled="disabled" />
-                    </div>
-                </td>
-            </tr>
-
-
-            <tr>
                 <td>
                     <label for="CODE">业务编号:</label>
                     <input class="easyui-textbox" type="text" name="CODE" disabled="disabled" />
                 </td>
                 <td>
-                    <label for="name">报检单号:</label>
-                    <input class="easyui-textbox" type="text" name="" disabled="disabled" />
-                </td>
-                <td>
-                    <label for="">收货人:</label>
-                    <input class="easyui-textbox" type="text" name="" disabled="disabled" />
-                </td>
-                <td>
-                    <label for="CONTRACTNO"> 合同/发票号:</label>
-                    <input class="easyui-textbox" type="text" name="CONTRACTNO" disabled="disabled" />
+                    <label for="REPWAYID">申报方式:</label>
+                    <input class="easyui-textbox" type="text" name="REPWAYID" disabled="disabled" />
                 </td>
             </tr>
+
             <tr>
                 <td>
-                    <label for="GOODSNUM"> 总件数:</label>
+                    <label>发货人:</label>
+                    <input class="easyui-textbox" type="text" name="BUSIUNITNAME" disabled="disabled" />
+                </td>
+                <td>
+                    <label>转关录入号:</label>
+                    <input class="easyui-textbox" type="text" name="TURNPRENO" disabled="disabled" />
+                </td>
+                <td>
+                    <label>总件数:</label>
                     <input class="easyui-textbox" type="text" name="GOODSNUM" disabled="disabled" />
                 </td>
                 <td>
-                    <label for="GOODSWEIGHT">总重量:</label>
+                    <label>总重量:</label>
                     <input class="easyui-textbox" type="text" name="GOODSWEIGHT" disabled="disabled" />
                 </td>
-                <td>
-                    <label for="FIRSTLADINGBILLNO">一程提运单号:</label>
-                    <input class="easyui-textbox" type="text" name="FIRSTLADINGBILLNO" disabled="disabled" />
-                </td>
-                <td>
-                    <label for="SECONDLADINGBILLNO">二程提运单号:</label>
-                    <input class="easyui-textbox" type="text" name="SECONDLADINGBILLNO" disabled="disabled" />
-                </td>
             </tr>
-         
- 
-
         </table>
     </div>
 
@@ -165,6 +112,8 @@
                 </td>
             </tr>
 
+
+
             <tr>
                 <td>
                     <label for="XUNZHENGTIME">熏蒸时间:</label>
@@ -200,7 +149,7 @@
                     <label for="">查验备注:</label>
                     <input class="easyui-textbox" type="text" name="CHAYANREMARK" />
                 </td>
-                <td >
+                <td>
                     <label>查验类别:</label>
                     <select class="easyui-combobox" name="CHAYANTYPE">
                         <option value="">请选择</option>
@@ -242,7 +191,6 @@
                     <input class="easyui-textbox" name="GAIDANDESC">
                 </td>
             </tr>
-
         </table>
     </div>
 
@@ -276,7 +224,9 @@
             </tr>
         </thead>
     </table>
+
 </div>
+
 
 
 <script type="text/javascript">

@@ -1,5 +1,60 @@
 ﻿<script type="text/javascript">
+
+    //1 查询条件 --日期
+    var search_condition_date = [
+        { code: 'guanwujieshou', name: '报检日期', selected: true },
+        { code: 'guanwujieshou', name: '放行日期' },
+        { code: 'guanwujieshou', name: '查验日期' },
+        { code: 'baoruhaiguan', name: '查检放行日期' },
+        { code: 'shandankaishi', name: '熏蒸日期' },
+        { code: 'shandanwancheng', name: '删单日期' },
+        { code: 'gaidankaishi', name: '改单日期' }
+    ];
+
+    //2 查询条件  --单据号
+    var search_code = [
+        {
+            code: 'jiedan', name: 'FWO订单号', selected: true
+        },
+        { code: 'koufangxing', name: 'FO号' },
+        { code: 'lihuo', name: '总单号' },
+        { code: 'lihuo', name: '分单号' },
+        { code: 'jihuabaoguan', name: '万达号' },
+        { code: 'koufangxing', name: '载货清单号' },
+        { code: 'koufangxing', name: '报检单号' },
+        { code: 'koufangxing', name: '业务编号' },
+        { code: 'shiwufangxing', name: '一程提运单号' },
+        { code: 'chuguanfeng', name: '二程提运单号' },
+        { code: 'chuguanfeng', name: '通关单号' },
+        { code: 'baoguan', name: '集装箱号' }
+    ];
+
+
+
+    //3 查询条件 --
+    var BUSITYPE = [
+        { code: 'guanwujieshou', name: '国内结转'},
+        { code: 'baoruhaiguan', name: '叠加保税' },
+        { code: 'chayanzhilingxiafa', name: '特殊监管区' }
+    ];
+
     $(function () {
+        $('#searchform #BUSITYPE').combobox({
+            data: BUSITYPE,
+            valueField: 'code',
+            textField: 'name'
+        });
+
+        $('#searchform #search_condition_date').combobox({
+            data: search_condition_date,
+            valueField: 'code',
+            textField: 'name'
+        });
+        $('#searchform #search_code').combobox({
+            data: search_code,
+            valueField: 'code',
+            textField: 'name'
+        });
         loadListGrid('Inspect/DomesticKnot_Edit');
     })
 </script> 
@@ -57,6 +112,17 @@
                     <table>
                         <tr>
 
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>业务类型</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" id="BUSITYPE" panelheight="auto" name="BUSITYPE"></select>
+                            </td>
+
+
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
                                     <option>业务方式</option>
@@ -66,21 +132,15 @@
                                 <select class="easyui-combobox combobox_width value" id="service_model" panelheight="auto" name="service_model"></select>
                             </td>
 
-                            <td class="search_margin">
-                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
-                            </td>
-                            <td>
-                                <input class="easyui-textbox value" type="text" name="ordercode_value" />
-                            </td>
 
                             <td class="search_margin">
-                                <select class="easyui-combobox" id="search_operator" panelheight="auto" name="oprname"></select>
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>转入出类型</option>
+                                </select>
                             </td>
                             <td>
-                                <input class="easyui-textbox value" type="text" name="oprname_value" />
+                                <select class="easyui-combobox combobox_width value" id="out_in" panelheight="auto" name="out_in"></select>
                             </td>
-
-
 
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
@@ -94,70 +154,32 @@
                         </tr>
 
                         <tr>
+
                             <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto">
-                                    <option>海关通关状态</option>
-                                </select>
+                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
                             </td>
                             <td>
-                                <select class="easyui-combobox value combobox_width" id="customs_state" panelheight="auto" name="customs_state"></select>
+                                <input class="easyui-textbox value" type="text" name="ordercode_value" />
                             </td>
 
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
-                                    <option>业务对象</option>
+                                    <option>法检标志</option>
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value" id="business_object" panelheight="auto" name="business_object"></select>
-                            </td>
-
-                            <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto">
-                                    <option>急货标识</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name=""></select>
-                            </td>
-
-                            <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto">
-                                    <option>报关资料齐全标志</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name=""></select>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto">
-                                    <option>文档类型</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="easyui-combobox value combobox_width" id="doc_type" panelheight="auto" name="doc_type"></select>
-                            </td>
-
-                            <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto">
-                                    <option>报关方式</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="easyui-combobox value combobox_width" id="declaration_type" panelheight="auto" name="declaration_type"></select>
+                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name="LAWCONDITION"></select>
                             </td>
                         </tr>
 
                     </table>
                 </form>
             </div>
+
             <div class="tb_but">
                 <div class="but_left">
-                    @*<a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-search"></i> 搜索</a>
-                    <a class="btn btn-primary btn-xs" href="javascript:void(0)"><i class="icon-refresh"></i> 重置</a>*@
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-refresh"></i> 批量更新</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="fa fa-share-square-o" aria-hidden="true"></i> 导出</a>
                 </div>
                 <div class="but_right">
                     <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-search"></i> 搜索</a>

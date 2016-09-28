@@ -12,6 +12,69 @@ namespace SceneOfCustoms.Controllers
     [Authorize]
     public class DeclareController : Controller
     {
+
+        //一线进口列表
+        public ActionResult OnelineIn_List()
+        {
+            ViewData["crumb"] = "报关操作-->一线进口";
+            return View();
+        }
+
+        //一线进口编辑
+        public ActionResult OnelineIn_Edit()
+        {
+            ViewData["crumb"] = "报关操作-->一线进口编辑";
+            return View();
+        }
+
+        //一线出口列表
+        public ActionResult OnelineOut_List()
+        {
+            ViewData["crumb"] = "报关操作-->一线出口";
+            return View();
+        }
+
+        //一线出口编辑
+        public ActionResult OnelineOut_Edit()
+        {
+            ViewData["crumb"] = "报关操作-->一线出口编辑";
+            return View();
+        }
+
+        //结转BLC列表
+        public ActionResult DomesticBlc_List()
+        {
+            ViewData["crumb"] = "报关操作-->结转BLC";
+            return View();
+        }
+
+        //结转BLC编辑
+        public ActionResult DomesticBlc_Edit()
+        {
+            ViewData["crumb"] = "关务操作-->国内结转编辑";
+            string ID = Request["ID"];
+            string sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where id=" + ID;
+            DataTable dt = DBMgr.GetDataTable(sql);
+
+            if (!string.IsNullOrEmpty(dt.Rows[0]["ASSOCIATENO"] + ""))
+            {
+                string ASSOCIATENO = dt.Rows[0]["ASSOCIATENO"] + "";
+                string CODE = ASSOCIATENO.Replace("GL", "");
+
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE + " and BUSITYPE =41";
+                dt = DBMgr.GetDataTable(sql);
+                ViewData["id1"] = dt.Rows[0]["ID"] + "";//一单ID
+
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE =40";
+                dt = DBMgr.GetDataTable(sql);
+                ViewData["id2"] = dt.Rows[0]["ID"] + "";//二单ID
+                ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
+            }
+
+            ViewData["crumb"] = "报关操作-->结转BLC编辑";
+            return View();
+        }
+
         //空进列表
         public ActionResult AirIn_List()
         {
@@ -198,9 +261,10 @@ namespace SceneOfCustoms.Controllers
                 dt = DBMgr.GetDataTable(sql);
                 ViewData["id1"] = dt.Rows[0]["ID"] + "";//一单ID
 
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE =40";
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE =40";
                 dt = DBMgr.GetDataTable(sql);
                 ViewData["id2"] = dt.Rows[0]["ID"] + "";//二单ID
+                ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
             }
 
             return View();
