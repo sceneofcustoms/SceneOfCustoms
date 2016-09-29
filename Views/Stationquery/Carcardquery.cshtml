@@ -1,25 +1,20 @@
 ﻿<script type="text/javascript">
     //1 查询条件 --日期
     var search_condition_date = [
-        { code: 'guanwujieshou', name: '申请日期', selected: true },
-        { code: 'shandankaishi', name: '理货状态日期' },
-        { code: 'shandanwancheng', name: '核放单状态日期' },
-        { code: 'gaidankaishi', name: '关联完毕日期' },
+        { code: 'guanwujieshou', name: '申请开始时间', selected: true }
     ];
     //2 查询条件  --单据号
     var search_code = [
         {
-            code: 'jiedan', name: '单据号', selected: true
+            code: 'jiedan', name: '分单号', selected: true
         },
-        { code: 'lihuo', name: '总单号' },
-        { code: 'jihuabaoguan', name: '分单号' },
-        { code: 'lihuoziliaoqiquan', name: '车辆号' },
-        { code: 'baoguan', name: '智能卡号' },
-        { code: 'danzhengfangxing', name: '集装箱号' },
-        { code: 'shiwufangxing', name: '报关单号' },
+        { code: 'lihuo', name: '批次号' },
+        { code: 'jihuabaoguan', name: '总单号' },
+        { code: 'lihuoziliaoqiquan', name: '车号' },
+        { code: 'baoguan', name: '卡号' }
     ];
     $(function () {
-        loadListGrid('Declare/OnelineIn_Edit');
+        loadListGrid("");
         $('#searchform #search_condition_date').combobox({
             data: search_condition_date,
             valueField: 'code',
@@ -36,58 +31,16 @@
     <div class="table-responsive">
         <table id="datagrid" class="easyui-datagrid" title="车卡关联" style="height:auto;min-height:500px;max-height:800px"
                data-options="queryParams:{BUSITYPE:11}">
-            <thead data-options="frozen:true">
-                <tr>
-                    <th data-options="field: 'ID',width:80,checkbox:true"></th>
-                    <th data-options="field:'BUSIUNITNAME',sortable:true,">收货人</th>
-                    <th data-options="field:'TOTALNO',sortable:true">总单号</th>
-                    <th data-options="field:'DIVIDENO',sortable:true">分单号</th>
-                    <th data-options="field:'GOODSNUM',sortable:true">总件数</th>
-                    <th data-options="field:'GOODSWEIGHT',sortable:true">总重量</th>
-                </tr>
-            </thead>
             <thead>
                 <tr>
-                    <th data-options="field:'YWBH',sortable:true">业务编号</th>
-                    <th data-options="field:'TURNPRENO',sortable:true">转关预录号</th>
-                    <th data-options="field:'CONTAINERNO',sortable:true">集装箱号</th>
-                    <th data-options="field:'FIRSTLADINGBILLNO',sortable:true">一程提运单号</th>
-                    <th data-options="field:'SECONDLADINGBILLNO',sortable:true">二程提运单号</th>
-                    <th data-options="field:'FWONO',sortable:true">FWO订单号</th>
-                    <th data-options="field:'FOCUSTOMSNO',sortable:true">FO号</th>
-                    <th data-options="field:'CUSTOMDISTRICTCODE',sortable:true">关区代码</th>
-                    <th data-options="field:'GUANWUJIESHOUTIME',sortable:true">关务接受时间</th>
-                    <th data-options="field:'GUANWUJIESHOUUSERNAME',sortable:true">关务接受人</th>
-                    <th data-options="field:'BAORUHAIGUANTIME',sortable:true">报入海关时间</th>
-                    <th data-options="field:'BAORUHAIGUANUSERNAME',sortable:true">报入海关人</th>
-                    <th data-options="field:'SHANDANKAISHITIME',sortable:true">删单开始时间</th>
-                    <th data-options="field:'SHANDANKAISHIUSERNAME',sortable:true">删单开始人</th>
-                    <th data-options="field:'SHANDANWANCHENGTIME',sortable:true">删单完成时间</th>
-                    <th data-options="field:'SHANDANWANCHENGUSERNAME',sortable:true">删单完成人</th>
-                    <th data-options="field:'GAIDANKAISHITIME',sortable:true">改单开始时间</th>
-                    <th data-options="field:'GAIDANKAISHIUSERNAME',sortable:true">改单开始人</th>
-                    <th data-options="field:'GAIDANWANCHENGTIME',sortable:true">改单完成时间</th>
-                    <th data-options="field:'GAIDANWANCHENGUSERNAME',sortable:true">改单完成人</th>
-                    <th data-options="field:'DANZHENGFANGXINGTIME',sortable:true">单证放行时间</th>
-                    <th data-options="field:'DANZHENGFANGXINGUSERNAME',sortable:true">单证放行人</th>
-                    <th data-options="field:'SHIWUFANGXINGTIME',sortable:true">实物放行时间</th>
-                    <th data-options="field:'SHIWUFANGXINGUSERNAME',sortable:true">实物放行人</th>
-                    <th data-options="field:'DECLSHEETNUM',sortable:true">报关单张数</th>
-                    <th data-options="field:'LAWCONDITION',sortable:true">是否法检</th>
-                    <th data-options="field:'ASSOCIATEPEDECLNO',sortable:true">报关单号</th>
-                    <th data-options="field:'ASSOCIATETRADEWAY',sortable:true">贸易方式</th>
-                    <th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
-                    <th data-options="field:'LIDANUSERNAME',sortable:true">理单人</th>
-                    <th data-options="field:'STATUS',sortable:true">实物放行状态</th>
-                    <th data-options="field:'CONTRACTNO',sortable:true">合同/发票号</th>
-                    <th data-options="field:'TURNPRENO',sortable:true">转关转录单号</th>
-                    <th data-options="field:'text',sortable:true">关务状态</th>
-                    <th data-options="field:'PASSMODE',sortable:true">分批放行</th>
-                    <th data-options="field:'PASSMODE',sortable:true">申请放行</th>
-                    <th data-options="field:'text',sortable:true">海关通关状态</th>
-                    <th data-options="field:'text',sortable:true">签收号</th>
-                    <th data-options="field:'text',sortable:true">签收人</th>
-                    <th data-options="field:'text',sortable:true">签收日期</th>
+                    <th data-options="field:'YWBH',sortable:true">车号</th>
+                    <th data-options="field:'TURNPRENO',sortable:true">卡号</th>
+                    <th data-options="field:'CONTAINERNO',sortable:true">进/出口类型</th>
+                    <th data-options="field:'FIRSTLADINGBILLNO',sortable:true">核放单号</th>
+                    <th data-options="field:'SECONDLADINGBILLNO',sortable:true">核放单关联状态</th>
+                    <th data-options="field:'FWONO',sortable:true">到货状态</th>
+                    <th data-options="field:'FOCUSTOMSNO',sortable:true">理货状态</th>
+                    <th data-options="field:'CUSTOMDISTRICTCODE',sortable:true">核放单状态</th>
                 </tr>
             </thead>
         </table>
@@ -103,12 +56,6 @@
                                 <input class="easyui-textbox value" type="text" name="ordercode_value" />
                             </td>
 
-                            <td class="search_margin">
-                                <select class="easyui-combobox" id="search_operator" panelheight="auto" name="oprname"></select>
-                            </td>
-                            <td>
-                                <input class="easyui-textbox value" type="text" name="oprname_value" />
-                            </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
                                     <option>业务类型</option>
@@ -135,7 +82,7 @@
                         </tr>
 
 
-                        <tr>
+                        @*<tr>
                             <td class="search_margin">
                                 <select class="easyui-combobox " panelheight="auto">
                                     <option>核放单状态</option>
@@ -158,7 +105,7 @@
                                     <option>理货正常</option>
                                 </select>
                             </td>
-                        </tr>
+                        </tr>*@
         
                     </table>
                 </form>

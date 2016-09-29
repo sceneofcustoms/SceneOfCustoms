@@ -35,10 +35,10 @@
 
 //3 查询条件  --操作人
 var search_operator = [
-    { code: 'jiedan', name: '过机人', selected: true },
-    { code: 'lihuo', name: '理单人' },
-    { code: 'jihuabaoguan', name: '理货资料齐全人' },
-    { code: 'lihuoziliaoqiquan', name: '报关人' },
+    { code: 'jiedan', name: '报关人', selected: true },
+    { code: 'lihuo', name: '删单人' },
+    { code: 'jihuabaoguan', name: '改单人' },
+    { code: 'lihuoziliaoqiquan', name: '查验人' },
     { code: 'baoguan', name: '单证放行人' },
     { code: 'danzhengfangxing', name: '实物放行人' }
 ];
@@ -111,8 +111,7 @@ var declare_type = [
 var declaration_type = [
        { code: '1', name: '逐笔' },
        { code: '2', name: '转厂' },
-       { code: '3', name: '集中' },
-       { code: '4', name: '作业单' }
+       { code: '3', name: '集中' }
 ];
 
 //10 转入 转出
@@ -125,13 +124,13 @@ var out_in = [
 
 $(function () {
 
-     $('#searchform #search_operator').combobox({
+    $('#searchform #search_operator').combobox({
         data: search_operator,
         valueField: 'code',
         textField: 'name'
     });
 
-     $('#searchform #CUSTOMDISTRICTCODE').combobox({
+    $('#searchform #CUSTOMDISTRICTCODE').combobox({
         url: '/Order/Get_SBGQ',
         method: 'get',
         valueField: 'CODE',
@@ -140,7 +139,7 @@ $(function () {
         panelHeight: 'auto',
         formatter: formatItem,
         label: 'CUSTOMDISTRICTCODE:',
-        panelHeight:'200',
+        panelHeight: '200',
         labelPosition: 'top'
     });
 
@@ -372,10 +371,38 @@ function manySubmitForm() {
 }
 
 
+function BaoguandanInfo() {
+    $('#mainWin').dialog({
+        title: '报关单信息',
+        width: 800,
+        height: 400,
+        modal: true,
+        href: '/Order/BaoguandanInfo'
+    });
+}
 
+function JizhuangxiangInfo() {
+    $('#mainWin').dialog({
+        title: '集装箱信息',
+        width: 800,
+        height: 400,
+        modal: true,
+        href: '/Order/JizhuangxiangInfo'
+    });
+}
+function TongguandanInfo() {
+    $('#mainWin').dialog({
+        title: '通关单信息',
+        width: 800,
+        height: 400,
+        modal: true,
+        href: '/Order/TongguandanInfo'
+    });
+}
 
 
 function manyEditForm() {
+    debugger;
     $('#many_form form').each(function (i) {
         var formid = "#" + this.id;
         var findid = formid + " input[name=ID]";
@@ -407,10 +434,14 @@ function loadListGrid(page) {
         pageSize: 20,
         pagination: true,
         onDblClickCell: function (index, field, value) {
-            var row = $('#datagrid').datagrid('getData').rows[index];
-            if (row.ID != "") {
-                window.location.href = "/" + page + "?ID=" + row.ID;
+            debugger;
+            if (page != "") {
+                var row = $('#datagrid').datagrid('getData').rows[index];
+                if (row.ID != "") {
+                    window.location.href = "/" + page + "?ID=" + row.ID;
+                }
             }
+
         }
     });
 }

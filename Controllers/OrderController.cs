@@ -82,16 +82,16 @@ namespace SceneOfCustoms.Controllers
         {
             string BUSITYPE = Request.Params["BUSITYPE"];
             string TYPE = Request.Params["TYPE"];
-            //int PageSize = Convert.ToInt32(Request.Params["rows"]);
-            int PageSize = 20;
-            //int Page = Convert.ToInt32(Request.Params["page"]);
-            int Page = 1;
+            int PageSize = Convert.ToInt32(Request.Params["rows"]);
+            //int PageSize = 20;
+            int Page = Convert.ToInt32(Request.Params["page"]);
+            //int Page = 1;
             int total = 0;
 
             string sql = "select t.* from list_order  t where 1=1  ";
             if (!string.IsNullOrEmpty(BUSITYPE))
             {
-                sql += " and BUSITYPE =" + BUSITYPE;
+                sql += " and BUSITYPE ='" + BUSITYPE + "'";
             }
 
             if (TYPE == "SpecialSupervision")
@@ -104,7 +104,7 @@ namespace SceneOfCustoms.Controllers
             }
             else if (TYPE == "DomesticKnot")
             {
-                sql += " and BUSITYPE in (40,41) and CORRESPONDNO is  null";//国内结转
+                //sql += " and BUSITYPE in (40,41) and CORRESPONDNO is  null";//国内结转
             }
 
             string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
@@ -255,11 +255,11 @@ namespace SceneOfCustoms.Controllers
             //SYY 9-27
             if (Request.Params.AllKeys.Contains("CHAYANZHILINGXIAFATIME"))
             {
-                sql += "  CHAYANZHILINGXIAFATIME =  to_date('" + Request.Form["CHAYANZHILINGXIAFATIME"] + "','yyyy-MM-dd'),";
+                sql += "  CHAYANZHILINGXIAFATIME =  to_date('" + Request.Form["CHAYANZHILINGXIAFATIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
             }
             if (Request.Params.AllKeys.Contains("KOUHUOTIME"))
             {
-                sql += "  KOUHUOTIME =  to_date('" + Request.Form["KOUHUOTIME"] + "','yyyy-MM-dd'),";
+                sql += "  KOUHUOTIME =  to_date('" + Request.Form["KOUHUOTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
             }
 
             //lakers
@@ -324,6 +324,27 @@ namespace SceneOfCustoms.Controllers
                 return Json(new { Success = false, sql = sql }, JsonRequestBehavior.AllowGet);
             }
 
+        }
+
+
+        //急装箱信息
+        public ActionResult JizhuangxiangInfo()
+        {
+            return View();
+        }
+
+
+        //报关单信息
+        public ActionResult BaoguandanInfo()
+        {
+            return View();
+        }
+
+
+        //通关单信息
+        public ActionResult TongguandanInfo()
+        {
+            return View();
         }
 
     }

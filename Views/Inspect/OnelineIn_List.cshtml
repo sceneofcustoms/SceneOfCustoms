@@ -1,8 +1,8 @@
 ﻿<script type="text/javascript">
     //1 查询条件 --日期
     var search_condition_date = [
-        { code: 'guanwujieshou', name: '查检日期', selected: true },
-        { code: 'baoruhaiguan', name: '查检放行日期' },
+        { code: 'guanwujieshou', name: '查验日期', selected: true },
+        { code: 'baoruhaiguan', name: '查验放行日期' },
         { code: 'shandankaishi', name: '熏蒸日期' },
         { code: 'shandanwancheng', name: '删单日期' },
         { code: 'gaidankaishi', name: '改单日期' },
@@ -16,7 +16,9 @@
             code: 'jiedan', name: 'FWO订单号', selected: true
         },
         { code: 'koufangxing', name: 'FO号' },
+        { code: 'koufangxing', name: '分单号' },
         { code: 'lihuo', name: '总单号' },
+        { code: 'lihuo', name: '分单号' },
         { code: 'jihuabaoguan', name: '万达号' },
         { code: 'koufangxing', name: '载货清单号' },
         { code: 'koufangxing', name: '报检单号' },
@@ -29,6 +31,7 @@
 
 
     $(function () {
+        loadListGrid('Inspect/OnelineIn_Edit');
         $('#searchform #search_condition_date').combobox({
             data: search_condition_date,
             valueField: 'code',
@@ -39,7 +42,6 @@
             valueField: 'code',
             textField: 'name'
         });
-        loadListGrid('Inspect/OnelineIn_Edit');
     })
 </script>
 <div class="ibox-content">
@@ -50,33 +52,35 @@
                 <tr>
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
                     <th data-options="field:'BUSIUNITNAME',sortable:true,">收货人</th>
-                    <th data-options="field:'TOTALNO',sortable:true">总单号</th>
-                    <th data-options="field:'DIVIDENO',sortable:true">分单号</th>
-                    <th data-options="field:'GOODSNUM',sortable:true">总件数</th>
-                    <th data-options="field:'GOODSWEIGHT',sortable:true">总重量</th>
+                    <th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
+                    <th data-options="field:'INSPSTATUS',sortable:true">报检状态</th>
+                    <th data-options="field:'DECLSTATUS',sortable:true">报关状态</th>
                 </tr>
             </thead>
             <thead> 
                 <tr>
-                    <th data-options="field:'text',sortable:true">急货标志</th>
-                    <th data-options="field:'text',sortable:true">报检单号</th>
-                    <th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
-                    <th data-options="field:'text',sortable:true">法检标志</th>
-                    <th data-options="field:'text',sortable:true">通关单标志</th>
-                    <th data-options="field:'text',sortable:true">报检接单时间</th>
-                    <th data-options="field:'DANZHENGFANGXINGTIME',sortable:true">单证放行时间</th>
-                    <th data-options="field:'text',sortable:true">货物放行时间</th>
-                    <th data-options="field:'YWBH',sortable:true">业务编号</th>
-                    <th data-options="field:'text',sortable:true">报检输机时间</th>
-                    <th data-options="field:'MOSTARTTIME',sortable:true">报检制单时间</th>
-                    <th data-options="field:'text',sortable:true">报检时间</th>
-                    <th data-options="field:'text',sortable:true">报检人</th>
-                    <th data-options="field:'SHIWUFANGXINGTIME',sortable:true">放行时间</th>
-                    <th data-options="field:'SHIWUFANGXINGUSERNAME',sortable:true">放行人</th>
+                    <th data-options="field:'GOODSNUM',sortable:true">总件数</th>
+                    <th data-options="field:'GOODSWEIGHT',sortable:true">总重量</th>
+                    <th data-options="field:'TOTALNO',sortable:true">总单号</th>
+                    <th data-options="field:'DIVIDENO',sortable:true">分单号</th>
+                    <th data-options="field:'FIRSTLADINGBILLNO',sortable:true">一程提单号</th>
+                    <th data-options="field:'SECONDLADINGBILLNO',sortable:true">二程提单号</th>
+                    <th data-options="field:'text',sortable:true">万达号</th>
+                    <th data-options="field:'MANIFEST',sortable:true">载货清单号</th>
                     <th data-options="field:'CONTRACTNO',sortable:true">合同/发票号</th>
-                    <th data-options="field:'ZUOYEDANTIME',sortable:true">作业单时间</th>
-                    <th data-options="field:'DECLSTATUS',sortable:true">报关状态</th>
-                    <th data-options="field:'INSPSTATUS',sortable:true">报检状态</th>
+                    <th data-options="field:'text',sortable:true">通关单标志</th>
+                    <th data-options="field:'text',sortable:true">通关单张数</th>
+                    <th data-options="field:'WOODPACKINGID',sortable:true">木质包装</th>
+                    <th data-options="field:'BAOJIANTIME',sortable:true">报检时间</th>
+                    <th data-options="field:'BAOJIANFANGXINGTIME',sortable:true">报检放行时间</th>
+                    <th data-options="field:'CHAYANZHILINGXIAFATIME',sortable:true">查验时间</th>
+                    <th data-options="field:'CHAYANFANGXINGTIME',sortable:true">查验放行时间</th>
+                    <th data-options="field:'XUNZHENGTIME',sortable:true">熏蒸时间</th>
+                    <th data-options="field:'SHANDANKAISHITIME',sortable:true">删单时间</th>
+                    <th data-options="field:'GAIDANKAISHITIME',sortable:true">改单时间</th>
+                    <th data-options="field:'FWONO',sortable:true">FWO号</th>
+                    <th data-options="field:'FOONO',sortable:true">FO号</th>
+                    <th data-options="field:'CODE',sortable:true">业务编号</th>
                 </tr>
             </thead>
         </table>
@@ -126,25 +130,41 @@
                         <tr>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
-                                    <option>海关通关状态</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="easyui-combobox value" id="customs_state" style="width:130px" panelheight="auto" name="customs_state"></select>
-                            </td>
-
-
-                            <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto">
                                     <option>关区代码</option>
                                 </select>
                             </td>
                             <td>
                                 <select class="easyui-combobox combobox_width value " id="CUSTOMDISTRICTCODE" name="CUSTOMDISTRICTCODE"></select>
                             </td>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>法检标志</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" name="LAWCONDITION"></select>
+                            </td>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>木质包装</option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" name="WOODPACKINGID"></select>
+                            </td>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>通关单标志</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto"></select>
+                            </td>
+
                         </tr>
 
-
+    
                     </table>
                 </div>
             </div>

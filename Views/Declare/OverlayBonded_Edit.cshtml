@@ -1,0 +1,538 @@
+﻿@if (!string.IsNullOrEmpty(ViewData["id1"] + ""))
+{
+    <div class="easyui-tabs" id="many_form" style="height:auto">
+
+        <div title="转入">
+            <form class="OrderFrom" method="post" id="OrderFrom1">
+                <input type="hidden" name="ID" value="@ViewData["id1"]" />
+                <table class="scene">
+                    <tr>
+                        <td>
+                            <label for="FWONO">FWO订单号:</label>
+                            <input class="easyui-textbox" type="text" name="FWONO" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="FOCUSTOMSNO">FO号:</label>
+                            <input class="easyui-textbox" type="text" name="FOCUSTOMSNO" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="DECLWAY">报关方式:</label>
+                            <input class="easyui-textbox" type="text" name="DECLWAY" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="BUSITYPE"> 业务类型:</label>
+                            <input class="easyui-textbox" type="text" name="BUSITYPE" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="GOODSNUM"> 件数:</label>
+                            <input class="easyui-textbox" type="text" name="GOODSNUM" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="GOODSWEIGHT">重量:</label>
+                            <input class="easyui-textbox" type="text" name="GOODSWEIGHT" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="">进口企业:</label>
+                            <input class="easyui-textbox" type="text" name="BUSIUNITNAME" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="" style="color:red">出口企业:</label>
+                            <input class="easyui-textbox" type="text" value="@ViewData["busiunitname2"]" disabled="disabled" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label for="GUANWUJIESHOUTIME"> 关务接受时间:</label>
+                            <input class="easyui-textbox  time_input" id="GUANWUJIESHOUTIME" data-options="text:'填充时间'" type="text" name="GUANWUJIESHOUTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="GUANWUJIESHOU" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="GUANWUJIESHOUUSERNAME">关务接受人:</label>
+                            <input class="easyui-textbox " type="text" id="GUANWUJIESHOUUSERNAME" name="GUANWUJIESHOUUSERNAME" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="BAORUHAIGUANTIME"> 报入海关时间:</label>
+                            <input class="easyui-textbox time_input" type="text" id="BAORUHAIGUANTIME" name="BAORUHAIGUANTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="BAORUHAIGUAN" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="BAORUHAIGUANUSERNAME">报入海关人:</label>
+                            <input class="easyui-textbox " type="text" id="BAORUHAIGUANUSERNAME" name="BAORUHAIGUANUSERNAME" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="SHANDANKAISHITIME"> 删单开始时间:</label>
+                            <input class="easyui-textbox  time_input" id="SHANDANKAISHITIME" data-options="text:'填充时间'" type="text" name="SHANDANKAISHITIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="SHANDANKAISHI" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="SHANDANKAISHIUSERNAME">删单开始人:</label>
+                            <input class="easyui-textbox " type="text" id="SHANDANKAISHIUSERNAME" name="SHANDANKAISHIUSERNAME" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="SHANDANWANCHENGTIME"> 删单完成时间:</label>
+                            <input class="easyui-textbox time_input" type="text" id="SHANDANWANCHENGTIME" name="SHANDANWANCHENGTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="SHANDANWANCHENG" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="SHANDANWANCHENGUSERNAME">删单完成人:</label>
+                            <input class="easyui-textbox " type="text" id="SHANDANWANCHENGUSERNAME" name="SHANDANWANCHENGUSERNAME" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="GAIDANKAISHITIME"> 改单开始时间:</label>
+                            <input class="easyui-textbox  time_input" id="GAIDANKAISHITIME" data-options="text:'填充时间'" type="text" name="GAIDANKAISHITIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="GAIDANKAISHI" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="GAIDANKAISHIUSERNAME">改单开始人:</label>
+                            <input class="easyui-textbox " type="text" id="GAIDANKAISHIUSERNAME" name="GAIDANKAISHIUSERNAME" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="GAIDANWANCHENGTIME"> 改单完成时间:</label>
+                            <input class="easyui-textbox time_input" type="text" id="GAIDANWANCHENGTIME" name="GAIDANWANCHENGTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="GAIDANWANCHENG" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="GAIDANWANCHENGUSERNAME">改单完成人:</label>
+                            <input class="easyui-textbox " type="text" id="GAIDANWANCHENGUSERNAME" name="GAIDANWANCHENGUSERNAME" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="CHAYANSTARTTIME"> 查验起始时间:</label>
+                            <input class="easyui-textbox time_input" type="text" id="CHAYANSTARTTIME" name="CHAYANSTARTTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="CHAYANSTART" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="CHAYANSTARTUSERNAME">起始查验人:</label>
+                            <input class="easyui-textbox " type="text" id="CHAYANSTARTUSERNAME" name="CHAYANSTARTUSERNAME" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="CHAYANENDTIME"> 查验完成时间:</label>
+                            <input class="easyui-textbox time_input" type="text" id="CHAYANENDTIME" name="CHAYANENDTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="CHAYANEND" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="CHAYANENDUSERNAME">完成查验人:</label>
+                            <input class="easyui-textbox " type="text" id="CHAYANENDUSERNAME" name="CHAYANENDUSERNAME" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="DANZHENGFANGXINGTIME"> 单证放行时间:</label>
+                            <input class="easyui-textbox time_input" type="text" id="DANZHENGFANGXINGTIME" name="DANZHENGFANGXINGTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="DANZHENGFANGXING" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="DANZHENGFANGXINGUSERNAME">单证放行人:</label>
+                            <input class="easyui-textbox " type="text" id="DANZHENGFANGXINGUSERNAME" name="DANZHENGFANGXINGUSERNAME" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="SHIWUFANGXINGTIME">实物放行时间:</label>
+                            <input class="easyui-textbox time_input" type="text" id="SHIWUFANGXINGTIME" name="SHIWUFANGXINGTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="SHIWUFANGXING" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="SHIWUFANGXINGUSERNAME">实物放行人:</label>
+                            <input class="easyui-textbox " type="text" id="SHIWUFANGXINGUSERNAME" name="SHIWUFANGXINGUSERNAME" disabled="disabled" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label for="CONTRACTNO"> 合同发票号:</label>
+                            <input class="easyui-textbox" type="text" name="CONTRACTNO" disabled="disabled" />
+                        </td>
+                        <td>
+                            <div style="float:left;height:22px;line-height:22px;">
+                                <label>放行方式:</label>
+                            </div>
+                            <div style="float:left">
+                                <label for="zhengchang">正常放行:</label>
+                                <input class="" id="zhengchang" type="checkbox" value="1" name="PASSMODE" />
+
+                                <label for="chayan">查验放行:</label>
+                                <input class="" id="chayan" type="checkbox" value="2" name="PASSMODE" />
+
+                            </div>
+                        </td>
+                        <td style="text-align:left">
+                            <label for="IFYIJIAO">是否移交:</label>
+                            <input class="" id="IFYIJIAO" type="checkbox" name="IFYIJIAO" value="1" />
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td style="text-align:left">
+                            <label for="LIHUOSIGN">理货标识:</label>
+                            <input class="" id="LIHUOSIGN" type="checkbox" name="LIHUOSIGN" value="1" />
+                        </td>
+                        <td>
+                            <label for="LIHUOTIMES">理货次数:</label>
+                            <input class="easyui-numberspinner" name="LIHUOTIMES"
+                                   data-options="min:0">
+                        </td>
+                        <td style="text-align:left">
+                            <label for="KOUHUOSIGN">扣货标识:</label>
+                            <input class="" id="KOUHUOSIGN" type="checkbox" name="KOUHUOSIGN" value="1" />
+                        </td>
+                        <td>
+                            <label for="KOUHUOTIME" style="width:100px;">扣货时间:</label>
+                            <input class="easyui-datebox value" name="KOUHUOTIME" placeholder="开始时间">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">
+                            <label for="IFSHANDAN">是否删单:</label>
+                            <input class="" id="IFSHANDAN" type="checkbox" name="IFSHANDAN" value="1" />
+                        </td>
+                        <td>
+                            <label for="SHANDANTOTAL">删单次数:</label>
+                            <input class="easyui-numberspinner" name="SHANDANTOTAL"
+                                   data-options="min:0">
+                        </td>
+                        <td>
+                            <label for="SHANDANDESC">删单备注:</label>
+                            <input class="easyui-textbox" type="text" name="SHANDANDESC" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">
+                            <label for="IFGAIDAN">是否改单:</label>
+                            <input class="" id="IFGAIDAN" type="checkbox" name="IFGAIDAN" value="1" />
+                        </td>
+                        <td>
+                            <label for="GAIDANTOTAL">改单次数:</label>
+                            <input class="easyui-numberspinner" name="GAIDANTOTAL"
+                                   data-options="min:0">
+                        </td>
+                        <td>
+                            <label for="GAIDANDESC">改单备注:</label>
+                            <input class="easyui-textbox" type="text" name="GAIDANDESC" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">
+                            <label for="IFCHAYAN">是否查验:</label>
+                            <input class="" id="IFCHAYAN" type="checkbox" name="IFCHAYAN" value="1" />
+                        </td>
+                        <td>
+                            <label for="CHAYANTIMES">查验次数:</label>
+                            <input class="easyui-numberspinner" name="CHAYANTIMES"
+                                   data-options="min:0">
+                        </td>
+                        <td>
+                            <label for="CHAYANREMARK">查验备注:</label>
+                            <input class="easyui-textbox" type="text" name="CHAYANREMARK" />
+                        </td>
+                        <td>
+                            <label for="CHAYANZHILINGXIAFATIME" style="width:100px;">查验指令下发时间:</label>
+                            <input class="easyui-datebox value" name="CHAYANZHILINGXIAFATIME" placeholder="开始时间">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">
+                            <label for="IFTIAODANG">是否调档:</label>
+                            <input class="" id="IFTIAODANG" type="checkbox" name="IFTIAODANG" value="1" />
+                        </td>
+                        <td>
+                            <label for="TIAODANGTIMES">调档次数:</label>
+                            <input class="easyui-numberspinner" name="TIAODANGTIMES"
+                                   data-options="min:0">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+
+        @if (!string.IsNullOrEmpty(ViewData["id3"] + ""))
+        {
+        <div title="转出">
+            <form class="OrderFrom" method="post" id="OrderFrom3">
+                <input type="hidden" name="ID" value="@ViewData["id3"]" />
+                <table class="scene">
+                    <tr>
+                        <td>
+                            <label for="FWONO">FWO订单号:</label>
+                            <input class="easyui-textbox" type="text" name="FWONO" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="FOCUSTOMSNO">FO号:</label>
+                            <input class="easyui-textbox" type="text" name="FOCUSTOMSNO" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="DECLWAY">报关方式:</label>
+                            <input class="easyui-textbox" type="text" name="DECLWAY" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="BUSITYPE"> 业务类型:</label>
+                            <input class="easyui-textbox" type="text" name="BUSITYPE" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="GOODSNUM"> 件数:</label>
+                            <input class="easyui-textbox" type="text" name="GOODSNUM" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="GOODSWEIGHT">重量:</label>
+                            <input class="easyui-textbox" type="text" name="GOODSWEIGHT" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="">进口企业:</label>
+                            <input class="easyui-textbox" type="text" name="BUSIUNITNAME" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="" style="color:red">出口企业:</label>
+                            <input class="easyui-textbox" type="text" value="@ViewData["busiunitname4"]" disabled="disabled" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label for="GUANWUJIESHOUTIME"> 关务接受时间:</label>
+                            <input class="easyui-textbox  time_input" id="GUANWUJIESHOUTIME" data-options="text:'填充时间'" type="text" name="GUANWUJIESHOUTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="GUANWUJIESHOU" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="GUANWUJIESHOUUSERNAME">关务接受人:</label>
+                            <input class="easyui-textbox " type="text" id="GUANWUJIESHOUUSERNAME" name="GUANWUJIESHOUUSERNAME" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="BAORUHAIGUANTIME"> 报入海关时间:</label>
+                            <input class="easyui-textbox time_input" type="text" id="BAORUHAIGUANTIME" name="BAORUHAIGUANTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="BAORUHAIGUAN" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="BAORUHAIGUANUSERNAME">报入海关人:</label>
+                            <input class="easyui-textbox " type="text" id="BAORUHAIGUANUSERNAME" name="BAORUHAIGUANUSERNAME" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="SHANDANKAISHITIME"> 删单开始时间:</label>
+                            <input class="easyui-textbox  time_input" id="SHANDANKAISHITIME" data-options="text:'填充时间'" type="text" name="SHANDANKAISHITIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="SHANDANKAISHI" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="SHANDANKAISHIUSERNAME">删单开始人:</label>
+                            <input class="easyui-textbox " type="text" id="SHANDANKAISHIUSERNAME" name="SHANDANKAISHIUSERNAME" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="SHANDANWANCHENGTIME"> 删单完成时间:</label>
+                            <input class="easyui-textbox time_input" type="text" id="SHANDANWANCHENGTIME" name="SHANDANWANCHENGTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="SHANDANWANCHENG" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="SHANDANWANCHENGUSERNAME">删单完成人:</label>
+                            <input class="easyui-textbox " type="text" id="SHANDANWANCHENGUSERNAME" name="SHANDANWANCHENGUSERNAME" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="GAIDANKAISHITIME"> 改单开始时间:</label>
+                            <input class="easyui-textbox  time_input" id="GAIDANKAISHITIME" data-options="text:'填充时间'" type="text" name="GAIDANKAISHITIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="GAIDANKAISHI" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="GAIDANKAISHIUSERNAME">改单开始人:</label>
+                            <input class="easyui-textbox " type="text" id="GAIDANKAISHIUSERNAME" name="GAIDANKAISHIUSERNAME" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="GAIDANWANCHENGTIME"> 改单完成时间:</label>
+                            <input class="easyui-textbox time_input" type="text" id="GAIDANWANCHENGTIME" name="GAIDANWANCHENGTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="GAIDANWANCHENG" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="GAIDANWANCHENGUSERNAME">改单完成人:</label>
+                            <input class="easyui-textbox " type="text" id="GAIDANWANCHENGUSERNAME" name="GAIDANWANCHENGUSERNAME" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="CHAYANSTARTTIME"> 查验起始时间:</label>
+                            <input class="easyui-textbox time_input" type="text" id="CHAYANSTARTTIME" name="CHAYANSTARTTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="CHAYANSTART" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="CHAYANSTARTUSERNAME">起始查验人:</label>
+                            <input class="easyui-textbox " type="text" id="CHAYANSTARTUSERNAME" name="CHAYANSTARTUSERNAME" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="CHAYANENDTIME"> 查验完成时间:</label>
+                            <input class="easyui-textbox time_input" type="text" id="CHAYANENDTIME" name="CHAYANENDTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="CHAYANEND" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="CHAYANENDUSERNAME">完成查验人:</label>
+                            <input class="easyui-textbox " type="text" id="CHAYANENDUSERNAME" name="CHAYANENDUSERNAME" disabled="disabled" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="DANZHENGFANGXINGTIME"> 单证放行时间:</label>
+                            <input class="easyui-textbox time_input" type="text" id="DANZHENGFANGXINGTIME" name="DANZHENGFANGXINGTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="DANZHENGFANGXING" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="DANZHENGFANGXINGUSERNAME">单证放行人:</label>
+                            <input class="easyui-textbox " type="text" id="DANZHENGFANGXINGUSERNAME" name="DANZHENGFANGXINGUSERNAME" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="SHIWUFANGXINGTIME">实物放行时间:</label>
+                            <input class="easyui-textbox time_input" type="text" id="SHIWUFANGXINGTIME" name="SHIWUFANGXINGTIME" disabled="disabled" />
+                            <a href="javascript:void(0)" datatype="SHIWUFANGXING" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                        </td>
+                        <td>
+                            <label for="SHIWUFANGXINGUSERNAME">实物放行人:</label>
+                            <input class="easyui-textbox " type="text" id="SHIWUFANGXINGUSERNAME" name="SHIWUFANGXINGUSERNAME" disabled="disabled" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label for="CONTRACTNO"> 合同发票号:</label>
+                            <input class="easyui-textbox" type="text" name="CONTRACTNO" disabled="disabled" />
+                        </td>
+                        <td>
+                            <div style="float:left;height:22px;line-height:22px;">
+                                <label>放行方式:</label>
+                            </div>
+                            <div style="float:left">
+                                <label for="zhengchang">正常放行:</label>
+                                <input class="" id="zhengchang" type="checkbox" value="1" name="PASSMODE" />
+
+                                <label for="chayan">查验放行:</label>
+                                <input class="" id="chayan" type="checkbox" value="2" name="PASSMODE" />
+
+                            </div>
+                        </td>
+                        <td style="text-align:left">
+                            <label for="IFYIJIAO">是否移交:</label>
+                            <input class="" id="IFYIJIAO" type="checkbox" name="IFYIJIAO" value="1" />
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td style="text-align:left">
+                            <label for="LIHUOSIGN">理货标识:</label>
+                            <input class="" id="LIHUOSIGN" type="checkbox" name="LIHUOSIGN" value="1" />
+                        </td>
+                        <td>
+                            <label for="LIHUOTIMES">理货次数:</label>
+                            <input class="easyui-numberspinner" name="LIHUOTIMES"
+                                   data-options="min:0">
+                        </td>
+                        <td style="text-align:left">
+                            <label for="KOUHUOSIGN">扣货标识:</label>
+                            <input class="" id="KOUHUOSIGN" type="checkbox" name="KOUHUOSIGN" value="1" />
+                        </td>
+                        <td>
+                            <label for="KOUHUOTIME" style="width:100px;">扣货时间:</label>
+                            <input class="easyui-datebox value" name="KOUHUOTIME" placeholder="开始时间">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">
+                            <label for="IFSHANDAN">是否删单:</label>
+                            <input class="" id="IFSHANDAN" type="checkbox" name="IFSHANDAN" value="1" />
+                        </td>
+                        <td>
+                            <label for="SHANDANTOTAL">删单次数:</label>
+                            <input class="easyui-numberspinner" name="SHANDANTOTAL"
+                                   data-options="min:0">
+                        </td>
+                        <td>
+                            <label for="SHANDANDESC">删单备注:</label>
+                            <input class="easyui-textbox" type="text" name="SHANDANDESC" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">
+                            <label for="IFGAIDAN">是否改单:</label>
+                            <input class="" id="IFGAIDAN" type="checkbox" name="IFGAIDAN" value="1" />
+                        </td>
+                        <td>
+                            <label for="GAIDANTOTAL">改单次数:</label>
+                            <input class="easyui-numberspinner" name="GAIDANTOTAL"
+                                   data-options="min:0">
+                        </td>
+                        <td>
+                            <label for="GAIDANDESC">改单备注:</label>
+                            <input class="easyui-textbox" type="text" name="GAIDANDESC" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">
+                            <label for="IFCHAYAN">是否查验:</label>
+                            <input class="" id="IFCHAYAN" type="checkbox" name="IFCHAYAN" value="1" />
+                        </td>
+                        <td>
+                            <label for="CHAYANTIMES">查验次数:</label>
+                            <input class="easyui-numberspinner" name="CHAYANTIMES"
+                                   data-options="min:0">
+                        </td>
+                        <td>
+                            <label for="CHAYANREMARK">查验备注:</label>
+                            <input class="easyui-textbox" type="text" name="CHAYANREMARK" />
+                        </td>
+                        <td>
+                            <label for="CHAYANZHILINGXIAFATIME" style="width:100px;">查验指令下发时间:</label>
+                            <input class="easyui-datebox value" name="CHAYANZHILINGXIAFATIME" placeholder="开始时间">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">
+                            <label for="IFTIAODANG">是否调档:</label>
+                            <input class="" id="IFTIAODANG" type="checkbox" name="IFTIAODANG" value="1" />
+                        </td>
+                        <td>
+                            <label for="TIAODANGTIMES">调档次数:</label>
+                            <input class="easyui-numberspinner" name="TIAODANGTIMES"
+                                   data-options="min:0">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+        }
+
+    </div>
+}
+else
+{
+    <h2>
+        参数异常
+    </h2>
+}
+
+
+<div style="text-align:center;padding:5px 0">
+    <a class="btn btn-primary" href="javascript:void(0)" onclick="BaoguandanInfo()">
+        报关单信息
+    </a>
+    <a class="btn btn-primary" href="javascript:void(0)" onclick="JizhuangxiangInfo()">
+        集装箱信息
+    </a>
+    <a class="btn btn-primary" href="javascript:void(0)" onclick="manySubmitForm()">
+        <i class="fa fa-floppy-o"></i> 保存
+    </a>
+
+    <a class="btn btn-primary" href="javascript:void(0)" onclick="javascript: history.back(-1);">
+        <i class="icon-reply"></i> 返回
+    </a>
+</div>
+
+ 
+
+<script type="text/javascript">
+    manyEditForm();
+</script>

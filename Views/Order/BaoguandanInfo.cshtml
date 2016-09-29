@@ -1,0 +1,20 @@
+﻿
+@{
+    Layout = null;
+}
+
+    <table id="dg" style="height:250px" class="easyui-datagrid"
+           data-options=" rownumbers:true,
+                                   dataType : 'json',
+                                   method:'get'">
+        <thead>
+            <tr>
+                <th data-options="field: 'ck', checkbox: true"></th>
+                <th data-options="field:'BUSIUNITNAME',sortable:true,width:200,align:'center'">报关单号</th>
+                <th data-options="field:'DIVIDENO',width:100,align:'center'">贸易方式</th>
+                <th data-options="field:'GOODSNUM',width:50,align:'center'">件数</th>
+                <th data-options="field:'GOODSWEIGHT',width:50,align:'center'">重量</th>
+                <th data-options="field:'DECLSHEETNUM',width:100,align:'center'">海关通关状态</th>
+            </tr>
+        </thead>
+    </table>

@@ -3,7 +3,7 @@
     //1 查询条件 --日期
     var search_condition_date = [
         { code: 'guanwujieshou', name: '报检日期', selected: true },
-        { code: 'guanwujieshou', name: '放行日期' },
+        { code: 'guanwujieshou', name: '报检放行日期' },
         { code: 'guanwujieshou', name: '查验日期' },
         { code: 'baoruhaiguan', name: '查检放行日期' },
         { code: 'shandankaishi', name: '熏蒸日期' },
@@ -62,46 +62,33 @@
     <div class="table-responsive">
         <table id="datagrid" class="easyui-datagrid" title="国内结转" style="height:auto;min-height:500px;max-height:800px"
                data-options="queryParams:{TYPE:'DomesticKnot'}">
-            <thead>
+            <thead data-options="frozen:true">
                 <tr>
-                    <th data-options="field: 'ck', checkbox: true"></th>
-                    <th data-options="field:'CODE',sortable:true">业务编号</th>
-                    <th data-options="field:'text',sortable:true">报检编号</th>
-                    <th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
-                    <th data-options="field:'text',sortable:true">报检单号</th>
-                    <th data-options="field:'text',sortable:true">业务种类</th>
-                    <th data-options="field:'CUSNO',sortable:true">收货人</th>
-                    <th data-options="field:'ASSOCIATEPEDECLNO',sortable:true">报关单号</th>
-                    <th data-options="field:'text',sortable:true">QP标志</th>
-                    <th data-options="field:'INOUTTYPE',sortable:true">进出口类别</th>
-                    <th data-options="field:'text',sortable:true">货物流向</th>
-                    <th data-options="field:'GOODSNUM',sortable:true">总件数</th>
-                    <th data-options="field:'GOODSWEIGHT',sortable:true">总重量</th>
-                    <th data-options="field:'ASSOCIATETRADEWAY',sortable:true">贸易方式</th>
-                    <th data-options="field:'text',sortable:true">法检标志</th>
+                    <th data-options="field: 'ID',width:80,checkbox:true"></th>
+                    <th data-options="field:'BUSIUNITNAME',sortable:true,">进口企业</th>
+                    <th data-options="field:'BUSIUNITNAME',sortable:true,">出口企业</th>
+                    <th data-options="field:'text',sortable:true,">报检单号</th>
                     <th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
                     <th data-options="field:'INSPSTATUS',sortable:true">报检状态</th>
                     <th data-options="field:'DECLSTATUS',sortable:true">报关状态</th>
-                    <th data-options="field:'ISINVALID',sortable:true">作废标志</th>
-                    <th data-options="field:'text',sortable:true">作废时间</th>
-                    <th data-options="field:'text',sortable:true">OPS接单时间</th>
-                    <th data-options="field:'text',sortable:true">OPS接单人</th>
-                    <th data-options="field:'text',sortable:true">OPS接单备注</th>
-                    <th data-options="field:'text',sortable:true">报检接单时间</th>
-                    <th data-options="field:'text',sortable:true">报检接单人</th>
-                    <th data-options="field:'MOACCEPTTIME',sortable:true">制单时间</th>
-                    <th data-options="field:'SHIWUFANGXINGTIME',sortable:true">放行时间</th>
-                    <th data-options="field:'text',sortable:true">报检时间</th>
-                    <th data-options="field:'text',sortable:true">输机时间</th>
-                    <th data-options="field:'MOACCEPTUSERNAME',sortable:true">制单人</th>
-                    <th data-options="field:'SHIWUFANGXINGUSERNAME',sortable:true">放行人</th>
-                    <th data-options="field:'text',sortable:true">报检人</th>
-                    <th data-options="field:'text',sortable:true">输机人</th>
-                    @*<th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
-                    <th data-options="field:'text',sortable:true">报检单号</th>*@
-                    <th data-options="field:'CONTRACTNO',sortable:true">合同发票号</th>
-                    <th data-options="field:'text',sortable:true">异常登记</th>
-                    <th data-options="field:'text',sortable:true">异常回复</th>
+                </tr>
+            </thead>
+            <thead>
+                <tr>
+                    <th data-options="field:'GOODSNUM',sortable:true">总件数</th>
+                    <th data-options="field:'GOODSWEIGHT',sortable:true">总重量</th>
+                    @*<th data-options="field:'TOTALNO',sortable:true">总单号</th>
+                    <th data-options="field:'DIVIDENO',sortable:true">分单号</th>*@
+                    <th data-options="field:'CONTRACTNO',sortable:true">合同/发票号</th>
+                    <th data-options="field:'text',sortable:true">通关单标志</th>
+                    <th data-options="field:'text',sortable:true">通关单张数</th>
+                    <th data-options="field:'BAOJIANTIME',sortable:true">报检时间</th>
+                    <th data-options="field:'BAOJIANFANGXINGTIME',sortable:true">报检放行时间</th>
+                    <th data-options="field:'SHANDANKAISHITIME',sortable:true">删单时间</th>
+                    <th data-options="field:'GAIDANKAISHITIME',sortable:true">改单时间</th>
+                    <th data-options="field:'FWONO',sortable:true">FWO号</th>
+                    <th data-options="field:'FOONO',sortable:true">FO号</th>
+                    <th data-options="field:'BUSITYPE',sortable:true">业务类型</th>
                 </tr>
             </thead>
         </table>
@@ -170,6 +157,16 @@
                             <td>
                                 <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name="LAWCONDITION"></select>
                             </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>通关单标志</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" ></select>
+                            </td>
+
                         </tr>
 
                     </table>

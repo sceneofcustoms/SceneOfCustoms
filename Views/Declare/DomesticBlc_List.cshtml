@@ -41,51 +41,36 @@
     <div class="table-responsive">
         <table id="datagrid" class="easyui-datagrid" title="结转BLC" style="height:auto;min-height:500px;max-height:800px"
                data-options="queryParams:{BUSITYPE:11}">
-            <thead>
+            <thead data-options="frozen:true">
                 <tr>
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
-                    <th data-options="field:'YWBH',sortable:true">业务编号</th>
-                    <th data-options="field:'DECLWAY',sortable:true">报关方式</th>
+                    <th data-options="field:'BUSIUNITNAME',sortable:true">进口企业</th>
+                    <th data-options="field:'BUSIUNITNAME',sortable:true">出口企业</th>
+                    <th data-options="field:'text',sortable:true">报关单号</th>
+                    <th data-options="field:'text',sortable:true">出口报关单号</th>
                     <th data-options="field:'CONTRACTNO',sortable:true">发票合同号</th>
+                    <th data-options="field:'DECLWAY',sortable:true">报关方式</th>
+                    <th data-options="field:'text',sortable:true">海关通关状态</th>
+                    <th data-options="field:'text',sortable:true">关务状态</th>
+                </tr>
+            </thead>
+            <thead>
+                <tr>
+                    <th data-options="field:'INSPSTATUS',sortable:true">报检状态</th>
                     <th data-options="field:'GOODSNUM',sortable:true">件数</th>
                     <th data-options="field:'GOODSWEIGHT',sortable:true">重量</th>
+                    <th data-options="field:'BUSITYPE',sortable:true">业务类型</th>
+                    <th data-options="field:'GUANWUJIESHOUTIME',sortable:true">关务接受时间</th>
+                    <th data-options="field:'BAORUHAIGUANTIME',sortable:true">报入海关时间</th>
+                    <th data-options="field:'DANZHENGFANGXINGTIME',sortable:true">单证放行时间</th>
+                    <th data-options="field:'SHIWUFANGXINGTIME',sortable:true">实物放行时间</th>
+                    <th data-options="field:'DANZHENGFANGXINGUSERNAME',sortable:true">单证放行人</th>
+                    <th data-options="field:'SHIWUFANGXINGUSERNAME',sortable:true">实物放行人</th>
+                    <th data-options="field:'ASSOCIATETRADEWAY',sortable:true">贸易方式</th>
                     <th data-options="field:'FWONO',sortable:true">FWO订单号</th>
                     <th data-options="field:'FOCUSTOMSNO',sortable:true">FO号</th>
+                    <th data-options="field:'CODE',sortable:true">业务编号</th>
                     <th data-options="field:'CUSTOMDISTRICTCODE',sortable:true">关区代码</th>
-                    <th data-options="field:'GUANWUJIESHOUTIME',sortable:true">关务接受时间</th>
-                    <th data-options="field:'GUANWUJIESHOUUSERNAME',sortable:true">关务接受人</th>
-                    <th data-options="field:'BAORUHAIGUANTIME',sortable:true">报入海关时间</th>
-                    <th data-options="field:'BAORUHAIGUANUSERNAME',sortable:true">报入海关人</th>
-                    <th data-options="field:'SHANDANKAISHITIME',sortable:true">删单开始时间</th>
-                    <th data-options="field:'SHANDANKAISHIUSERNAME',sortable:true">删单开始人</th>
-                    <th data-options="field:'SHANDANWANCHENGTIME',sortable:true">删单完成时间</th>
-                    <th data-options="field:'SHANDANWANCHENGUSERNAME',sortable:true">删单完成人</th>
-                    <th data-options="field:'GAIDANKAISHITIME',sortable:true">改单开始时间</th>
-                    <th data-options="field:'GAIDANKAISHIUSERNAME',sortable:true">改单开始人</th>
-                    <th data-options="field:'GAIDANWANCHENGTIME',sortable:true">改单完成时间</th>
-                    <th data-options="field:'GAIDANWANCHENGUSERNAME',sortable:true">改单完成人</th>
-                    <th data-options="field:'DANZHENGFANGXINGTIME',sortable:true">单证放行时间</th>
-                    <th data-options="field:'DANZHENGFANGXINGUSERNAME',sortable:true">单证放行人</th>
-                    <th data-options="field:'SHIWUFANGXINGTIME',sortable:true">实物放行时间</th>
-                    <th data-options="field:'SHIWUFANGXINGUSERNAME',sortable:true">实物放行人</th>
-                    <th data-options="field:'DECLSHEETNUM',sortable:true">报关单张数</th>
-                    <th data-options="field:'LAWCONDITION',sortable:true">是否法检</th>
-                    <th data-options="field:'ASSOCIATEPEDECLNO',sortable:true">报关单号</th>
-                    <th data-options="field:'ASSOCIATETRADEWAY',sortable:true">贸易方式</th>
-                    <th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
-                    <th data-options="field:'LIDANUSERNAME',sortable:true">理单人</th>
-                    <th data-options="field:'STATUS',sortable:true">实物放行状态</th>
-                    <th data-options="field:'CONTRACTNO',sortable:true">合同/发票号</th>
-                    <th data-options="field:'TURNPRENO',sortable:true">转关转录单号</th>
-                    <th data-options="field:'text',sortable:true">关务状态</th>
-                    <th data-options="field:'PASSMODE',sortable:true">分批放行</th>
-                    <th data-options="field:'PASSMODE',sortable:true">申请放行</th>
-                    <th data-options="field:'text',sortable:true">海关通关状态</th>
-                    <th data-options="field:'text',sortable:true">签收号</th>
-                    <th data-options="field:'text',sortable:true">签收人</th>
-                    <th data-options="field:'text',sortable:true">签收日期</th>
-                    <th data-options="field:'text',sortable:true">报关资料齐全标志</th>
-                    <th data-options="field:'text',sortable:true">文档类别</th>
                 </tr>
             </thead>
         </table>
@@ -126,6 +111,15 @@
                             </td>
                         </tr>
                         <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>转入类型</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox value" id="out_in" style="width:130px" panelheight="auto" name="out_in"></select>
+                            </td>
+
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
                                     <option>海关通关状态</option>

@@ -1,0 +1,21 @@
+﻿
+@{
+    Layout = null;
+}
+<table id="dg" style="height:250px" class="easyui-datagrid"
+       data-options=" rownumbers:true,
+                                   dataType : 'json',
+                                   method:'get'">
+    <thead>
+        <tr>
+            <th data-options="field: 'ID', checkbox: true"></th>
+            <th data-options="field:'BUSIUNITNAME,sortable:true'">通关单号</th>
+            <th data-options="field:'TOTALNO,sortable:true'">报检单号</th>
+            <th data-options="field:'TOTALNO,sortable:true'">进出口类型</th>
+            <th data-options="field:'DIVIDENO,sortable:true'">总件数</th>
+            <th data-options="field:'GOODSWEIGHT,sortable:true'">总重量</th>
+            <th data-options="field:'DECLSHEETNUM,sortable:true'">通关单张数</th>
+            <th data-options="field:'DECLSHEETNUM,sortable:true'">报检状态</th>
+        </tr>
+    </thead>
+</table>

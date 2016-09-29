@@ -120,11 +120,11 @@ namespace SceneOfCustoms.Controllers
                 string ASSOCIATENO = dt.Rows[0]["ASSOCIATENO"] + "";
                 string CODE = ASSOCIATENO.Replace("GL", "");
 
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE + " and BUSITYPE =41";
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE + " and BUSITYPE ='41'";
                 dt = DBMgr.GetDataTable(sql);
                 ViewData["id1"] = dt.Rows[0]["ID"] + "";//一单ID
 
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE =40";
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE ='40'";
                 dt = DBMgr.GetDataTable(sql);
                 ViewData["id2"] = dt.Rows[0]["ID"] + "";//二单ID
                 ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
@@ -149,59 +149,6 @@ namespace SceneOfCustoms.Controllers
             return View();
         }
 
-
-        //叠加保税编辑
-        public ActionResult OverlayBonded_Edit()
-        {
-            ViewData["crumb"] = "关务操作-->叠加保税编辑";
-
-            string ID = Request["ID"];
-            string sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where id=" + ID;
-            DataTable dt = DBMgr.GetDataTable(sql);
-
-            if (!string.IsNullOrEmpty(dt.Rows[0]["CORRESPONDNO"] + ""))
-            {
-                //有2个tab
-                string correspondno = dt.Rows[0]["CORRESPONDNO"] + "";//四单关联号
-
-                string CODE = correspondno.Replace("GF", ""); // 第一个订单
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE;
-                dt = DBMgr.GetDataTable(sql);
-                ViewData["id1"] = dt.Rows[0]["ID"] + "";
-
-                string ASSOCIATENO = correspondno.Replace("GF", "GL");
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !=" + CODE;
-                dt = DBMgr.GetDataTable(sql);
-                ViewData["id2"] = dt.Rows[0]["ID"] + "";// 第二个订单
-
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = 41";
-                dt = DBMgr.GetDataTable(sql);
-                ViewData["id3"] = dt.Rows[0]["ID"] + "";// 第三个订单
-
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = 40";
-                dt = DBMgr.GetDataTable(sql);
-                ViewData["id4"] = dt.Rows[0]["ID"] + "";// 第四个订单
-            }
-            else
-            {
-                //1个tab
-                string ASSOCIATENO = dt.Rows[0]["ASSOCIATENO"] + "";//二单关联号
-                if (!string.IsNullOrEmpty(ASSOCIATENO))
-                {
-                    string CODE = ASSOCIATENO.Replace("GL", ""); // 第一个订单
-                    sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE;
-                    dt = DBMgr.GetDataTable(sql);
-                    ViewData["id1"] = dt.Rows[0]["ID"] + "";
-
-                    sql = "select ID,CODE,ASSOCIATENO,CORRESPONDNO from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !=" + CODE;
-                    dt = DBMgr.GetDataTable(sql);
-                    ViewData["id2"] = dt.Rows[0]["ID"] + "";// 第二个订单
-                }
-
-            }
-
-            return View();
-        }
 
         //特殊监管编辑
         public ActionResult SpecialSupervision_Edit()

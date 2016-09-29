@@ -35,7 +35,7 @@ namespace SceneOfCustoms
         <br>19支付特许权使用费确认(PAYPOYALTIES)<br>20报关申报单位代码(REPUNITCODE)<br>21报关申报单位名称(REPUNITNAME)<br>22委托人员(SUBMITUSERNAME)
         <br>23委托时间(SUBMITTIME)<br>24委托电话(SUBMITUSERPHONE)<br>25运抵编号(ARRIVEDNO)<br>26集装箱车号信息(CONTAINERTRUCK)<br>27实际件数(ACTUALGOODSNUM)
         <br>28实际毛重(ACTUALGOODSGW)<br>29货物类型(整箱或散箱用中文标记)(GOODSTYPE)<br>30报关提单号(SECONDLADINGBILLNO)")]
-        public Msgobj[] SyncData(List<OrderEntity> ld)
+        public List<Msgobj> SyncData(List<OrderEn> ld)
         {
             Msgobj MO = new Msgobj();
             IDatabase db = SeRedis.redis.GetDatabase();//先将报文数据保存至缓存数据库
@@ -43,7 +43,7 @@ namespace SceneOfCustoms
 
             if (ld.Count() == 0)
             {
-                OrderEntity obj = new OrderEntity();
+                OrderEn obj = new OrderEn();
 
                 obj.BUSITYPE = "1";
                 obj.CODE = "2";
@@ -90,7 +90,7 @@ namespace SceneOfCustoms
                 obj.SPECIALRELATIONSHIP = "42";
 
 
-                OrderEntity obj1 = new OrderEntity();
+                OrderEn obj1 = new OrderEn();
                 obj1.BUSITYPE = "123123123";
                 obj1.CODE = "123123123";
                 obj1.FOONO = "123123123";
@@ -140,7 +140,7 @@ namespace SceneOfCustoms
                 ld.Add(obj1);
             }
             DateTime dt = DateTime.Now;
-            foreach (OrderEntity o in ld)
+            foreach (OrderEn o in ld)
             {
                 string sql = "";
                 sql = @"insert into List_Order(
@@ -230,10 +230,14 @@ namespace SceneOfCustoms
             MO.MSG_TYPE = "S";
             MO.MSG_ID = 1;
             MO.MSG_TXT = "测试";
-            MO.CODE = "12312312312";
-            Msgobj[] _MO = new Msgobj[1];
-            _MO[0] = MO;
-            return _MO;
+            //MO.CODE = "12312312312";
+            //Msgobj[] _MO = new Msgobj[1];
+            //_MO[0] = MO;
+
+            List<Msgobj> MsgobjList = new List<Msgobj>();
+            MsgobjList.Add(MO);
+            return MsgobjList;
+
 
             //return Json(new { Success = true, Message = "成功" }, JsonRequestBehavior.AllowGet);
 

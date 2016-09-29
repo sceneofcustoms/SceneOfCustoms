@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="68768306-8261-4cb5-9de2-ebe3e29ceeec" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="4ca0551a-e081-495c-84a9-2c5eda9f74ef" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,11 +19,11 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://172.20.60.198:8012/SyncDataFromSap.asmx" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://221.224.21.20:6790/CustomerService.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="SyncDataFromSap.wsdl" MetadataType="Wsdl" ID="53d4f65f-4911-42ee-8b4d-5cf8c505324f" SourceId="1" SourceUrl="http://172.20.60.198:8012/SyncDataFromSap.asmx?wsdl" />
-    <MetadataFile FileName="SyncDataFromSap.disco" MetadataType="Disco" ID="8ac38f4f-d671-4e01-b33a-7caa017a032b" SourceId="1" SourceUrl="http://172.20.60.198:8012/SyncDataFromSap.asmx?disco" />
+    <MetadataFile FileName="CustomerService.disco" MetadataType="Disco" ID="b12fdbc1-ec34-4274-a360-ec7e8700c289" SourceId="1" SourceUrl="http://221.224.21.20:6790/CustomerService.asmx?disco" />
+    <MetadataFile FileName="CustomerService.wsdl" MetadataType="Wsdl" ID="765a33ae-3fbb-4e96-9c16-ea6fd33fecd3" SourceId="1" SourceUrl="http://221.224.21.20:6790/CustomerService.asmx?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

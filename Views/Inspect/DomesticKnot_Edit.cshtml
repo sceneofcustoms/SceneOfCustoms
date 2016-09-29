@@ -94,7 +94,7 @@
                     </td>
                 </tr>
 
-                <tr>
+                @*<tr>
                     <td>
                         <label for="CHAYANZHILINGXIAFATIME"> 查验时间:</label>
                         <input class="easyui-textbox time_input" type="text" id="CHAYANZHILINGXIAFATIME" name="CHAYANZHILINGXIAFATIME" disabled="disabled" />
@@ -113,10 +113,10 @@
                         <label for="CHAYANFANGXINGUSERNAME">查验放行人:</label>
                         <input class="easyui-textbox " type="text" id="CHAYANFANGXINGUSERNAME" name="CHAYANFANGXINGUSERNAME" disabled="disabled" />
                     </td>
-                </tr>
+                </tr>*@
 
                 <tr>
-                    <td>
+                    @*<td>
                         <label for="XUNZHENGTIME">熏蒸时间:</label>
                         <input class="easyui-textbox time_input" type="text" id="XUNZHENGTIME" name="XUNZHENGTIME" disabled="disabled" />
                         <a href="javascript:void(0)" datatype="XUNZHENG" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
@@ -124,7 +124,7 @@
                     <td>
                         <label for="XUNZHENGUSERNAME">熏蒸人:</label>
                         <input class="easyui-textbox " type="text" id="XUNZHENGUSERNAME" name="XUNZHENGUSERNAME" disabled="disabled" />
-                    </td>
+                    </td>*@
 
                     <td style="text-align:left">
                         <label for="IFXUNZHENG">是否熏蒸:</label>
@@ -136,7 +136,7 @@
                     </td>
                 </tr>
 
-                <tr>
+                @*<tr>
                     <td style="text-align:left">
                         <label for="shifjiancha">是否查检:</label>
                         <input class="" id="shifjiancha" type="checkbox" name="IFCHAYAN" value="1" />
@@ -159,7 +159,7 @@
                             <option value="检疫物">检疫物</option>
                         </select>
                     </td>
-                </tr>
+                </tr>*@
 
                 <tr>
                     <td style="text-align:left">
@@ -188,7 +188,7 @@
                                data-options="min:0">
                     </td>
                     <td>
-                        <label for="GAIDANDESC">删单备注:</label>
+                        <label for="GAIDANDESC">改单备注:</label>
                         <input class="easyui-textbox" name="GAIDANDESC">
                     </td>
                 </tr>
@@ -199,6 +199,12 @@
 </div>
 
 <div style="text-align:center;padding:5px 0">
+    <a class="btn btn-primary" href="javascript:void(0)" onclick="TongguandanInfo()">
+        通关单信息
+    </a>
+    <a class="btn btn-primary" href="javascript:void(0)" onclick="JizhuangxiangInfo()">
+        集装箱信息
+    </a>
     <a class="btn btn-primary" href="javascript:void(0)" onclick="manySubmitForm()">
         <i class="fa fa-floppy-o"></i> 保存
     </a>
@@ -207,28 +213,6 @@
         <i class="icon-reply"></i> 返回
     </a>
 </div>
-
-<div id="" class="easyui-panel" title="通关单信息"
-     data-options="collapsible:true">
-
-    <table id="dg" style="height:250px" class="easyui-datagrid"
-           data-options=" rownumbers:true,
-                                   dataType : 'json',
-                                   method:'get'">
-        <thead>
-            <tr>
-                <th data-options="field: 'ID', checkbox: true"></th>
-                <th data-options="field:'BUSIUNITNAME,sortable:true'">发票合同号</th>
-                <th data-options="field:'TOTALNO,sortable:true'">贸易方式</th>
-                <th data-options="field:'GOODSNUM,sortable:true'">总件数</th>
-                <th data-options="field:'GOODSWEIGHT,sortable:true'">总重量</th>
-                <th data-options="field:'GOODSWEIGHT,sortable:true'">海关通关状态</th>
-            </tr>
-        </thead>
-    </table>
-
-</div>
-
 <script type="text/javascript">
     manyEditForm();
 </script>

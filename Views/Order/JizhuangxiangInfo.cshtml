@@ -1,0 +1,20 @@
+﻿
+@{
+    Layout = null;
+}
+
+<table id="dg" style="height:250px" class="easyui-datagrid"
+       data-options=" rownumbers:true,
+                                   dataType : 'json',
+                                   method:'get'">
+    <thead>
+        <tr>
+            <th data-options="field: 'ck', checkbox: true"></th>
+            <th data-options="field:'BUSIUNITNAME',sortable:true,width:200,align:'center'">集装箱号</th>
+            <th data-options="field:'DIVIDENO',width:100,align:'center'">箱型</th>
+            <th data-options="field:'DIVIDENO',width:100,align:'center'">标箱数量</th>
+            <th data-options="field:'GOODSNUM',width:50,align:'center'">件数</th>
+            <th data-options="field:'GOODSWEIGHT',width:50,align:'center'">重量</th>
+        </tr>
+    </thead>
+</table>

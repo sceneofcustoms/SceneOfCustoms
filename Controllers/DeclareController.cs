@@ -204,17 +204,20 @@ namespace SceneOfCustoms.Controllers
                 ViewData["id1"] = dt.Rows[0]["ID"] + "";
 
                 string ASSOCIATENO = correspondno.Replace("GF", "GL");
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !=" + CODE;
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !=" + CODE;
                 dt = DBMgr.GetDataTable(sql);
                 ViewData["id2"] = dt.Rows[0]["ID"] + "";// 第二个订单
+                ViewData["BUSIUNITNAME2"] = dt.Rows[0]["BUSIUNITNAME"] + "";
 
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = 41";
+
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = '41'";
                 dt = DBMgr.GetDataTable(sql);
                 ViewData["id3"] = dt.Rows[0]["ID"] + "";// 第三个订单
 
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = 40";
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = '40'";
                 dt = DBMgr.GetDataTable(sql);
                 ViewData["id4"] = dt.Rows[0]["ID"] + "";// 第四个订单
+                ViewData["BUSIUNITNAME4"] = dt.Rows[0]["BUSIUNITNAME"] + "";
             }
             else
             {

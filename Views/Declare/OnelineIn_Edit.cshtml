@@ -212,17 +212,22 @@
                 </td>
                 <td style="text-align:left">
                     <label for="IFYIJIAO">是否移交:</label>
-                    <input class="" id="shifyijiao" type="checkbox" name="IFYIJIAO" value="1" />
+                    <input class="" id="IFYIJIAO" type="checkbox" name="IFYIJIAO" value="1" />
                 </td>
                 <td style="text-align:left">
                     <label for="LAWCONDITION">法检标志:</label>
-                    <input class="" id="fajianbiaozhi" type="checkbox" name="LAWCONDITION" value="1" />
+                    <input class="" id="LAWCONDITION" type="checkbox" name="LAWCONDITION" value="1" />
+                </td>
+                <td style="text-align:left">
+                    <label for="LIHUOSIGN">理货标识:</label>
+                    <input class="" id="LIHUOSIGN" type="checkbox" name="LIHUOSIGN" value="1" />
                 </td>
             </tr>
+
             <tr>
                 <td style="text-align:left">
                     <label for="IFSHANDAN">是否删单:</label>
-                    <input class="" id="shifshandan" type="checkbox" name="IFSHANDAN" value="1" />
+                    <input class="" id="IFSHANDAN" type="checkbox" name="IFSHANDAN" value="1" />
                 </td>
                 <td>
                     <label for="SHANDANTOTAL">删单次数:</label>
@@ -237,7 +242,7 @@
             <tr>
                 <td style="text-align:left">
                     <label for="IFGAIDAN">是否改单:</label>
-                    <input class="" id="shifgaidan" type="checkbox" name="IFGAIDAN" value="1" />
+                    <input class="" id="IFGAIDAN" type="checkbox" name="IFGAIDAN" value="1" />
                 </td>
                 <td>
                     <label for="GAIDANTOTAL">改单次数:</label>
@@ -252,7 +257,7 @@
             <tr>
                 <td style="text-align:left">
                     <label for="IFCHAYAN">是否查验:</label>
-                    <input class="" id="shifjiancha" type="checkbox" name="IFCHAYAN" value="1" />
+                    <input class="" id="IFCHAYAN" type="checkbox" name="IFCHAYAN" value="1" />
                 </td>
                 <td>
                     <label for="CHAYANTIMES">查验次数:</label>
@@ -265,13 +270,13 @@
                 </td>
                 <td>
                     <label for="CHAYANZHILINGXIAFATIME" style="width:100px;">查验指令下发时间:</label>
-                    <input class="easyui-datebox value" type="text" name="CHAYANZHILINGXIAFATIME">
+                    <input class="easyui-datetimebox value" type="text" name="CHAYANZHILINGXIAFATIME">
                 </td>
             </tr>
             <tr>
                 <td style="text-align:left">
                     <label for="IFTIAODANG">是否调档:</label>
-                    <input class="" id="shifdiaodang" type="checkbox" name="IFTIAODANG" value="1" />
+                    <input class="" id="IFTIAODANG" type="checkbox" name="IFTIAODANG" value="1" />
                 </td>
                 <td>
                     <label for="TIAODANGTIMES">调档次数:</label>
@@ -280,16 +285,22 @@
                 </td>
                 <td style="text-align:left">
                     <label for="KOUHUOSIGN">扣货标识:</label>
-                    <input class="" id="kouhuobiaoshi" type="checkbox" name="KOUHUOSIGN" value="1" />
+                    <input class="" id="KOUHUOSIGN" type="checkbox" name="KOUHUOSIGN" value="1" />
                 </td>
                 <td>
                     <label for="KOUHUOTIME" style="width:100px;">扣货时间:</label>
-                    <input class="easyui-datebox value" type="text" name="KOUHUOTIME">
+                    <input class="easyui-datetimebox value" type="text" name="KOUHUOTIME">
                 </td>
             </tr>
         </table>
     </div>
     <div style="text-align:center;padding:5px 0">
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="BaoguandanInfo()">
+            报关单信息
+        </a>
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="JizhuangxiangInfo()">
+            集装箱信息
+        </a>
         <a class="btn btn-primary" href="javascript:void(0)" onclick="submitForm()">
             <i class="fa fa-floppy-o"></i> 保存
         </a>
@@ -298,25 +309,6 @@
         </a>
     </div>
 </form>
-
-<div id="" class="easyui-panel" title="报关单信息"
-     data-options="collapsible:true">
-    <table id="dg" style="height:250px" class="easyui-datagrid"
-           data-options=" rownumbers:true,
-                                   dataType : 'json',
-                                   method:'get'">
-        <thead>
-            <tr>
-                <th data-options="field: 'ck', checkbox: true"></th>
-                <th data-options="field:'BUSIUNITNAME',sortable:true,width:200,align:'center'">报关单号</th>
-                <th data-options="field:'DIVIDENO',width:100,align:'center'">贸易方式</th>
-                <th data-options="field:'GOODSNUM',width:50,align:'center'">件数</th>
-                <th data-options="field:'GOODSWEIGHT',width:50,align:'center'">重量</th>
-                <th data-options="field:'DECLSHEETNUM',width:100,align:'center'">海关通关状态</th>
-            </tr>
-        </thead>
-    </table>
-</div>
 
 <script type="text/javascript">
     Edit();
