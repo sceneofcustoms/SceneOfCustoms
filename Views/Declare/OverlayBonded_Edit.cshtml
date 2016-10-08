@@ -8,37 +8,38 @@
                 <table class="scene">
                     <tr>
                         <td>
-                            <label for="FWONO">FWO订单号:</label>
-                            <input class="easyui-textbox" type="text" name="FWONO" disabled="disabled" />
-                        </td>
-                        <td>
-                            <label for="FOCUSTOMSNO">FO号:</label>
-                            <input class="easyui-textbox" type="text" name="FOCUSTOMSNO" disabled="disabled" />
-                        </td>
-                        <td>
-                            <label for="DECLWAY">报关方式:</label>
-                            <input class="easyui-textbox" type="text" name="DECLWAY" disabled="disabled" />
-                        </td>
-                        <td>
-                            <label for="BUSITYPE"> 业务类型:</label>
-                            <input class="easyui-textbox" type="text" name="BUSITYPE" disabled="disabled" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="GOODSNUM"> 件数:</label>
-                            <input class="easyui-textbox" type="text" name="GOODSNUM" disabled="disabled" />
-                        </td>
-                        <td>
-                            <label for="GOODSWEIGHT">重量:</label>
-                            <input class="easyui-textbox" type="text" name="GOODSWEIGHT" disabled="disabled" />
-                        </td>
-                        <td>
-                            <label for="">进口企业:</label>
+                            <label>进口业务号:</label>
                             <input class="easyui-textbox" type="text" name="BUSIUNITNAME" disabled="disabled" />
                         </td>
                         <td>
-                            <label for="" style="color:red">出口企业:</label>
+                            <label> 总件数:</label>
+                            <input class="easyui-textbox" type="text" name="GOODSNUM" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label>总重量:</label>
+                            <input class="easyui-textbox" type="text" name="GOODSWEIGHT" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label>进口企业:</label>
+                            <input class="easyui-textbox" type="text" name="BUSIUNITNAME" disabled="disabled" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>出口业务号:</label>
+                            <input class="easyui-textbox" type="text" name="text" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label> FWO号:</label>
+                            <input class="easyui-textbox" type="text" name="CODE" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label>FOO号:</label>
+                            <input class="easyui-textbox" type="text" name="FOONO" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label style="color:red">出口企业:</label>
                             <input class="easyui-textbox" type="text" value="@ViewData["busiunitname2"]" disabled="disabled" />
                         </td>
                     </tr>
@@ -56,7 +57,7 @@
                         <td>
                             <label for="BAORUHAIGUANTIME"> 报入海关时间:</label>
                             <input class="easyui-textbox time_input" type="text" id="BAORUHAIGUANTIME" name="BAORUHAIGUANTIME" disabled="disabled" />
-                            <a href="javascript:void(0)" datatype="BAORUHAIGUAN" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                            <a href="javascript:void(0)" datatype="BAORUHAIGUAN" class="easyui-linkbutton fillingData DECLSTATUS"><i class="icon-time"></i></a>
                         </td>
                         <td>
                             <label for="BAORUHAIGUANUSERNAME">报入海关人:</label>
@@ -107,7 +108,7 @@
                         <td>
                             <label for="CHAYANSTARTTIME"> 查验起始时间:</label>
                             <input class="easyui-textbox time_input" type="text" id="CHAYANSTARTTIME" name="CHAYANSTARTTIME" disabled="disabled" />
-                            <a href="javascript:void(0)" datatype="CHAYANSTART" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                            <a href="javascript:void(0)" datatype="CHAYANSTART" class="easyui-linkbutton fillingData DECLSTATUS"><i class="icon-time"></i></a>
                         </td>
                         <td>
                             <label for="CHAYANSTARTUSERNAME">起始查验人:</label>
@@ -127,7 +128,7 @@
                         <td>
                             <label for="DANZHENGFANGXINGTIME"> 单证放行时间:</label>
                             <input class="easyui-textbox time_input" type="text" id="DANZHENGFANGXINGTIME" name="DANZHENGFANGXINGTIME" disabled="disabled" />
-                            <a href="javascript:void(0)" datatype="DANZHENGFANGXING" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                            <a href="javascript:void(0)" datatype="DANZHENGFANGXING" class="easyui-linkbutton fillingData DECLSTATUS"><i class="icon-time"></i></a>
                         </td>
                         <td>
                             <label for="DANZHENGFANGXINGUSERNAME">单证放行人:</label>
@@ -166,6 +167,10 @@
                             <label for="IFYIJIAO">是否移交:</label>
                             <input class="" id="IFYIJIAO" type="checkbox" name="IFYIJIAO" value="1" />
                         </td>
+                        <td>
+                            <label for="DECLSTATUS"> 报关状态:</label>
+                            <input class="easyui-textbox" type="text" name="DECLSTATUS" id="DECLSTATUS" />
+                        </td>
                     </tr>
                     <tr>
 
@@ -183,7 +188,7 @@
                             <input class="" id="KOUHUOSIGN" type="checkbox" name="KOUHUOSIGN" value="1" />
                         </td>
                         <td>
-                            <label for="KOUHUOTIME" style="width:100px;">扣货时间:</label>
+                            <label for="KOUHUOTIME">扣货时间:</label>
                             <input class="easyui-datebox value" name="KOUHUOTIME" placeholder="开始时间">
                         </td>
                     </tr>
@@ -260,40 +265,43 @@
                 <table class="scene">
                     <tr>
                         <td>
-                            <label for="FWONO">FWO订单号:</label>
-                            <input class="easyui-textbox" type="text" name="FWONO" disabled="disabled" />
-                        </td>
-                        <td>
-                            <label for="FOCUSTOMSNO">FO号:</label>
-                            <input class="easyui-textbox" type="text" name="FOCUSTOMSNO" disabled="disabled" />
-                        </td>
-                        <td>
-                            <label for="DECLWAY">报关方式:</label>
-                            <input class="easyui-textbox" type="text" name="DECLWAY" disabled="disabled" />
-                        </td>
-                        <td>
-                            <label for="BUSITYPE"> 业务类型:</label>
-                            <input class="easyui-textbox" type="text" name="BUSITYPE" disabled="disabled" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="GOODSNUM"> 件数:</label>
-                            <input class="easyui-textbox" type="text" name="GOODSNUM" disabled="disabled" />
-                        </td>
-                        <td>
-                            <label for="GOODSWEIGHT">重量:</label>
-                            <input class="easyui-textbox" type="text" name="GOODSWEIGHT" disabled="disabled" />
-                        </td>
-                        <td>
-                            <label for="">进口企业:</label>
+                            <label>进口业务号:</label>
                             <input class="easyui-textbox" type="text" name="BUSIUNITNAME" disabled="disabled" />
                         </td>
                         <td>
-                            <label for="" style="color:red">出口企业:</label>
+                            <label> 总件数:</label>
+                            <input class="easyui-textbox" type="text" name="GOODSNUM" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label>总重量:</label>
+                            <input class="easyui-textbox" type="text" name="GOODSWEIGHT" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label>进口企业:</label>
+                            <input class="easyui-textbox" type="text" name="BUSIUNITNAME" disabled="disabled" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>出口业务号:</label>
+                            <input class="easyui-textbox" type="text" name="text" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label> FWO号:</label>
+                            <input class="easyui-textbox" type="text" name="CODE" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label>FOO号:</label>
+                            <input class="easyui-textbox" type="text" name="FOONO" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label style="color:red">出口企业:</label>
                             <input class="easyui-textbox" type="text" value="@ViewData["busiunitname4"]" disabled="disabled" />
                         </td>
                     </tr>
+
+
 
                     <tr>
                         <td>
@@ -308,7 +316,7 @@
                         <td>
                             <label for="BAORUHAIGUANTIME"> 报入海关时间:</label>
                             <input class="easyui-textbox time_input" type="text" id="BAORUHAIGUANTIME" name="BAORUHAIGUANTIME" disabled="disabled" />
-                            <a href="javascript:void(0)" datatype="BAORUHAIGUAN" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                            <a href="javascript:void(0)" datatype="BAORUHAIGUAN" class="easyui-linkbutton fillingData DECLSTATUS2"><i class="icon-time"></i></a>
                         </td>
                         <td>
                             <label for="BAORUHAIGUANUSERNAME">报入海关人:</label>
@@ -359,7 +367,7 @@
                         <td>
                             <label for="CHAYANSTARTTIME"> 查验起始时间:</label>
                             <input class="easyui-textbox time_input" type="text" id="CHAYANSTARTTIME" name="CHAYANSTARTTIME" disabled="disabled" />
-                            <a href="javascript:void(0)" datatype="CHAYANSTART" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                            <a href="javascript:void(0)" datatype="CHAYANSTART" class="easyui-linkbutton fillingData DECLSTATUS2"><i class="icon-time"></i></a>
                         </td>
                         <td>
                             <label for="CHAYANSTARTUSERNAME">起始查验人:</label>
@@ -379,7 +387,7 @@
                         <td>
                             <label for="DANZHENGFANGXINGTIME"> 单证放行时间:</label>
                             <input class="easyui-textbox time_input" type="text" id="DANZHENGFANGXINGTIME" name="DANZHENGFANGXINGTIME" disabled="disabled" />
-                            <a href="javascript:void(0)" datatype="DANZHENGFANGXING" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
+                            <a href="javascript:void(0)" datatype="DANZHENGFANGXING" class="easyui-linkbutton fillingData DECLSTATUS2"><i class="icon-time"></i></a>
                         </td>
                         <td>
                             <label for="DANZHENGFANGXINGUSERNAME">单证放行人:</label>
@@ -418,6 +426,10 @@
                             <label for="IFYIJIAO">是否移交:</label>
                             <input class="" id="IFYIJIAO" type="checkbox" name="IFYIJIAO" value="1" />
                         </td>
+                        <td>
+                            <label for="DECLSTATUS"> 报关状态:</label>
+                            <input class="easyui-textbox" type="text" name="DECLSTATUS" id="DECLSTATUS2" />
+                        </td>
                     </tr>
                     <tr>
 
@@ -435,7 +447,7 @@
                             <input class="" id="KOUHUOSIGN" type="checkbox" name="KOUHUOSIGN" value="1" />
                         </td>
                         <td>
-                            <label for="KOUHUOTIME" style="width:100px;">扣货时间:</label>
+                            <label for="KOUHUOTIME">扣货时间:</label>
                             <input class="easyui-datebox value" name="KOUHUOTIME" placeholder="开始时间">
                         </td>
                     </tr>

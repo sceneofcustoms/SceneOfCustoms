@@ -207,6 +207,44 @@ $(function () {
     });
 
 
+    //改状态  报关
+    $('.DECLSTATUS').click(function () {
+        debugger;
+        var type = this.getAttribute("datatype");
+        if (type == 'BAORUHAIGUAN') {
+            $("#DECLSTATUS").textbox('setValue', '报关');
+        } else if (type == 'CHAYANSTART') {
+            $("#DECLSTATUS").textbox('setValue', '查验');
+        } else if (type == 'DANZHENGFANGXING') {
+            $("#DECLSTATUS").textbox('setValue', '放行');
+        }
+    })
+
+    //改状态 叠加保税  报关
+    $('.DECLSTATUS2').click(function () {
+        debugger;
+        var type = this.getAttribute("datatype");
+        if (type == 'BAORUHAIGUAN') {
+            $("#DECLSTATUS2").textbox('setValue', '报关');
+        } else if (type == 'CHAYANSTART') {
+            $("#DECLSTATUS2").textbox('setValue', '查验');
+        } else if (type == 'DANZHENGFANGXING') {
+            $("#DECLSTATUS2").textbox('setValue', '放行');
+        }
+    })
+
+
+    //改状态  报检
+    $('.INSPSTATUS').click(function () {
+        var type = this.getAttribute("datatype");
+        if (type == 'BAOJIAN') {
+            $("#INSPSTATUS").textbox('setValue', '报检');
+        } else if (type == 'CHAYANSTART') {
+            $("#INSPSTATUS").textbox('setValue', '查验');
+        } else if (type == 'XUNZHENG') {
+            $("#INSPSTATUS").textbox('setValue', '熏蒸');
+        }
+    })
 
     function loadsucc(data) {
         if (data['PASSMODE'] != "" && data['PASSMODE'] != null) {
@@ -452,3 +490,4 @@ function opencenterwin(url, width, height) {
     var iLeft = (window.screen.availWidth - 10 - iWidth) / 2; //获得窗口的水平位置; 
     window.open(url, '', 'height=' + iHeight + ',,innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',toolbar=yes,menubar=yes, location=yes,scrollbars=yes,resizable=yes');
 }
+

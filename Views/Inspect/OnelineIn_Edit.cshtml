@@ -231,7 +231,7 @@
                         <option value="熏蒸">熏蒸</option>
                     </select>*@
 
-                    <input class="easyui-textbox" name="INSPSTATUS" id="INSPSTATUS" disabled="disabled">
+                    <input class="easyui-textbox" name="INSPSTATUS" id="INSPSTATUS" >
                 </td>
             </tr>
 
@@ -272,17 +272,4 @@
 
 <script type="text/javascript">
     Edit();
-
-    $(function () {
-        $('.INSPSTATUS').click(function () {
-            var type = this.getAttribute("datatype");
-            if (type == 'BAOJIAN') {
-                $("#INSPSTATUS").textbox('setValue', '报检');
-            } else if (type == 'CHAYANZHILINGXIAFA') {
-                $("#INSPSTATUS").textbox('setValue', '查验');
-            } else if (type == 'XUNZHENG') {
-                $("#INSPSTATUS").textbox('setValue', '熏蒸');
-            }
-        })
-    })
 </script>
