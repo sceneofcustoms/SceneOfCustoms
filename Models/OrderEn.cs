@@ -66,7 +66,7 @@ namespace SceneOfCustoms.Models
         public string TURNPRENO { get; set; }
         public string INVOICENO { get; set; }
 
-        public string DECLCARNO { get; set; }
+        //public string DECLCARNO { get; set; }
 
         
 

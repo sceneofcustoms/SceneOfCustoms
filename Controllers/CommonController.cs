@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace SceneOfCustoms.Controllers
 {
@@ -36,19 +37,51 @@ namespace SceneOfCustoms.Controllers
         }
         public ActionResult Attachment_Edit()
         {
+            string FWONO = Request["FWONO"];
+            string FOONO = Request["FOONO"];
+            if (!string.IsNullOrEmpty(FOONO) && !string.IsNullOrEmpty(FWONO))
+            {
+                ViewData["is_passed"] = "1";
+                ViewData["FWONO"] = FWONO;
+                ViewData["FOONO"] = FOONO;
+
+
+            }
+            else
+            {
+                ViewData["is_passed"] = "0";
+            }
             return View();
         }
+
+        public string load_file()
+        {
+            string FWONO = Request["FWONO"];
+            string FOONO = Request["FOONO"];
+            string sql = "select * from LIST_ATTACHMENT where fwono='" + FWONO + "' and foono ='" + FOONO + "'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string result = JsonConvert.SerializeObject(dt, iso);
+            return "{rows:" + result +"}";
+        }
+
         //文件上传
         public ActionResult UploadFile(int? chunk, string name)
         {
             var fileUpload = Request.Files[0];
             var uploadPath = Server.MapPath("/Upload/");
             chunk = chunk ?? 0;
+            string FWONO = Request.QueryString["FWONO"];
+            string FOONO = Request.QueryString["FOONO"];
             using (var fs = new FileStream(Path.Combine(uploadPath, name), chunk == 0 ? FileMode.Create : FileMode.Append))
             {
                 var buffer = new byte[fileUpload.InputStream.Length];
                 fileUpload.InputStream.Read(buffer, 0, buffer.Length);
                 fs.Write(buffer, 0, buffer.Length);
+                string sql = @"insert into list_attachment(ID,FILEPATH,FILENAME,FILESIZE,FWONO,FOONO,CREATENAME,CREATETIME,STATUS) 
+                VALUES(LIST_ATTACHMENT_ID.Nextval,'/Upload/" + name + "','" + fileUpload.FileName + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','cs',sysdate,1)";
+                DBMgr.ExecuteNonQuery(sql);
             }
             return Content("chunk uploaded", "text/plain");
         }
