@@ -13,7 +13,6 @@ using System.Web.Mvc;
 
 namespace SceneOfCustoms.Controllers
 {
-    [Authorize]
     public class CommonController : Controller
     {
         int total = 0;
@@ -56,7 +55,15 @@ namespace SceneOfCustoms.Controllers
         public string CurrentUser()
         {
             JObject json_user = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
-            return json_user.GetValue("REALNAME") + "";
+
+            if (json_user == null)
+            {
+                return "游客";
+            }
+            else
+            {
+                return json_user.GetValue("REALNAME") + "";
+            }
         }
         public void ImportOrder_AirIn()
         {
