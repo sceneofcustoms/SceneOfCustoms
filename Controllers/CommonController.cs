@@ -39,6 +39,8 @@ namespace SceneOfCustoms.Controllers
         {
             string FWONO = Request["FWONO"];
             string FOONO = Request["FOONO"];
+            var Path = Server.MapPath("../");
+            ViewData["Path"] = Path;
             if (!string.IsNullOrEmpty(FOONO) && !string.IsNullOrEmpty(FWONO))
             {
                 ViewData["is_passed"] = "1";
@@ -77,8 +79,9 @@ namespace SceneOfCustoms.Controllers
                 var buffer = new byte[fileUpload.InputStream.Length];
                 fileUpload.InputStream.Read(buffer, 0, buffer.Length);
                 fs.Write(buffer, 0, buffer.Length);
+                string username = CurrentUser();
                 string sql = @"insert into list_attachment(ID,FILEPATH,FILENAME,FILESIZE,FWONO,FOONO,CREATENAME,CREATETIME,STATUS) 
-                VALUES(LIST_ATTACHMENT_ID.Nextval,'/Upload/" + name + "','" + fileUpload.FileName + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','cs',sysdate,1)";
+                VALUES(LIST_ATTACHMENT_ID.Nextval,'/Upload/" + name + "','" + fileUpload.FileName + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','" + username + "',sysdate,1)";
                 DBMgr.ExecuteNonQuery(sql);
             }
             return Content("chunk uploaded", "text/plain");

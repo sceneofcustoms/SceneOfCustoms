@@ -91,7 +91,7 @@
                 silverlight_xap_url: '/js/upload/Moxie.xap',
                 unique_names: true,
                 filters: {
-                    max_file_size: '5000mb',
+                    max_file_size: '500mb',
                     mime_types: [
                         { title: "Image files", extensions: "*" },
                         { title: "Zip files", extensions: "zip,rar" }
@@ -104,6 +104,10 @@
             });
             uploader.bind('FileUploaded', function (up, file) {
                 file_store.load();
+
+            });
+            uploader.bind('Error', function (up, file) {
+                Ext.MessageBox.alert("错误", "文件太大，无法上传！");
 
             });
         }
@@ -134,7 +138,6 @@
                         type: 'post',
                         dataType: 'json',
                         success: function (data) {
-                            debugger;
                             file_store.load();
                         }
                     });
@@ -142,12 +145,36 @@
             });
         }
 
+        //打开文件
+        function open_file() {
+            var w_fileview = Ext.getCmp("w_fileview");
+            var recs = w_fileview.getSelectionModel().getSelection();
 
+            if (recs.length < 1) {
+                Ext.MessageBox.alert("提示框", "请选择文件！");
+                return false;
+            }
+            var win = Ext.create("Ext.window.Window", {
+                title: "文件预览",
+                width: 800,
+                height: 600,
+                layout: "fit",
+                modal: true,
+                closeAction: "destroy",
+                items: [{
+                    html: "<div id='fileViewDiv' style='height: 100%;width: 100%;'></div>"
+                }]
+            });
+                win.show();
+                document.getElementById('fileViewDiv').innerHTML = '<embed id="pdf" width="100%" height="100%" src="../../' + recs[0].get("FILEPATH") + '"></embed>';
+        }
 
     </script>
 </head>
 <body>
     <div class="container" style="width:540px">
+        <input type="hidden" value="@ViewData["Path"]" id="Path">
+
         @if (ViewData["is_passed"] == "1")
         {
             <div class="input-group" style="width:100%;margin:10px 0px">
@@ -160,7 +187,7 @@
             </div>
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-primary btn-sm" id="pickfiles"><i class="fa fa-upload"></i>&nbsp;上传文件</button>
-                <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-exchange fa-fw"></i>&nbsp;浏览文件</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="open_file()"><i class="fa fa-exchange fa-fw"></i>&nbsp;浏览文件</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="deletefile()"><i class="fa fa-trash-o"></i>&nbsp;删除文件</button>
             </div>
             <div id="div_panel">
