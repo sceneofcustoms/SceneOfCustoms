@@ -27,17 +27,9 @@
     </style>
     <script type="text/javascript">
         var file_store;
-
-
-
         Ext.onReady(function () {
-
- 
-
-
             var FWONO = $("#FWONO").val();
             var FOONO = $("#FOONO").val();
-            //var data = Ext.decode();
             file_store = Ext.create('Ext.data.JsonStore', {
                 fields: ['ID', 'FILENAME', 'FILEPATH', 'CREATETIME', 'SIZES', 'IETYPE'],
                 proxy: {
@@ -86,32 +78,7 @@
                 items: [fileview]
             })
             upload_ini();
-
-
-            //load_file();
-
         })
-
-
-        //function load_file() {
-
-        //    $.ajax({
-        //        url: '/Common/load_file',// 跳转到 action
-        //        data: {
-        //            'FWONO': FWONO,
-        //            'FOONO': FOONO
-        //        },
-        //        type: 'post',
-        //        dataType: 'json',
-        //        success: function (data) {
-        //            var i = 0;
-        //            for (i; i < data.length; i++) {
-        //                file_store.insert(file_store.data.length,
-        //                  { ID: data[i].ID, FILEPATH: data[i].FILEPATH, FILENAME: data[i].FILENAME, SIZES: data[i].SIZES, CREATETIME: data[i].CREATETIME });
-        //            }
-        //        }
-        //    });
-        //}
 
         function upload_ini() {
             var FWONO = $("#FWONO").val();
@@ -137,25 +104,44 @@
             });
             uploader.bind('FileUploaded', function (up, file) {
                 file_store.load();
-                //load_file();
-                //window.load();
-                //var filetype = Ext.getCmp('combo_filetype').getValue();
-                //var filetypename = Ext.getCmp('combo_filetype').getRawValue();
 
-                // var timestamp = Ext.Date.now();  //1351666679575  这个方法只是获取的时间戳
-                // var date = new Date(timestamp);
-                // file_store.insert(file_store.data.length,
-                //{ FILEPATH: '/Upload/' + file.target_name, FILENAME: file.name, SIZES: file.size, CREATETIME: Ext.Date.format(date, 'Y-m-d H:i:s') });
             });
         }
 
         function deletefile() {
-            debugger;
             var w_fileview = Ext.getCmp("w_fileview");
             var recs = w_fileview.getSelectionModel().getSelection();
-            recs[0].get("ID")
+            if (recs.length < 1) {
+                Ext.MessageBox.alert("提示框", "请选择删除文件！");
+                return false;
             }
-        
+            Ext.MessageBox.confirm("提示框", "确认删除文件吗？", function (btn) {
+                if (btn == "yes") {
+                    var i = 0;
+                    var ids = "";
+                    for (i; i < recs.length; i++) {
+                        if (i + 1 == recs.length) {
+                            ids += recs[i].get("ID");
+                        } else {
+                            ids += recs[i].get("ID") + ",";
+                        }
+                    }
+                    $.ajax({
+                        url: '/Common/delete_file',// 跳转到 action
+                        data: {
+                            'ids': ids
+                        },
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (data) {
+                            debugger;
+                            file_store.load();
+                        }
+                    });
+                }
+            });
+        }
+
 
 
     </script>
@@ -174,7 +160,7 @@
             </div>
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-primary btn-sm" id="pickfiles"><i class="fa fa-upload"></i>&nbsp;上传文件</button>
-                <button type="button" class="btn btn-primary btn-sm"  ><i class="fa fa-exchange fa-fw"></i>&nbsp;浏览文件</button>
+                <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-exchange fa-fw"></i>&nbsp;浏览文件</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="deletefile()"><i class="fa fa-trash-o"></i>&nbsp;删除文件</button>
             </div>
             <div id="div_panel">

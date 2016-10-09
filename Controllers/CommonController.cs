@@ -44,8 +44,6 @@ namespace SceneOfCustoms.Controllers
                 ViewData["is_passed"] = "1";
                 ViewData["FWONO"] = FWONO;
                 ViewData["FOONO"] = FOONO;
-
-
             }
             else
             {
@@ -63,7 +61,7 @@ namespace SceneOfCustoms.Controllers
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             string result = JsonConvert.SerializeObject(dt, iso);
-            return "{rows:" + result +"}";
+            return "{rows:" + result + "}";
         }
 
         //文件上传
@@ -84,6 +82,33 @@ namespace SceneOfCustoms.Controllers
                 DBMgr.ExecuteNonQuery(sql);
             }
             return Content("chunk uploaded", "text/plain");
+        }
+
+        [HttpPost]
+        //移除文件
+        public string delete_file()
+        {
+            string ids = Request["ids"];
+            string[] arr = ids.Split(',');
+            string id = "";
+            string sql = "";
+            DataTable dt;
+            FileInfo file;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                id = arr[i];
+                sql = "select * from list_attachment where id=" + id;
+                dt = DBMgr.GetDataTable(sql);
+                file = new FileInfo(Server.MapPath(dt.Rows[0]["FILEPATH"] + ""));//指定文件路径
+                if (file.Exists)//判断文件是否存在
+                {
+                    file.Attributes = FileAttributes.Normal;//将文件属性设置为普通,比方说只读文件设置为普通
+                    file.Delete();//删除文件
+                    sql = "delete from list_attachment where id=" + id;
+                    DBMgr.ExecuteNonQuery(sql);
+                }
+            }
+            return "1";
         }
         public string CurrentUser()
         {
