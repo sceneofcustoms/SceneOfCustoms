@@ -209,7 +209,6 @@ $(function () {
 
     //改状态  报关
     $('.DECLSTATUS').click(function () {
-        debugger;
         var type = this.getAttribute("datatype");
         if (type == 'BAORUHAIGUAN') {
             $("#DECLSTATUS").textbox('setValue', '报关');
@@ -222,7 +221,6 @@ $(function () {
 
     //改状态 叠加保税  报关
     $('.DECLSTATUS2').click(function () {
-        debugger;
         var type = this.getAttribute("datatype");
         if (type == 'BAORUHAIGUAN') {
             $("#DECLSTATUS2").textbox('setValue', '报关');
@@ -260,7 +258,6 @@ $(function () {
 
 
     $('#OrderFrom .fillingData').click(function () {
-        debugger;
         var type = this.getAttribute("datatype");
         var ID = getQueryString('ID');
         $.ajax({
@@ -275,7 +272,6 @@ $(function () {
                 if (data.Success == true) {
                     var time = "#" + type + 'TIME';
                     var name = "#" + type + 'USERNAME';
-                    debugger;
                     $(time).textbox('setValue', data.datetime);
                     $(name).textbox('setValue', data.name);
                 } else {
@@ -289,7 +285,6 @@ $(function () {
 
 
     $('#many_form .fillingData').click(function () {
-        debugger;
         var type = this.getAttribute("datatype");
         var form = $(this).parents('.OrderFrom').attr('id');//查找哪个form
         var findname = "#" + form + " input[name=ID]";
@@ -303,7 +298,6 @@ $(function () {
             type: 'post',
             dataType: 'json',
             success: function (data) {
-                debugger;
                 if (data.Success == true) {
                     var time = "#" + form + " #" + type + 'TIME';
                     var name = "#" + form + " #" + type + 'USERNAME';
@@ -324,7 +318,6 @@ $(function () {
 
 //搜索列表
 function search_form() {
-    debugger;
 }
 
 
@@ -353,7 +346,6 @@ function getQueryString(name) {
 }
 
 function submitForm() {
-    debugger;
     $('#OrderFrom').form('submit', {
         url: "/Order/SaveData",
         onSubmit: function () {
@@ -364,7 +356,6 @@ function submitForm() {
             }
         },
         success: function (data) {
-            debugger;
             var data = eval('(' + data + ')');  // change the JSON string to javascript object
             if (data.Success) {
                 $.messager.alert('成功', '保存成功');
@@ -440,7 +431,6 @@ function TongguandanInfo() {
 
 
 function manyEditForm() {
-    debugger;
     $('#many_form form').each(function (i) {
         var formid = "#" + this.id;
         var findid = formid + " input[name=ID]";
@@ -470,9 +460,9 @@ function loadListGrid(page) {
         method: 'get',
         toolbar: '#tb',
         pageSize: 20,
+        pageList: [20, 40, 60, 80, 100,300],
         pagination: true,
         onDblClickCell: function (index, field, value) {
-            debugger;
             if (page != "") {
                 var row = $('#datagrid').datagrid('getData').rows[index];
                 if (row.ID != "") {
