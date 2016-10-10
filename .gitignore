@@ -7,3 +7,4 @@ SceneOfCustoms.csproj
 SceneOfCustoms.csproj.user
 *.bak
 Upload/
+Web.config
