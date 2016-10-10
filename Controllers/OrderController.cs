@@ -21,19 +21,19 @@ namespace SceneOfCustoms.Controllers
 
         //测试接口  单证
 
-        public ActionResult test()
-        {
-            ServiceReference2.CustomerServiceSoapClient danzheng = new ServiceReference2.CustomerServiceSoapClient();
-            ServiceReference2.OrderEn dzOrder = new ServiceReference2.OrderEn();
-            dzOrder.ARRIVEDNO = "1";
-            dzOrder.REPNO = "1";
-            //dzOrder.BUSIUNITCODE = "1";
-            List<ServiceReference2.OrderEn> orderList = new List<ServiceReference2.OrderEn>();
-            orderList.Add(dzOrder);
-            string text = danzheng.SendOrderData(orderList.ToArray());
-            ViewData["text"] = text;
-            return View();
-        }
+        //public ActionResult test()
+        //{
+        //    //ServiceReference2.CustomerServiceSoapClient danzheng = new ServiceReference2.CustomerServiceSoapClient();
+        //    //ServiceReference2.OrderEn dzOrder = new ServiceReference2.OrderEn();
+        //    //dzOrder.ARRIVEDNO = "1";
+        //    //dzOrder.REPNO = "1";
+        //    ////dzOrder.BUSIUNITCODE = "1";
+        //    //List<ServiceReference2.OrderEn> orderList = new List<ServiceReference2.OrderEn>();
+        //    //orderList.Add(dzOrder);
+        //    //string text = danzheng.SendOrderData(orderList.ToArray());
+        //    //ViewData["text"] = text;
+        //    //return View();
+        //}
 
 
 
