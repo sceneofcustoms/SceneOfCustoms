@@ -53,24 +53,16 @@ namespace SceneOfCustoms.Common
         //获取订单CODE
         public static string getOrderCode()
         {
-            string sql = "", sql1 = "";
-
-            sql = "select sys_code_id.nextval from dual";
             string code = string.Empty;
             try
             {
-                DataTable dt = DBMgr.GetDataTable(sql);
-                int CodeId = int.Parse(dt.Rows[0][0].ToString());
-                sql1 = "select YEARMONTH, code from sys_code where id=" + CodeId;
-                DataTable dt1 = DBMgr.GetDataTable(sql1);
-                while (dt1.Rows.Count <= 0)
-                {
-                    dt = DBMgr.GetDataTable(sql);
-                    CodeId = int.Parse(dt.Rows[0][0].ToString());
-                    sql1 = "select YEARMONTH, code from sys_code where id=" + CodeId;
-                    dt1 = DBMgr.GetDataTable(sql1);
-                }
-                code = dt1.Rows[0][0].ToString() + dt1.Rows[0][1].ToString();
+                string sql = "", sql1 = "";
+                sql = "update sys_code set code=code+1";
+                DB_DanZheng.ExecuteNonQuery(sql);
+                sql1 = "select code,sysdate from sys_code";
+                DataTable dt = DB_DanZheng.GetDataTable(sql1);
+                code = (Convert.ToDateTime(dt.Rows[0]["sysdate"].ToString()).ToString("yyyyMMdd")).Substring(2);
+                code += Convert.ToInt32(dt.Rows[0]["code"].ToString()).ToString("00000");
             }
             catch (Exception e)
             {
