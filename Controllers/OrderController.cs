@@ -20,21 +20,773 @@ namespace SceneOfCustoms.Controllers
     {
 
         //测试接口  单证
+        public ActionResult test()
+        {
+            ServiceReference2.CustomerServiceSoapClient danzheng = new ServiceReference2.CustomerServiceSoapClient();
+            ServiceReference2.OrderEn dzOrder = new ServiceReference2.OrderEn();
 
-        //public ActionResult test()
-        //{
-        //    //ServiceReference2.CustomerServiceSoapClient danzheng = new ServiceReference2.CustomerServiceSoapClient();
-        //    //ServiceReference2.OrderEn dzOrder = new ServiceReference2.OrderEn();
-        //    //dzOrder.ARRIVEDNO = "1";
-        //    //dzOrder.REPNO = "1";
-        //    ////dzOrder.BUSIUNITCODE = "1";
-        //    //List<ServiceReference2.OrderEn> orderList = new List<ServiceReference2.OrderEn>();
-        //    //orderList.Add(dzOrder);
-        //    //string text = danzheng.SendOrderData(orderList.ToArray());
-        //    //ViewData["text"] = text;
-        //    //return View();
-        //}
+            dzOrder.ARRIVEDNO = "1";
+            dzOrder.REPNO = "1";
+            //dzOrder.BUSIUNITCODE = "1";
 
+            List<ServiceReference2.OrderEn> orderList = new List<ServiceReference2.OrderEn>();
+
+            orderList.Add(dzOrder);
+            string text = danzheng.SendOrderData(orderList.ToArray());
+            ViewData["text"] = text;
+            return View();
+        }
+
+        private List<List<OrderEn>> GroupByFoo(List<OrderEn> oes)
+        {
+            List<List<OrderEn>> lloes = new List<List<OrderEn>>();
+            List<OrderEn> oes_split1 = new List<OrderEn>();
+            List<OrderEn> oes_split2 = new List<OrderEn>();
+            List<OrderEn> oes_split3 = new List<OrderEn>();
+            List<OrderEn> oes_split4 = new List<OrderEn>();
+            // 进口企业/出口企业/HUB仓进/HUB仓出
+            if (string.IsNullOrEmpty(oes[0].ENTRUSTTYPEID))
+            {
+                lloes.Add(oes);
+            }
+            else
+            {
+                foreach (OrderEn oe in oes)
+                {
+                    if (oe.ENTRUSTTYPEID == "进口企业")
+                    {
+                        oes_split1.Add(oe);
+                    }
+                    if (oe.ENTRUSTTYPEID == "出口企业")
+                    {
+                        oes_split2.Add(oe);
+                    }
+                    if (oe.ENTRUSTTYPEID == "HUB仓进")
+                    {
+                        oes_split3.Add(oe);
+                    }
+                    if (oe.ENTRUSTTYPEID == "HUB仓出")
+                    {
+                        oes_split4.Add(oe);
+                    }
+                }
+            }
+            return lloes;
+        }
+
+
+        //测试tm
+        public ActionResult testTm()
+        {
+            List<OrderEn> ld = new List<OrderEn>();
+            Msgobj MO = new Msgobj();
+            OrderEn obj = new OrderEn();
+            IList<Msgobj> MSList = CheckData(ld);
+
+            if (MSList.Count <= 0)
+            {
+                if (ld.Count > 0)
+                {
+                    int Order_Res = InsertOrder(ld);
+                    if (Order_Res == 1)
+                    {
+                        MO.MSG_ID = 1;
+                        MO.MSG_TYPE = "S";
+                        MO.MSG_TXT = "保存成功";
+                        MSList.Add(MO);
+                    }
+                    else
+                    {
+                        MO.MSG_ID = 1;
+                        MO.MSG_TYPE = "E";
+                        MO.MSG_TXT = "保存失败";
+                        MSList.Add(MO);
+                    }
+
+                }
+                else
+                {
+                    MO.MSG_ID = 1;
+                    MO.MSG_TYPE = "E";
+                    MO.MSG_TXT = "数据不可为空";
+                    MSList.Add(MO);
+                }
+            }
+
+            return View();
+        }
+
+
+        private ServiceReference2.OrderEn ZDOrderData(List<OrderEn> ListOrder)
+        {
+            string sql = "";
+            DataTable dt;
+            ServiceReference2.OrderEn DZOrder = new ServiceReference2.OrderEn();
+
+            DZOrder.CUSNO = ListOrder[1].CUSNO; //企业编号
+            DZOrder.REPNO = ""; //申报单位编号   --
+            DZOrder.ENTRUSTTYPE = GetENTRUSTTYPEID(ListOrder, ListOrder[1].BUSITYPE); //委托类型代码
+
+            //委托类型名称
+            if (DZOrder.ENTRUSTTYPE == "01")
+            {
+                DZOrder.ENTRUSTTYPENAME = "报关";
+            }
+            else if (DZOrder.ENTRUSTTYPE == "02")
+            {
+                DZOrder.ENTRUSTTYPENAME = "报检";
+            }
+            else if (DZOrder.ENTRUSTTYPE == "03")
+            {
+                DZOrder.ENTRUSTTYPENAME = "报关报检";
+            }
+
+            //业务类型代码
+            DZOrder.BUSITYPE = JudgeBusiType(ListOrder[1].BUSITYPE, ListOrder[1].ENTRUSTTYPEID);
+            //业务类型名称 --
+            DZOrder.BUSITYPENAME = "";
+
+            //申报方式代码
+            sql = "select CODE, NAME from SYS_REPWAY where Enabled=1 and  NAME = '" + ListOrder[1].REPWAYID + "'";
+            dt = DB_BaseData.GetDataTable(sql);
+            DZOrder.REPWAYID = dt.Rows[0]["CODE"] + "";
+            //申报方式名称 --
+            DZOrder.REPWAYNAME = dt.Rows[0]["NAME"] + "";
+
+            //申报关区代码
+            sql = "select CODE,NAME from BASE_CUSTOMDISTRICT  where ENABLED=1  and NAME='" + ListOrder[1].CUSTOMDISTRICTCODE + "' ORDER BY CODE";
+            dt = DB_BaseData.GetDataTable(sql);
+            DZOrder.CUSTOMAREACODE = dt.Rows[0]["CODE"] + "";
+            //申报关区代码 --
+            DZOrder.CUSTOMAREANAME = dt.Rows[0]["NAME"] + "";
+
+            //报关方式代码
+            sql = "select CODE,NAME  from SYS_DECLWAY where enabled=1 and NAME ='" + ListOrder[1].DECLWAY + "'";
+            dt = DB_BaseData.GetDataTable(sql);
+            DZOrder.DECLWAY = dt.Rows[0]["CODE"] + "";
+            //报关方式名称 --
+            DZOrder.DECLWAYNAME = dt.Rows[0]["NAME"] + "";
+
+            //经营单位代码
+            sql = "SELECT CODE,NAME FROM BASE_COMPANY where CODE is not null and enabled=1 and NAME ='" + ListOrder[1].BUSIUNITNAME + "'";
+            dt = DB_BaseData.GetDataTable(sql);
+            DZOrder.BUSIUNITCODE = dt.Rows[0]["BUSIUNITCODE"] + "";
+            //经营单位名称
+            DZOrder.BUSIUNITNAME = dt.Rows[0]["BUSIUNITNAME"] + "";
+
+            //经营单位社会号
+            DZOrder.BUSIUNITNUM = "";
+
+            //件数
+            DZOrder.GOODSNUM = Int32.Parse(ListOrder[1].GOODSNUM);
+
+            //毛重
+            DZOrder.GOODSGW = decimal.Parse(ListOrder[1].GOODSWEIGHT);
+
+            //净重
+            DZOrder.GOODSNW = decimal.Parse(ListOrder[1].CHECKEDWEIGHT);
+
+            //包装种类名称
+            DZOrder.PACKKINDNAME = ListOrder[1].PACKKIND;
+
+            //订单要求 --
+            DZOrder.ORDERREQUEST = ListOrder[1].ENTRUSTREQUEST;
+
+            //申报单位  报关 报检
+
+            if (DZOrder.ENTRUSTTYPE == "01")
+            {
+                DZOrder.DECLREPCODE = ListOrder[1].REPUNITCODE.Substring(ListOrder[1].REPUNITCODE.Length, 10);
+                DZOrder.DECLREPNAME = ListOrder[1].REPUNITCODE.Remove(ListOrder[1].REPUNITCODE.Length, 10);
+            }
+            else if (DZOrder.ENTRUSTTYPE == "02")
+            {
+                DZOrder.INSPREPCODE = ListOrder[1].REPUNITCODE.Substring(ListOrder[1].INSPUNITNAME.Length, 10);
+                DZOrder.INSPREPNAME = ListOrder[1].REPUNITCODE.Remove(ListOrder[1].INSPUNITNAME.Length, 10);
+            }
+            else if (DZOrder.ENTRUSTTYPE == "03")
+            {
+                DZOrder.DECLREPCODE = ListOrder[1].REPUNITCODE.Substring(ListOrder[1].REPUNITCODE.Length, 10);
+                DZOrder.DECLREPNAME = ListOrder[1].REPUNITCODE.Remove(ListOrder[1].REPUNITCODE.Length, 10);
+                DZOrder.INSPREPCODE = ListOrder[1].REPUNITCODE.Substring(ListOrder[1].INSPUNITNAME.Length, 10);
+                DZOrder.INSPREPNAME = ListOrder[1].REPUNITCODE.Remove(ListOrder[1].INSPUNITNAME.Length, 10);
+            }
+
+            //总单号
+            DZOrder.TOTALNO = ListOrder[1].TOTALNO;
+
+            //分单号
+            DZOrder.TOTALNO = ListOrder[1].TOTALNO;
+
+            //转关预录入号
+            DZOrder.TURNPRENO = ListOrder[1].TURNPRENO;
+
+            //进出口岸
+            DZOrder.PORTCODE = ListOrder[1].PORTCODE;
+
+            //委托时间
+            DZOrder.SUBMITTIME = DateTime.Now;
+
+            //委托人员
+            DZOrder.SUBMITUSERNAME = ListOrder[1].CREATEUSERNAME;
+
+            //运抵编号
+            DZOrder.ARRIVEDNO = ListOrder[1].ARRIVEDNO;
+
+
+            return DZOrder;
+        }
+
+        //  保存订单
+        private int InsertOrder(List<OrderEn> ld)
+        {
+            int Order_Res = 1;
+            DateTime dt = DateTime.Now;
+            List<List<OrderEn>> GroupOrder = GroupByFoo(ld);
+
+
+            ServiceReference2.CustomerServiceSoapClient danzheng = new ServiceReference2.CustomerServiceSoapClient();
+
+            ServiceReference2.OrderEn DZOrder;
+
+            List<ServiceReference2.OrderEn> DZOrderList = new List<ServiceReference2.OrderEn>();
+
+
+
+            foreach (List<OrderEn> ListOrder in GroupOrder)
+            {
+                DZOrder = new ServiceReference2.OrderEn();
+
+                //转成单证的数据
+                DZOrder = ZDOrderData(ListOrder);
+
+
+
+                foreach (OrderEn O in ListOrder)
+                {
+
+                }
+                //o[1].ARRIVEDNO;//2
+                //o[0].ENTRUSTREQUEST //12312
+
+
+                DZOrderList.Add(DZOrder);
+            }
+
+            //string text = danzheng.SendOrderData(DZOrderList.ToArray());
+
+
+            foreach (OrderEn o in ld)
+            {
+                if (o.SPECIALRELATIONSHIP == "")
+                {
+                    o.SPECIALRELATIONSHIP = "0";
+                }
+                else
+                {
+                    o.SPECIALRELATIONSHIP = "1";
+                }
+
+                if (o.PRICEIMPACT == "")
+                {
+                    o.PRICEIMPACT = "0";
+                }
+                else
+                {
+                    o.PRICEIMPACT = "1";
+                }
+
+                if (o.PAYPOYALTIES == "")
+                {
+                    o.PAYPOYALTIES = "0";
+                }
+                else
+                {
+                    o.PAYPOYALTIES = "1";
+                }
+
+                if (o.ISPREDECLARE == "")
+                {
+                    o.ISPREDECLARE = "0";
+                }
+                else
+                {
+                    o.ISPREDECLARE = "1";
+                }
+
+                if (o.WEIGHTCHECK == "")
+                {
+                    o.WEIGHTCHECK = "0";
+                }
+                else
+                {
+                    o.WEIGHTCHECK = "1";
+                }
+
+
+                if (o.ISWEIGHTCHECK == "")
+                {
+                    o.ISWEIGHTCHECK = "0";
+                }
+                else
+                {
+                    o.ISWEIGHTCHECK = "1";
+                }
+                o.BUSITYPE = JudgeBusiType(o.BUSITYPE, o.ENTRUSTTYPEID);
+
+                string sql = "";
+                sql = @"insert into List_Order(
+                      ID,
+                      BUSITYPE,CODE,FOONO,TOTALNO,
+                      DIVIDENO,GOODSNUM,GOODSWEIGHT,SFGOODSUNIT,
+                      PACKKIND, REPWAYID,DECLWAY,TRADEWAYCODES,
+                      CUSNO,CUSTOMDISTRICTCODE,PORTCODE,SPECIALRELATIONSHIP,
+                      PRICEIMPACT,PAYPOYALTIES,REPUNITCODE, CREATEUSERNAME,
+                      CREATETIME,ARRIVEDNO,CHECKEDGOODSNUM,CHECKEDWEIGHT,
+                      ENTRUSTTYPEID,GOODSXT,BUSIUNITNAME,GOODSTYPEID,
+                      LADINGBILLNO,ISPREDECLARE,ENTRUSTREQUEST,CONTRACTNO,
+                      FIRSTLADINGBILLNO,SECONDLADINGBILLNO,MANIFEST,WOODPACKINGID,
+                      WEIGHTCHECK,ISWEIGHTCHECK,SHIPNAME,FILGHTNO,
+                      INSPUNITNAME,TURNPRENO,INVOICENO,URL
+                       ) VALUES(LIST_ORDER_ID.Nextval,'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}',
+                    '{17}','{18}','{19}',to_date ('{20}', 'YYYY-MM-DD HH24:MI:SS' ),'{21}','{22}','{23}','{24}','{25}','{26}',
+                    '{27}','{28}','{29}','{30}','{31}','{32}','{33}','{34}','{35}','{36}',
+                    '{37}','{38}','{39}','{40}','{41}','{42}','SAP'
+                    )";
+
+                sql = string.Format(sql,
+                    o.BUSITYPE, o.CODE, o.FOONO, o.TOTALNO,
+                    o.DIVIDENO, o.GOODSNUM, o.GOODSWEIGHT, o.SFGOODSUNIT,
+                    o.PACKKIND, o.REPWAYID, o.DECLWAY, o.TRADEWAYCODES,
+                    o.CUSNO, o.CUSTOMDISTRICTCODE, o.PORTCODE, o.SPECIALRELATIONSHIP,
+                    o.PRICEIMPACT, o.PAYPOYALTIES, o.REPUNITCODE, o.CREATEUSERNAME,
+                     dt.ToString(), o.ARRIVEDNO, o.CHECKEDGOODSNUM, o.CHECKEDWEIGHT,
+                    o.ENTRUSTTYPEID, o.GOODSXT, o.BUSIUNITNAME, o.GOODSTYPEID,
+                    o.LADINGBILLNO, o.ISPREDECLARE, o.ENTRUSTREQUEST, o.CONTRACTNO,
+                    o.FIRSTLADINGBILLNO, o.SECONDLADINGBILLNO, o.MANIFEST, o.WOODPACKINGID,
+                    o.WEIGHTCHECK, o.ISWEIGHTCHECK, o.SHIPNAME, o.FILGHTNO,
+                    o.INSPUNITNAME, o.TURNPRENO, o.INVOICENO
+                    );
+                Order_Res = DBMgr.ExecuteNonQuery(sql);
+            }
+
+            return Order_Res;
+        }
+
+
+        private List<Msgobj> CheckData(List<OrderEn> ld)
+        {
+            IDatabase db = SeRedis.redis.GetDatabase();
+            DataTable dt;
+            string sql = "";
+            Msgobj m;
+            List<Msgobj> MsgobjList = new List<Msgobj>();
+
+            foreach (OrderEn o in ld)
+            {
+                if (string.IsNullOrEmpty(o.CODE))
+                {
+                    m = new Msgobj();
+                    m.MSG_ID = 1;
+                    m.MSG_TYPE = "E";
+                    m.MSG_TXT = "FWO不可为空";
+                    MsgobjList.Add(m);
+                }
+
+                if (string.IsNullOrEmpty(o.FOONO))
+                {
+                    m = new Msgobj();
+                    m.MSG_ID = 1;
+                    m.MSG_TYPE = "E";
+                    m.MSG_TXT = "FOONO不可为空";
+                    MsgobjList.Add(m);
+                }
+                else if (o.FOONO.Substring(0, 4) != "SOBG" || o.FOONO.Substring(0, 4) != "SOBJ")
+                {
+                    m = new Msgobj();
+                    m.MSG_ID = 1;
+                    m.MSG_TYPE = "E";
+                    m.MSG_TXT = "FOONO(" + o.FOONO + ")不符合";
+                    MsgobjList.Add(m);
+                }
+
+                string BUSITYPE;
+                BUSITYPE = JudgeBusiType(o.BUSITYPE, o.ENTRUSTTYPEID);
+                if (string.IsNullOrEmpty(o.BUSITYPE))
+                {
+                    m = new Msgobj();
+                    m.MSG_ID = 1;
+                    m.MSG_TYPE = "E";
+                    m.MSG_TXT = "凭证类型不可为空";
+                    MsgobjList.Add(m);
+                }
+                else if (BUSITYPE == "0")
+                {
+                    m = new Msgobj();
+                    m.MSG_ID = 1;
+                    m.MSG_TYPE = "E";
+                    m.MSG_TXT = "凭证类型无法配";
+                    MsgobjList.Add(m);
+
+                }
+
+                //委托类型
+                string ENTRUSTTYPEID = GetENTRUSTTYPEID(ld, BUSITYPE);
+
+                if (!string.IsNullOrEmpty(ENTRUSTTYPEID))
+                {
+                    if (ENTRUSTTYPEID == "01")
+                    {
+                        if (string.IsNullOrEmpty(o.REPUNITCODE))
+                        {
+                            m = new Msgobj();
+                            m.MSG_ID = 1;
+                            m.MSG_TYPE = "E";
+                            m.MSG_TXT = "报关申报单位不可为空";
+                            MsgobjList.Add(m);
+                        }
+
+                    }
+                    else if (ENTRUSTTYPEID == "02")
+                    {
+                        if (string.IsNullOrEmpty(o.INSPUNITNAME))
+                        {
+                            m = new Msgobj();
+                            m.MSG_ID = 1;
+                            m.MSG_TYPE = "E";
+                            m.MSG_TXT = "报检申报单位不可为空";
+                            MsgobjList.Add(m);
+                        }
+                    }
+                    else if (ENTRUSTTYPEID == "03")
+                    {
+
+                        if (string.IsNullOrEmpty(o.REPUNITCODE) || string.IsNullOrEmpty(o.INSPUNITNAME))
+                        {
+                            m = new Msgobj();
+                            m.MSG_ID = 1;
+                            m.MSG_TYPE = "E";
+                            m.MSG_TXT = "报关申报单位/报检申报单位不可为空";
+                            MsgobjList.Add(m);
+                        }
+                    }
+
+                }
+
+
+                if (string.IsNullOrEmpty(o.REPWAYID))
+                {
+                    m = new Msgobj();
+                    m.MSG_ID = 1;
+                    m.MSG_TYPE = "E";
+                    m.MSG_TXT = "申报方式不可为空";
+                    MsgobjList.Add(m);
+                }
+                else
+                {
+
+                    sql = "select CODE,NAME||'('||CODE||')' NAME from SYS_REPWAY where Enabled=1 and  NAME = '" + o.REPWAYID + "'";
+                    dt = DB_BaseData.GetDataTable(sql);
+                    if (dt.Rows.Count <= 0)
+                    {
+                        m = new Msgobj();
+                        m.MSG_ID = 1;
+                        m.MSG_TYPE = "E";
+                        m.MSG_TXT = "申报方式(" + o.REPWAYID + ")无法匹配";
+                        MsgobjList.Add(m);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(o.CUSTOMDISTRICTCODE))
+                {
+                    m = new Msgobj();
+                    m.MSG_ID = 1;
+                    m.MSG_TYPE = "E";
+                    m.MSG_TXT = "申报关区不可为空";
+                    MsgobjList.Add(m);
+                }
+                else
+                {
+                    sql = "select CODE,NAME||'('||CODE||')' NAME from BASE_CUSTOMDISTRICT  where ENABLED=1  and NAME='" + o.CUSTOMDISTRICTCODE + "' ORDER BY CODE";
+
+                    dt = DB_BaseData.GetDataTable(sql);
+                    if (dt.Rows.Count <= 0)
+                    {
+                        m = new Msgobj();
+                        m.MSG_ID = 1;
+                        m.MSG_TYPE = "E";
+                        m.MSG_TXT = "申报关区(" + o.CUSTOMDISTRICTCODE + ")无法匹配";
+                        MsgobjList.Add(m);
+                    }
+
+                }
+
+                //  REPUNITCODE  INSPUNITCODE
+
+                if (string.IsNullOrEmpty(o.DECLWAY))
+                {
+                    m = new Msgobj();
+                    m.MSG_ID = 1;
+                    m.MSG_TYPE = "E";
+                    m.MSG_TXT = "报关方式不可为空";
+                    MsgobjList.Add(m);
+                }
+                else
+                {
+                    sql = "select CODE,NAME||'('||CODE||')' NAME  from SYS_DECLWAY where enabled=1 and NAME ='" + o.DECLWAY + "'";
+                    dt = DB_BaseData.GetDataTable(sql);
+                    if (dt.Rows.Count <= 0)
+                    {
+                        m = new Msgobj();
+                        m.MSG_ID = 1;
+                        m.MSG_TYPE = "E";
+                        m.MSG_TXT = "申报关区(" + o.DECLWAY + ")无法匹配";
+                        MsgobjList.Add(m);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(o.PORTCODE))
+                {
+                    m = new Msgobj();
+                    m.MSG_ID = 1;
+                    m.MSG_TYPE = "E";
+                    m.MSG_TXT = "口岸关区不可为空";
+                    MsgobjList.Add(m);
+                }
+                else
+                {
+                    sql = "select CODE,NAME||'('||CODE||')' NAME from BASE_CUSTOMDISTRICT  where ENABLED=1 and NAME ='" + o.PORTCODE + "'";
+                    dt = DB_BaseData.GetDataTable(sql);
+                    if (dt.Rows.Count <= 0)
+                    {
+                        m = new Msgobj();
+                        m.MSG_ID = 1;
+                        m.MSG_TYPE = "E";
+                        m.MSG_TXT = "口岸关区(" + o.PORTCODE + ")无法匹配";
+                        MsgobjList.Add(m);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(o.BUSIUNITNAME))
+                {
+                    m = new Msgobj();
+                    m.MSG_ID = 1;
+                    m.MSG_TYPE = "E";
+                    m.MSG_TXT = "经营单位不可为空";
+                    MsgobjList.Add(m);
+                }
+                else
+                {
+                    sql = "SELECT CODE,NAME||'('||CODE||')' NAME FROM BASE_COMPANY where CODE is not null and enabled=1 and NAME ='" + o.BUSIUNITNAME + "'";
+                    dt = DB_BaseData.GetDataTable(sql);
+                    if (dt.Rows.Count <= 0)
+                    {
+                        m = new Msgobj();
+                        m.MSG_ID = 1;
+                        m.MSG_TYPE = "E";
+                        m.MSG_TXT = "经营单位(" + o.BUSIUNITNAME + ")无法匹配";
+                        MsgobjList.Add(m);
+                    }
+                }
+
+
+                if (string.IsNullOrEmpty(o.GOODSWEIGHT))
+                {
+                    m = new Msgobj();
+                    m.MSG_ID = 1;
+                    m.MSG_TYPE = "E";
+                    m.MSG_TXT = "毛重不可为空";
+                    MsgobjList.Add(m);
+                }
+
+
+                if (string.IsNullOrEmpty(o.GOODSNUM))
+                {
+                    m = new Msgobj();
+                    m.MSG_ID = 1;
+                    m.MSG_TYPE = "E";
+                    m.MSG_TXT = "件数不可为空";
+                    MsgobjList.Add(m);
+                }
+
+
+                if (string.IsNullOrEmpty(o.TRADEWAYCODES))
+                {
+                    m = new Msgobj();
+                    m.MSG_ID = 1;
+                    m.MSG_TYPE = "E";
+                    m.MSG_TXT = "贸易方式不可为空";
+                    MsgobjList.Add(m);
+                }
+                else
+                {
+                    //o.TRADEWAYCODES = o.TRADEWAYCODES.Substring(0, o.TRADEWAYCODES.Length - 1);
+                    string[] arr = o.TRADEWAYCODES.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        //贸易方式 
+                        sql = @"select ID,CODE,NAME||'('||CODE||')' NAME from BASE_DECLTRADEWAY WHERE enabled=1 and NAME ='" + arr[i] + "'";
+                        dt = DB_BaseData.GetDataTable(sql);
+                        if (dt.Rows.Count <= 0)
+                        {
+                            m = new Msgobj();
+                            m.MSG_ID = 1;
+                            m.MSG_TYPE = "E";
+                            m.MSG_TXT = "贸易方式(" + arr[i] + ")无法匹配";
+                            MsgobjList.Add(m);
+                        }
+                    }
+
+                }
+
+
+                //空运进口
+                if (BUSITYPE == "11")
+                {
+                    if (string.IsNullOrEmpty(o.DIVIDENO))
+                    {
+                        m = new Msgobj();
+                        m.MSG_ID = 1;
+                        m.MSG_TYPE = "E";
+                        m.MSG_TXT = "分单号不可为空";
+                        MsgobjList.Add(m);
+                    }
+
+                    if (string.IsNullOrEmpty(o.WOODPACKINGID))
+                    {
+                        m = new Msgobj();
+                        m.MSG_ID = 1;
+                        m.MSG_TYPE = "E";
+                        m.MSG_TXT = "木质包装不可为空";
+                        MsgobjList.Add(m);
+                    }
+
+                }
+
+
+                //海
+                if (BUSITYPE == "21" || BUSITYPE == "22")
+                {
+                    if (string.IsNullOrEmpty(o.SHIPNAME))
+                    {
+                        m = new Msgobj();
+                        m.MSG_ID = 1;
+                        m.MSG_TYPE = "E";
+                        m.MSG_TXT = "船名不可为空";
+                        MsgobjList.Add(m);
+                    }
+
+                    if (string.IsNullOrEmpty(o.FILGHTNO))
+                    {
+                        m = new Msgobj();
+                        m.MSG_ID = 1;
+                        m.MSG_TYPE = "E";
+                        m.MSG_TXT = "航次不可为空";
+                        MsgobjList.Add(m);
+                    }
+
+                    if (string.IsNullOrEmpty(o.GOODSTYPEID))
+                    {
+                        m = new Msgobj();
+                        m.MSG_ID = 1;
+                        m.MSG_TYPE = "E";
+                        m.MSG_TXT = "货物类型不可为空";
+                        MsgobjList.Add(m);
+                    }
+                }
+
+
+                //陆
+                if (BUSITYPE == "30" || BUSITYPE == "31")
+                {
+                    if (string.IsNullOrEmpty(o.WOODPACKINGID))
+                    {
+                        m = new Msgobj();
+                        m.MSG_ID = 1;
+                        m.MSG_TYPE = "E";
+                        m.MSG_TXT = "木质包装不可为空";
+                        MsgobjList.Add(m);
+                    }
+                }
+
+
+
+            }
+            return MsgobjList;
+
+        }
+
+
+        private string JudgeBusiType(string busitype, string ENTRUSTTYPEID)
+        {
+            string busitypeid = "0";
+            if (busitype.IndexOf("空运进口") >= 0)
+            {
+                busitypeid = "11";
+            }
+            if (busitype.IndexOf("空运出口") >= 0)
+            {
+                busitypeid = "10";
+            }
+            if (busitype.IndexOf("海运进口") >= 0)
+            {
+                busitypeid = "21";
+            }
+            if (busitype.IndexOf("海运出口") >= 0)
+            {
+                busitypeid = "20";
+            }
+            if (busitype.IndexOf("陆运进口") >= 0)
+            {
+                busitypeid = "31";
+            }
+            if (busitype.IndexOf("陆运出口") >= 0)
+            {
+                busitypeid = "30";
+            }
+
+            if (busitype.IndexOf("特殊监管") >= 0)
+            {
+                if (ENTRUSTTYPEID == "进口企业")
+                {
+                    busitypeid = "51";
+                }
+                if (ENTRUSTTYPEID == "出口企业")
+                {
+                    busitypeid = "50";
+                }
+            }
+
+            //委托方式   进口企业/出口企业/HUB仓进/HUB仓出
+            return busitypeid;
+        }
+
+
+
+        //获取委托类型
+        private string GetENTRUSTTYPEID(List<OrderEn> oes, string busitype)
+        {
+            string ENTRUSTTYPEID = "";
+            if (busitype == "11" || busitype == "10" || busitype == "21" || busitype == "20" || busitype == "31" || busitype == "30" || busitype == "51" || busitype == "50")
+            {
+                if (oes.Count == 2)
+                {
+                    ENTRUSTTYPEID = "03";
+                }
+                if (oes.Count == 1)
+                {
+                    if (oes[0].FOONO.Substring(0, 4) == "SOBG")
+                    {
+                        ENTRUSTTYPEID = "01";
+                    }
+                    else
+                    {
+                        ENTRUSTTYPEID = "02";
+                    }
+                }
+            }
+            return ENTRUSTTYPEID;
+        }
 
 
         public string Get_SBGQ()
