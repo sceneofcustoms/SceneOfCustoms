@@ -546,7 +546,7 @@ namespace SceneOfCustoms
                 else
                 {
 
-                    sql = "select CODE,NAME||'('||CODE||')' NAME from SYS_REPWAY where Enabled=1 and  NAME = '" + o.REPWAYID + "'";
+                    sql = "select CODE,NAME from SYS_REPWAY where Enabled=1 and  NAME = '" + o.REPWAYID + "'";
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
                     {
@@ -568,7 +568,7 @@ namespace SceneOfCustoms
                 }
                 else
                 {
-                    sql = "select CODE,NAME||'('||CODE||')' NAME from BASE_CUSTOMDISTRICT  where ENABLED=1  and NAME='" + o.CUSTOMDISTRICTCODE + "' ORDER BY CODE";
+                    sql = "select CODE,NAME from BASE_CUSTOMDISTRICT  where ENABLED=1  and NAME='" + o.CUSTOMDISTRICTCODE + "' ORDER BY CODE";
 
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
@@ -594,7 +594,7 @@ namespace SceneOfCustoms
                 }
                 else
                 {
-                    sql = "select CODE,NAME||'('||CODE||')' NAME  from SYS_DECLWAY where enabled=1 and NAME ='" + o.DECLWAY + "'";
+                    sql = "select CODE,NAME from SYS_DECLWAY where enabled=1 and NAME ='" + o.DECLWAY + "'";
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
                     {
@@ -616,7 +616,7 @@ namespace SceneOfCustoms
                 }
                 else
                 {
-                    sql = "select CODE,NAME||'('||CODE||')' NAME from BASE_CUSTOMDISTRICT  where ENABLED=1 and NAME ='" + o.PORTCODE + "'";
+                    sql = "select CODE,NAME from BASE_CUSTOMDISTRICT  where ENABLED=1 and NAME ='" + o.PORTCODE + "'";
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
                     {
@@ -639,7 +639,7 @@ namespace SceneOfCustoms
                 else
                 {
                     string name = o.BUSIUNITNAME.Remove(o.BUSIUNITNAME.Length - 10, 10);
-                    sql = "SELECT CODE,NAME||'('||CODE||')' NAME FROM BASE_COMPANY where CODE is not null and enabled=1 and NAME ='" + name + "'";
+                    sql = "SELECT CODE,NAME FROM BASE_COMPANY where CODE is not null and enabled=1 and NAME ='" + name + "'";
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
                     {
@@ -687,7 +687,7 @@ namespace SceneOfCustoms
                     for (int i = 0; i < arr.Length; i++)
                     {
                         //贸易方式 
-                        sql = @"select ID,CODE,NAME||'('||CODE||')' NAME from BASE_DECLTRADEWAY WHERE enabled=1 and NAME ='" + arr[i] + "'";
+                        sql = @"select ID,CODE,NAME from BASE_DECLTRADEWAY WHERE enabled=1 and NAME ='" + arr[i] + "'";
                         dt = DB_BaseData.GetDataTable(sql);
                         if (dt.Rows.Count <= 0)
                         {
