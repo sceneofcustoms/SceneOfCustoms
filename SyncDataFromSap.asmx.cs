@@ -225,14 +225,14 @@ namespace SceneOfCustoms
                     o.BUSITYPE, o.CODE, o.FOONO, o.TOTALNO,
                     o.DIVIDENO, o.GOODSNUM, o.GOODSWEIGHT, o.SFGOODSUNIT,
                     o.PACKKIND, o.REPWAYID, o.DECLWAY, o.TRADEWAYCODES,
-                    o.CUSNO, o.CUSTOMDISTRICTCODE, o.PORTCODE, o.SPECIALRELATIONSHIP,
-                    o.PRICEIMPACT, o.PAYPOYALTIES, o.REPUNITCODE, o.CREATEUSERNAME,
-                     dt.ToString(), o.ARRIVEDNO, o.CHECKEDGOODSNUM, o.CHECKEDWEIGHT,
-                    o.ENTRUSTTYPEID, o.GOODSXT, o.BUSIUNITNAME, o.GOODSTYPEID,
-                    o.LADINGBILLNO, o.ISPREDECLARE, o.ENTRUSTREQUEST, o.CONTRACTNO,
-                    o.FIRSTLADINGBILLNO, o.SECONDLADINGBILLNO, o.MANIFEST, o.WOODPACKINGID,
-                    o.WEIGHTCHECK, o.ISWEIGHTCHECK, o.SHIPNAME, o.FILGHTNO,
-                    o.INSPUNITNAME, o.TURNPRENO, o.INVOICENO
+                    o.CUSNO, o.CUSTOMDISTRICTCODE,o.PORTCODE,o.SPECIALRELATIONSHIP,                       
+                    o.PRICEIMPACT, o.PAYPOYALTIES,o.REPUNITCODE,  o.CREATEUSERNAME,
+                    dt.ToString(),  o.ARRIVEDNO, o.CHECKEDGOODSNUM, o.CHECKEDWEIGHT,
+                    o.ENTRUSTTYPEID , o.GOODSXT,o.BUSIUNITNAME,  o.GOODSTYPEID,
+                    o.LADINGBILLNO, o.ISPREDECLARE, o.ENTRUSTREQUEST,  o.CONTRACTNO,
+                    o.FIRSTLADINGBILLNO, o.SECONDLADINGBILLNO,o.MANIFEST, 
+                    o.WOODPACKINGID,o.WEIGHTCHECK, o.ISWEIGHTCHECK, o.SHIPNAME, o.FILGHTNO, 
+                    o.INSPUNITNAME, o.TURNPRENO, o.INVOICENO                     
                     );
                 Order_Res = DBMgr.ExecuteNonQuery(sql);
             }
