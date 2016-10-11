@@ -7,7 +7,10 @@
         var store = Ext.create('Ext.data.JsonStore', {
             fields: ['ID', 'BUSITYPE', 'CUSNO', 'CONTRACTNO', 'TOTALNO', 'DIVIDENO', 'WOODPACKINGID', 'GOODSNUM',
               'GOODSWEIGHT', 'REPWAYID', 'CUSTOMDISTRICTCODE', 'PORTCODE', 'REPUNITCODE', 'INSPUNITCODE', 'CREATETIME',
-              'ENTRUSTREQUEST', 'ENTRUSTTYPEID'
+              'ENTRUSTREQUEST', 'ENTRUSTTYPEID', 'MANIFEST', 'SHIPNAME', 'FILGHTNO', 'LADINGBILLNO', 'TRADEWAYCODES',
+              'DECLWAY', 'PACKKIND', 'ARRIVEDNO', 'FIRSTLADINGBILLNO', 'SECONDLADINGBILLNO', 'GOODSTYPEID', 'BUSIUNITNAME',
+              'CREATEUSERNAME', 'SPECIALRELATIONSHIP', 'PRICEIMPACT', 'PAYPOYALTIES', 'WEIGHTCHECK', 'CHECKEDGOODSNUM',
+              'CHECKEDWEIGHT', 'FWONO'
             ],
             pageSize: 20,
             proxy: {
@@ -71,11 +74,25 @@
             { header: '发送时间', dataIndex: 'CREATETIME', width: 100 },
             { header: '订单需求', dataIndex: 'ENTRUSTREQUEST', width: 100 },
             { header: '委托类型', dataIndex: 'ENTRUSTTYPEID', width: 100 },
-            { header: '木质包装', dataIndex: '木质包装', width: 100 },
-            { header: '木质包装', dataIndex: '木质包装', width: 100 },
-            { header: '木质包装', dataIndex: '木质包装', width: 100 },
-            { header: '木质包装', dataIndex: '木质包装', width: 100 },
-            { header: '木质包装', dataIndex: '木质包装', width: 100 }
+            { header: '载货清单', dataIndex: 'MANIFEST', width: 100 },
+            { header: '船名', dataIndex: 'SHIPNAME', width: 100 },
+            { header: '航次', dataIndex: 'FILGHTNO', width: 100 },
+            { header: '提单号', dataIndex: 'LADINGBILLNO', width: 100 },
+            { header: '贸易方式', dataIndex: 'TRADEWAYCODES', width: 100 },
+            { header: '报关方式', dataIndex: 'DECLWAY', width: 100 },
+            { header: '包装种类', dataIndex: 'PACKKIND', width: 100 },
+            { header: '运抵编号', dataIndex: 'ARRIVEDNO', width: 100 },
+            { header: '一程提单号', dataIndex: 'FIRSTLADINGBILLNO', width: 100 },
+            { header: '二程提单号', dataIndex: 'SECONDLADINGBILLNO', width: 100 },
+            { header: '货物类型', dataIndex: 'GOODSTYPEID', width: 100 },
+            { header: '经营单位', dataIndex: 'BUSIUNITNAME', width: 100 },
+            { header: '创建人', dataIndex: 'CREATEUSERNAME', width: 100 },
+            { header: '特殊关系确认', dataIndex: 'SPECIALRELATIONSHIP', width: 100 },
+            { header: '价格影响确认', dataIndex: 'PRICEIMPACT', width: 100 },
+            { header: '支付特许权使用费确认', dataIndex: 'PAYPOYALTIES', width: 100 },
+            { header: '是否需要重量确认', dataIndex: 'WEIGHTCHECK', width: 100 },
+            { header: '确认件数', dataIndex: 'CHECKEDGOODSNUM', width: 100 },
+            { header: '确认重量', dataIndex: 'CHECKEDWEIGHT', width: 100 } 
             ],
             viewConfig: {
                 enableTextSelection: true
