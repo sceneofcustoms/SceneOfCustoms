@@ -144,7 +144,6 @@ namespace SceneOfCustoms.Controllers
             {
                 if (ld.Count > 0)
                 {
-                    //int Order_Res = InsertOrder(ld);
                     if (Order_Res == 1)
                     {
                         MO.MSG_ID = 1;
@@ -173,11 +172,7 @@ namespace SceneOfCustoms.Controllers
             return View();
         }
 
-<<<<<<< HEAD
         //转换单证数据
-=======
-
->>>>>>> origin/master
         private ServiceReference1.OrderEn ZDOrderData(List<OrderEn> ListOrder)
         {
             string sql = "";
@@ -302,52 +297,28 @@ namespace SceneOfCustoms.Controllers
             //海关提单号 二程提单号
             DZOrder.SECONDLADINGBILLNO = ListOrder[0].SECONDLADINGBILLNO;
 
-<<<<<<< HEAD
             //国检提单号 一程提单号
             DZOrder.FIRSTLADINGBILLNO = ListOrder[0].FIRSTLADINGBILLNO;
-=======
-        //  保存订单http://221.224.21.20:6790/CustomerService.asmx
-        private int InsertOrder(List<OrderEn> ld)
-        {
-            int Order_Res = 1;
-            DateTime dt = DateTime.Now;
-            List<List<OrderEn>> GroupOrder = GroupByFoo(ld);
->>>>>>> origin/master
 
             //载货清单号
             DZOrder.MANIFEST = ListOrder[0].MANIFEST;
 
-<<<<<<< HEAD
             //载货清单号
             DZOrder.MANIFEST = ListOrder[0].MANIFEST;
 
             //木质包装
             DZOrder.WOODPACKINGID = ListOrder[0].WOODPACKINGID;
 
-=======
-            ServiceReference1.CustomerServiceSoapClient danzheng = new ServiceReference1.CustomerServiceSoapClient();
-
-            ServiceReference1.OrderEn DZOrder;
-
-            List<ServiceReference1.OrderEn> DZOrderList = new List<ServiceReference1.OrderEn>();
->>>>>>> origin/master
 
 
             if (ListOrder[0].WEIGHTCHECK == "")
             {
-<<<<<<< HEAD
                 ListOrder[0].WEIGHTCHECK = "0";
             }
             else
             {
                 ListOrder[0].WEIGHTCHECK = "1";
             }
-=======
-                DZOrder = new ServiceReference1.OrderEn();
-
-                //转成单证的数据
-                DZOrder = ZDOrderData(ListOrder);
->>>>>>> origin/master
 
 
             if (ListOrder[0].ISWEIGHTCHECK == "")
@@ -491,10 +462,10 @@ namespace SceneOfCustoms.Controllers
 
                 //生成现场订单
                 XCOrderData(ListOrder);
-                DZOrderList.Add(DZOrder);
+                //DZOrderList.Add(DZOrder);
             }
 
-            string text = danzheng.SendOrderData(DZOrderList.ToArray());
+            //string text = danzheng.SendOrderData(DZOrderList.ToArray());
             return Order_Res;
         }
 
@@ -1012,19 +983,12 @@ namespace SceneOfCustoms.Controllers
         [HttpGet]
         public string GetData()
         {
-<<<<<<< HEAD
-            string BUSITYPE = Request.Params["BUSITYPE"];
-            string TYPE = Request.Params["TYPE"];
+            string BUSITYPE = Request["BUSITYPE"];
             int PageSize = Convert.ToInt32(Request.Params["rows"]);
             int Page = Convert.ToInt32(Request.Params["page"]);
             int total = 0;
-=======
-            string BUSITYPE = Request["BUSITYPE"]; 
-            int PageSize = Convert.ToInt32(Request.Params["rows"]); 
-            int Page = Convert.ToInt32(Request.Params["page"]);            
-            int total = 0; 
->>>>>>> origin/master
             string sql = "select t.* from list_order  t where 1=1  ";
+
             switch (BUSITYPE)
             {
                 case "ONEIN":
@@ -1033,15 +997,15 @@ namespace SceneOfCustoms.Controllers
                 case "ONEOUT":
                     sql += " AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
                     break;
-                case "SpecialSupervision":
+                case "SPECIAL":
                     sql += " and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
                     break;
-                case "OverlayBonded":
+                case "BLC":
                     sql += " and (BUSITYPE='40' OR BUSITYPE='41') ";
                     break;
             } 
             string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
-            string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC"; 
+            string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
             sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
             DataTable dt = DBMgr.GetDataTable(sql);
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
@@ -1049,7 +1013,10 @@ namespace SceneOfCustoms.Controllers
             string result = JsonConvert.SerializeObject(dt, iso);
             result = "{\"total\":" + total + ",\"rows\":" + result + "}";
             return result;
+
         }
+
+
         [HttpPost]
         public ActionResult SaveData(FormCollection form)
         {
