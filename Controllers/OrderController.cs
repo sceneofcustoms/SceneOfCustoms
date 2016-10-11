@@ -37,43 +37,6 @@ namespace SceneOfCustoms.Controllers
             return View();
         }
 
-        private List<List<OrderEn>> GroupByFoo(List<OrderEn> oes)
-        {
-            List<List<OrderEn>> lloes = new List<List<OrderEn>>();
-            List<OrderEn> oes_split1 = new List<OrderEn>();
-            List<OrderEn> oes_split2 = new List<OrderEn>();
-            List<OrderEn> oes_split3 = new List<OrderEn>();
-            List<OrderEn> oes_split4 = new List<OrderEn>();
-            // 进口企业/出口企业/HUB仓进/HUB仓出
-            if (string.IsNullOrEmpty(oes[0].ENTRUSTTYPEID))
-            {
-                lloes.Add(oes);
-            }
-            else
-            {
-                foreach (OrderEn oe in oes)
-                {
-                    if (oe.ENTRUSTTYPEID == "进口企业")
-                    {
-                        oes_split1.Add(oe);
-                    }
-                    if (oe.ENTRUSTTYPEID == "出口企业")
-                    {
-                        oes_split2.Add(oe);
-                    }
-                    if (oe.ENTRUSTTYPEID == "HUB仓进")
-                    {
-                        oes_split3.Add(oe);
-                    }
-                    if (oe.ENTRUSTTYPEID == "HUB仓出")
-                    {
-                        oes_split4.Add(oe);
-                    }
-                }
-            }
-            return lloes;
-        }
-
 
         //测试tm
         public ActionResult testTm()
@@ -160,7 +123,7 @@ namespace SceneOfCustoms.Controllers
             return View();
         }
 
-
+        //转换单证数据
         private ServiceReference1.OrderEn ZDOrderData(List<OrderEn> ListOrder)
         {
             string sql = "";
@@ -336,7 +299,7 @@ namespace SceneOfCustoms.Controllers
             return DZOrder;
         }
 
-
+        //保存现场数据
         private int XCOrderData(List<OrderEn> o)
         {
             string sql = "";
@@ -434,7 +397,7 @@ namespace SceneOfCustoms.Controllers
             return 1;
         }
 
-        //  保存订单
+        // 保存订单
         private int InsertOrder(List<OrderEn> ld)
         {
             int Order_Res = 1;
@@ -453,11 +416,11 @@ namespace SceneOfCustoms.Controllers
                 DZOrderList.Add(DZOrder);
             }
 
-            //string text = danzheng.SendOrderData(DZOrderList.ToArray());
+            string text = danzheng.SendOrderData(DZOrderList.ToArray());
             return Order_Res;
         }
 
-
+        //检查数据
         private List<Msgobj> CheckData(List<OrderEn> ld)
         {
             IDatabase db = SeRedis.redis.GetDatabase();
@@ -801,7 +764,7 @@ namespace SceneOfCustoms.Controllers
 
         }
 
-
+        //业务类型转换
         private string JudgeBusiType(string busitype, string ENTRUSTTYPEID)
         {
             string busitypeid = "0";
@@ -846,7 +809,43 @@ namespace SceneOfCustoms.Controllers
             return busitypeid;
         }
 
-
+        //整合订单
+        private List<List<OrderEn>> GroupByFoo(List<OrderEn> oes)
+        {
+            List<List<OrderEn>> lloes = new List<List<OrderEn>>();
+            List<OrderEn> oes_split1 = new List<OrderEn>();
+            List<OrderEn> oes_split2 = new List<OrderEn>();
+            List<OrderEn> oes_split3 = new List<OrderEn>();
+            List<OrderEn> oes_split4 = new List<OrderEn>();
+            // 进口企业/出口企业/HUB仓进/HUB仓出
+            if (string.IsNullOrEmpty(oes[0].ENTRUSTTYPEID))
+            {
+                lloes.Add(oes);
+            }
+            else
+            {
+                foreach (OrderEn oe in oes)
+                {
+                    if (oe.ENTRUSTTYPEID == "进口企业")
+                    {
+                        oes_split1.Add(oe);
+                    }
+                    if (oe.ENTRUSTTYPEID == "出口企业")
+                    {
+                        oes_split2.Add(oe);
+                    }
+                    if (oe.ENTRUSTTYPEID == "HUB仓进")
+                    {
+                        oes_split3.Add(oe);
+                    }
+                    if (oe.ENTRUSTTYPEID == "HUB仓出")
+                    {
+                        oes_split4.Add(oe);
+                    }
+                }
+            }
+            return lloes;
+        }
 
         //获取委托类型
         private string GetENTRUSTTYPEID(List<OrderEn> oes, string busitype)
