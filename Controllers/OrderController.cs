@@ -863,13 +863,13 @@ namespace SceneOfCustoms.Controllers
             switch (TYPE)
             {
                 case "ONEIN":
-                    sql += " AND (BUSITYPE=11 OR BUSITYPE=21 OR BUSITYPE=31";
+                    sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31'";
                     break;
                 case "SpecialSupervision":
-                    sql += " and (BUSITYPE=50 OR BUSITYPE=51) "; //特殊监管
+                    sql += " and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
                     break;
                 case "OverlayBonded":
-                    sql += " and (BUSITYPE=40 OR BUSITYPE=41) "; 
+                    sql += " and (BUSITYPE='40' OR BUSITYPE='41') "; 
                     break;
             }
             //if (TYPE == "SpecialSupervision")
