@@ -79,71 +79,40 @@ namespace SceneOfCustoms.Controllers
         public ActionResult testTm()
         {
             List<OrderEn> ld = new List<OrderEn>();
-
-
-            //List<List<OrderEn>> test = GroupByFoo(ld);
-            //foreach (List<OrderEn> o in test)
-            //{
-            //    //o[1].ARRIVEDNO;//2
-            //    //o[0].ENTRUSTREQUEST //12312
-            //}
-
-
-
+            Msgobj MO = new Msgobj();
             OrderEn obj = new OrderEn();
-            obj.BUSITYPE = "飞力达FWO-海运出口-整箱";
-            obj.CODE = "00000110000000001169";
-            obj.FOONO = "00000000800000000541";
-            obj.TOTALNO = "4";
-            obj.DIVIDENO = "5";
-            obj.GOODSNUM = "5000";
-            obj.GOODSWEIGHT = "6000.0";
-            obj.PACKKIND = "袋";
-            obj.REPWAYID = "进口集报";
-            obj.DECLWAY = "通关无纸化";
-            obj.TRADEWAYCODES = "一般贸易/外资设备物品";
-            obj.CUSNO = "12";
-            obj.CUSTOMDISTRICTCODE = "昆山海关";
-            obj.PORTCODE = "昆山海关";
-            obj.PRICEIMPACT = "X";
-            obj.PAYPOYALTIES = "X";
-            obj.SFGOODSUNIT = "LY test Vendor1";
-            obj.REPUNITCODE = "江苏飞力达国际物流股份有限公司营运中心3223980002";
-            obj.CREATEUSERNAME = "洪家伟";
-            obj.CREATETIME = DateTime.Now.ToLocalTime().ToString();
-            obj.ARRIVEDNO = "FOO11113333333777";
-            obj.CHECKEDGOODSNUM = "5000";
-            obj.CHECKEDWEIGHT = "6000.0";
-            obj.ENTRUSTTYPEID = "无";
-            obj.GOODSXT = "普通货";
-            obj.BUSIUNITNAME = "LY test Vendor1";
-            obj.GOODSTYPEID = "FCL（整箱装载）";
-            obj.LADINGBILLNO = "FL161000001";
-            obj.ISPREDECLARE = "X";
-            obj.ENTRUSTREQUEST = "FOO9994449999";
-            obj.CONTRACTNO = "FOO444555666";
-            obj.FIRSTLADINGBILLNO = "11111C";
-            obj.SECONDLADINGBILLNO = "11111C";
-            obj.MANIFEST = "66633322222";
-            obj.WOODPACKINGID = "非木";
-            obj.WEIGHTCHECK = "X";
-            obj.ISWEIGHTCHECK = "X";
-            obj.SHIPNAME = "COSCO KOREA";
-            obj.FILGHTNO = "S334";
-            obj.INSPUNITNAME = "江苏飞力达国际物流股份有限公司营运中心";
-            obj.TURNPRENO = "40";
-            obj.INVOICENO = "11111111111222222222";
-            obj.SPECIALRELATIONSHIP = "X";
-            ld.Add(obj);
-            IList<Msgobj> ms = CheckData(ld);
+            IList<Msgobj> MSList = CheckData(ld);
 
-            //if (ms.Count != 0) return ms;
+            if (MSList.Count <= 0)
+            {
+                if (ld.Count > 0)
+                {
+                    int Order_Res = InsertOrder(ld);
+                    if (Order_Res == 1)
+                    {
+                        MO.MSG_ID = 1;
+                        MO.MSG_TYPE = "S";
+                        MO.MSG_TXT = "保存成功";
+                        MSList.Add(MO);
+                    }
+                    else
+                    {
+                        MO.MSG_ID = 1;
+                        MO.MSG_TYPE = "E";
+                        MO.MSG_TXT = "保存失败";
+                        MSList.Add(MO);
+                    }
 
+                }
+                else
+                {
+                    MO.MSG_ID = 1;
+                    MO.MSG_TYPE = "E";
+                    MO.MSG_TXT = "数据不可为空";
+                    MSList.Add(MO);
+                }
+            }
 
-            DateTime dt = DateTime.Now;
-
-
-            //ViewData["sql"] = sql;
             return View();
         }
 
@@ -304,7 +273,7 @@ namespace SceneOfCustoms.Controllers
                 DZOrderList.Add(DZOrder);
             }
 
-            string text = danzheng.SendOrderData(DZOrderList.ToArray());
+            //string text = danzheng.SendOrderData(DZOrderList.ToArray());
 
 
             foreach (OrderEn o in ld)
