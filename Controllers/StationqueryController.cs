@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SceneOfCustoms.Common;
+using SceneOfCustoms.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,5 +16,7 @@ namespace SceneOfCustoms.Controllers
             ViewData["crumb"] = "站场查询-->车卡查询";
             return View();
         }
+
+
     }
 }
