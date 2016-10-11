@@ -22,14 +22,14 @@ namespace SceneOfCustoms.Controllers
         //测试接口  单证
         public ActionResult test()
         {
-            ServiceReference2.CustomerServiceSoapClient danzheng = new ServiceReference2.CustomerServiceSoapClient();
-            ServiceReference2.OrderEn dzOrder = new ServiceReference2.OrderEn();
+            ServiceReference1.CustomerServiceSoapClient danzheng = new ServiceReference1.CustomerServiceSoapClient();
+            ServiceReference1.OrderEn dzOrder = new ServiceReference1.OrderEn();
 
             dzOrder.ARRIVEDNO = "1";
             dzOrder.REPNO = "1";
             //dzOrder.BUSIUNITCODE = "1";
 
-            List<ServiceReference2.OrderEn> orderList = new List<ServiceReference2.OrderEn>();
+            List<ServiceReference1.OrderEn> orderList = new List<ServiceReference1.OrderEn>();
 
             orderList.Add(dzOrder);
             string text = danzheng.SendOrderData(orderList.ToArray());
@@ -117,11 +117,11 @@ namespace SceneOfCustoms.Controllers
         }
 
 
-        private ServiceReference2.OrderEn ZDOrderData(List<OrderEn> ListOrder)
+        private ServiceReference1.OrderEn ZDOrderData(List<OrderEn> ListOrder)
         {
             string sql = "";
             DataTable dt;
-            ServiceReference2.OrderEn DZOrder = new ServiceReference2.OrderEn();
+            ServiceReference1.OrderEn DZOrder = new ServiceReference1.OrderEn();
 
             DZOrder.CUSNO = ListOrder[1].CUSNO; //企业编号
             DZOrder.REPNO = ""; //申报单位编号   --
@@ -237,7 +237,7 @@ namespace SceneOfCustoms.Controllers
             return DZOrder;
         }
 
-        //  保存订单
+        //  保存订单http://221.224.21.20:6790/CustomerService.asmx
         private int InsertOrder(List<OrderEn> ld)
         {
             int Order_Res = 1;
@@ -245,17 +245,17 @@ namespace SceneOfCustoms.Controllers
             List<List<OrderEn>> GroupOrder = GroupByFoo(ld);
 
 
-            ServiceReference2.CustomerServiceSoapClient danzheng = new ServiceReference2.CustomerServiceSoapClient();
+            ServiceReference1.CustomerServiceSoapClient danzheng = new ServiceReference1.CustomerServiceSoapClient();
 
-            ServiceReference2.OrderEn DZOrder;
+            ServiceReference1.OrderEn DZOrder;
 
-            List<ServiceReference2.OrderEn> DZOrderList = new List<ServiceReference2.OrderEn>();
+            List<ServiceReference1.OrderEn> DZOrderList = new List<ServiceReference1.OrderEn>();
 
 
 
             foreach (List<OrderEn> ListOrder in GroupOrder)
             {
-                DZOrder = new ServiceReference2.OrderEn();
+                DZOrder = new ServiceReference1.OrderEn();
 
                 //转成单证的数据
                 DZOrder = ZDOrderData(ListOrder);
@@ -850,20 +850,16 @@ namespace SceneOfCustoms.Controllers
         [HttpGet]
         public string GetData()
         {
-            string BUSITYPE = Request.Params["BUSITYPE"];
-            string TYPE = Request.Params["TYPE"];
+            string BUSITYPE = Request["BUSITYPE"];
+           // string TYPE = Request["TYPE"];
             int PageSize = Convert.ToInt32(Request.Params["rows"]); 
             int Page = Convert.ToInt32(Request.Params["page"]);            
             int total = 0; 
             string sql = "select t.* from list_order  t where 1=1  ";
-            //if (!string.IsNullOrEmpty(BUSITYPE))
-            //{
-            //    sql += " and BUSITYPE ='" + BUSITYPE + "'";
-            //}
-            switch (TYPE)
+            switch (BUSITYPE)
             {
                 case "ONEIN":
-                    sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31'";
+                    sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
                     break;
                 case "SpecialSupervision":
                     sql += " and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
