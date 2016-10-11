@@ -10,7 +10,8 @@
               'ENTRUSTREQUEST', 'ENTRUSTTYPEID', 'MANIFEST', 'SHIPNAME', 'FILGHTNO', 'LADINGBILLNO', 'TRADEWAYCODES',
               'DECLWAY', 'PACKKIND', 'ARRIVEDNO', 'FIRSTLADINGBILLNO', 'SECONDLADINGBILLNO', 'GOODSTYPEID', 'BUSIUNITNAME',
               'CREATEUSERNAME', 'SPECIALRELATIONSHIP', 'PRICEIMPACT', 'PAYPOYALTIES', 'WEIGHTCHECK', 'CHECKEDGOODSNUM',
-              'CHECKEDWEIGHT', 'FWONO'
+              'CHECKEDWEIGHT', 'FWONO', 'FOONO', 'SFGOODSUNIT', 'CONTAINERTRUCKS', 'GOODSXT', 'ISPREDECLARE', 'INVOICENO',
+              'ISCHECKEDWEIGHT'
             ],
             pageSize: 20,
             proxy: {
@@ -92,7 +93,15 @@
             { header: '支付特许权使用费确认', dataIndex: 'PAYPOYALTIES', width: 100 },
             { header: '是否需要重量确认', dataIndex: 'WEIGHTCHECK', width: 100 },
             { header: '确认件数', dataIndex: 'CHECKEDGOODSNUM', width: 100 },
-            { header: '确认重量', dataIndex: 'CHECKEDWEIGHT', width: 100 } 
+            { header: '确认重量', dataIndex: 'CHECKEDWEIGHT', width: 100 },
+            { header: 'FWO号', dataIndex: 'FWONO', width: 100 },
+            { header: 'FOO指令号', dataIndex: 'FOONO', width: 100 },
+            { header: '收发货单位', dataIndex: 'SFGOODSUNIT', width: 100 },
+            { header: '集装箱及车辆信息', dataIndex: 'CONTAINERTRUCKS', width: 150 },
+            { header: '货物形态', dataIndex: 'GOODSXT', width: 100 },
+            { header: '是否提前报关', dataIndex: 'ISPREDECLARE', width: 100 },
+            { header: '二线合同专用发票号', dataIndex: 'INVOICENO', width: 100 },
+            { header: '重量确认标志', dataIndex: 'ISCHECKEDWEIGHT', width: 100 }
             ],
             viewConfig: {
                 enableTextSelection: true
