@@ -852,31 +852,38 @@ namespace SceneOfCustoms.Controllers
         {
             string BUSITYPE = Request.Params["BUSITYPE"];
             string TYPE = Request.Params["TYPE"];
-            int PageSize = Convert.ToInt32(Request.Params["rows"]);
-            //int PageSize = 20;
-            int Page = Convert.ToInt32(Request.Params["page"]);
-            //int Page = 1;
-            int total = 0;
-
+            int PageSize = Convert.ToInt32(Request.Params["rows"]); 
+            int Page = Convert.ToInt32(Request.Params["page"]);            
+            int total = 0; 
             string sql = "select t.* from list_order  t where 1=1  ";
-            if (!string.IsNullOrEmpty(BUSITYPE))
+            //if (!string.IsNullOrEmpty(BUSITYPE))
+            //{
+            //    sql += " and BUSITYPE ='" + BUSITYPE + "'";
+            //}
+            switch (TYPE)
             {
-                sql += " and BUSITYPE ='" + BUSITYPE + "'";
+                case "ONEIN":
+                    sql += " AND (BUSITYPE=11 OR BUSITYPE=21 OR BUSITYPE=31";
+                    break;
+                case "SpecialSupervision":
+                    sql += " and (BUSITYPE=50 OR BUSITYPE=51) "; //特殊监管
+                    break;
+                case "OverlayBonded":
+                    sql += " and (BUSITYPE=40 OR BUSITYPE=41) "; 
+                    break;
             }
-
-            if (TYPE == "SpecialSupervision")
-            {
-                sql += " and BUSITYPE in (50,51) "; //特殊监管
-            }
-            else if (TYPE == "OverlayBonded")
-            {
-                sql += " and BUSITYPE in (40,41) and CORRESPONDNO is not null";//叠加保税
-            }
-            else if (TYPE == "DomesticKnot")
-            {
-                //sql += " and BUSITYPE in (40,41) and CORRESPONDNO is  null";//国内结转
-            }
-
+            //if (TYPE == "SpecialSupervision")
+            //{
+            //    sql += " and BUSITYPE in (50,51) "; //特殊监管
+            //}
+            //if (TYPE == "OverlayBonded")
+            //{
+            //    sql += " and BUSITYPE in (40,41) and CORRESPONDNO is not null";//叠加保税
+            //}
+            //else if (TYPE == "DomesticKnot")
+            //{
+            //    //sql += " and BUSITYPE in (40,41) and CORRESPONDNO is  null";//国内结转
+            //}
             string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
             string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
             //string sort ="ID";
