@@ -97,6 +97,7 @@ namespace SceneOfCustoms
             string sql = "";
             foreach (OrderEn o in ld)
             {
+                
                 sql = @"insert into LIST_SAPFOO(
                       ID,
                       BUSITYPE,FWONO,FOONO,TOTALNO,
@@ -108,7 +109,7 @@ namespace SceneOfCustoms
                       ENTRUSTTYPEID,GOODSXT,BUSIUNITNAME,GOODSTYPEID,
                       LADINGBILLNO,ISPREDECLARE,ENTRUSTREQUEST,CONTRACTNO,
                       FIRSTLADINGBILLNO,SECONDLADINGBILLNO,MANIFEST,WOODPACKINGID,
-                      WEIGHTCHECK,WEIGHTCHECK,SHIPNAME,FILGHTNO,
+                      WEIGHTCHECK,ISCHECKEDWEIGHT,SHIPNAME,FILGHTNO,
                       INSPUNITCODE,TURNPRENO,INVOICENO
                        ) VALUES(LIST_SAPFOO_ID.Nextval,'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}',
                     '{17}','{18}','{19}',to_date ('{20}', 'YYYY-MM-DD HH24:MI:SS' ),'{21}','{22}','{23}','{24}','{25}','{26}',

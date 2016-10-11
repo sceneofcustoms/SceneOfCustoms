@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="5kynl9CQmbPQQGJcUEzlylV+Ynw=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="UoAyCsmZTJa0ueS9fNSNxt5c5ys=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="CustomerServiceSoap">
       <properties>
@@ -263,7 +263,7 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="CustomerServiceSoap" contract="ServiceReference2.CustomerServiceSoap" bindingType="basicHttpBinding" address="http://221.224.21.20:6790/CustomerService.asmx" bindingConfiguration="CustomerServiceSoap">
+    <endpoint name="CustomerServiceSoap" contract="ServiceReference1.CustomerServiceSoap" bindingType="basicHttpBinding" address="http://221.224.21.20:6790/CustomerService.asmx" bindingConfiguration="CustomerServiceSoap">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://221.224.21.20:6790/CustomerService.asmx</serializedValue>
@@ -278,7 +278,7 @@
           <serializedValue>CustomerServiceSoap</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>ServiceReference2.CustomerServiceSoap</serializedValue>
+          <serializedValue>ServiceReference1.CustomerServiceSoap</serializedValue>
         </property>
         <property path="/headers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.AddressHeaderCollectionElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.AddressHeaderCollectionElement</serializedValue>
@@ -348,7 +348,7 @@
         </property>
       </properties>
     </endpoint>
-    <endpoint name="CustomerServiceSoap12" contract="ServiceReference2.CustomerServiceSoap" bindingType="customBinding" address="http://221.224.21.20:6790/CustomerService.asmx" bindingConfiguration="CustomerServiceSoap12">
+    <endpoint name="CustomerServiceSoap12" contract="ServiceReference1.CustomerServiceSoap" bindingType="customBinding" address="http://221.224.21.20:6790/CustomerService.asmx" bindingConfiguration="CustomerServiceSoap12">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://221.224.21.20:6790/CustomerService.asmx</serializedValue>
@@ -363,7 +363,7 @@
           <serializedValue>CustomerServiceSoap12</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>ServiceReference2.CustomerServiceSoap</serializedValue>
+          <serializedValue>ServiceReference1.CustomerServiceSoap</serializedValue>
         </property>
         <property path="/headers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.AddressHeaderCollectionElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.AddressHeaderCollectionElement</serializedValue>

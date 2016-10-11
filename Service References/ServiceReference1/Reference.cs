@@ -8,40 +8,40 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SceneOfCustoms.ServiceReference2 {
+namespace SceneOfCustoms.ServiceReference1 {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference2.CustomerServiceSoap")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.CustomerServiceSoap")]
     public interface CustomerServiceSoap {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SendOrderData", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        string SendOrderData(SceneOfCustoms.ServiceReference2.OrderEn[] list);
+        string SendOrderData(SceneOfCustoms.ServiceReference1.OrderEn[] list);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SendOrderData", ReplyAction="*")]
-        System.Threading.Tasks.Task<string> SendOrderDataAsync(SceneOfCustoms.ServiceReference2.OrderEn[] list);
+        System.Threading.Tasks.Task<string> SendOrderDataAsync(SceneOfCustoms.ServiceReference1.OrderEn[] list);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ReceiveDeclarationStatus", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        SceneOfCustoms.ServiceReference2.DeclStatusEn[] ReceiveDeclarationStatus(string repno, string busiUnit);
+        SceneOfCustoms.ServiceReference1.DeclStatusEn[] ReceiveDeclarationStatus(string repno, string busiUnit);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ReceiveDeclarationStatus", ReplyAction="*")]
-        System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference2.DeclStatusEn[]> ReceiveDeclarationStatusAsync(string repno, string busiUnit);
+        System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclStatusEn[]> ReceiveDeclarationStatusAsync(string repno, string busiUnit);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ReceiveDeclaration", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        SceneOfCustoms.ServiceReference2.DeclarationEn[] ReceiveDeclaration(string repno, string busiUnit);
+        SceneOfCustoms.ServiceReference1.DeclarationEn[] ReceiveDeclaration(string repno, string busiUnit);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ReceiveDeclaration", ReplyAction="*")]
-        System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference2.DeclarationEn[]> ReceiveDeclarationAsync(string repno, string busiUnit);
+        System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclarationEn[]> ReceiveDeclarationAsync(string repno, string busiUnit);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ReceiveDeclarationPdf", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        SceneOfCustoms.ServiceReference2.DeclPdfEn[] ReceiveDeclarationPdf(string repno, string busiUnit);
+        SceneOfCustoms.ServiceReference1.DeclPdfEn[] ReceiveDeclarationPdf(string repno, string busiUnit);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ReceiveDeclarationPdf", ReplyAction="*")]
-        System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference2.DeclPdfEn[]> ReceiveDeclarationPdfAsync(string repno, string busiUnit);
+        System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclPdfEn[]> ReceiveDeclarationPdfAsync(string repno, string busiUnit);
     }
     
     /// <remarks/>
@@ -2796,12 +2796,12 @@ namespace SceneOfCustoms.ServiceReference2 {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface CustomerServiceSoapChannel : SceneOfCustoms.ServiceReference2.CustomerServiceSoap, System.ServiceModel.IClientChannel {
+    public interface CustomerServiceSoapChannel : SceneOfCustoms.ServiceReference1.CustomerServiceSoap, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class CustomerServiceSoapClient : System.ServiceModel.ClientBase<SceneOfCustoms.ServiceReference2.CustomerServiceSoap>, SceneOfCustoms.ServiceReference2.CustomerServiceSoap {
+    public partial class CustomerServiceSoapClient : System.ServiceModel.ClientBase<SceneOfCustoms.ServiceReference1.CustomerServiceSoap>, SceneOfCustoms.ServiceReference1.CustomerServiceSoap {
         
         public CustomerServiceSoapClient() {
         }
@@ -2822,35 +2822,35 @@ namespace SceneOfCustoms.ServiceReference2 {
                 base(binding, remoteAddress) {
         }
         
-        public string SendOrderData(SceneOfCustoms.ServiceReference2.OrderEn[] list) {
+        public string SendOrderData(SceneOfCustoms.ServiceReference1.OrderEn[] list) {
             return base.Channel.SendOrderData(list);
         }
         
-        public System.Threading.Tasks.Task<string> SendOrderDataAsync(SceneOfCustoms.ServiceReference2.OrderEn[] list) {
+        public System.Threading.Tasks.Task<string> SendOrderDataAsync(SceneOfCustoms.ServiceReference1.OrderEn[] list) {
             return base.Channel.SendOrderDataAsync(list);
         }
         
-        public SceneOfCustoms.ServiceReference2.DeclStatusEn[] ReceiveDeclarationStatus(string repno, string busiUnit) {
+        public SceneOfCustoms.ServiceReference1.DeclStatusEn[] ReceiveDeclarationStatus(string repno, string busiUnit) {
             return base.Channel.ReceiveDeclarationStatus(repno, busiUnit);
         }
         
-        public System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference2.DeclStatusEn[]> ReceiveDeclarationStatusAsync(string repno, string busiUnit) {
+        public System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclStatusEn[]> ReceiveDeclarationStatusAsync(string repno, string busiUnit) {
             return base.Channel.ReceiveDeclarationStatusAsync(repno, busiUnit);
         }
         
-        public SceneOfCustoms.ServiceReference2.DeclarationEn[] ReceiveDeclaration(string repno, string busiUnit) {
+        public SceneOfCustoms.ServiceReference1.DeclarationEn[] ReceiveDeclaration(string repno, string busiUnit) {
             return base.Channel.ReceiveDeclaration(repno, busiUnit);
         }
         
-        public System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference2.DeclarationEn[]> ReceiveDeclarationAsync(string repno, string busiUnit) {
+        public System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclarationEn[]> ReceiveDeclarationAsync(string repno, string busiUnit) {
             return base.Channel.ReceiveDeclarationAsync(repno, busiUnit);
         }
         
-        public SceneOfCustoms.ServiceReference2.DeclPdfEn[] ReceiveDeclarationPdf(string repno, string busiUnit) {
+        public SceneOfCustoms.ServiceReference1.DeclPdfEn[] ReceiveDeclarationPdf(string repno, string busiUnit) {
             return base.Channel.ReceiveDeclarationPdf(repno, busiUnit);
         }
         
-        public System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference2.DeclPdfEn[]> ReceiveDeclarationPdfAsync(string repno, string busiUnit) {
+        public System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclPdfEn[]> ReceiveDeclarationPdfAsync(string repno, string busiUnit) {
             return base.Channel.ReceiveDeclarationPdfAsync(repno, busiUnit);
         }
     }

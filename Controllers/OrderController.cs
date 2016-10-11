@@ -22,14 +22,14 @@ namespace SceneOfCustoms.Controllers
         //测试接口  单证
         public ActionResult test()
         {
-            ServiceReference2.CustomerServiceSoapClient danzheng = new ServiceReference2.CustomerServiceSoapClient();
-            ServiceReference2.OrderEn dzOrder = new ServiceReference2.OrderEn();
+            ServiceReference1.CustomerServiceSoapClient danzheng = new ServiceReference1.CustomerServiceSoapClient();
+            ServiceReference1.OrderEn dzOrder = new ServiceReference1.OrderEn();
 
             dzOrder.ARRIVEDNO = "1";
             dzOrder.REPNO = "1";
             //dzOrder.BUSIUNITCODE = "1";
 
-            List<ServiceReference2.OrderEn> orderList = new List<ServiceReference2.OrderEn>();
+            List<ServiceReference1.OrderEn> orderList = new List<ServiceReference1.OrderEn>();
 
             orderList.Add(dzOrder);
             string text = danzheng.SendOrderData(orderList.ToArray());
@@ -81,6 +81,50 @@ namespace SceneOfCustoms.Controllers
             List<OrderEn> ld = new List<OrderEn>();
             Msgobj MO = new Msgobj();
             OrderEn obj = new OrderEn();
+            obj.BUSITYPE = "飞力达FWO-海运出口-整箱";
+            obj.CODE = "00000110000000001169";
+            obj.FOONO = "SOBG00000000800000000541";
+            obj.TOTALNO = "4";
+            obj.DIVIDENO = "5";
+            obj.GOODSNUM = "5000";
+            obj.GOODSWEIGHT = "6000.0";
+            obj.PACKKIND = "袋";
+            obj.REPWAYID = "进口集报";
+            obj.DECLWAY = "通关无纸化";
+            obj.TRADEWAYCODES = "一般贸易/外资设备物品";
+            obj.CUSNO = "12";
+            obj.CUSTOMDISTRICTCODE = "昆山海关";
+            obj.PORTCODE = "昆山海关";
+            obj.PRICEIMPACT = "X";
+            obj.PAYPOYALTIES = "X";
+            obj.SFGOODSUNIT = "纬新资通(昆山)有限公司3223640063";
+            obj.REPUNITCODE = "江苏飞力达国际物流股份有限公司营运中心3223980002";
+            obj.CREATEUSERNAME = "洪家伟";
+            obj.CREATETIME = DateTime.Now.ToLocalTime().ToString();
+            obj.ARRIVEDNO = "FOO11113333333777";
+            obj.CHECKEDGOODSNUM = "5000";
+            obj.CHECKEDWEIGHT = "6000.0";
+            obj.ENTRUSTTYPEID = "";
+            obj.GOODSXT = "普通货";
+            obj.BUSIUNITNAME = "纬新资通(昆山)有限公司3223640063";
+            obj.GOODSTYPEID = "FCL（整箱装载）";
+            obj.LADINGBILLNO = "FL161000001";
+            obj.ISPREDECLARE = "X";
+            obj.ENTRUSTREQUEST = "FOO9994449999";
+            obj.CONTRACTNO = "FOO444555666";
+            obj.FIRSTLADINGBILLNO = "11111C";
+            obj.SECONDLADINGBILLNO = "11111C";
+            obj.MANIFEST = "66633322222";
+            obj.WOODPACKINGID = "非木";
+            obj.WEIGHTCHECK = "X";
+            obj.ISWEIGHTCHECK = "X";
+            obj.SHIPNAME = "COSCO KOREA";
+            obj.FILGHTNO = "S334";
+            obj.INSPUNITNAME = "江苏飞力达国际物流股份有限公司营运中心3223980002";
+            obj.TURNPRENO = "40";
+            obj.INVOICENO = "11111111111222222222";
+            obj.SPECIALRELATIONSHIP = "X";
+            ld.Add(obj);
             IList<Msgobj> MSList = CheckData(ld);
 
             if (MSList.Count <= 0)
@@ -117,15 +161,16 @@ namespace SceneOfCustoms.Controllers
         }
 
 
-        private ServiceReference2.OrderEn ZDOrderData(List<OrderEn> ListOrder)
+        private ServiceReference1.OrderEn ZDOrderData(List<OrderEn> ListOrder)
         {
             string sql = "";
+            string name = "";
             DataTable dt;
-            ServiceReference2.OrderEn DZOrder = new ServiceReference2.OrderEn();
+            ServiceReference1.OrderEn DZOrder = new ServiceReference1.OrderEn();
 
-            DZOrder.CUSNO = ListOrder[1].CUSNO; //企业编号
+            DZOrder.CUSNO = ListOrder[0].CUSNO; //企业编号
             DZOrder.REPNO = ""; //申报单位编号   --
-            DZOrder.ENTRUSTTYPE = GetENTRUSTTYPEID(ListOrder, ListOrder[1].BUSITYPE); //委托类型代码
+            DZOrder.ENTRUSTTYPE = GetENTRUSTTYPEID(ListOrder, ListOrder[0].BUSITYPE); //委托类型代码
 
             //委托类型名称
             if (DZOrder.ENTRUSTTYPE == "01")
@@ -142,202 +187,220 @@ namespace SceneOfCustoms.Controllers
             }
 
             //业务类型代码
-            DZOrder.BUSITYPE = JudgeBusiType(ListOrder[1].BUSITYPE, ListOrder[1].ENTRUSTTYPEID);
+            DZOrder.BUSITYPE = JudgeBusiType(ListOrder[0].BUSITYPE, ListOrder[0].ENTRUSTTYPEID);
             //业务类型名称 --
             DZOrder.BUSITYPENAME = "";
 
             //申报方式代码
-            sql = "select CODE, NAME from SYS_REPWAY where Enabled=1 and  NAME = '" + ListOrder[1].REPWAYID + "'";
+            sql = "select CODE, NAME from SYS_REPWAY where Enabled=1 and  NAME = '" + ListOrder[0].REPWAYID + "'";
             dt = DB_BaseData.GetDataTable(sql);
             DZOrder.REPWAYID = dt.Rows[0]["CODE"] + "";
             //申报方式名称 --
             DZOrder.REPWAYNAME = dt.Rows[0]["NAME"] + "";
 
             //申报关区代码
-            sql = "select CODE,NAME from BASE_CUSTOMDISTRICT  where ENABLED=1  and NAME='" + ListOrder[1].CUSTOMDISTRICTCODE + "' ORDER BY CODE";
+            sql = "select CODE,NAME from BASE_CUSTOMDISTRICT  where ENABLED=1  and NAME='" + ListOrder[0].CUSTOMDISTRICTCODE + "' ORDER BY CODE";
             dt = DB_BaseData.GetDataTable(sql);
             DZOrder.CUSTOMAREACODE = dt.Rows[0]["CODE"] + "";
             //申报关区代码 --
             DZOrder.CUSTOMAREANAME = dt.Rows[0]["NAME"] + "";
 
             //报关方式代码
-            sql = "select CODE,NAME  from SYS_DECLWAY where enabled=1 and NAME ='" + ListOrder[1].DECLWAY + "'";
+            sql = "select CODE,NAME  from SYS_DECLWAY where enabled=1 and NAME ='" + ListOrder[0].DECLWAY + "'";
             dt = DB_BaseData.GetDataTable(sql);
             DZOrder.DECLWAY = dt.Rows[0]["CODE"] + "";
             //报关方式名称 --
             DZOrder.DECLWAYNAME = dt.Rows[0]["NAME"] + "";
 
             //经营单位代码
-            sql = "SELECT CODE,NAME FROM BASE_COMPANY where CODE is not null and enabled=1 and NAME ='" + ListOrder[1].BUSIUNITNAME + "'";
+            name = ListOrder[0].BUSIUNITNAME.Remove(ListOrder[0].BUSIUNITNAME.Length - 10, 10);
+            sql = "SELECT CODE,NAME FROM BASE_COMPANY where CODE is not null and enabled=1 and NAME ='" + name + "'";
             dt = DB_BaseData.GetDataTable(sql);
-            DZOrder.BUSIUNITCODE = dt.Rows[0]["BUSIUNITCODE"] + "";
+            DZOrder.BUSIUNITCODE = dt.Rows[0]["CODE"] + "";
             //经营单位名称
-            DZOrder.BUSIUNITNAME = dt.Rows[0]["BUSIUNITNAME"] + "";
+            DZOrder.BUSIUNITNAME = dt.Rows[0]["NAME"] + "";
 
             //经营单位社会号
             DZOrder.BUSIUNITNUM = "";
 
             //件数
-            DZOrder.GOODSNUM = Int32.Parse(ListOrder[1].GOODSNUM);
+            DZOrder.GOODSNUM = Int32.Parse(ListOrder[0].GOODSNUM);
 
             //毛重
-            DZOrder.GOODSGW = decimal.Parse(ListOrder[1].GOODSWEIGHT);
+            DZOrder.GOODSGW = decimal.Parse(ListOrder[0].GOODSWEIGHT);
 
             //净重
-            DZOrder.GOODSNW = decimal.Parse(ListOrder[1].CHECKEDWEIGHT);
+            DZOrder.GOODSNW = decimal.Parse(ListOrder[0].CHECKEDWEIGHT);
 
             //包装种类名称
-            DZOrder.PACKKINDNAME = ListOrder[1].PACKKIND;
+            DZOrder.PACKKINDNAME = ListOrder[0].PACKKIND;
 
             //订单要求 --
-            DZOrder.ORDERREQUEST = ListOrder[1].ENTRUSTREQUEST;
+            DZOrder.ORDERREQUEST = ListOrder[0].ENTRUSTREQUEST;
 
             //申报单位  报关 报检
 
             if (DZOrder.ENTRUSTTYPE == "01")
             {
-                DZOrder.DECLREPCODE = ListOrder[1].REPUNITCODE.Substring(ListOrder[1].REPUNITCODE.Length, 10);
-                DZOrder.DECLREPNAME = ListOrder[1].REPUNITCODE.Remove(ListOrder[1].REPUNITCODE.Length, 10);
+                DZOrder.DECLREPCODE = ListOrder[0].REPUNITCODE.Substring(ListOrder[0].REPUNITCODE.Length - 10, 10);
+                DZOrder.DECLREPNAME = ListOrder[0].REPUNITCODE.Remove(ListOrder[0].REPUNITCODE.Length - 10, 10);
             }
             else if (DZOrder.ENTRUSTTYPE == "02")
             {
-                DZOrder.INSPREPCODE = ListOrder[1].REPUNITCODE.Substring(ListOrder[1].INSPUNITNAME.Length, 10);
-                DZOrder.INSPREPNAME = ListOrder[1].REPUNITCODE.Remove(ListOrder[1].INSPUNITNAME.Length, 10);
+                DZOrder.INSPREPCODE = ListOrder[0].REPUNITCODE.Substring(ListOrder[0].INSPUNITNAME.Length - 10, 10);
+                DZOrder.INSPREPNAME = ListOrder[0].REPUNITCODE.Remove(ListOrder[0].INSPUNITNAME.Length - 10, 10);
             }
             else if (DZOrder.ENTRUSTTYPE == "03")
             {
-                DZOrder.DECLREPCODE = ListOrder[1].REPUNITCODE.Substring(ListOrder[1].REPUNITCODE.Length, 10);
-                DZOrder.DECLREPNAME = ListOrder[1].REPUNITCODE.Remove(ListOrder[1].REPUNITCODE.Length, 10);
-                DZOrder.INSPREPCODE = ListOrder[1].REPUNITCODE.Substring(ListOrder[1].INSPUNITNAME.Length, 10);
-                DZOrder.INSPREPNAME = ListOrder[1].REPUNITCODE.Remove(ListOrder[1].INSPUNITNAME.Length, 10);
+                DZOrder.DECLREPCODE = ListOrder[0].REPUNITCODE.Substring(ListOrder[0].REPUNITCODE.Length - 10, 10);
+                DZOrder.DECLREPNAME = ListOrder[0].REPUNITCODE.Remove(ListOrder[0].REPUNITCODE.Length - 10, 10);
+                DZOrder.INSPREPCODE = ListOrder[0].REPUNITCODE.Substring(ListOrder[0].INSPUNITNAME.Length - 10, 10);
+                DZOrder.INSPREPNAME = ListOrder[0].REPUNITCODE.Remove(ListOrder[0].INSPUNITNAME.Length - 10, 10);
             }
 
             //总单号
-            DZOrder.TOTALNO = ListOrder[1].TOTALNO;
+            DZOrder.TOTALNO = ListOrder[0].TOTALNO;
 
             //分单号
-            DZOrder.TOTALNO = ListOrder[1].TOTALNO;
+            DZOrder.TOTALNO = ListOrder[0].TOTALNO;
 
             //转关预录入号
-            DZOrder.TURNPRENO = ListOrder[1].TURNPRENO;
+            DZOrder.TURNPRENO = ListOrder[0].TURNPRENO;
 
             //进出口岸
-            DZOrder.PORTCODE = ListOrder[1].PORTCODE;
+            DZOrder.PORTCODE = ListOrder[0].PORTCODE;
 
             //委托时间
             DZOrder.SUBMITTIME = DateTime.Now;
 
             //委托人员
-            DZOrder.SUBMITUSERNAME = ListOrder[1].CREATEUSERNAME;
+            DZOrder.SUBMITUSERNAME = ListOrder[0].CREATEUSERNAME;
 
             //运抵编号
-            DZOrder.ARRIVEDNO = ListOrder[1].ARRIVEDNO;
+            DZOrder.ARRIVEDNO = ListOrder[0].ARRIVEDNO;
 
+            //货物类型
+            DZOrder.GOODSTYPEID = ListOrder[0].GOODSTYPEID;
+
+            //海关提单号 二程提单号
+            DZOrder.SECONDLADINGBILLNO = ListOrder[0].SECONDLADINGBILLNO;
+
+            //国检提单号 一程提单号
+            DZOrder.FIRSTLADINGBILLNO = ListOrder[0].FIRSTLADINGBILLNO;
+
+            //载货清单号
+            DZOrder.MANIFEST = ListOrder[0].MANIFEST;
+
+            //载货清单号
+            DZOrder.MANIFEST = ListOrder[0].MANIFEST;
+
+            //木质包装
+            DZOrder.WOODPACKINGID = ListOrder[0].WOODPACKINGID;
+
+
+
+            if (ListOrder[0].WEIGHTCHECK == "")
+            {
+                ListOrder[0].WEIGHTCHECK = "0";
+            }
+            else
+            {
+                ListOrder[0].WEIGHTCHECK = "1";
+            }
+
+
+            if (ListOrder[0].ISWEIGHTCHECK == "")
+            {
+                ListOrder[0].ISWEIGHTCHECK = "0";
+            }
+            else
+            {
+                ListOrder[0].ISWEIGHTCHECK = "1";
+            }
+
+            //是否需要重量确认
+            DZOrder.WEIGHTCHECK = Int32.Parse(ListOrder[0].WEIGHTCHECK);
+
+            //重量确认
+            DZOrder.ISWEIGHTCHECK = Int32.Parse(ListOrder[0].ISWEIGHTCHECK);
+
+            //船名
+            DZOrder.SHIPNAME = ListOrder[0].SHIPNAME;
+
+            //航次
+            DZOrder.FILGHTNO = ListOrder[0].FILGHTNO;
+
+            //通关单号
+            //DZOrder.CLEARANCENO = ListOrder[0].CLEARANCENO;
 
             return DZOrder;
         }
 
-        //  保存订单
-        private int InsertOrder(List<OrderEn> ld)
+
+        private int XCOrderData(List<OrderEn> o)
         {
-            int Order_Res = 1;
+            string sql = "";
             DateTime dt = DateTime.Now;
-            List<List<OrderEn>> GroupOrder = GroupByFoo(ld);
-
-
-            ServiceReference2.CustomerServiceSoapClient danzheng = new ServiceReference2.CustomerServiceSoapClient();
-
-            ServiceReference2.OrderEn DZOrder;
-
-            List<ServiceReference2.OrderEn> DZOrderList = new List<ServiceReference2.OrderEn>();
-
-
-
-            foreach (List<OrderEn> ListOrder in GroupOrder)
+            if (o[0].SPECIALRELATIONSHIP == "")
             {
-                DZOrder = new ServiceReference2.OrderEn();
-
-                //转成单证的数据
-                DZOrder = ZDOrderData(ListOrder);
-
-
-
-                foreach (OrderEn O in ListOrder)
-                {
-
-                }
-                //o[1].ARRIVEDNO;//2
-                //o[0].ENTRUSTREQUEST //12312
-
-
-                DZOrderList.Add(DZOrder);
+                o[0].SPECIALRELATIONSHIP = "0";
+            }
+            else
+            {
+                o[0].SPECIALRELATIONSHIP = "1";
             }
 
-            //string text = danzheng.SendOrderData(DZOrderList.ToArray());
-
-
-            foreach (OrderEn o in ld)
+            if (o[0].PRICEIMPACT == "")
             {
-                if (o.SPECIALRELATIONSHIP == "")
-                {
-                    o.SPECIALRELATIONSHIP = "0";
-                }
-                else
-                {
-                    o.SPECIALRELATIONSHIP = "1";
-                }
+                o[0].PRICEIMPACT = "0";
+            }
+            else
+            {
+                o[0].PRICEIMPACT = "1";
+            }
 
-                if (o.PRICEIMPACT == "")
-                {
-                    o.PRICEIMPACT = "0";
-                }
-                else
-                {
-                    o.PRICEIMPACT = "1";
-                }
+            if (o[0].PAYPOYALTIES == "")
+            {
+                o[0].PAYPOYALTIES = "0";
+            }
+            else
+            {
+                o[0].PAYPOYALTIES = "1";
+            }
 
-                if (o.PAYPOYALTIES == "")
-                {
-                    o.PAYPOYALTIES = "0";
-                }
-                else
-                {
-                    o.PAYPOYALTIES = "1";
-                }
+            if (o[0].ISPREDECLARE == "")
+            {
+                o[0].ISPREDECLARE = "0";
+            }
+            else
+            {
+                o[0].ISPREDECLARE = "1";
+            }
 
-                if (o.ISPREDECLARE == "")
-                {
-                    o.ISPREDECLARE = "0";
-                }
-                else
-                {
-                    o.ISPREDECLARE = "1";
-                }
-
-                if (o.WEIGHTCHECK == "")
-                {
-                    o.WEIGHTCHECK = "0";
-                }
-                else
-                {
-                    o.WEIGHTCHECK = "1";
-                }
+            if (o[0].WEIGHTCHECK == "")
+            {
+                o[0].WEIGHTCHECK = "0";
+            }
+            else
+            {
+                o[0].WEIGHTCHECK = "1";
+            }
 
 
-                if (o.ISWEIGHTCHECK == "")
-                {
-                    o.ISWEIGHTCHECK = "0";
-                }
-                else
-                {
-                    o.ISWEIGHTCHECK = "1";
-                }
-                o.BUSITYPE = JudgeBusiType(o.BUSITYPE, o.ENTRUSTTYPEID);
+            if (o[0].ISWEIGHTCHECK == "")
+            {
+                o[0].ISWEIGHTCHECK = "0";
+            }
+            else
+            {
+                o[0].ISWEIGHTCHECK = "1";
+            }
 
-                string sql = "";
-                sql = @"insert into List_Order(
+            o[0].ENTRUSTTYPEID = GetENTRUSTTYPEID(o, o[0].BUSITYPE); //委托类型代码
+            o[0].BUSITYPE = JudgeBusiType(o[0].BUSITYPE, o[0].ENTRUSTTYPEID);
+            sql = @"insert into List_Order(
                       ID,
-                      BUSITYPE,CODE,FOONO,TOTALNO,
+                      BUSITYPE,FWONO,FOONO,TOTALNO,
                       DIVIDENO,GOODSNUM,GOODSWEIGHT,SFGOODSUNIT,
                       PACKKIND, REPWAYID,DECLWAY,TRADEWAYCODES,
                       CUSNO,CUSTOMDISTRICTCODE,PORTCODE,SPECIALRELATIONSHIP,
@@ -354,22 +417,43 @@ namespace SceneOfCustoms.Controllers
                     '{37}','{38}','{39}','{40}','{41}','{42}','SAP'
                     )";
 
-                sql = string.Format(sql,
-                    o.BUSITYPE, o.CODE, o.FOONO, o.TOTALNO,
-                    o.DIVIDENO, o.GOODSNUM, o.GOODSWEIGHT, o.SFGOODSUNIT,
-                    o.PACKKIND, o.REPWAYID, o.DECLWAY, o.TRADEWAYCODES,
-                    o.CUSNO, o.CUSTOMDISTRICTCODE, o.PORTCODE, o.SPECIALRELATIONSHIP,
-                    o.PRICEIMPACT, o.PAYPOYALTIES, o.REPUNITCODE, o.CREATEUSERNAME,
-                     dt.ToString(), o.ARRIVEDNO, o.CHECKEDGOODSNUM, o.CHECKEDWEIGHT,
-                    o.ENTRUSTTYPEID, o.GOODSXT, o.BUSIUNITNAME, o.GOODSTYPEID,
-                    o.LADINGBILLNO, o.ISPREDECLARE, o.ENTRUSTREQUEST, o.CONTRACTNO,
-                    o.FIRSTLADINGBILLNO, o.SECONDLADINGBILLNO, o.MANIFEST, o.WOODPACKINGID,
-                    o.WEIGHTCHECK, o.ISWEIGHTCHECK, o.SHIPNAME, o.FILGHTNO,
-                    o.INSPUNITNAME, o.TURNPRENO, o.INVOICENO
-                    );
-                Order_Res = DBMgr.ExecuteNonQuery(sql);
+            sql = string.Format(sql,
+                o[0].BUSITYPE, o[0].CODE, o[0].FOONO, o[0].TOTALNO,
+                o[0].DIVIDENO, o[0].GOODSNUM, o[0].GOODSWEIGHT, o[0].SFGOODSUNIT,
+                o[0].PACKKIND, o[0].REPWAYID, o[0].DECLWAY, o[0].TRADEWAYCODES,
+                o[0].CUSNO, o[0].CUSTOMDISTRICTCODE, o[0].PORTCODE, o[0].SPECIALRELATIONSHIP,
+                o[0].PRICEIMPACT, o[0].PAYPOYALTIES, o[0].REPUNITCODE, o[0].CREATEUSERNAME,
+                dt.ToString(), o[0].ARRIVEDNO, o[0].CHECKEDGOODSNUM, o[0].CHECKEDWEIGHT,
+                o[0].ENTRUSTTYPEID, o[0].GOODSXT, o[0].BUSIUNITNAME, o[0].GOODSTYPEID,
+                o[0].LADINGBILLNO, o[0].ISPREDECLARE, o[0].ENTRUSTREQUEST, o[0].CONTRACTNO,
+                o[0].FIRSTLADINGBILLNO, o[0].SECONDLADINGBILLNO, o[0].MANIFEST,
+                o[0].WOODPACKINGID, o[0].WEIGHTCHECK, o[0].ISWEIGHTCHECK, o[0].SHIPNAME, o[0].FILGHTNO,
+                o[0].INSPUNITNAME, o[0].TURNPRENO, o[0].INVOICENO
+                );
+            DBMgr.ExecuteNonQuery(sql);
+            return 1;
+        }
+
+        //  保存订单
+        private int InsertOrder(List<OrderEn> ld)
+        {
+            int Order_Res = 1;
+            List<List<OrderEn>> GroupOrder = GroupByFoo(ld);
+            ServiceReference1.CustomerServiceSoapClient danzheng = new ServiceReference1.CustomerServiceSoapClient();
+            ServiceReference1.OrderEn DZOrder;
+            List<ServiceReference1.OrderEn> DZOrderList = new List<ServiceReference1.OrderEn>();
+            foreach (List<OrderEn> ListOrder in GroupOrder)
+            {
+                DZOrder = new ServiceReference1.OrderEn();
+                //转成单证的数据
+                DZOrder = ZDOrderData(ListOrder);
+
+                //生成现场订单
+                XCOrderData(ListOrder);
+                DZOrderList.Add(DZOrder);
             }
 
+            //string text = danzheng.SendOrderData(DZOrderList.ToArray());
             return Order_Res;
         }
 
@@ -401,7 +485,7 @@ namespace SceneOfCustoms.Controllers
                     m.MSG_TXT = "FOONO不可为空";
                     MsgobjList.Add(m);
                 }
-                else if (o.FOONO.Substring(0, 4) != "SOBG" || o.FOONO.Substring(0, 4) != "SOBJ")
+                else if (o.FOONO.Substring(0, 4) != "SOBG" && o.FOONO.Substring(0, 4) != "SOBJ")
                 {
                     m = new Msgobj();
                     m.MSG_ID = 1;
@@ -577,7 +661,8 @@ namespace SceneOfCustoms.Controllers
                 }
                 else
                 {
-                    sql = "SELECT CODE,NAME||'('||CODE||')' NAME FROM BASE_COMPANY where CODE is not null and enabled=1 and NAME ='" + o.BUSIUNITNAME + "'";
+                    string name = o.BUSIUNITNAME.Remove(o.BUSIUNITNAME.Length - 10, 10);
+                    sql = "SELECT CODE,NAME||'('||CODE||')' NAME FROM BASE_COMPANY where CODE is not null and enabled=1 and NAME ='" + name + "'";
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
                     {
