@@ -44,57 +44,107 @@ namespace SceneOfCustoms.Controllers
             List<OrderEn> ld = new List<OrderEn>();
             Msgobj MO = new Msgobj();
             OrderEn obj = new OrderEn();
-            obj.BUSITYPE = "飞力达FWO-海运出口-整箱";
-            obj.CODE = "00000110000000001169";
-            obj.FOONO = "SOBG00000000800000000541";
-            obj.TOTALNO = "4";
-            obj.DIVIDENO = "5";
-            obj.GOODSNUM = "5000";
-            obj.GOODSWEIGHT = "6000.0";
-            obj.PACKKIND = "袋";
-            obj.REPWAYID = "进口集报";
-            obj.DECLWAY = "通关无纸化";
-            obj.TRADEWAYCODES = "一般贸易/外资设备物品";
-            obj.CUSNO = "12";
-            obj.CUSTOMDISTRICTCODE = "昆山海关";
-            obj.PORTCODE = "昆山海关";
-            obj.PRICEIMPACT = "X";
-            obj.PAYPOYALTIES = "X";
-            obj.SFGOODSUNIT = "纬新资通(昆山)有限公司3223640063";
-            obj.REPUNITCODE = "江苏飞力达国际物流股份有限公司营运中心3223980002";
-            obj.CREATEUSERNAME = "洪家伟";
+
+            string sql = "select * from list_sapfoo  order by id desc";
+            DataTable dt = DBMgr.GetDataTable(sql);
+
+
+            obj.BUSITYPE = dt.Rows[0]["BUSITYPE"] + "";
+            obj.CODE = dt.Rows[0]["FWONO"] + "";
+            obj.FOONO = dt.Rows[0]["FOONO"] + "";
+            obj.TOTALNO = dt.Rows[0]["TOTALNO"] + "";
+            obj.DIVIDENO = dt.Rows[0]["DIVIDENO"] + "";
+            obj.GOODSNUM = dt.Rows[0]["GOODSNUM"] + "";
+            obj.GOODSWEIGHT = dt.Rows[0]["GOODSWEIGHT"] + "";
+            obj.PACKKIND = dt.Rows[0]["PACKKIND"] + "";
+            obj.REPWAYID = dt.Rows[0]["REPWAYID"] + "";
+            obj.DECLWAY = dt.Rows[0]["DECLWAY"] + "";
+            obj.TRADEWAYCODES = dt.Rows[0]["TRADEWAYCODES"] + "";
+            obj.CUSNO = dt.Rows[0]["CUSNO"] + "";
+            obj.CUSTOMDISTRICTCODE = dt.Rows[0]["CUSTOMDISTRICTCODE"] + "";
+            obj.PORTCODE = dt.Rows[0]["PORTCODE"] + "";
+            obj.PRICEIMPACT = dt.Rows[0]["PRICEIMPACT"] + "";
+            obj.PAYPOYALTIES = dt.Rows[0]["PAYPOYALTIES"] + "";
+            obj.SFGOODSUNIT = dt.Rows[0]["SFGOODSUNIT"] + "";
+            obj.REPUNITCODE = dt.Rows[0]["REPUNITCODE"] + "";
+            obj.CREATEUSERNAME = dt.Rows[0]["CREATEUSERNAME"] + "";
             obj.CREATETIME = DateTime.Now.ToLocalTime().ToString();
-            obj.ARRIVEDNO = "FOO11113333333777";
-            obj.CHECKEDGOODSNUM = "5000";
-            obj.CHECKEDWEIGHT = "6000.0";
-            obj.ENTRUSTTYPEID = "";
-            obj.GOODSXT = "普通货";
-            obj.BUSIUNITNAME = "纬新资通(昆山)有限公司3223640063";
-            obj.GOODSTYPEID = "FCL（整箱装载）";
-            obj.LADINGBILLNO = "FL161000001";
-            obj.ISPREDECLARE = "X";
-            obj.ENTRUSTREQUEST = "FOO9994449999";
-            obj.CONTRACTNO = "FOO444555666";
-            obj.FIRSTLADINGBILLNO = "11111C";
-            obj.SECONDLADINGBILLNO = "11111C";
-            obj.MANIFEST = "66633322222";
-            obj.WOODPACKINGID = "非木";
-            obj.WEIGHTCHECK = "X";
-            obj.ISWEIGHTCHECK = "X";
-            obj.SHIPNAME = "COSCO KOREA";
-            obj.FILGHTNO = "S334";
-            obj.INSPUNITNAME = "江苏飞力达国际物流股份有限公司营运中心3223980002";
-            obj.TURNPRENO = "40";
-            obj.INVOICENO = "11111111111222222222";
-            obj.SPECIALRELATIONSHIP = "X";
+            obj.ARRIVEDNO = dt.Rows[0]["ARRIVEDNO"] + "";
+            obj.CHECKEDGOODSNUM = dt.Rows[0]["CHECKEDGOODSNUM"] + "";
+            obj.CHECKEDWEIGHT = dt.Rows[0]["CHECKEDWEIGHT"] + "";
+            obj.ENTRUSTTYPEID = dt.Rows[0]["ENTRUSTTYPEID"] + "";
+            obj.GOODSXT = dt.Rows[0]["GOODSXT"] + "";
+            obj.BUSIUNITNAME = dt.Rows[0]["BUSIUNITNAME"] + "";
+            obj.GOODSTYPEID = dt.Rows[0]["GOODSTYPEID"] + "";
+            obj.LADINGBILLNO = dt.Rows[0]["LADINGBILLNO"] + "";
+            obj.ISPREDECLARE = dt.Rows[0]["ISPREDECLARE"] + "";
+            obj.ENTRUSTREQUEST = dt.Rows[0]["ENTRUSTREQUEST"] + "";
+            obj.CONTRACTNO = dt.Rows[0]["CONTRACTNO"] + "";
+            obj.FIRSTLADINGBILLNO = dt.Rows[0]["FIRSTLADINGBILLNO"] + "";
+            obj.SECONDLADINGBILLNO = dt.Rows[0]["SECONDLADINGBILLNO"] + "";
+            obj.MANIFEST = dt.Rows[0]["MANIFEST"] + "";
+            obj.WOODPACKINGID = dt.Rows[0]["WOODPACKINGID"] + "";
+            obj.WEIGHTCHECK = dt.Rows[0]["WEIGHTCHECK"] + "";
+            obj.ISWEIGHTCHECK = dt.Rows[0]["ISCHECKEDWEIGHT"] + "";
+            obj.SHIPNAME = dt.Rows[0]["SHIPNAME"] + "";
+            obj.FILGHTNO = dt.Rows[0]["FILGHTNO"] + "";
+            obj.INSPUNITNAME = dt.Rows[0]["INSPUNITCODE"] + "";
+            obj.TURNPRENO = dt.Rows[0]["TURNPRENO"] + "";
+            obj.INVOICENO = dt.Rows[0]["INVOICENO"] + "";
+            obj.SPECIALRELATIONSHIP = dt.Rows[0]["SPECIALRELATIONSHIP"] + "";
+            
+            //obj.BUSITYPE = "飞力达FWO-海运出口-整箱";
+            //obj.CODE = "00000110000000001169";
+            //obj.FOONO = "SOBG00000000800000000541";
+            //obj.TOTALNO = "4";
+            //obj.DIVIDENO = "5";
+            //obj.GOODSNUM = "5000";
+            //obj.GOODSWEIGHT = "6000.0";
+            //obj.PACKKIND = "袋";
+            //obj.REPWAYID = "进口集报";
+            //obj.DECLWAY = "通关无纸化";
+            //obj.TRADEWAYCODES = "一般贸易/外资设备物品";
+            //obj.CUSNO = "12";
+            //obj.CUSTOMDISTRICTCODE = "昆山海关";
+            //obj.PORTCODE = "昆山海关";
+            //obj.PRICEIMPACT = "X";
+            //obj.PAYPOYALTIES = "X";
+            //obj.SFGOODSUNIT = "纬新资通(昆山)有限公司3223640063";
+            //obj.REPUNITCODE = "江苏飞力达国际物流股份有限公司营运中心3223980002";
+            //obj.CREATEUSERNAME = "洪家伟";
+            //obj.CREATETIME = DateTime.Now.ToLocalTime().ToString();
+            //obj.ARRIVEDNO = "FOO11113333333777";
+            //obj.CHECKEDGOODSNUM = "5000";
+            //obj.CHECKEDWEIGHT = "6000.0";
+            //obj.ENTRUSTTYPEID = "";
+            //obj.GOODSXT = "普通货";
+            //obj.BUSIUNITNAME = "纬新资通(昆山)有限公司3223640063";
+            //obj.GOODSTYPEID = "FCL（整箱装载）";
+            //obj.LADINGBILLNO = "FL161000001";
+            //obj.ISPREDECLARE = "X";
+            //obj.ENTRUSTREQUEST = "FOO9994449999";
+            //obj.CONTRACTNO = "FOO444555666";
+            //obj.FIRSTLADINGBILLNO = "11111C";
+            //obj.SECONDLADINGBILLNO = "11111C";
+            //obj.MANIFEST = "66633322222";
+            //obj.WOODPACKINGID = "非木";
+            //obj.WEIGHTCHECK = "X";
+            //obj.ISWEIGHTCHECK = "X";
+            //obj.SHIPNAME = "COSCO KOREA";
+            //obj.FILGHTNO = "S334";
+            //obj.INSPUNITNAME = "江苏飞力达国际物流股份有限公司营运中心3223980002";
+            //obj.TURNPRENO = "40";
+            //obj.INVOICENO = "11111111111222222222";
+            //obj.SPECIALRELATIONSHIP = "X";
             ld.Add(obj);
             IList<Msgobj> MSList = CheckData(ld);
+            int Order_Res = InsertOrder(ld);
 
             if (MSList.Count <= 0)
             {
                 if (ld.Count > 0)
                 {
-                    int Order_Res = InsertOrder(ld);
+                    //int Order_Res = InsertOrder(ld);
                     if (Order_Res == 1)
                     {
                         MO.MSG_ID = 1;
@@ -409,7 +459,7 @@ namespace SceneOfCustoms.Controllers
             {
                 DZOrder = new ServiceReference1.OrderEn();
                 //转成单证的数据
-                DZOrder = ZDOrderData(ListOrder);
+                //DZOrder = ZDOrderData(ListOrder);
 
                 //生成现场订单
                 XCOrderData(ListOrder);
@@ -532,7 +582,7 @@ namespace SceneOfCustoms.Controllers
                 else
                 {
 
-                    sql = "select CODE,NAME||'('||CODE||')' NAME from SYS_REPWAY where Enabled=1 and  NAME = '" + o.REPWAYID + "'";
+                    sql = "select CODE,NAME from SYS_REPWAY where Enabled=1 and  NAME = '" + o.REPWAYID + "'";
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
                     {
@@ -554,7 +604,7 @@ namespace SceneOfCustoms.Controllers
                 }
                 else
                 {
-                    sql = "select CODE,NAME||'('||CODE||')' NAME from BASE_CUSTOMDISTRICT  where ENABLED=1  and NAME='" + o.CUSTOMDISTRICTCODE + "' ORDER BY CODE";
+                    sql = "select CODE,NAME from BASE_CUSTOMDISTRICT  where ENABLED=1  and NAME='" + o.CUSTOMDISTRICTCODE + "' ORDER BY CODE";
 
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
@@ -580,7 +630,7 @@ namespace SceneOfCustoms.Controllers
                 }
                 else
                 {
-                    sql = "select CODE,NAME||'('||CODE||')' NAME  from SYS_DECLWAY where enabled=1 and NAME ='" + o.DECLWAY + "'";
+                    sql = "select CODE,NAME from SYS_DECLWAY where enabled=1 and NAME ='" + o.DECLWAY + "'";
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
                     {
@@ -602,7 +652,7 @@ namespace SceneOfCustoms.Controllers
                 }
                 else
                 {
-                    sql = "select CODE,NAME||'('||CODE||')' NAME from BASE_CUSTOMDISTRICT  where ENABLED=1 and NAME ='" + o.PORTCODE + "'";
+                    sql = "select CODE,NAME from BASE_CUSTOMDISTRICT  where ENABLED=1 and NAME ='" + o.PORTCODE + "'";
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
                     {
@@ -625,7 +675,7 @@ namespace SceneOfCustoms.Controllers
                 else
                 {
                     string name = o.BUSIUNITNAME.Remove(o.BUSIUNITNAME.Length - 10, 10);
-                    sql = "SELECT CODE,NAME||'('||CODE||')' NAME FROM BASE_COMPANY where CODE is not null and enabled=1 and NAME ='" + name + "'";
+                    sql = "SELECT CODE,NAME FROM BASE_COMPANY where CODE is not null and enabled=1 and NAME ='" + name + "'";
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
                     {
@@ -673,7 +723,7 @@ namespace SceneOfCustoms.Controllers
                     for (int i = 0; i < arr.Length; i++)
                     {
                         //贸易方式 
-                        sql = @"select ID,CODE,NAME||'('||CODE||')' NAME from BASE_DECLTRADEWAY WHERE enabled=1 and NAME ='" + arr[i] + "'";
+                        sql = @"select ID,CODE,NAME from BASE_DECLTRADEWAY WHERE enabled=1 and NAME ='" + arr[i] + "'";
                         dt = DB_BaseData.GetDataTable(sql);
                         if (dt.Rows.Count <= 0)
                         {
@@ -936,9 +986,9 @@ namespace SceneOfCustoms.Controllers
         {
             string BUSITYPE = Request.Params["BUSITYPE"];
             string TYPE = Request.Params["TYPE"];
-            int PageSize = Convert.ToInt32(Request.Params["rows"]); 
-            int Page = Convert.ToInt32(Request.Params["page"]);            
-            int total = 0; 
+            int PageSize = Convert.ToInt32(Request.Params["rows"]);
+            int Page = Convert.ToInt32(Request.Params["page"]);
+            int total = 0;
             string sql = "select t.* from list_order  t where 1=1  ";
             //if (!string.IsNullOrEmpty(BUSITYPE))
             //{
@@ -953,7 +1003,7 @@ namespace SceneOfCustoms.Controllers
                     sql += " and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
                     break;
                 case "OverlayBonded":
-                    sql += " and (BUSITYPE='40' OR BUSITYPE='41') "; 
+                    sql += " and (BUSITYPE='40' OR BUSITYPE='41') ";
                     break;
             }
             //if (TYPE == "SpecialSupervision")
