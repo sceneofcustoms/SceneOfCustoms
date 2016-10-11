@@ -1,0 +1,89 @@
+﻿<link href="/js/Extjs42/resources/css/ext-all-gray.css" rel="stylesheet" type="text/css" />
+<script src="/js/Extjs42/bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript">
+    Ext.onReady(function () {
+
+
+        var store = Ext.create('Ext.data.JsonStore', {
+            fields: ['ID', 'BUSITYPE', 'CUSNO', 'CONTRACTNO', 'TOTALNO', 'DIVIDENO', 'WOODPACKINGID', 'GOODSNUM',
+              'GOODSWEIGHT', 'REPWAYID', 'CUSTOMDISTRICTCODE', 'PORTCODE', 'REPUNITCODE', 'INSPUNITCODE', 'CREATETIME',
+              'ENTRUSTREQUEST', 'ENTRUSTTYPEID'
+            ],
+            pageSize: 20,
+            proxy: {
+                type: 'ajax',
+                url: '/Common/LoadFooList',
+                reader: {
+                    root: 'rows',
+                    type: 'json',
+                    totalProperty: 'total'
+                }
+            },
+            autoLoad: true,
+            listeners: {
+                //beforeload: function () {
+                //    store_Trade.getProxy().extraParams = {
+                //        busitypeid: 11,
+                //        OnlySelf: Ext.get('OnlySelfi').el.dom.className,
+                //        seniorsearch: seniorcondition,
+                //        CONDITION1: Ext.getCmp('CONDITION1').getValue(), VALUE1: Ext.getCmp("CONDITION1_1").getValue(),
+                //        CONDITION2: Ext.getCmp('CONDITION2').getValue(), VALUE2: Ext.getCmp("CONDITION2_1").getValue(),
+                //        CONDITION3: Ext.getCmp('CONDITION3').getValue(), VALUE3: Ext.getCmp("CONDITION3_1").getValue(),
+                //        CONDITION4: Ext.getCmp('CONDITION4').getValue(), VALUE4_1: Ext.Date.format(Ext.getCmp("CONDITION4_1").getValue(), 'Y-m-d H:i:s'), VALUE4_2: Ext.Date.format(Ext.getCmp("CONDITION4_2").getValue(), 'Y-m-d H:i:s'),
+                //        CONDITION5: Ext.getCmp('CONDITION5').getValue(), VALUE5: Ext.getCmp("CONDITION5_1").getValue(),
+                //        CONDITION6: Ext.getCmp('CONDITION6').getValue(), VALUE6: Ext.getCmp("CONDITION6_1").getValue(),
+                //        CONDITION7: Ext.getCmp('CONDITION7').getValue(), VALUE7: Ext.getCmp("CONDITION7_1").getValue(),
+                //        CONDITION8: Ext.getCmp('CONDITION8').getValue(), VALUE8_1: Ext.Date.format(Ext.getCmp("CONDITION8_1").getValue(), 'Y-m-d H:i:s'), VALUE8_2: Ext.Date.format(Ext.getCmp("CONDITION8_2").getValue(), 'Y-m-d H:i:s')
+                //    }
+                //}
+            }
+        })
+
+        var pgbar = Ext.create('Ext.toolbar.Paging', {
+            displayMsg: '显示 {0} - {1} 条,共计 {2} 条',
+            store: store,
+            id: 'pagebar',
+            displayInfo: true
+        })
+        var gridpanel = Ext.create('Ext.grid.Panel', {
+            renderTo: "div_foo",
+            store: store,
+            height: 500,
+            selModel: { selType: 'checkboxmodel' },
+            bbar: pgbar,
+            enableColumnHide: false,
+            columns: [
+            { xtype: 'rownumberer', width: 35 },
+            { header: 'ID', dataIndex: 'ID', hidden: true },
+            { header: '业务类型', dataIndex: 'BUSITYPE', width: 150 },
+            { header: '客户编号', dataIndex: 'CUSNO', width: 120 },
+            { header: '合同发票号', dataIndex: 'CONTRACTNO', width: 100 },
+            { header: '总单号', dataIndex: 'TOTALNO', width: 100 },
+            { header: '分单号', dataIndex: 'DIVIDENO', width: 100 },
+            { header: '木质包装', dataIndex: '木质包装', width: 100 },
+            { header: '件数', dataIndex: 'GOODSNUM', width: 100 },
+            { header: '重量', dataIndex: 'GOODSWEIGHT', width: 100 },
+            { header: '申报方式', dataIndex: 'REPWAYID', width: 100 },
+            { header: '申报关区', dataIndex: 'CUSTOMDISTRICTCODE', width: 100 },
+            { header: '口岸', dataIndex: 'PORTCODE', width: 100 },
+            { header: '报关申报单位', dataIndex: 'REPUNITCODE', width: 100 },
+            { header: '报检申报单位', dataIndex: 'INSPUNITCODE', width: 100 },
+            { header: '发送时间', dataIndex: 'CREATETIME', width: 100 },
+            { header: '订单需求', dataIndex: 'ENTRUSTREQUEST', width: 100 },
+            { header: '委托类型', dataIndex: 'ENTRUSTTYPEID', width: 100 },
+            { header: '木质包装', dataIndex: '木质包装', width: 100 },
+            { header: '木质包装', dataIndex: '木质包装', width: 100 },
+            { header: '木质包装', dataIndex: '木质包装', width: 100 },
+            { header: '木质包装', dataIndex: '木质包装', width: 100 },
+            { header: '木质包装', dataIndex: '木质包装', width: 100 }
+            ],
+            viewConfig: {
+                enableTextSelection: true
+            }
+        })
+    })
+</script>
+
+<div id="div_foo">
+
+</div> 

@@ -39,7 +39,7 @@ namespace SceneOfCustoms
         {
             Msgobj MO = new Msgobj();
             IDatabase db = SeRedis.redis.GetDatabase();//先将报文数据保存至缓存数据库
-            db.ListRightPush("SyncDataFromSap", ld.ToString());
+            //db.ListRightPush("SyncDataFromSap", JsonConvert.DeserializeObject()+"");
 
             if (ld.Count() == 0)
             {
@@ -166,14 +166,14 @@ namespace SceneOfCustoms
                     o.BUSITYPE, o.CODE, o.FOONO, o.TOTALNO,
                     o.DIVIDENO, o.GOODSNUM, o.GOODSWEIGHT, o.SFGOODSUNIT,
                     o.PACKKIND, o.REPWAYID, o.DECLWAY, o.TRADEWAYCODES,
-                    o.CUSNO, o.CUSTOMDISTRICTCODE, o.PORTCODE, o.SPECIALRELATIONSHIP,
-                    o.PRICEIMPACT, o.PAYPOYALTIES, o.REPUNITCODE, o.CREATEUSERNAME,
-                     dt.ToString(), o.ARRIVEDNO, o.CHECKEDGOODSNUM, o.CHECKEDWEIGHT,
-                    o.ENTRUSTTYPEID, o.GOODSXT, o.BUSIUNITNAME, o.GOODSTYPEID,
-                    o.LADINGBILLNO, o.ISPREDECLARE, o.ENTRUSTREQUEST, o.CONTRACTNO,
-                    o.FIRSTLADINGBILLNO, o.SECONDLADINGBILLNO, o.MANIFEST, o.WOODPACKINGID,
-                    o.WEIGHTCHECK, o.ISWEIGHTCHECK, o.SHIPNAME, o.FILGHTNO,
-                    o.INSPUNITNAME, o.TURNPRENO, o.INVOICENO
+                    o.CUSNO, o.CUSTOMDISTRICTCODE,o.PORTCODE,o.SPECIALRELATIONSHIP,                       
+                    o.PRICEIMPACT, o.PAYPOYALTIES,o.REPUNITCODE,  o.CREATEUSERNAME,
+                    dt.ToString(),  o.ARRIVEDNO, o.CHECKEDGOODSNUM, o.CHECKEDWEIGHT,
+                    o.ENTRUSTTYPEID , o.GOODSXT,o.BUSIUNITNAME,  o.GOODSTYPEID,
+                    o.LADINGBILLNO, o.ISPREDECLARE, o.ENTRUSTREQUEST,  o.CONTRACTNO,
+                    o.FIRSTLADINGBILLNO, o.SECONDLADINGBILLNO,o.MANIFEST, 
+                    o.WOODPACKINGID,o.WEIGHTCHECK, o.ISWEIGHTCHECK, o.SHIPNAME, o.FILGHTNO, 
+                    o.INSPUNITNAME, o.TURNPRENO, o.INVOICENO                     
                     );
 
                 DBMgr.ExecuteNonQuery(sql);

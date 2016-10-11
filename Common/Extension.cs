@@ -188,7 +188,41 @@ namespace SceneOfCustoms.Common
             pageSql = string.Format(pageSql, tempsql, order, asc, start + 1, limit);
             return pageSql;
         }
-
+        public static void InsertOrderToDanZheng()
+        {
+            //         string   sql = @"INSERT INTO LIST_ORDER (ID,
+            //                            BUSITYPE,CODE,CUSNO,BUSIUNITCODE,BUSIUNITNAME,CONTRACTNO
+            //                            ,TOTALNO,DIVIDENO,TURNPRENO,GOODSNUM,WOODPACKINGID
+            //                            ,CLEARANCENO,LAWFLAG,ENTRUSTTYPE,REPWAYID,CUSTOMAREACODE
+            //                            ,REPUNITCODE,REPUNITNAME,DECLWAY,PORTCODE,INSPUNITCODE
+            //                            ,INSPUNITNAME,ENTRUSTREQUEST,CREATEUSERID,CREATEUSERNAME,STATUS
+            //                            ,SUBMITUSERID,SUBMITUSERNAME,CUSTOMERCODE,CUSTOMERNAME,DECLCARNO
+            //                            ,TRADEWAYCODES,TRADEWAYCODES1,GOODSGW,GOODSNW,PACKKIND
+            //                            ,BUSIKIND,ORDERWAY,CLEARUNIT,CLEARUNITNAME,CREATETIME,SPECIALRELATIONSHIP
+            //                            ,PRICEIMPACT,PAYPOYALTIES,SUBMITTIME                            
+            //                        ) VALUES (LIST_ORDER_id.Nextval
+            //                            ,'{0}','{1}','{2}','{3}','{4}','{5}'
+            //                            ,'{6}','{7}','{8}','{9}','{10}'
+            //                            ,'{11}','{12}','{13}','{14}','{15}'
+            //                            ,'{16}','{17}','{18}','{19}','{20}'
+            //                            ,'{21}','{22}','{23}','{24}','{25}'
+            //                            ,'{26}','{27}','{28}','{29}','{30}'
+            //                            ,'{31}','{32}','{33}','{34}','{35}'
+            //                            ,'{36}','{37}','{38}','{39}',sysdate,'{40}'
+            //                            ,'{41}','{42}',{43}
+            //                            )";
+            //            sql = string.Format(sql
+            //                    , "11", ordercode, json.Value<string>("CUSNO"), json.Value<string>("BUSIUNITCODE"), json.Value<string>("BUSIUNITNAME"), json.Value<string>("CONTRACTNO")
+            //                    , json.Value<string>("TOTALNO"), json.Value<string>("DIVIDENO"), json.Value<string>("TURNPRENO"), json.Value<string>("GOODSNUM"), json.Value<string>("WOODPACKINGID")
+            //                    , json.Value<string>("CLEARANCENO"), GetChk(json.Value<string>("LAWFLAG")), json.Value<string>("ENTRUSTTYPE"), json.Value<string>("REPWAYID"), json.Value<string>("CUSTOMAREACODE")
+            //                    , GetCode(json.Value<string>("REPUNITCODE")), GetName(json.Value<string>("REPUNITCODE")), json.Value<string>("DECLWAY"), json.Value<string>("PORTCODE"), GetCode(json.Value<string>("INSPUNITCODE"))
+            //                    , GetName(json.Value<string>("INSPUNITCODE")), json.Value<string>("ENTRUSTREQUEST"), json_user.Value<string>("ID"), json_user.Value<string>("REALNAME"), json.Value<string>("STATUS")
+            //                    , json.Value<string>("SUBMITUSERID"), json.Value<string>("SUBMITUSERNAME"), json_user.Value<string>("CUSTOMERCODE"), json_user.Value<string>("CUSTOMERNAME"), json.Value<string>("DECLCARNO")
+            //                    , json.Value<string>("TRADEWAYCODES"), json.Value<string>("TRADEWAYCODES1"), json.Value<string>("GOODSGW"), json.Value<string>("GOODSNW"), json.Value<string>("PACKKIND")
+            //                    , "001", "1", json_user.Value<string>("CUSTOMERCODE"), json_user.Value<string>("CUSTOMERNAME"), GetChk(json.Value<string>("SPECIALRELATIONSHIP"))
+            //                    , GetChk(json.Value<string>("PRICEIMPACT")), GetChk(json.Value<string>("PAYPOYALTIES")), json.Value<string>("SUBMITTIME")
+            //               );
+        }
 
     }
 }

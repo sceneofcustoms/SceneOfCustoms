@@ -26,11 +26,25 @@ namespace SceneOfCustoms.Controllers
             ViewData["crumb"] = "后台管理-->随附文件";
             return View();
         }
+        public ActionResult SyncFoo_List()
+        {
+            ViewData["crumb"] = "后台管理-->同步日志";
+            return View();
+        }
         public string LoadAttachmentList()
         {
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             string sql = @"select * from LIST_ATTACHMENT";
+            DataTable dt = DBMgr.GetDataTable(Extension.GetPageSql(sql, "createtime", "desc", ref total, Convert.ToInt32(Request["start"]), Convert.ToInt32(Request["limit"])));
+            string filedata = JsonConvert.SerializeObject(dt, iso);
+            return "{rows:" + filedata + ",total:" + total + "}";
+        }
+        public string LoadFooList()
+        {
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string sql = @"select * from LIST_SAPFOO";
             DataTable dt = DBMgr.GetDataTable(Extension.GetPageSql(sql, "createtime", "desc", ref total, Convert.ToInt32(Request["start"]), Convert.ToInt32(Request["limit"])));
             string filedata = JsonConvert.SerializeObject(dt, iso);
             return "{rows:" + filedata + ",total:" + total + "}";
