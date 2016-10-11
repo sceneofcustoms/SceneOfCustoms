@@ -850,8 +850,7 @@ namespace SceneOfCustoms.Controllers
         [HttpGet]
         public string GetData()
         {
-            string BUSITYPE = Request["BUSITYPE"];
-           // string TYPE = Request["TYPE"];
+            string BUSITYPE = Request["BUSITYPE"]; 
             int PageSize = Convert.ToInt32(Request.Params["rows"]); 
             int Page = Convert.ToInt32(Request.Params["page"]);            
             int total = 0; 
@@ -861,29 +860,18 @@ namespace SceneOfCustoms.Controllers
                 case "ONEIN":
                     sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
                     break;
+                case "ONEOUT":
+                    sql += " AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
+                    break;
                 case "SpecialSupervision":
                     sql += " and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
                     break;
                 case "OverlayBonded":
                     sql += " and (BUSITYPE='40' OR BUSITYPE='41') "; 
                     break;
-            }
-            //if (TYPE == "SpecialSupervision")
-            //{
-            //    sql += " and BUSITYPE in (50,51) "; //特殊监管
-            //}
-            //if (TYPE == "OverlayBonded")
-            //{
-            //    sql += " and BUSITYPE in (40,41) and CORRESPONDNO is not null";//叠加保税
-            //}
-            //else if (TYPE == "DomesticKnot")
-            //{
-            //    //sql += " and BUSITYPE in (40,41) and CORRESPONDNO is  null";//国内结转
-            //}
+            } 
             string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
-            string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
-            //string sort ="ID";
-            //string order ="DESC";
+            string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC"; 
             sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
             DataTable dt = DBMgr.GetDataTable(sql);
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
@@ -891,10 +879,7 @@ namespace SceneOfCustoms.Controllers
             string result = JsonConvert.SerializeObject(dt, iso);
             result = "{\"total\":" + total + ",\"rows\":" + result + "}";
             return result;
-
         }
-
-
         [HttpPost]
         public ActionResult SaveData(FormCollection form)
         {
