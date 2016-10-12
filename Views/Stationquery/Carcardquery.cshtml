@@ -49,12 +49,7 @@
                 <form id="searchform" method="post">
                     <table>
                         <tr>
-                            <td class="search_margin">
-                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
-                            </td>
-                            <td>
-                                <input class="easyui-textbox value" type="text" name="ordercode_value" />
-                            </td>
+
 
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
@@ -70,14 +65,21 @@
                                 </select>
                             </td>
 
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value placeholderclass" type="text" name="ordercode_value" placeholder="单据号" />
+                            </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
                             </td>
                             <td>
-                                <input class="easyui-datebox value" name="startdate" placeholder="开始时间">
+                                <input class="easyui-datebox value placeholderclass" name="startdate" placeholder="开始时间">
                             </td>
                             <td>
-                                <input class="easyui-datebox value" name="stopdate" placeholder="结束时间">
+                                <input class="easyui-datebox value placeholderclass" name="stopdate" placeholder="结束时间">
                             </td>
                         </tr>
 

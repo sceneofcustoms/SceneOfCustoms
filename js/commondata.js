@@ -311,6 +311,7 @@ $(function () {
         });
 
     });
+    window.onload = numberInputPlaceholder();
 
 })
 
@@ -481,3 +482,14 @@ function opencenterwin(url, width, height) {
     window.open(url, '', 'height=' + iHeight + ',,innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',toolbar=yes,menubar=yes, location=yes,scrollbars=yes,resizable=yes');
 }
 
+//设置placeholder
+function numberInputPlaceholder() {
+    $(".placeholderclass").each(function (i) {
+        var span = $(this).siblings("span")[0];
+        var targetInput = $(span).find("input:first");
+        if (targetInput) {
+            $(targetInput).attr("placeholder", $(this).attr("placeholder"));
+        }
+
+    });
+}
