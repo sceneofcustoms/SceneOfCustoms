@@ -13,8 +13,6 @@ using System.Web.Services;
 
 namespace SceneOfCustoms
 {
-
-
     /// <summary>
     /// SyncDataFromSap 的摘要说明
     /// </summary>

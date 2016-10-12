@@ -1182,6 +1182,11 @@ namespace SceneOfCustoms.Controllers
                 sql += "  DECLSTATUS =  '" + Request.Form["DECLSTATUS"] + "',";
             }
 
+            if (Request.Params.AllKeys.Contains("JGCZCBH"))
+            {
+                sql += "  JGCZCBH =  '" + Request.Form["JGCZCBH"] + "',";
+            }
+            
             sql += "  IFSHANDAN =  '" + Request.Form["IFSHANDAN"] + "',";
             sql += "  IFGAIDAN =  '" + Request.Form["IFGAIDAN"] + "',";
             sql += "  IFYIJIAO =  '" + Request.Form["IFYIJIAO"] + "',";

@@ -60,7 +60,7 @@ namespace SceneOfCustoms.Controllers
                 string ASSOCIATENO = dt.Rows[0]["ASSOCIATENO"] + "";
                 string CODE = ASSOCIATENO.Replace("GL", "");
 
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE + " and BUSITYPE =41";
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE + " and BUSITYPE ='41'";
                 dt = DBMgr.GetDataTable(sql);
                 ViewData["id1"] = dt.Rows[0]["ID"] + "";//一单ID
 
