@@ -315,7 +315,34 @@ $(function () {
 
 })
 
-
+//业务类型改字段状态 DLC 2016/10/12
+function formatBUSITYPE(val, row) {
+    if (val == 10) {
+        return "空运出口";
+    } else if (val == 11) {
+        return "空运进口";
+    } else if (val == 20) {
+        return "海运出口";
+    } else if (val == 21) {
+        return "海运进口";
+    } else if (val == 30) {
+        return "陆运出口";
+    } else if (val == 31) {
+        return "陆运进口";
+    } else if (val == 50) {
+        return "出口企业";
+    } else if (val == 51) {
+        return "进口企业";
+    }
+}
+//是否法检改字段状态 DLC 2016/10/12
+function formatLAWCONDITION(val, row) {
+    if (val == 1) {
+        return "是";
+    } else {
+        return "否";
+    }
+}
 
 //搜索列表
 function search_form() {
