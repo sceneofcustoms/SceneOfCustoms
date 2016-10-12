@@ -1,28 +1,36 @@
 ﻿@{
     Layout = null;
 }
- 
 <style type="text/css">
     .window .window-body {
-        border-width:0px;
+        border-width: 0px;
     }
 </style>
-
+<script>
+    $(function () {
+        //var ID = getQueryString('ID');
+        var ID ='@ViewData["ID"]';
+        var ORDER_ID ='@ViewData["ORDER_ID"]';
+        $('#OrderFrom').form('load', '/Abnormalmodule/Edit_Order_E?ORDER_ID='+ ORDER_ID);
+        if(ID !=""){
+            $('#OrderFrom').form('load', '/Abnormalmodule/AbnormallogEdit_Info?ID='+ID);
+        }
+    })
+</script>
 <form id="OrderFrom" method="post">
-
-
     <div class="easyui-panel" style="margin-bottom:15px" title="主信息"
          data-options="collapsible:true">
         <input type="hidden" name="ID" />
+        <input type="hidden" name="ORDER_ID" />
         <table class="scene">
             <tr>
                 <td>
                     <label for="CODE">业务编号:</label>
-                    <input class="easyui-textbox" type="text" name="CODE" disabled="disabled" />
+                    <input class="easyui-textbox" type="text" id="CODE" name="CODE" disabled="disabled" />
                 </td>
                 <td>
-                    <label for="FOCUSTOMSNO">关务操作:</label>
-                    <input class="easyui-textbox" type="text" name="FOCUSTOMSNO" disabled="disabled" />
+                    <label for="DECLSTATUS">关务操作:</label>
+                    <input class="easyui-textbox" type="text" name="DECLSTATUS" disabled="disabled" />
                 </td>
             </tr>
             <tr>
@@ -37,94 +45,94 @@
             </tr>
         </table>
     </div>
-
     <div class="easyui-panel" style="margin-bottom:15px" title="登记项"
          data-options="collapsible:true">
         <table class="scene">
             <tr>
                 <td>
-                    <label for="CODE">异常提交人:</label>
-                    <input class="easyui-textbox" type="text" name="CODE" />
+                    <label for="SUBMITUSERNAME">异常提交人:</label>
+                    <input class="easyui-textbox" type="text" name="SUBMITUSERNAME" />
                 </td>
                 <td>
-                    <label for="FOCUSTOMSNO">提交时间:</label>
-                    <input class="easyui-datetimebox"  style="width:200px" type="text" name="FOCUSTOMSNO" />
+                    <label for="SUBMITTIME">提交时间:</label>
+                    <input class="easyui-datetimebox" style="width:200px" type="text" name="SUBMITTIME" />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label for="CODE">一级异常:</label>
-                    <select class="easyui-combobox" panelheight="auto" name="oprname">
-                        <option>请选择</option>
+                    <label for="FIRSTLEVELTYPE">一级异常:</label>
+                    <select class="easyui-combobox" panelheight="auto" name="FIRSTLEVELTYPE">
+                        <option value="请选择">请选择</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
                     </select>
                 </td>
                 <td>
-                    <label for="BUSITYPE">二级异常:</label>
-                    <select class="easyui-combobox" panelheight="auto" name="oprname">
-                        <option>请选择</option>
+                    <label for="SECONDLEVELTYPE">二级异常:</label>
+                    <select class="easyui-combobox" panelheight="auto" name="SECONDLEVELTYPE">
+                        <option value="请选择">请选择</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
                     </select>
                 </td>
             </tr>
-
             <tr>
                 <td>
-                    <label for="CODE">相关责任人:</label>
-                    <input class="easyui-textbox" type="text" name="CODE"  />
+                    <label for="CHARGEUSERNAME">相关责任人:</label>
+                    <input class="easyui-textbox" type="text" name="CHARGEUSERNAME" />
                 </td>
                 <td>
-                    <label for="BUSITYPE">联系方式:</label>
-                    <input class="easyui-textbox" type="text" name="CODE" />
+                    <label for="CONTACTMETHOD">联系方式:</label>
+                    <input class="easyui-textbox" type="text" name="CONTACTMETHOD" />
                 </td>
             </tr>
-
             <tr>
                 <td colspan="2">
-                    <label for="CODE">异常备注:</label>
-                    <textarea style="width:593px;height:80px;"></textarea>
+                    <label for="EXCEPTIONINFO" style="display: inherit;">异常备注:</label>
+                    <textarea style="width:593px;height:80px;margin-left: 84px;" name="EXCEPTIONINFO"></textarea>
                 </td>
             </tr>
-
         </table>
     </div>
-
     <div class="easyui-panel" style="margin-bottom:15px" title="回复项"
          data-options="collapsible:true">
         <table class="scene">
             <tr>
                 <td>
-                    <label for="CODE">异常回复部门:</label>
-                    <input class="easyui-textbox" type="text" name="CODE" />
+                    <label for="RESOLVEDEPTNAME">异常回复部门:</label>
+                    <input class="easyui-textbox" type="text" name="RESOLVEDEPTNAME" />
                 </td>
                 <td>
-                    <label for="FOCUSTOMSNO">异常处理人:</label>
-                    <input class="easyui-textbox" type="text" name="CODE" />
+                    <label for="RESOLVEUSERNAME">异常处理人:</label>
+                    <input class="easyui-textbox" type="text" name="RESOLVEUSERNAME" />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label for="CODE">异常处理时间:</label>
-                    <input class="easyui-datetimebox" style="width:200px" type="text" name="FOCUSTOMSNO" />
+                    <label for="RESOLVETIME">异常处理时间:</label>
+                    <input class="easyui-datetimebox" style="width:200px" type="text" name="RESOLVETIME" />
                 </td>
                 <td>
-                    <label for="CODE">异常处理结果:</label>
-                    <select class="easyui-combobox" panelheight="auto" name="oprname">
-                        <option>请选择</option>
-                        <option>完成</option>
+                    <label for="RESOLVERESULT">异常处理结果:</label>
+                    <select class="easyui-combobox" panelheight="auto" name="RESOLVERESULT">
+                        <option value="请选择">请选择</option>
                         <option>未完成</option>
+                        <option>完成</option>
                     </select>
                 </td>
             </tr>
-
             <tr>
                 <td colspan="2">
-                    <label for="CODE">异常处理备注:</label>
-                    <textarea style="width:593px;height:80px;"></textarea>
+                    <label for="RESOLVEREMARK" style="display: inherit;">异常处理备注:</label>
+                    <textarea style="width:593px;height:80px;margin-left: 84px;" name="RESOLVEREMARK"></textarea>
                 </td>
             </tr>
         </table>
     </div>
     <div style="text-align:center;padding:5px 0">
-        <a class="btn btn-primary" href="javascript:void(0)" onclick="submitForm()">
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="submitForms()">
             <i class="fa fa-floppy-o"></i> 保存
         </a>
         <a class="btn btn-primary" href="javascript:void(0)" onclick="closeWin()">
@@ -132,9 +140,33 @@
         </a>
     </div>
 </form>
-
 <script>
     function closeWin() {
         $('#AbnormallogEdit').dialog('close');
+    }
+    //20160929 SYY add
+    var ID = '@ViewData["ID"]';
+    var ORDER_ID = '@ViewData["ORDER_ID"]';
+    function submitForms() {
+        $('#OrderFrom').form('submit', {
+            url: "/Abnormalmodule/SaveAbnormal?ID=" + ID + '&ORDER_ID=' + ORDER_ID,
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                var data = eval('(' + data + ')');  // change the JSON string to javascript object
+                if (data.Success) {
+                    //$.messager.alert('成功', '保存成功');
+                    $('#AbnormallogEdit').dialog('close');
+                    $('#Abnormallogdatagrid').datagrid('reload');
+                } else {
+                    $.messager.alert('失败', '保存失败');
+                }
+            }
+        });
     }
 </script>

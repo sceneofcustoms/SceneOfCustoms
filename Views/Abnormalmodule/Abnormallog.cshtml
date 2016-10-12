@@ -1,16 +1,10 @@
 ﻿<script src="~/js/datagrid-detailview.js"></script>
-
-<link href="~/js/kindeditor/themes/default/default.css" rel="stylesheet" />
-<script src="~/js/kindeditor/kindeditor-min.js"></script>
-<script src="~/js/kindeditor/lang/zh_CN.js"></script>
 <script type="text/javascript">
-
     //1 查询条件 --日期
     var search_condition_date = [
         { code: 'guanwujieshou', name: '提交日期', selected: true },
         { code: 'guanwujieshou', name: '处理日期' }
     ];
-
     //2 查询条件  --单据号
     var search_code = [
         {
@@ -24,9 +18,6 @@
         { code: 'jihuabaoguan', name: '万达号' },
         { code: 'koufangxing', name: '载货清单号' }
     ];
-
-
-
     //3 查询条件 --
     var BUSITYPE = [
         { code: 'guanwujieshou', name: '空运进口' },
@@ -39,14 +30,10 @@
         { code: 'baoruhaiguan', name: '叠加保税' },
         { code: 'chayanzhilingxiafa', name: '特殊监管区' }
     ];
-
-
-    
     var Abnormaltype = [
         { code: 'baoruhaiguan', name: '一级异常' },
         { code: 'chayanzhilingxiafa', name: '二级异常' }
     ];
-
     $(function () {
         $('#searchform #BUSITYPE').combobox({
             data: BUSITYPE,
@@ -70,6 +57,8 @@
             valueField: 'code',
             textField: 'name'
         });
+        //获取异常数量
+        //$('#Abnormallogdatagrid').form('load', '/Abnormalmodule/AbnormallogYcnum?FWONO=' + rowData.ID);
 
         $('#Abnormallogdatagrid').datagrid({
             url: '/Order/GetData',
@@ -84,30 +73,79 @@
             fitColumns: true,
             view: detailview,
             detailFormatter: function (rowIndex, rowData) {
-                return '异常1</br>异常测试';
+                var ID = rowData.ID;
+                return "<table><thead><tr style='background-color: #F1F1F1;'><td>异常提交人</td><td>提交时间</td><td>一级异常</td><td>二级异常</td><td>相关责任人</td><td>联系方式</td><td>异常备注</td><td>异常回复部门</td><td>异常处理人</td><td>异常处理时间</td><td>异常处理结果</td><td>异常处理备注</td></tr></thead><tbody id='ddv" + rowIndex + "'></tbody></table>";
+            },
+            onExpandRow: function (rowIndex,rowData) {//列表左侧加号点击事件
+                loadDetailView(rowData.ID,rowIndex);
+                $('#ddv').panel({
+                    height: 80,
+                    border: false,
+                    cache: false,
+                    onLoad: function () {
+                        $('#Abnormallogdatagrid').datagrid('fixDetailRowHeight', rowIndex);
+                    }
+                });
+                $('#Abnormallogdatagrid').datagrid('fixDetailRowHeight', rowIndex);//加载之后固定高度
             }
-            //,
-            //onDblClickCell: function (index, field, value) {
-            //    var row = $('#datagrid').datagrid('getData').rows[index];
-            //    if (row.ID != "") {
-            //        window.location.href = "/" + page + "?ID=" + row.ID;
-            //    }
-            //}
         });
-
-        //loadListGrid('Inspect/DomesticKnot_Edit');
     })
+    function loadDetailView(id,index) {
+        var detailHtml = "";
+        $.ajax({
+            type: "post",
+            url: "/Abnormalmodule/AbnormallogEditDetail?ID=" + id,
+            data: { ID: id },
+            dataType: "json",
+            success: function (data) {
+                var height = data.length * 18+19;
+                if (data.length == 0) {
+                    $('#ddv' + index).html('暂无异常登记！');
+                    $('#ddv' + index).prev('thead').css('display', 'none');
+                } else {
+                    $.each(data, function (i, list) {
+                        var SUBMITUSERNAME = list.SUBMITUSERNAME == null ? "" : list.SUBMITUSERNAME;
+                        var SUBMITTIME = list.SUBMITTIME == null ? "" : list.SUBMITTIME;
+                        var FIRSTLEVELTYPE = list.FIRSTLEVELTYPE == "请选择" ? "" : list.FIRSTLEVELTYPE;
+                        var SECONDLEVELTYPE = list.SECONDLEVELTYPE == "请选择" ? "" : list.SECONDLEVELTYPE;
+                        var CHARGEUSERNAME = list.CHARGEUSERNAME == null ? "" : list.CHARGEUSERNAME;
+                        var CONTACTMETHOD = list.CONTACTMETHOD == null ? "" : list.CONTACTMETHOD;
+                        var EXCEPTIONINFO = list.EXCEPTIONINFO == null ? "" : list.EXCEPTIONINFO;
+                        var RESOLVEDEPTNAME = list.RESOLVEDEPTNAME == null ? "" : list.RESOLVEDEPTNAME;
+                        var RESOLVEUSERNAME = list.RESOLVEUSERNAME == null ? "" : list.RESOLVEUSERNAME;
+                        var RESOLVETIME = list.RESOLVETIME == null ? "" : list.RESOLVETIME;
+                        var RESOLVERESULT = list.RESOLVERESULT == "请选择" ? "" : list.RESOLVERESULT;
+                        var RESOLVEREMARK = list.RESOLVEREMARK == null ? "" : list.RESOLVEREMARK;
+                        detailHtml += "<tr id='" + list.ID + "_" + list.FWONO + "' class='detailitem' ondblclick=AbnormallogEdit(" + list.ID + "," + list.FWONO + ")><td style='border-left: 1px dotted #DDDDDD;'>" + SUBMITUSERNAME + "</td><td>" + SUBMITTIME + "</td><td>" + FIRSTLEVELTYPE + "</td><td>" + SECONDLEVELTYPE + "</td><td>" + CHARGEUSERNAME + "</td><td>" + CONTACTMETHOD + "</td><td>" + EXCEPTIONINFO + "</td><td>" + RESOLVEDEPTNAME + "</td><td>" + RESOLVEUSERNAME + "</td><td>" + RESOLVETIME + "</td><td>" + RESOLVERESULT + "</td><td>" + RESOLVEREMARK + "</td></tr>";
+                    });
+                    $('#ddv' + index).html(detailHtml);
+                    $('#datagrid-row-r2-1-' + index).next('tr').css('height', +height + 'px');
+                }
+            },
+            error: function (err) {
+                
+            }
+        });
+    }
 </script>
+<style>
+    .datagrid-row-detail td {
+        padding: 0 5px;
+    }
+    .datagrid-row-detail thead td {
+        color: #777;
+    }
+</style>
 <div class="ibox-content">
     <div class="table-responsive">
         <table id="Abnormallogdatagrid" class="easyui-datagrid" title="异常登记" style="height:auto;min-height:500px;max-height:800px"
-               data-options="queryParams:{TYPE:'DomesticKnot'}">
+               data-options="queryParams:{}">
             <thead>
                 <tr>
                     <th data-options="field: 'ck', checkbox: true"></th>
                     <th data-options="field:'CODE',sortable:true">业务编号</th>
-                    <th data-options="field:'text',sortable:true">异常数量</th>
-                    <th data-options="field:'text',sortable:true">处理数量</th>
+                    <th data-options="field:'YCNUM',sortable:true">异常数量</th>
+                    <th data-options="field:'CLNUM',sortable:true">处理数量</th>
                     <th data-options="field:'text',sortable:true">报检编号</th>
                     <th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
                     <th data-options="field:'text',sortable:true">报检单号</th>
@@ -147,7 +185,6 @@
                 </tr>
             </thead>
         </table>
-
         <div id="tb">
             <div class="tb_search">
                 <form id="searchform" method="post">
@@ -161,14 +198,12 @@
                             <td>
                                 <select class="easyui-combobox combobox_width value" id="BUSITYPE" panelheight="auto" name="BUSITYPE"></select>
                             </td>
-
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
                             </td>
                             <td>
                                 <input class="easyui-textbox value" type="text" name="ordercode_value" />
                             </td>
-
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
                                     <option>异常类型</option>
@@ -177,7 +212,6 @@
                             <td>
                                 <select class="easyui-combobox combobox_width value" id="Abnormaltype" panelheight="auto" name=""></select>
                             </td>
-
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
                             </td>
@@ -188,11 +222,7 @@
                                 <input class="easyui-datebox value" name="stopdate" placeholder="结束时间">
                             </td>
                         </tr>
-
                         <tr>
-
-
-
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
                                     <option>已完成标志</option>
@@ -202,14 +232,12 @@
                                 <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name="LAWCONDITION"></select>
                             </td>
                         </tr>
-
                     </table>
                 </form>
             </div>
-
             <div class="tb_but">
                 <div class="but_left">
-                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="AbnormallogEdit()"><i class="icon-plus"></i> 添加异常</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="Add_Abnormal()"><i class="icon-plus"></i> 添加异常</a>
                     <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="fa fa-share-square-o" aria-hidden="true"></i> 导出</a>
                 </div>
                 <div class="but_right">
@@ -218,20 +246,32 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 </div>
-
 <div id="AbnormallogEdit" style="display:none"></div>
     <script type="text/javascript">
-        function AbnormallogEdit() {
+        //add syy 20160930
+        function AbnormallogEdit(id, ORDER_ID) {
+                $('#AbnormallogEdit').dialog({
+                    title: '异常登记',
+                    width: 800,
+                    height: 720,
+                    modal: true,
+                    href: '/Abnormalmodule/AbnormallogEdit?ID=' + id + '&ORDER_ID=' + ORDER_ID,
+                });
+        }
+        function Add_Abnormal() {
+            var row = $('#Abnormallogdatagrid').datagrid('getSelected');
+            if (row == null) {
+                $.messager.alert("提示", "请选择数据！");
+                return;
+            }
             $('#AbnormallogEdit').dialog({
                 title: '异常登记',
                 width: 800,
                 height: 720,
                 modal: true,
-                href: '/Abnormalmodule/AbnormallogEdit'
+                href: '/Abnormalmodule/AbnormallogEdit?ORDER_ID=' + row.ID,
             });
         }
     </script>

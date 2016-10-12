@@ -22,5 +22,17 @@ namespace SceneOfCustoms.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://sapdpi01.feili.com:50200/XISOAPAdapter/MessageServlet?senderParty=&senderS" +
+            "ervice=BS_CUS&receiverParty=&receiverService=&interface=SI_CUS_CUS1002&interface" +
+            "Namespace=URN%3ACUS1002")]
+        public string SceneOfCustoms_sap_SI_CUS_CUS1002Service {
+            get {
+                return ((string)(this["SceneOfCustoms_sap_SI_CUS_CUS1002Service"]));
+            }
+        }
     }
 }

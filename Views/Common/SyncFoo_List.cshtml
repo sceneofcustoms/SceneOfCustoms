@@ -1,6 +1,7 @@
 ﻿<link href="/js/Extjs42/resources/css/ext-all-gray.css" rel="stylesheet" type="text/css" />
 <script src="/js/Extjs42/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript">
+    var gridpanel;
     Ext.onReady(function () {
 
 
@@ -49,7 +50,7 @@
             id: 'pagebar',
             displayInfo: true
         })
-        var gridpanel = Ext.create('Ext.grid.Panel', {
+        gridpanel = Ext.create('Ext.grid.Panel', {
             renderTo: "div_foo",
             store: store,
             height: 500,
@@ -58,6 +59,8 @@
             enableColumnHide: false,
             columns: [
             { xtype: 'rownumberer', width: 35 },
+            { header: 'FWO号', dataIndex: 'FWONO', width: 200 },
+            { header: 'FOO指令号', dataIndex: 'FOONO', width: 200 },
             { header: 'ID', dataIndex: 'ID', hidden: true },
             { header: '业务类型', dataIndex: 'BUSITYPE', width: 150 },
             { header: '客户编号', dataIndex: 'CUSNO', width: 120 },
@@ -94,8 +97,6 @@
             { header: '是否需要重量确认', dataIndex: 'WEIGHTCHECK', width: 150 },
             { header: '确认件数', dataIndex: 'CHECKEDGOODSNUM', width: 100 },
             { header: '确认重量', dataIndex: 'CHECKEDWEIGHT', width: 100 },
-            { header: 'FWO号', dataIndex: 'FWONO', width: 180 },
-            { header: 'FOO指令号', dataIndex: 'FOONO', width: 180 },
             { header: '收发货单位', dataIndex: 'SFGOODSUNIT', width: 200 },
             { header: '集装箱及车辆信息', dataIndex: 'CONTAINERTRUCKS', width: 150 },
             { header: '货物形态', dataIndex: 'GOODSXT', width: 100 },
@@ -108,8 +109,44 @@
             }
         })
     })
-</script>
 
+    $(function () {
+        $("#syncdata").click(function () {
+            var recs = gridpanel.getView().getSelectionModel().getSelection();
+            if (recs.length > 0)
+            {
+                var i = 0;
+                var ids = "";
+                for (i; i < recs.length; i++) {
+                    if (i + 1 == recs.length) {
+                        ids += recs[i].get("ID");
+                    } else {
+                        ids += recs[i].get("ID") + ",";
+                    }
+                }
+
+                $.ajax({
+                    url: '/Order/testtm',// 跳转到 action
+                    data: {
+                        'ids': ids
+                    },
+                    type: 'post',
+                    dataType: 'json',
+                    success: function (data) {
+                    }
+                });
+
+            } else {
+                Ext.MessageBox.alert("提示框", "请选择数据！");
+            }
+
+
+        });
+    })
+</script>
+<div>
+    <a class="btn btn-primary btn-xs" href="javascript:void(0)" id="syncdata">同步</a>
+</div>
 <div id="div_foo">
 
 </div> 

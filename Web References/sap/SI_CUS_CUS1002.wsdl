@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:p1="URN:CUS1002" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" name="SI_CUS_CUS1002" targetNamespace="URN:CUS1002" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation />
+  <wsp:UsingPolicy wsdl:required="true" />
+  <wsp:Policy wsu:Id="OP_SI_CUS_CUS1002" />
+  <wsdl:types>
+    <xsd:schema xmlns="URN:CUS1002" targetNamespace="URN:CUS1002" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:element name="MT_CUS_CUS1002_RES" type="p1:DT_CUS_CUS1002_RES" />
+      <xsd:element name="MT_CUS_CUS1002_REQ" type="p1:DT_CUS_CUS1002_REQ" />
+      <xsd:complexType name="DT_CUS_CUS1002_REQ">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">与新报关报检系统集成</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">9c09ff5d80b611e6a10f000001b9531a</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ITEM">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="FWO_ID" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd56cfc80b611e68e2c00e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>FWO号码</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="FOO_ID" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd56cfd80b611e6967100e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>报关/报检号码</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="EVENT_CODE" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a0fa80b611e6a79400e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>事件代码</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="EVENT_DAT" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a0fb80b611e6ba9e00e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>事件发生时间</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" maxOccurs="unbounded" name="ORDER">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a0ff80b611e69a0500e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>单号信息</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:complexType>
+                    <xsd:sequence>
+                      <xsd:element minOccurs="0" name="ZBGDH" type="xsd:string">
+                        <xsd:annotation>
+                          <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a0fc80b611e6c30c00e04c6807b6</xsd:appinfo>
+                          <xsd:documentation>报关/报检单号/转关预录号/通关单号</xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:element>
+                      <xsd:element minOccurs="0" name="ZMYFS" type="xsd:string">
+                        <xsd:annotation>
+                          <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a0fd80b611e69a2500e04c6807b6</xsd:appinfo>
+                          <xsd:documentation>贸易方式</xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:element>
+                      <xsd:element minOccurs="0" name="ZBGDZS" type="xsd:string">
+                        <xsd:annotation>
+                          <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a0fe80b611e6ccef00e04c6807b6</xsd:appinfo>
+                          <xsd:documentation>报关/通关单张数</xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:element>
+                    </xsd:sequence>
+                  </xsd:complexType>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZBGDTS" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10080b611e6813e00e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>报关单套数</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZCYCS" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10180b611e69f9100e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>报关/报检/商检/海关查验</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZDDCS" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10280b611e6ae0600e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>调档次数</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZLHCS" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10380b611e6c0d200e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>理货次数</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZBGSDCS" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10480b611e6cd4b00e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>报关/报检删单次数</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZBGGDCS" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10580b611e6b7cc00e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>报关/报检改单次数</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZBGDGS" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10680b611e68dd100e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>报关单品名个数</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZHGXYBZ" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10780b611e68d1b00e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>海关查验/商检备注</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZJYH" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10880b611e6b77f00e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>检疫号</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZCYLX" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10980b611e6bb8500e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>商检查验类型</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZJYDD" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10a80b611e6b43500e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>口岸检疫地点</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZPTSC" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10b80b611e68c3300e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>口岸动检凭条上传</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZBGCYBJ" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10c80b611e6c08f00e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>报关查验标记</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZDDBJ" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10d80b611e6a5d500e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>调档标记</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZLHBJ" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10e80b611e69d6a00e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>理货标记</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZKHBJ" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a10f80b611e69d8a00e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>扣货标记</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZSFBGSD" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a11080b611e6a41e00e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>是否报关/报检删单</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZSFBGGD" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a11180b611e6b78700e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>是否报关/报检改单</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZJSBJ" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a11280b611e6b31800e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>缉私标记</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZFJBJ" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a11380b611e6946900e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>法检标记</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZBJCYBJ" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a11480b611e6877200e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>报检查验标记</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZXZBJ" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a11580b611e6cef300e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>熏蒸标记</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="ZJYBJ" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a11680b611e6a11c00e04c6807b6</xsd:appinfo>
+                    <xsd:documentation>检疫标记</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DT_CUS_CUS1002_RES">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">与新报关报检系统集成</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">a673ad6d80b611e6a400000001b9531a</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="EV_ERROR" type="xsd:string" />
+          <xsd:element minOccurs="0" name="EV_MSG" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="MT_CUS_CUS1002_REQ">
+    <wsdl:documentation />
+    <wsdl:part name="MT_CUS_CUS1002_REQ" element="p1:MT_CUS_CUS1002_REQ" />
+  </wsdl:message>
+  <wsdl:message name="MT_CUS_CUS1002_RES">
+    <wsdl:documentation />
+    <wsdl:part name="MT_CUS_CUS1002_RES" element="p1:MT_CUS_CUS1002_RES" />
+  </wsdl:message>
+  <wsdl:portType name="SI_CUS_CUS1002">
+    <wsdl:documentation />
+    <wsdl:operation name="SI_CUS_CUS1002">
+      <wsdl:documentation />
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP_SI_CUS_CUS1002" />
+      </wsp:Policy>
+      <wsdl:input message="p1:MT_CUS_CUS1002_REQ" />
+      <wsdl:output message="p1:MT_CUS_CUS1002_RES" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SI_CUS_CUS1002Binding" type="p1:SI_CUS_CUS1002">
+    <binding transport="http://schemas.xmlsoap.org/soap/http" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    <wsdl:operation name="SI_CUS_CUS1002">
+      <operation soapAction="http://sap.com/xi/WebService/soap1.1" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <wsdl:input>
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </wsdl:input>
+      <wsdl:output>
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SI_CUS_CUS1002Service">
+    <wsdl:port name="HTTP_Port" binding="p1:SI_CUS_CUS1002Binding">
+      <address location="http://sapdpi01.feili.com:50200/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_CUS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CUS_CUS1002&amp;interfaceNamespace=URN%3ACUS1002" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    </wsdl:port>
+    <wsdl:port name="HTTPS_Port" binding="p1:SI_CUS_CUS1002Binding">
+      <address location="https://sapdpi01.feili.com:50201/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_CUS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CUS_CUS1002&amp;interfaceNamespace=URN%3ACUS1002" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
