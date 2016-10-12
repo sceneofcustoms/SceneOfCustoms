@@ -70,7 +70,7 @@
             pagination: true,
             remoteSort: false,
             nowrap: false,
-            //fitColumns: true,
+            //fitColumns: true,     //限制宽度
             view: detailview,
             detailFormatter: function (rowIndex, rowData) {
                 var ID = rowData.ID;
@@ -142,46 +142,44 @@
                data-options="queryParams:{}">
             <thead>
                 <tr>
-                    <th data-options="field: 'ck', checkbox: true"></th>
-                    <th data-options="field:'CODE',sortable:true">业务编号</th>
-                    <th data-options="field:'YCNUM',sortable:true">异常数量</th>
-                    <th data-options="field:'CLNUM',sortable:true">处理数量</th>
-                    <th data-options="field:'text',sortable:true">报检编号</th>
-                    <th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
-                    <th data-options="field:'text',sortable:true">报检单号</th>
-                    <th data-options="field:'text',sortable:true">业务种类</th>
-                    <th data-options="field:'CUSNO',sortable:true">收货人</th>
-                    <th data-options="field:'ASSOCIATEPEDECLNO',sortable:true">报关单号</th>
-                    <th data-options="field:'text',sortable:true">QP标志</th>
-                    <th data-options="field:'INOUTTYPE',sortable:true">进出口类别</th>
-                    <th data-options="field:'text',sortable:true">货物流向</th>
-                    <th data-options="field:'GOODSNUM',sortable:true">总件数</th>
-                    <th data-options="field:'GOODSWEIGHT',sortable:true">总重量</th>
-                    <th data-options="field:'ASSOCIATETRADEWAY',sortable:true">贸易方式</th>
-                    <th data-options="field:'text',sortable:true">法检标志</th>
-                    <th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
-                    <th data-options="field:'INSPSTATUS',sortable:true">报检状态</th>
-                    <th data-options="field:'DECLSTATUS',sortable:true">报关状态</th>
-                    <th data-options="field:'ISINVALID',sortable:true">作废标志</th>
-                    <th data-options="field:'text',sortable:true">作废时间</th>
-                    <th data-options="field:'text',sortable:true">OPS接单时间</th>
-                    <th data-options="field:'text',sortable:true">OPS接单人</th>
-                    <th data-options="field:'text',sortable:true">OPS接单备注</th>
-                    <th data-options="field:'text',sortable:true">报检接单时间</th>
-                    <th data-options="field:'text',sortable:true">报检接单人</th>
-                    <th data-options="field:'MOACCEPTTIME',sortable:true">制单时间</th>
-                    <th data-options="field:'SHIWUFANGXINGTIME',sortable:true">放行时间</th>
-                    <th data-options="field:'text',sortable:true">报检时间</th>
-                    <th data-options="field:'text',sortable:true">输机时间</th>
-                    <th data-options="field:'MOACCEPTUSERNAME',sortable:true">制单人</th>
-                    <th data-options="field:'SHIWUFANGXINGUSERNAME',sortable:true">放行人</th>
-                    <th data-options="field:'text',sortable:true">报检人</th>
-                    <th data-options="field:'text',sortable:true">输机人</th>
-                    @*<th data-options="field:'CLEARANCENO',sortable:true">通关单号</th>
-                    <th data-options="field:'text',sortable:true">报检单号</th>*@
-                    <th data-options="field:'CONTRACTNO',sortable:true">合同发票号</th>
-                    <th data-options="field:'text',sortable:true">异常登记</th>
-                    <th data-options="field:'text',sortable:true">异常回复</th>
+                    <th data-options="field: 'ck',width:80, checkbox: true"></th>
+                    <th data-options="field:'CODE',width:150,sortable:true">业务编号</th>
+                    <th data-options="field:'YCNUM',width:70,sortable:true">异常数量</th>
+                    <th data-options="field:'CLNUM',width:70,sortable:true">处理数量</th>
+                    <th data-options="field:'text',width:70,sortable:true">报检编号</th>
+                    <th data-options="field:'CLEARANCENO',width:70,sortable:true">通关单号</th>
+                    <th data-options="field:'text',width:50,sortable:true">报检单号</th>
+                    <th data-options="field:'text',width:50,sortable:true">业务种类</th>
+                    <th data-options="field:'CUSNO',width:70,sortable:true">收货人</th>
+                    <th data-options="field:'ASSOCIATEPEDECLNO',width:70,sortable:true">报关单号</th>
+                    <th data-options="field:'text',width:70,sortable:true">QP标志</th>
+                    <th data-options="field:'INOUTTYPE',width:80,sortable:true">进出口类别</th>
+                    <th data-options="field:'text',width:50,sortable:true">货物流向</th>
+                    <th data-options="field:'GOODSNUM',width:70,sortable:true">总件数</th>
+                    <th data-options="field:'GOODSWEIGHT',width:70,sortable:true">总重量</th>
+                    <th data-options="field:'ASSOCIATETRADEWAY',width:70,sortable:true">贸易方式</th>
+                    <th data-options="field:'text',width:70,sortable:true">法检标志</th>
+                    <th data-options="field:'CLEARANCENO',width:70,sortable:true">通关单号</th>
+                    <th data-options="field:'INSPSTATUS',width:70,sortable:true">报检状态</th>
+                    <th data-options="field:'DECLSTATUS',width:70,sortable:true">报关状态</th>
+                    <th data-options="field:'ISINVALID',width:70,sortable:true">作废标志</th>
+                    <th data-options="field:'text',width:50,sortable:true">作废时间</th>
+                    <th data-options="field:'text',width:50,sortable:true">OPS接单时间</th>
+                    <th data-options="field:'text',width:50,sortable:true">OPS接单人</th>
+                    <th data-options="field:'text',width:50,sortable:true">OPS接单备注</th>
+                    <th data-options="field:'text',width:50,sortable:true">报检接单时间</th>
+                    <th data-options="field:'text',width:50,sortable:true">报检接单人</th>
+                    <th data-options="field:'MOACCEPTTIME',width:70,sortable:true">制单时间</th>
+                    <th data-options="field:'SHIWUFANGXINGTIME',width:150,sortable:true">放行时间</th>
+                    <th data-options="field:'text',width:70,sortable:true">报检时间</th>
+                    <th data-options="field:'text',width:70,sortable:true">输机时间</th>
+                    <th data-options="field:'MOACCEPTUSERNAME',width:70,sortable:true">制单人</th>
+                    <th data-options="field:'SHIWUFANGXINGUSERNAME',width:70,sortable:true">放行人</th>
+                    <th data-options="field:'text',width:70,sortable:true">报检人</th>
+                    <th data-options="field:'text',width:70,sortable:true">输机人</th>
+                    <th data-options="field:'CONTRACTNO',width:80,sortable:true">合同发票号</th>
+                    <th data-options="field:'text',width:70,sortable:true">异常登记</th>
+                    <th data-options="field:'text',width:70,sortable:true">异常回复</th>
                 </tr>
             </thead>
         </table>
