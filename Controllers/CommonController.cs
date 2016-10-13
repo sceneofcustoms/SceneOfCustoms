@@ -31,6 +31,13 @@ namespace SceneOfCustoms.Controllers
             ViewData["crumb"] = "后台管理-->同步日志";
             return View();
         }
+
+        public ActionResult SyncMsg_List()
+        {
+            ViewData["crumb"] = "后台管理-->同步状态";
+            return View();
+        }
+
         public string LoadAttachmentList()
         {
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
@@ -49,6 +56,18 @@ namespace SceneOfCustoms.Controllers
             string filedata = JsonConvert.SerializeObject(dt, iso);
             return "{rows:" + filedata + ",total:" + total + "}";
         }
+
+        //日志消息
+        public string LoadMsgList()
+        {
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string sql = @"select * from MSG";
+            DataTable dt = DBMgr.GetDataTable(Extension.GetPageSql(sql, "createtime", "desc", ref total, Convert.ToInt32(Request["start"]), Convert.ToInt32(Request["limit"])));
+            string filedata = JsonConvert.SerializeObject(dt, iso);
+            return "{rows:" + filedata + ",total:" + total + "}";
+        }
+
         public ActionResult Attachment_Edit()
         {
             string FWONO = Request["FWONO"];

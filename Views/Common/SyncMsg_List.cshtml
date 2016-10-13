@@ -1,0 +1,59 @@
+﻿<link href="/js/Extjs42/resources/css/ext-all-gray.css" rel="stylesheet" type="text/css" />
+<script src="/js/Extjs42/bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var gridpanel;
+    Ext.onReady(function () {
+
+
+        var store = Ext.create('Ext.data.JsonStore', {
+            fields: ['ID', 'FWONO', 'SOURCE', 'TEXT', 'STATUS', 'CREATETIME'],
+            pageSize: 20,
+            proxy: {
+                type: 'ajax',
+                url: '/Common/LoadMsgList',
+                reader: {
+                    root: 'rows',
+                    type: 'json',
+                    totalProperty: 'total'
+                }
+            },
+            autoLoad: true,
+            listeners: {
+            }
+        })
+
+        var pgbar = Ext.create('Ext.toolbar.Paging', {
+            displayMsg: '显示 {0} - {1} 条,共计 {2} 条',
+            store: store,
+            id: 'pagebar',
+            displayInfo: true
+        })
+        gridpanel = Ext.create('Ext.grid.Panel', {
+            renderTo: "div_foo",
+            store: store,
+            height: 500,
+            selModel: { selType: 'checkboxmodel' },
+            bbar: pgbar,
+            enableColumnHide: false,
+            columns: [
+            { xtype: 'rownumberer', width: 35 },
+            { header: 'ID', dataIndex: 'ID', hidden: true },
+            { header: 'FWO号', dataIndex: 'FWONO', width: 200 },
+            { header: '来源', dataIndex: 'SOURCE', width: 200 },
+            { header: '描述', dataIndex: 'TEXT', width: 280 },
+            { header: '状态', dataIndex: 'STATUS', width: 150 },
+            { header: '时间', dataIndex: 'CREATETIME', width: 150 }
+            ],
+            viewConfig: {
+                enableTextSelection: true
+            }
+        })
+    })
+
+
+</script>
+<div>
+</div>
+<div id="div_foo">
+
+</div> 
