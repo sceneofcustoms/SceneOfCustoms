@@ -63,7 +63,12 @@ namespace SceneOfCustoms.Controllers
                 obj.PORTCODE = dt.Rows[i]["PORTCODE"] + "";
                 obj.PRICEIMPACT = dt.Rows[i]["PRICEIMPACT"] + "";
                 obj.PAYPOYALTIES = dt.Rows[i]["PAYPOYALTIES"] + "";
-                obj.SFGOODSUNIT = dt.Rows[i]["SFGOODSUNIT"] + "";
+                //obj.SFGOODSUNIT = dt.Rows[i]["SFGOODSUNIT"] + "";
+
+                obj.FGOODSUNIT = dt.Rows[i]["FGOODSUNIT"] + "";
+                obj.SGOODSUNIT = dt.Rows[i]["SGOODSUNIT"] + "";
+                obj.ALLOWDECLARE = dt.Rows[i]["ALLOWDECLARE"] + "";
+
                 obj.REPUNITCODE = dt.Rows[i]["REPUNITCODE"] + "";
                 obj.CREATEUSERNAME = dt.Rows[i]["CREATEUSERNAME"] + "";
                 obj.CREATETIME = DateTime.Now.ToLocalTime().ToString();
@@ -93,12 +98,12 @@ namespace SceneOfCustoms.Controllers
                 ld.Add(obj);
             }
             IList<Msgobj> MSList = CheckData(ld);
+            int Order_Res = InsertOrder(ld);
 
             if (MSList.Count <= 0)
             {
                 if (ld.Count > 0)
                 {
-                    int Order_Res = InsertOrder(ld);
 
                     if (Order_Res == 1)
                     {
@@ -369,7 +374,7 @@ namespace SceneOfCustoms.Controllers
             sql = @"insert into List_Order(
                       ID,
                       BUSITYPE,FWONO,FOONO,TOTALNO,
-                      DIVIDENO,GOODSNUM,GOODSWEIGHT,SFGOODSUNIT,
+                      DIVIDENO,GOODSNUM,GOODSWEIGHT,SGOODSUNIT,
                       PACKKIND, REPWAYID,DECLWAY,TRADEWAYCODES,
                       CUSNO,CUSTOMDISTRICTCODE,PORTCODE,SPECIALRELATIONSHIP,
                       PRICEIMPACT,PAYPOYALTIES,REPUNITCODE, CREATEUSERNAME,
@@ -378,16 +383,16 @@ namespace SceneOfCustoms.Controllers
                       LADINGBILLNO,ISPREDECLARE,ENTRUSTREQUEST,CONTRACTNO,
                       FIRSTLADINGBILLNO,SECONDLADINGBILLNO,MANIFEST,WOODPACKINGID,
                       WEIGHTCHECK,ISWEIGHTCHECK,SHIPNAME,FILGHTNO,
-                      INSPUNITNAME,TURNPRENO,INVOICENO,URL
+                      INSPUNITNAME,TURNPRENO,INVOICENO,URL,FGOODSUNIT,ALLOWDECLARE
                        ) VALUES(LIST_ORDER_ID.Nextval,'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}',
                     '{17}','{18}','{19}',to_date ('{20}', 'YYYY-MM-DD HH24:MI:SS' ),'{21}','{22}','{23}','{24}','{25}','{26}',
                     '{27}','{28}','{29}','{30}','{31}','{32}','{33}','{34}','{35}','{36}',
-                    '{37}','{38}','{39}','{40}','{41}','{42}','SAP'
+                    '{37}','{38}','{39}','{40}','{41}','{42}','SAP','{43}','{44}'
                     )";
 
             sql = string.Format(sql,
                 o[0].BUSITYPE, o[0].CODE, o[0].FOONO, o[0].TOTALNO,
-                o[0].DIVIDENO, o[0].GOODSNUM, o[0].GOODSWEIGHT, o[0].SFGOODSUNIT,
+                o[0].DIVIDENO, o[0].GOODSNUM, o[0].GOODSWEIGHT, o[0].SGOODSUNIT,
                 o[0].PACKKIND, o[0].REPWAYID, o[0].DECLWAY, o[0].TRADEWAYCODES,
                 o[0].CUSNO, o[0].CUSTOMDISTRICTCODE, o[0].PORTCODE, o[0].SPECIALRELATIONSHIP,
                 o[0].PRICEIMPACT, o[0].PAYPOYALTIES, o[0].REPUNITCODE, o[0].CREATEUSERNAME,
@@ -396,7 +401,7 @@ namespace SceneOfCustoms.Controllers
                 o[0].LADINGBILLNO, o[0].ISPREDECLARE, o[0].ENTRUSTREQUEST, o[0].CONTRACTNO,
                 o[0].FIRSTLADINGBILLNO, o[0].SECONDLADINGBILLNO, o[0].MANIFEST,
                 o[0].WOODPACKINGID, o[0].WEIGHTCHECK, o[0].ISWEIGHTCHECK, o[0].SHIPNAME, o[0].FILGHTNO,
-                o[0].INSPUNITNAME, o[0].TURNPRENO, o[0].INVOICENO
+                o[0].INSPUNITNAME, o[0].TURNPRENO, o[0].INVOICENO, o[0].FGOODSUNIT, o[0].ALLOWDECLARE
                 );
             DBMgr.ExecuteNonQuery(sql);
             return 1;
@@ -428,11 +433,27 @@ namespace SceneOfCustoms.Controllers
         //检查数据
         private List<Msgobj> CheckData(List<OrderEn> ld)
         {
-            IDatabase db = SeRedis.redis.GetDatabase();
             DataTable dt;
             string sql = "";
             Msgobj m;
+
+            //判断委托类型
+
+            //if () { }
+
+
+
+
             List<Msgobj> MsgobjList = new List<Msgobj>();
+            //验证一组单子是否正常
+            List<List<OrderEn>> GroupOrder = GroupByFoo(ld);
+            foreach (List<OrderEn> ListOrder in GroupOrder)
+            {
+
+            }
+
+
+            //报关单  报检单 
 
             foreach (OrderEn o in ld)
             {

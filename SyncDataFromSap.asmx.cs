@@ -98,7 +98,7 @@ namespace SceneOfCustoms
                 sql = @"insert into LIST_SAPFOO(
                       ID,
                       BUSITYPE,FWONO,FOONO,TOTALNO,
-                      DIVIDENO,GOODSNUM,GOODSWEIGHT,SFGOODSUNIT,
+                      DIVIDENO,GOODSNUM,GOODSWEIGHT,SGOODSUNIT,
                       PACKKIND, REPWAYID,DECLWAY,TRADEWAYCODES,
                       CUSNO,CUSTOMDISTRICTCODE,PORTCODE,SPECIALRELATIONSHIP,
                       PRICEIMPACT,PAYPOYALTIES,REPUNITCODE, CREATEUSERNAME,
@@ -107,16 +107,16 @@ namespace SceneOfCustoms
                       LADINGBILLNO,ISPREDECLARE,ENTRUSTREQUEST,CONTRACTNO,
                       FIRSTLADINGBILLNO,SECONDLADINGBILLNO,MANIFEST,WOODPACKINGID,
                       WEIGHTCHECK,ISCHECKEDWEIGHT,SHIPNAME,FILGHTNO,
-                      INSPUNITCODE,TURNPRENO,INVOICENO
+                      INSPUNITCODE,TURNPRENO,INVOICENO,FGOODSUNIT,ALLOWDECLARE
                        ) VALUES(LIST_SAPFOO_ID.Nextval,'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}',
                     '{17}','{18}','{19}',to_date ('{20}', 'YYYY-MM-DD HH24:MI:SS' ),'{21}','{22}','{23}','{24}','{25}','{26}',
                     '{27}','{28}','{29}','{30}','{31}','{32}','{33}','{34}','{35}','{36}',
-                    '{37}','{38}','{39}','{40}','{41}','{42}'
+                    '{37}','{38}','{39}','{40}','{41}','{42}','{43}','{44}'
                     )";
 
                 sql = string.Format(sql,
                     o.BUSITYPE, o.CODE, o.FOONO, o.TOTALNO,
-                    o.DIVIDENO, o.GOODSNUM, o.GOODSWEIGHT, o.SFGOODSUNIT,
+                    o.DIVIDENO, o.GOODSNUM, o.GOODSWEIGHT, o.SGOODSUNIT,
                     o.PACKKIND, o.REPWAYID, o.DECLWAY, o.TRADEWAYCODES,
                     o.CUSNO, o.CUSTOMDISTRICTCODE, o.PORTCODE, o.SPECIALRELATIONSHIP,
                     o.PRICEIMPACT, o.PAYPOYALTIES, o.REPUNITCODE, o.CREATEUSERNAME,
@@ -125,7 +125,7 @@ namespace SceneOfCustoms
                     o.LADINGBILLNO, o.ISPREDECLARE, o.ENTRUSTREQUEST, o.CONTRACTNO,
                     o.FIRSTLADINGBILLNO, o.SECONDLADINGBILLNO, o.MANIFEST, o.WOODPACKINGID,
                     o.WEIGHTCHECK, o.ISWEIGHTCHECK, o.SHIPNAME, o.FILGHTNO,
-                    o.INSPUNITNAME, o.TURNPRENO, o.INVOICENO
+                    o.INSPUNITNAME, o.TURNPRENO, o.INVOICENO, o.FGOODSUNIT, o.ALLOWDECLARE
                     );
                 Order_Res = DBMgr.ExecuteNonQuery(sql);
 
@@ -376,7 +376,7 @@ namespace SceneOfCustoms
             sql = @"insert into List_Order(
                       ID,
                       BUSITYPE,FWONO,FOONO,TOTALNO,
-                      DIVIDENO,GOODSNUM,GOODSWEIGHT,SFGOODSUNIT,
+                      DIVIDENO,GOODSNUM,GOODSWEIGHT,SGOODSUNIT,
                       PACKKIND, REPWAYID,DECLWAY,TRADEWAYCODES,
                       CUSNO,CUSTOMDISTRICTCODE,PORTCODE,SPECIALRELATIONSHIP,
                       PRICEIMPACT,PAYPOYALTIES,REPUNITCODE, CREATEUSERNAME,
@@ -385,16 +385,16 @@ namespace SceneOfCustoms
                       LADINGBILLNO,ISPREDECLARE,ENTRUSTREQUEST,CONTRACTNO,
                       FIRSTLADINGBILLNO,SECONDLADINGBILLNO,MANIFEST,WOODPACKINGID,
                       WEIGHTCHECK,ISWEIGHTCHECK,SHIPNAME,FILGHTNO,
-                      INSPUNITNAME,TURNPRENO,INVOICENO,URL
+                      INSPUNITNAME,TURNPRENO,INVOICENO,URL,FGOODSUNIT,ALLOWDECLARE
                        ) VALUES(LIST_ORDER_ID.Nextval,'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}',
                     '{17}','{18}','{19}',to_date ('{20}', 'YYYY-MM-DD HH24:MI:SS' ),'{21}','{22}','{23}','{24}','{25}','{26}',
                     '{27}','{28}','{29}','{30}','{31}','{32}','{33}','{34}','{35}','{36}',
-                    '{37}','{38}','{39}','{40}','{41}','{42}','SAP'
+                    '{37}','{38}','{39}','{40}','{41}','{42}','SAP','{43}','{44}'
                     )";
 
             sql = string.Format(sql,
                 o[0].BUSITYPE, o[0].CODE, o[0].FOONO, o[0].TOTALNO,
-                o[0].DIVIDENO, o[0].GOODSNUM, o[0].GOODSWEIGHT, o[0].SFGOODSUNIT,
+                o[0].DIVIDENO, o[0].GOODSNUM, o[0].GOODSWEIGHT, o[0].SGOODSUNIT,
                 o[0].PACKKIND, o[0].REPWAYID, o[0].DECLWAY, o[0].TRADEWAYCODES,
                 o[0].CUSNO, o[0].CUSTOMDISTRICTCODE, o[0].PORTCODE, o[0].SPECIALRELATIONSHIP,
                 o[0].PRICEIMPACT, o[0].PAYPOYALTIES, o[0].REPUNITCODE, o[0].CREATEUSERNAME,
@@ -403,7 +403,7 @@ namespace SceneOfCustoms
                 o[0].LADINGBILLNO, o[0].ISPREDECLARE, o[0].ENTRUSTREQUEST, o[0].CONTRACTNO,
                 o[0].FIRSTLADINGBILLNO, o[0].SECONDLADINGBILLNO, o[0].MANIFEST,
                 o[0].WOODPACKINGID, o[0].WEIGHTCHECK, o[0].ISWEIGHTCHECK, o[0].SHIPNAME, o[0].FILGHTNO,
-                o[0].INSPUNITNAME, o[0].TURNPRENO, o[0].INVOICENO
+                o[0].INSPUNITNAME, o[0].TURNPRENO, o[0].INVOICENO, o[0].FGOODSUNIT, o[0].ALLOWDECLARE
                 );
             DBMgr.ExecuteNonQuery(sql);
             return 1;

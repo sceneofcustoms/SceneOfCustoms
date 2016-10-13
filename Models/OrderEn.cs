@@ -18,7 +18,6 @@ namespace SceneOfCustoms.Models
         public string DIVIDENO { get; set; }
         public string GOODSNUM { get; set; }
         public string GOODSWEIGHT { get; set; }
-        public string SFGOODSUNIT { get; set; }
         public string PACKKIND { get; set; }
         public string REPWAYID { get; set; }
         public string DECLWAY { get; set; }
@@ -67,6 +66,14 @@ namespace SceneOfCustoms.Models
         public string INVOICENO { get; set; }
 
         //public string DECLCARNO { get; set; }
+        //public string SFGOODSUNIT { get; set; }
+
+
+        public string FGOODSUNIT { get; set; }
+        public string SGOODSUNIT { get; set; }
+        public string ALLOWDECLARE { get; set; }
+
+
 
         
     }
