@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="UoAyCsmZTJa0ueS9fNSNxt5c5ys=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="A/tlLItkqdwzMqeyZ4h7GWBweDQ=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="CustomerServiceSoap">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>CustomerServiceSoap</serializedValue>
-=======
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="cpDP/kGFxmIzK4cXiaBIbwqPSX4=">
-  <bindingConfigurations>
-    <bindingConfiguration bindingType="basicHttpBinding" name="CustomerServiceSoap1">
-      <properties>
-        <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomerServiceSoap1</serializedValue>
->>>>>>> origin/master
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -119,17 +110,10 @@
         </property>
       </properties>
     </bindingConfiguration>
-<<<<<<< HEAD
-    <bindingConfiguration bindingType="customBinding" name="CustomerServiceSoap12">
-      <properties>
-        <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomerServiceSoap12</serializedValue>
-=======
     <bindingConfiguration bindingType="customBinding" name="CustomerServiceSoap121">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>CustomerServiceSoap121</serializedValue>
->>>>>>> origin/master
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -279,11 +263,7 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-<<<<<<< HEAD
     <endpoint name="CustomerServiceSoap" contract="ServiceReference1.CustomerServiceSoap" bindingType="basicHttpBinding" address="http://221.224.21.20:6790/CustomerService.asmx" bindingConfiguration="CustomerServiceSoap">
-=======
-    <endpoint name="CustomerServiceSoap" contract="ServiceReference1.CustomerServiceSoap" bindingType="basicHttpBinding" address="http://221.224.21.20:6790/CustomerService.asmx" bindingConfiguration="CustomerServiceSoap1">
->>>>>>> origin/master
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://221.224.21.20:6790/CustomerService.asmx</serializedValue>
@@ -295,11 +275,7 @@
           <serializedValue>basicHttpBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-<<<<<<< HEAD
           <serializedValue>CustomerServiceSoap</serializedValue>
-=======
-          <serializedValue>CustomerServiceSoap1</serializedValue>
->>>>>>> origin/master
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>ServiceReference1.CustomerServiceSoap</serializedValue>
@@ -372,11 +348,7 @@
         </property>
       </properties>
     </endpoint>
-<<<<<<< HEAD
-    <endpoint name="CustomerServiceSoap12" contract="ServiceReference1.CustomerServiceSoap" bindingType="customBinding" address="http://221.224.21.20:6790/CustomerService.asmx" bindingConfiguration="CustomerServiceSoap12">
-=======
     <endpoint name="CustomerServiceSoap12" contract="ServiceReference1.CustomerServiceSoap" bindingType="customBinding" address="http://221.224.21.20:6790/CustomerService.asmx" bindingConfiguration="CustomerServiceSoap121">
->>>>>>> origin/master
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://221.224.21.20:6790/CustomerService.asmx</serializedValue>
@@ -388,11 +360,7 @@
           <serializedValue>customBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-<<<<<<< HEAD
-          <serializedValue>CustomerServiceSoap12</serializedValue>
-=======
           <serializedValue>CustomerServiceSoap121</serializedValue>
->>>>>>> origin/master
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>ServiceReference1.CustomerServiceSoap</serializedValue>

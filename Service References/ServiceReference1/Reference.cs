@@ -24,24 +24,24 @@ namespace SceneOfCustoms.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ReceiveDeclarationStatus", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        SceneOfCustoms.ServiceReference1.DeclStatusEn[] ReceiveDeclarationStatus(string repno, string busiUnit);
+        SceneOfCustoms.ServiceReference1.DeclStatusEn[] ReceiveDeclarationStatus(string cusno, string busiUnit);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ReceiveDeclarationStatus", ReplyAction="*")]
-        System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclStatusEn[]> ReceiveDeclarationStatusAsync(string repno, string busiUnit);
+        System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclStatusEn[]> ReceiveDeclarationStatusAsync(string cusno, string busiUnit);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ReceiveDeclaration", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        SceneOfCustoms.ServiceReference1.DeclarationEn[] ReceiveDeclaration(string repno, string busiUnit);
+        SceneOfCustoms.ServiceReference1.DeclarationEn[] ReceiveDeclaration(string cusno, string busiUnit);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ReceiveDeclaration", ReplyAction="*")]
-        System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclarationEn[]> ReceiveDeclarationAsync(string repno, string busiUnit);
+        System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclarationEn[]> ReceiveDeclarationAsync(string cusno, string busiUnit);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ReceiveDeclarationPdf", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        SceneOfCustoms.ServiceReference1.DeclPdfEn[] ReceiveDeclarationPdf(string repno, string busiUnit);
+        SceneOfCustoms.ServiceReference1.DeclPdfEn[] ReceiveDeclarationPdf(string cusno, string busiUnit);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ReceiveDeclarationPdf", ReplyAction="*")]
-        System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclPdfEn[]> ReceiveDeclarationPdfAsync(string repno, string busiUnit);
+        System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclPdfEn[]> ReceiveDeclarationPdfAsync(string cusno, string busiUnit);
     }
     
     /// <remarks/>
@@ -51,6 +51,8 @@ namespace SceneOfCustoms.ServiceReference1 {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
     public partial class OrderEn : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string fILEPATHField;
         
         private System.Nullable<System.DateTime> sUBMITTIMEField;
         
@@ -138,13 +140,15 @@ namespace SceneOfCustoms.ServiceReference1 {
         
         private string oRDERREQUESTField;
         
-        private string rEPUNITCODEField;
-        
         private System.Nullable<decimal> lAWFLAGField;
         
-        private string dECLREPCODEField;
+        private string cUSTOMERCODEField;
         
-        private string dECLREPNAMEField;
+        private string cUSTOMERNAMEField;
+        
+        private string rEPUNITCODEField;
+        
+        private string rEPUNITNAMEField;
         
         private string iNSPREPCODEField;
         
@@ -160,6 +164,8 @@ namespace SceneOfCustoms.ServiceReference1 {
         
         private string pORTCODEField;
         
+        private string pORTNAMEField;
+        
         private string cORRESPONDNOField;
         
         private string aSSOCIATENOField;
@@ -173,7 +179,19 @@ namespace SceneOfCustoms.ServiceReference1 {
         private System.Nullable<System.DateTime> cREATETIMEField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string FILEPATH {
+            get {
+                return this.fILEPATHField;
+            }
+            set {
+                this.fILEPATHField = value;
+                this.RaisePropertyChanged("FILEPATH");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public System.Nullable<System.DateTime> SUBMITTIME {
             get {
                 return this.sUBMITTIMEField;
@@ -185,7 +203,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
         public int SUBMITUSERID {
             get {
                 return this.sUBMITUSERIDField;
@@ -197,7 +215,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
         public string SUBMITUSERNAME {
             get {
                 return this.sUBMITUSERNAMEField;
@@ -209,7 +227,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
         public string ARRIVEDNO {
             get {
                 return this.aRRIVEDNOField;
@@ -221,7 +239,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
         public string DECLCARNO {
             get {
                 return this.dECLCARNOField;
@@ -233,7 +251,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
         public string CONTAINERNO {
             get {
                 return this.cONTAINERNOField;
@@ -245,7 +263,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
         public string GOODSTYPEID {
             get {
                 return this.gOODSTYPEIDField;
@@ -257,7 +275,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
         public string SECONDLADINGBILLNO {
             get {
                 return this.sECONDLADINGBILLNOField;
@@ -269,7 +287,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
         public string FIRSTLADINGBILLNO {
             get {
                 return this.fIRSTLADINGBILLNOField;
@@ -281,7 +299,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
         public string MANIFEST {
             get {
                 return this.mANIFESTField;
@@ -293,7 +311,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
         public string WOODPACKINGID {
             get {
                 return this.wOODPACKINGIDField;
@@ -305,7 +323,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
         public int WEIGHTCHECK {
             get {
                 return this.wEIGHTCHECKField;
@@ -317,7 +335,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
         public int ISWEIGHTCHECK {
             get {
                 return this.iSWEIGHTCHECKField;
@@ -329,7 +347,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
         public string SHIPNAME {
             get {
                 return this.sHIPNAMEField;
@@ -341,7 +359,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=15)]
         public string FILGHTNO {
             get {
                 return this.fILGHTNOField;
@@ -353,7 +371,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=15)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=16)]
         public string CLEARANCENO {
             get {
                 return this.cLEARANCENOField;
@@ -365,7 +383,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=16)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=17)]
         public int Status {
             get {
                 return this.statusField;
@@ -377,7 +395,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=17)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order=18)]
         public FileEn[] Files {
             get {
                 return this.filesField;
@@ -389,7 +407,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=18)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=19)]
         public decimal ID {
             get {
                 return this.idField;
@@ -401,7 +419,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=19)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=20)]
         public string CODE {
             get {
                 return this.cODEField;
@@ -413,7 +431,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=20)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=21)]
         public string CUSNO {
             get {
                 return this.cUSNOField;
@@ -425,7 +443,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=21)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=22)]
         public string REPNO {
             get {
                 return this.rEPNOField;
@@ -437,7 +455,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=22)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=23)]
         public string ENTRUSTTYPE {
             get {
                 return this.eNTRUSTTYPEField;
@@ -449,7 +467,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=23)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=24)]
         public string ENTRUSTTYPENAME {
             get {
                 return this.eNTRUSTTYPENAMEField;
@@ -461,7 +479,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=24)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=25)]
         public string BUSITYPE {
             get {
                 return this.bUSITYPEField;
@@ -473,7 +491,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=25)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=26)]
         public string BUSITYPENAME {
             get {
                 return this.bUSITYPENAMEField;
@@ -485,7 +503,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=26)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=27)]
         public string REPWAYID {
             get {
                 return this.rEPWAYIDField;
@@ -497,7 +515,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=27)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=28)]
         public string REPWAYNAME {
             get {
                 return this.rEPWAYNAMEField;
@@ -509,7 +527,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=28)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=29)]
         public string CUSTOMAREACODE {
             get {
                 return this.cUSTOMAREACODEField;
@@ -521,7 +539,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=29)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=30)]
         public string CUSTOMAREANAME {
             get {
                 return this.cUSTOMAREANAMEField;
@@ -533,7 +551,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=30)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=31)]
         public string DECLWAY {
             get {
                 return this.dECLWAYField;
@@ -545,7 +563,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=31)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=32)]
         public string DECLWAYNAME {
             get {
                 return this.dECLWAYNAMEField;
@@ -557,7 +575,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=32)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=33)]
         public string BUSIUNITCODE {
             get {
                 return this.bUSIUNITCODEField;
@@ -569,7 +587,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=33)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=34)]
         public string BUSIUNITNAME {
             get {
                 return this.bUSIUNITNAMEField;
@@ -581,7 +599,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=34)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=35)]
         public string BUSIUNITNUM {
             get {
                 return this.bUSIUNITNUMField;
@@ -593,7 +611,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=35)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=36)]
         public System.Nullable<decimal> GOODSNUM {
             get {
                 return this.gOODSNUMField;
@@ -605,7 +623,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=36)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=37)]
         public System.Nullable<decimal> GOODSGW {
             get {
                 return this.gOODSGWField;
@@ -617,7 +635,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=37)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=38)]
         public System.Nullable<decimal> GOODSNW {
             get {
                 return this.gOODSNWField;
@@ -629,7 +647,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=38)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=39)]
         public string PACKKIND {
             get {
                 return this.pACKKINDField;
@@ -641,7 +659,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=39)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=40)]
         public string PACKKINDNAME {
             get {
                 return this.pACKKINDNAMEField;
@@ -653,7 +671,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=40)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=41)]
         public string BELONGCUSTOMS {
             get {
                 return this.bELONGCUSTOMSField;
@@ -665,7 +683,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=41)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=42)]
         public string BELONGCUSTOMSNAME {
             get {
                 return this.bELONGCUSTOMSNAMEField;
@@ -677,7 +695,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=42)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=43)]
         public string ORDERREQUEST {
             get {
                 return this.oRDERREQUESTField;
@@ -685,18 +703,6 @@ namespace SceneOfCustoms.ServiceReference1 {
             set {
                 this.oRDERREQUESTField = value;
                 this.RaisePropertyChanged("ORDERREQUEST");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=43)]
-        public string REPUNITCODE {
-            get {
-                return this.rEPUNITCODEField;
-            }
-            set {
-                this.rEPUNITCODEField = value;
-                this.RaisePropertyChanged("REPUNITCODE");
             }
         }
         
@@ -714,30 +720,54 @@ namespace SceneOfCustoms.ServiceReference1 {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=45)]
-        public string DECLREPCODE {
+        public string CUSTOMERCODE {
             get {
-                return this.dECLREPCODEField;
+                return this.cUSTOMERCODEField;
             }
             set {
-                this.dECLREPCODEField = value;
-                this.RaisePropertyChanged("DECLREPCODE");
+                this.cUSTOMERCODEField = value;
+                this.RaisePropertyChanged("CUSTOMERCODE");
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=46)]
-        public string DECLREPNAME {
+        public string CUSTOMERNAME {
             get {
-                return this.dECLREPNAMEField;
+                return this.cUSTOMERNAMEField;
             }
             set {
-                this.dECLREPNAMEField = value;
-                this.RaisePropertyChanged("DECLREPNAME");
+                this.cUSTOMERNAMEField = value;
+                this.RaisePropertyChanged("CUSTOMERNAME");
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=47)]
+        public string REPUNITCODE {
+            get {
+                return this.rEPUNITCODEField;
+            }
+            set {
+                this.rEPUNITCODEField = value;
+                this.RaisePropertyChanged("REPUNITCODE");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=48)]
+        public string REPUNITNAME {
+            get {
+                return this.rEPUNITNAMEField;
+            }
+            set {
+                this.rEPUNITNAMEField = value;
+                this.RaisePropertyChanged("REPUNITNAME");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=49)]
         public string INSPREPCODE {
             get {
                 return this.iNSPREPCODEField;
@@ -749,7 +779,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=48)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=50)]
         public string INSPREPNAME {
             get {
                 return this.iNSPREPNAMEField;
@@ -761,7 +791,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=49)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=51)]
         public string TOTALNO {
             get {
                 return this.tOTALNOField;
@@ -773,7 +803,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=50)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=52)]
         public string DIVIDENO {
             get {
                 return this.dIVIDENOField;
@@ -785,7 +815,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=51)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=53)]
         public string TURNPRENO {
             get {
                 return this.tURNPRENOField;
@@ -797,7 +827,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=52)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=54)]
         public System.Nullable<decimal> PRODUCTNUM {
             get {
                 return this.pRODUCTNUMField;
@@ -809,7 +839,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=53)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=55)]
         public string PORTCODE {
             get {
                 return this.pORTCODEField;
@@ -821,7 +851,19 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=54)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=56)]
+        public string PORTNAME {
+            get {
+                return this.pORTNAMEField;
+            }
+            set {
+                this.pORTNAMEField = value;
+                this.RaisePropertyChanged("PORTNAME");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=57)]
         public string CORRESPONDNO {
             get {
                 return this.cORRESPONDNOField;
@@ -833,7 +875,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=55)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=58)]
         public string ASSOCIATENO {
             get {
                 return this.aSSOCIATENOField;
@@ -845,7 +887,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=56)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=59)]
         public System.Nullable<decimal> WEIGHTCONFIRM {
             get {
                 return this.wEIGHTCONFIRMField;
@@ -857,7 +899,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=57)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=60)]
         public string RECORDCODE {
             get {
                 return this.rECORDCODEField;
@@ -869,7 +911,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=58)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=61)]
         public System.Nullable<decimal> ISINVALID {
             get {
                 return this.iSINVALIDField;
@@ -881,7 +923,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=59)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=62)]
         public System.Nullable<System.DateTime> CREATETIME {
             get {
                 return this.cREATETIMEField;
@@ -910,7 +952,7 @@ namespace SceneOfCustoms.ServiceReference1 {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
     public partial class FileEn : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private string fileTypeField;
+        private FileTypeEnum fileTypeField;
         
         private byte[] fileContentField;
         
@@ -918,7 +960,7 @@ namespace SceneOfCustoms.ServiceReference1 {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public string FileType {
+        public FileTypeEnum FileType {
             get {
                 return this.fileTypeField;
             }
@@ -960,6 +1002,40 @@ namespace SceneOfCustoms.ServiceReference1 {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public enum FileTypeEnum {
+        
+        /// <remarks/>
+        提运单,
+        
+        /// <remarks/>
+        合同,
+        
+        /// <remarks/>
+        发票,
+        
+        /// <remarks/>
+        装箱单,
+        
+        /// <remarks/>
+        委托书,
+        
+        /// <remarks/>
+        随附文件1,
+        
+        /// <remarks/>
+        随附文件2,
+        
+        /// <remarks/>
+        随附文件3,
+        
+        /// <remarks/>
+        商检证件,
     }
     
     /// <remarks/>
@@ -2830,28 +2906,28 @@ namespace SceneOfCustoms.ServiceReference1 {
             return base.Channel.SendOrderDataAsync(list);
         }
         
-        public SceneOfCustoms.ServiceReference1.DeclStatusEn[] ReceiveDeclarationStatus(string repno, string busiUnit) {
-            return base.Channel.ReceiveDeclarationStatus(repno, busiUnit);
+        public SceneOfCustoms.ServiceReference1.DeclStatusEn[] ReceiveDeclarationStatus(string cusno, string busiUnit) {
+            return base.Channel.ReceiveDeclarationStatus(cusno, busiUnit);
         }
         
-        public System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclStatusEn[]> ReceiveDeclarationStatusAsync(string repno, string busiUnit) {
-            return base.Channel.ReceiveDeclarationStatusAsync(repno, busiUnit);
+        public System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclStatusEn[]> ReceiveDeclarationStatusAsync(string cusno, string busiUnit) {
+            return base.Channel.ReceiveDeclarationStatusAsync(cusno, busiUnit);
         }
         
-        public SceneOfCustoms.ServiceReference1.DeclarationEn[] ReceiveDeclaration(string repno, string busiUnit) {
-            return base.Channel.ReceiveDeclaration(repno, busiUnit);
+        public SceneOfCustoms.ServiceReference1.DeclarationEn[] ReceiveDeclaration(string cusno, string busiUnit) {
+            return base.Channel.ReceiveDeclaration(cusno, busiUnit);
         }
         
-        public System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclarationEn[]> ReceiveDeclarationAsync(string repno, string busiUnit) {
-            return base.Channel.ReceiveDeclarationAsync(repno, busiUnit);
+        public System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclarationEn[]> ReceiveDeclarationAsync(string cusno, string busiUnit) {
+            return base.Channel.ReceiveDeclarationAsync(cusno, busiUnit);
         }
         
-        public SceneOfCustoms.ServiceReference1.DeclPdfEn[] ReceiveDeclarationPdf(string repno, string busiUnit) {
-            return base.Channel.ReceiveDeclarationPdf(repno, busiUnit);
+        public SceneOfCustoms.ServiceReference1.DeclPdfEn[] ReceiveDeclarationPdf(string cusno, string busiUnit) {
+            return base.Channel.ReceiveDeclarationPdf(cusno, busiUnit);
         }
         
-        public System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclPdfEn[]> ReceiveDeclarationPdfAsync(string repno, string busiUnit) {
-            return base.Channel.ReceiveDeclarationPdfAsync(repno, busiUnit);
+        public System.Threading.Tasks.Task<SceneOfCustoms.ServiceReference1.DeclPdfEn[]> ReceiveDeclarationPdfAsync(string cusno, string busiUnit) {
+            return base.Channel.ReceiveDeclarationPdfAsync(cusno, busiUnit);
         }
     }
 }

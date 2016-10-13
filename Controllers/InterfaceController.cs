@@ -217,9 +217,9 @@ namespace SceneOfCustoms.Controllers
             DZOrder.ORDERREQUEST = ListOrder[0].ENTRUSTREQUEST;
 
             //委托单位代码
-            DZOrder.CUSTOMERCODE = "123";
+            DZOrder.CUSTOMERCODE = "3223980001";
             //委托单位代码
-            DZOrder.CUSTOMERNAME = "123";
+            DZOrder.CUSTOMERNAME = "昆山吉时报关有限公司";
 
 
             //申报单位  报关 报检
