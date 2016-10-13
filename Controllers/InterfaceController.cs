@@ -35,112 +35,71 @@ namespace SceneOfCustoms.Controllers
         }
 
         [HttpPost]
-        //测试tm
+        //测试tm过来数据
         public string testTm()
         {
             List<OrderEn> ld = new List<OrderEn>();
             Msgobj MO = new Msgobj();
-            OrderEn obj = new OrderEn();
-
-            string sql = "select * from list_sapfoo  order by id desc";
+            OrderEn obj;
+            string ids = Request.Form["ids"];
+            string sql = "select * from list_sapfoo where id in(" + ids + ")";
             DataTable dt = DBMgr.GetDataTable(sql);
-
-
-            obj.BUSITYPE = dt.Rows[0]["BUSITYPE"] + "";
-            obj.CODE = dt.Rows[0]["FWONO"] + "";
-            obj.FOONO = dt.Rows[0]["FOONO"] + "";
-            obj.TOTALNO = dt.Rows[0]["TOTALNO"] + "";
-            obj.DIVIDENO = dt.Rows[0]["DIVIDENO"] + "";
-            obj.GOODSNUM = dt.Rows[0]["GOODSNUM"] + "";
-            obj.GOODSWEIGHT = dt.Rows[0]["GOODSWEIGHT"] + "";
-            obj.PACKKIND = dt.Rows[0]["PACKKIND"] + "";
-            obj.REPWAYID = dt.Rows[0]["REPWAYID"] + "";
-            obj.DECLWAY = dt.Rows[0]["DECLWAY"] + "";
-            obj.TRADEWAYCODES = dt.Rows[0]["TRADEWAYCODES"] + "";
-            obj.CUSNO = dt.Rows[0]["CUSNO"] + "";
-            obj.CUSTOMDISTRICTCODE = dt.Rows[0]["CUSTOMDISTRICTCODE"] + "";
-            obj.PORTCODE = dt.Rows[0]["PORTCODE"] + "";
-            obj.PRICEIMPACT = dt.Rows[0]["PRICEIMPACT"] + "";
-            obj.PAYPOYALTIES = dt.Rows[0]["PAYPOYALTIES"] + "";
-            obj.SFGOODSUNIT = dt.Rows[0]["SFGOODSUNIT"] + "";
-            obj.REPUNITCODE = dt.Rows[0]["REPUNITCODE"] + "";
-            obj.CREATEUSERNAME = dt.Rows[0]["CREATEUSERNAME"] + "";
-            obj.CREATETIME = DateTime.Now.ToLocalTime().ToString();
-            obj.ARRIVEDNO = dt.Rows[0]["ARRIVEDNO"] + "";
-            obj.CHECKEDGOODSNUM = dt.Rows[0]["CHECKEDGOODSNUM"] + "";
-            obj.CHECKEDWEIGHT = dt.Rows[0]["CHECKEDWEIGHT"] + "";
-            obj.ENTRUSTTYPEID = dt.Rows[0]["ENTRUSTTYPEID"] + "";
-            obj.GOODSXT = dt.Rows[0]["GOODSXT"] + "";
-            obj.BUSIUNITNAME = dt.Rows[0]["BUSIUNITNAME"] + "";
-            obj.GOODSTYPEID = dt.Rows[0]["GOODSTYPEID"] + "";
-            obj.LADINGBILLNO = dt.Rows[0]["LADINGBILLNO"] + "";
-            obj.ISPREDECLARE = dt.Rows[0]["ISPREDECLARE"] + "";
-            obj.ENTRUSTREQUEST = dt.Rows[0]["ENTRUSTREQUEST"] + "";
-            obj.CONTRACTNO = dt.Rows[0]["CONTRACTNO"] + "";
-            obj.FIRSTLADINGBILLNO = dt.Rows[0]["FIRSTLADINGBILLNO"] + "";
-            obj.SECONDLADINGBILLNO = dt.Rows[0]["SECONDLADINGBILLNO"] + "";
-            obj.MANIFEST = dt.Rows[0]["MANIFEST"] + "";
-            obj.WOODPACKINGID = dt.Rows[0]["WOODPACKINGID"] + "";
-            obj.WEIGHTCHECK = dt.Rows[0]["WEIGHTCHECK"] + "";
-            obj.ISWEIGHTCHECK = dt.Rows[0]["ISCHECKEDWEIGHT"] + "";
-            obj.SHIPNAME = dt.Rows[0]["SHIPNAME"] + "";
-            obj.FILGHTNO = dt.Rows[0]["FILGHTNO"] + "";
-            obj.INSPUNITNAME = dt.Rows[0]["INSPUNITCODE"] + "";
-            obj.TURNPRENO = dt.Rows[0]["TURNPRENO"] + "";
-            obj.INVOICENO = dt.Rows[0]["INVOICENO"] + "";
-            obj.SPECIALRELATIONSHIP = dt.Rows[0]["SPECIALRELATIONSHIP"] + "";
-
-            //obj.BUSITYPE = "飞力达FWO-海运出口-整箱";
-            //obj.CODE = "00000110000000001169";
-            //obj.FOONO = "SOBG00000000800000000541";
-            //obj.TOTALNO = "4";
-            //obj.DIVIDENO = "5";
-            //obj.GOODSNUM = "5000";
-            //obj.GOODSWEIGHT = "6000.0";
-            //obj.PACKKIND = "袋";
-            //obj.REPWAYID = "进口集报";
-            //obj.DECLWAY = "通关无纸化";
-            //obj.TRADEWAYCODES = "一般贸易/外资设备物品";
-            //obj.CUSNO = "12";
-            //obj.CUSTOMDISTRICTCODE = "昆山海关";
-            //obj.PORTCODE = "昆山海关";
-            //obj.PRICEIMPACT = "X";
-            //obj.PAYPOYALTIES = "X";
-            //obj.SFGOODSUNIT = "纬新资通(昆山)有限公司3223640063";
-            //obj.REPUNITCODE = "江苏飞力达国际物流股份有限公司营运中心3223980002";
-            //obj.CREATEUSERNAME = "洪家伟";
-            //obj.CREATETIME = DateTime.Now.ToLocalTime().ToString();
-            //obj.ARRIVEDNO = "FOO11113333333777";
-            //obj.CHECKEDGOODSNUM = "5000";
-            //obj.CHECKEDWEIGHT = "6000.0";
-            //obj.ENTRUSTTYPEID = "";
-            //obj.GOODSXT = "普通货";
-            //obj.BUSIUNITNAME = "纬新资通(昆山)有限公司3223640063";
-            //obj.GOODSTYPEID = "FCL（整箱装载）";
-            //obj.LADINGBILLNO = "FL161000001";
-            //obj.ISPREDECLARE = "X";
-            //obj.ENTRUSTREQUEST = "FOO9994449999";
-            //obj.CONTRACTNO = "FOO444555666";
-            //obj.FIRSTLADINGBILLNO = "11111C";
-            //obj.SECONDLADINGBILLNO = "11111C";
-            //obj.MANIFEST = "66633322222";
-            //obj.WOODPACKINGID = "非木";
-            //obj.WEIGHTCHECK = "X";
-            //obj.ISWEIGHTCHECK = "X";
-            //obj.SHIPNAME = "COSCO KOREA";
-            //obj.FILGHTNO = "S334";
-            //obj.INSPUNITNAME = "江苏飞力达国际物流股份有限公司营运中心3223980002";
-            //obj.TURNPRENO = "40";
-            //obj.INVOICENO = "11111111111222222222";
-            //obj.SPECIALRELATIONSHIP = "X";
-            ld.Add(obj);
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                obj = new OrderEn();
+                obj.BUSITYPE = dt.Rows[i]["BUSITYPE"] + "";
+                obj.CODE = dt.Rows[i]["FWONO"] + "";
+                obj.FOONO = dt.Rows[i]["FOONO"] + "";
+                obj.TOTALNO = dt.Rows[i]["TOTALNO"] + "";
+                obj.DIVIDENO = dt.Rows[i]["DIVIDENO"] + "";
+                obj.GOODSNUM = dt.Rows[i]["GOODSNUM"] + "";
+                obj.GOODSWEIGHT = dt.Rows[i]["GOODSWEIGHT"] + "";
+                obj.PACKKIND = dt.Rows[i]["PACKKIND"] + "";
+                obj.REPWAYID = dt.Rows[i]["REPWAYID"] + "";
+                obj.DECLWAY = dt.Rows[i]["DECLWAY"] + "";
+                obj.TRADEWAYCODES = dt.Rows[i]["TRADEWAYCODES"] + "";
+                obj.CUSNO = dt.Rows[i]["CUSNO"] + "";
+                obj.CUSTOMDISTRICTCODE = dt.Rows[i]["CUSTOMDISTRICTCODE"] + "";
+                obj.PORTCODE = dt.Rows[i]["PORTCODE"] + "";
+                obj.PRICEIMPACT = dt.Rows[i]["PRICEIMPACT"] + "";
+                obj.PAYPOYALTIES = dt.Rows[i]["PAYPOYALTIES"] + "";
+                obj.SFGOODSUNIT = dt.Rows[i]["SFGOODSUNIT"] + "";
+                obj.REPUNITCODE = dt.Rows[i]["REPUNITCODE"] + "";
+                obj.CREATEUSERNAME = dt.Rows[i]["CREATEUSERNAME"] + "";
+                obj.CREATETIME = DateTime.Now.ToLocalTime().ToString();
+                obj.ARRIVEDNO = dt.Rows[i]["ARRIVEDNO"] + "";
+                obj.CHECKEDGOODSNUM = dt.Rows[i]["CHECKEDGOODSNUM"] + "";
+                obj.CHECKEDWEIGHT = dt.Rows[i]["CHECKEDWEIGHT"] + "";
+                obj.ENTRUSTTYPEID = dt.Rows[i]["ENTRUSTTYPEID"] + "";
+                obj.GOODSXT = dt.Rows[i]["GOODSXT"] + "";
+                obj.BUSIUNITNAME = dt.Rows[i]["BUSIUNITNAME"] + "";
+                obj.GOODSTYPEID = dt.Rows[i]["GOODSTYPEID"] + "";
+                obj.LADINGBILLNO = dt.Rows[i]["LADINGBILLNO"] + "";
+                obj.ISPREDECLARE = dt.Rows[i]["ISPREDECLARE"] + "";
+                obj.ENTRUSTREQUEST = dt.Rows[i]["ENTRUSTREQUEST"] + "";
+                obj.CONTRACTNO = dt.Rows[i]["CONTRACTNO"] + "";
+                obj.FIRSTLADINGBILLNO = dt.Rows[i]["FIRSTLADINGBILLNO"] + "";
+                obj.SECONDLADINGBILLNO = dt.Rows[i]["SECONDLADINGBILLNO"] + "";
+                obj.MANIFEST = dt.Rows[i]["MANIFEST"] + "";
+                obj.WOODPACKINGID = dt.Rows[i]["WOODPACKINGID"] + "";
+                obj.WEIGHTCHECK = dt.Rows[i]["WEIGHTCHECK"] + "";
+                obj.ISWEIGHTCHECK = dt.Rows[i]["ISCHECKEDWEIGHT"] + "";
+                obj.SHIPNAME = dt.Rows[i]["SHIPNAME"] + "";
+                obj.FILGHTNO = dt.Rows[i]["FILGHTNO"] + "";
+                obj.INSPUNITNAME = dt.Rows[i]["INSPUNITCODE"] + "";
+                obj.TURNPRENO = dt.Rows[i]["TURNPRENO"] + "";
+                obj.INVOICENO = dt.Rows[i]["INVOICENO"] + "";
+                obj.SPECIALRELATIONSHIP = dt.Rows[i]["SPECIALRELATIONSHIP"] + "";
+                ld.Add(obj);
+            }
             IList<Msgobj> MSList = CheckData(ld);
-            int Order_Res = InsertOrder(ld);
 
             if (MSList.Count <= 0)
             {
                 if (ld.Count > 0)
                 {
+                    int Order_Res = InsertOrder(ld);
+
                     if (Order_Res == 1)
                     {
                         MO.MSG_ID = 1;
@@ -920,81 +879,42 @@ namespace SceneOfCustoms.Controllers
 
 
         //测试回传 sap 接口 销保时间
-        public string ZSXBSJ_tm()
+        public ActionResult ZSXBSJ_tm()
         {
-            //sap.DT_CUS_CUS1002_REQITEM o = new sap.DT_CUS_CUS1002_REQITEM();//模型
-            //sap.DT_CUS_CUS1002_REQITEMORDER m = new sap.DT_CUS_CUS1002_REQITEMORDER();
-            //sap.SI_CUS_CUS1002Service api = new sap.SI_CUS_CUS1002Service();
-            //api.s
-            //api.("", "");
-
-
-            //string asdasd =m.ZBGDZS(o);
-
-            //m.ZBGDH = "asdasd";
-
-
-            //SAPRes.SI_CUS_CUS1002Client sap = new SAPRes.SI_CUS_CUS1002Client();
-            //           //SAPRes.SI_CUS_CUS1002
-
-
-
             sap.SI_CUS_CUS1002Service api = new sap.SI_CUS_CUS1002Service();
-            api.Timeout = 1230;
+            api.Timeout = 6000000;
             api.Credentials = new NetworkCredential("soapcall", "soapcall");
+
             sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
 
-            //api.SI_CUS_CUS1002(m,);
+            //table
+            sap.DT_CUS_CUS1002_REQITEMORDER order = new sap.DT_CUS_CUS1002_REQITEMORDER();
+            sap.DT_CUS_CUS1002_REQITEMORDER order1 = new sap.DT_CUS_CUS1002_REQITEMORDER();
 
+            order.ZBGDH = "1";
+            order.ZBGDZS = "2";
+            order.ZMYFS = "3";
 
-            sap.DT_CUS_CUS1002_REQITEMORDER data = new sap.DT_CUS_CUS1002_REQITEMORDER();
-            //DT_CUS_CUS1002_REQ
+            order1.ZBGDH = "a";
+            order1.ZBGDZS = "b";
+            order1.ZMYFS = "c";
 
-            //sap;
-            //data.ZBGDH()
+            List<sap.DT_CUS_CUS1002_REQITEMORDER> orderList = new List<sap.DT_CUS_CUS1002_REQITEMORDER>();
+            orderList.Add(order);
+            orderList.Add(order1);
 
+            m.EVENT_CODE = "ZSXBSJ";
+            m.FWO_ID = "12312312";
+            m.FOO_ID = "12312312";
+            m.EVENT_DAT = "12312312";
+            m.ORDER = orderList.ToArray();
 
-            //api.SI_CUS_CUS1002(req);
-            //req.ZBGDH
+            sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+            mlist[0] = m;
 
-            //Z1I_HR_00034.SI_HR_SCHEDULEINFOService api = new Z1I_HR_00034.SI_HR_SCHEDULEINFOService();
-            //api.Timeout = ECC_WS_TIMEOUT;
-            //api.Credentials = new NetworkCredential(ECC_WS_USER, ECC_WS_PWD);
+            sap.DT_CUS_CUS1002_RES res = api.SI_CUS_CUS1002(mlist);
 
-            //Z1I_HR_00034.DT_HR_SCHEDULEINFO_REQT_BCITEM[] items = new Z1I_HR_00034.DT_HR_SCHEDULEINFO_REQT_BCITEM[param.Length];
-
-
-            ////循环调用接口提交
-            //for (int i = 0; i < param.Length; i++)
-            //{
-            //    Hashtable p = param[i];
-            //    Z1I_HR_00034.DT_HR_SCHEDULEINFO_REQT_BCITEM item = new Z1I_HR_00034.DT_HR_SCHEDULEINFO_REQT_BCITEM();
-            //    item.PERNR = (string)p["StaffKey"];
-            //    item.ZBCRQ = (string)p["SDate"];
-            //    item.TPROG = (string)p["BC"];
-            //    item.BEGDA = (string)p["SDate"];
-            //    item.ENDDA = (string)p["SDate"];
-
-            //    items[i] = item;
-
-
-            //}
-
-            //Z1I_HR_00034.DT_HR_SCHEDULEINFO_REQ req = new Z1I_HR_00034.DT_HR_SCHEDULEINFO_REQ();
-            //req.ACTION = "2";
-            //Z1I_HR_00034.DT_HR_SCHEDULEINFO_REQINFO reqinfo = new Z1I_HR_00034.DT_HR_SCHEDULEINFO_REQINFO
-            //{
-
-            //};
-
-            //req.INFO = new Z1I_HR_00034.DT_HR_SCHEDULEINFO_REQINFO[] { reqinfo };
-            //req.T_BC = items;
-
-            //Z1I_HR_00034.DT_HR_SCHEDULEINFO_RES res = api.SI_HR_SCHEDULEINFO(req);
-
-            //Z1I_HR_00034.DT_HR_SCHEDULEINFO_REST_BCITEM[] T_BC = res.T_BC;
-
-            return "1";
+            return View();
         }
 
     }
