@@ -141,7 +141,7 @@ namespace SceneOfCustoms.Controllers
             DataTable dt;
             ServiceReference1.OrderEn DZOrder = new ServiceReference1.OrderEn();
 
-            DZOrder.CUSNO = ListOrder[0].CUSNO; //企业编号
+            DZOrder.CUSNO = ListOrder[0].CODE; //企业编号
             DZOrder.REPNO = ""; //申报单位编号   --
             DZOrder.ENTRUSTTYPE = GetENTRUSTTYPEID(ListOrder, ListOrder[0].BUSITYPE); //委托类型代码
 
@@ -202,8 +202,13 @@ namespace SceneOfCustoms.Controllers
             //毛重
             DZOrder.GOODSGW = decimal.Parse(ListOrder[0].GOODSWEIGHT);
 
+
             //净重
-            DZOrder.GOODSNW = decimal.Parse(ListOrder[0].CHECKEDWEIGHT);
+            //if (string.IsNullOrEmpty(ListOrder[0].CHECKEDWEIGHT))
+            //{
+            //    DZOrder.GOODSNW = decimal.Parse(ListOrder[0].CHECKEDWEIGHT);
+
+            //}
 
             //包装种类名称
             DZOrder.PACKKINDNAME = ListOrder[0].PACKKIND;
@@ -211,12 +216,19 @@ namespace SceneOfCustoms.Controllers
             //订单要求 --
             DZOrder.ORDERREQUEST = ListOrder[0].ENTRUSTREQUEST;
 
+            //委托单位代码
+            DZOrder.CUSTOMERCODE = "123";
+            //委托单位代码
+            DZOrder.CUSTOMERNAME = "123";
+
+
             //申报单位  报关 报检
 
             if (DZOrder.ENTRUSTTYPE == "01")
             {
-                DZOrder.DECLREPCODE = ListOrder[0].REPUNITCODE.Substring(ListOrder[0].REPUNITCODE.Length - 10, 10);
-                DZOrder.DECLREPNAME = ListOrder[0].REPUNITCODE.Remove(ListOrder[0].REPUNITCODE.Length - 10, 10);
+
+                DZOrder.REPUNITCODE = ListOrder[0].REPUNITCODE.Substring(ListOrder[0].REPUNITCODE.Length - 10, 10);
+                DZOrder.REPUNITNAME = ListOrder[0].REPUNITCODE.Remove(ListOrder[0].REPUNITCODE.Length - 10, 10);
             }
             else if (DZOrder.ENTRUSTTYPE == "02")
             {
@@ -225,11 +237,14 @@ namespace SceneOfCustoms.Controllers
             }
             else if (DZOrder.ENTRUSTTYPE == "03")
             {
-                DZOrder.DECLREPCODE = ListOrder[0].REPUNITCODE.Substring(ListOrder[0].REPUNITCODE.Length - 10, 10);
-                DZOrder.DECLREPNAME = ListOrder[0].REPUNITCODE.Remove(ListOrder[0].REPUNITCODE.Length - 10, 10);
+                DZOrder.REPUNITCODE = ListOrder[0].REPUNITCODE.Substring(ListOrder[0].REPUNITCODE.Length - 10, 10);
+                DZOrder.REPUNITNAME = ListOrder[0].REPUNITCODE.Remove(ListOrder[0].REPUNITCODE.Length - 10, 10);
                 DZOrder.INSPREPCODE = ListOrder[0].REPUNITCODE.Substring(ListOrder[0].INSPUNITNAME.Length - 10, 10);
                 DZOrder.INSPREPNAME = ListOrder[0].REPUNITCODE.Remove(ListOrder[0].INSPUNITNAME.Length - 10, 10);
             }
+
+
+
 
             //总单号
             DZOrder.TOTALNO = ListOrder[0].TOTALNO;
@@ -419,14 +434,16 @@ namespace SceneOfCustoms.Controllers
             {
                 DZOrder = new ServiceReference1.OrderEn();
                 //转成单证的数据
-                //DZOrder = ZDOrderData(ListOrder);
+                DZOrder = ZDOrderData(ListOrder);
+                DZOrderList.Add(DZOrder);
 
                 //生成现场订单
-                XCOrderData(ListOrder);
-                //DZOrderList.Add(DZOrder);
+                //XCOrderData(ListOrder);
+
+
             }
 
-            //string text = danzheng.SendOrderData(DZOrderList.ToArray());
+            string text = danzheng.SendOrderData(DZOrderList.ToArray());
             return Order_Res;
         }
 
