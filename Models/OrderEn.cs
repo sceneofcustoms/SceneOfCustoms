@@ -69,7 +69,5 @@ namespace SceneOfCustoms.Models
         //public string DECLCARNO { get; set; }
 
         
-
-
     }
 }

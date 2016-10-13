@@ -10,10 +10,13 @@
       <xsd:complexType name="DT_CUS_CUS1002_REQ">
         <xsd:annotation>
           <xsd:documentation xml:lang="EN">与新报关报检系统集成</xsd:documentation>
-          <xsd:appinfo source="http://sap.com/xi/VersionID">9c09ff5d80b611e6a10f000001b9531a</xsd:appinfo>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">dda52a9c90e511e6ac79000001b9531a</xsd:appinfo>
         </xsd:annotation>
         <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ITEM">
+          <xsd:element maxOccurs="unbounded" name="ITEM">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">424c8b8d90e311e6c52c00e04c6807b6</xsd:appinfo>
+            </xsd:annotation>
             <xsd:complexType>
               <xsd:sequence>
                 <xsd:element name="FWO_ID" type="xsd:string">
