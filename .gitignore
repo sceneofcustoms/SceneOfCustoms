@@ -11,3 +11,4 @@ Web.config
 Web.Debug.config
 Web.Release.config
 Service References/
+bin/Microsoft.Web.Infrastructure.xml
