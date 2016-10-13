@@ -317,30 +317,61 @@ $(function () {
 
 //业务类型改字段状态 DLC 2016/10/12
 function formatBUSITYPE(val, row) {
-    if (val == 10) {
-        return "空运出口";
-    } else if (val == 11) {
-        return "空运进口";
-    } else if (val == 20) {
-        return "海运出口";
-    } else if (val == 21) {
-        return "海运进口";
-    } else if (val == 30) {
-        return "陆运出口";
-    } else if (val == 31) {
-        return "陆运进口";
-    } else if (val == 50) {
-        return "出口企业";
-    } else if (val == 51) {
-        return "进口企业";
+    switch(val)
+    {
+        case '10':
+            return "空运出口";
+            break;
+        case '11':
+            return "空运进口";
+            break;
+        case '20':
+            return "海运出口";
+            break;
+        case '21':
+            return "海运进口";
+            break;
+        case '30':
+            return "陆运出口";
+            break;
+        case '31':
+            return "陆运进口";
+            break;
+        case '40':
+            return "国内出口";
+            break;
+        case '41':
+            return "国内进口";
+            break;
+        case '50':
+            return "特殊区域出口";
+            break;
+        case '51':
+            return "特殊区域进口";
+            break;
     }
 }
 //是否法检改字段状态 DLC 2016/10/12
 function formatLAWCONDITION(val, row) {
-    if (val == 1) {
-        return "是";
-    } else {
-        return "否";
+    switch (val) {
+        case 1:
+            return "是";
+            break;
+        default:
+            return "否";
+    }
+}
+//报关方式改字段状态 DLC 2016/10/12
+function formatDECLWAY(val, row) {
+    switch (val) {
+        case 'L':
+            return "111";
+            break;
+        case 'M':
+            return "222";
+            break;
+        default:
+            return "333";
     }
 }
 
@@ -373,6 +404,7 @@ function getQueryString(name) {
     if (r != null) return unescape(r[2]); return null;
 }
 
+//编辑页保存
 function submitForm() {
     $('#OrderFrom').form('submit', {
         url: "/Order/SaveData",
