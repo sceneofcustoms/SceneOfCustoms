@@ -50,6 +50,15 @@ namespace SceneOfCustoms.Controllers
             string result = JsonConvert.SerializeObject(dt, iso);
             result = result.Substring(1, result.Length - 1);
             result = result.Substring(0, result.Length - 1);
+
+            //JObject data = JsonConvert.DeserializeObject<JObject>(result);
+            //string BUSITYPE = data.Value<string>("BUSITYPE");
+            //switch (BUSITYPE)
+            //{
+            //    case "20":
+            //        data.("BUSITYPE_VALUE") = "海运出口";
+            //        break;
+            //}
             return result;
         }
         //异常登记编辑框详细信息 add DLC 20161009

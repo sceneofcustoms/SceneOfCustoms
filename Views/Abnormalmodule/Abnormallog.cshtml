@@ -72,7 +72,7 @@
             view: detailview,
             detailFormatter: function (rowIndex, rowData) {
                 var ID = rowData.ID;
-                return "<table><thead><tr style='background-color: #F1F1F1;'><td>异常提交人</td><td>提交时间</td><td>一级异常</td><td>二级异常</td><td>相关责任人</td><td>联系方式</td><td>异常备注</td><td>异常回复部门</td><td>异常处理人</td><td>异常处理时间</td><td>异常处理结果</td><td>异常处理备注</td></tr></thead><tbody id='ddv" + rowIndex + "'></tbody></table>";
+                return "<table><thead><tr style='background-color: #F1F1F1;'><td></td><td>异常提交人</td><td>提交时间</td><td>一级异常</td><td>二级异常</td><td>相关责任人</td><td>联系方式</td><td>异常备注</td><td>异常回复部门</td><td>异常处理人</td><td>异常处理时间</td><td>异常处理结果</td><td>异常处理备注</td></tr></thead><tbody id='ddv" + rowIndex + "'></tbody></table>";
             },
             onExpandRow: function (rowIndex,rowData) {//列表左侧加号点击事件
                 loadDetailView(rowData.ID,rowIndex);
@@ -96,12 +96,13 @@
             data: { ID: id },
             dataType: "json",
             success: function (data) {
-                var height = data.length * 18+19;
+                var height = data.length * 25+27;
                 if (data.length == 0) {
-                    $('#ddv' + index).html('暂无异常登记！');
                     $('#ddv' + index).prev('thead').css('display', 'none');
+                    $('#ddv' + index).html('暂无异常登记！');
                 } else {
                     $.each(data, function (i, list) {
+                        var index = i + 1;
                         var SUBMITUSERNAME = list.SUBMITUSERNAME == null ? "" : list.SUBMITUSERNAME;
                         var SUBMITTIME = list.SUBMITTIME == null ? "" : list.SUBMITTIME;
                         var FIRSTLEVELTYPE = list.FIRSTLEVELTYPE == "请选择" ? "" : list.FIRSTLEVELTYPE;
@@ -114,7 +115,7 @@
                         var RESOLVETIME = list.RESOLVETIME == null ? "" : list.RESOLVETIME;
                         var RESOLVERESULT = list.RESOLVERESULT == "请选择" ? "" : list.RESOLVERESULT;
                         var RESOLVEREMARK = list.RESOLVEREMARK == null ? "" : list.RESOLVEREMARK;
-                        detailHtml += "<tr id='" + list.ID + "_" + list.FWONO + "' class='detailitem' ondblclick=AbnormallogEdit(" + list.ID + "," + list.FWONO + ")><td style='border-left: 1px dotted #DDDDDD;'>" + SUBMITUSERNAME + "</td><td>" + SUBMITTIME + "</td><td>" + FIRSTLEVELTYPE + "</td><td>" + SECONDLEVELTYPE + "</td><td>" + CHARGEUSERNAME + "</td><td>" + CONTACTMETHOD + "</td><td>" + EXCEPTIONINFO + "</td><td>" + RESOLVEDEPTNAME + "</td><td>" + RESOLVEUSERNAME + "</td><td>" + RESOLVETIME + "</td><td>" + RESOLVERESULT + "</td><td>" + RESOLVEREMARK + "</td></tr>";
+                        detailHtml += "<tr id='" + list.ID + "_" + list.FWONO + "' class='detailitem' ondblclick=AbnormallogEdit(" + list.ID + "," + list.FWONO + ")><td style='border-left: 1px dotted #DDDDDD;'>" + index + "</td><td>" + SUBMITUSERNAME + "</td><td>" + SUBMITTIME + "</td><td>" + FIRSTLEVELTYPE + "</td><td>" + SECONDLEVELTYPE + "</td><td>" + CHARGEUSERNAME + "</td><td>" + CONTACTMETHOD + "</td><td>" + EXCEPTIONINFO + "</td><td>" + RESOLVEDEPTNAME + "</td><td>" + RESOLVEUSERNAME + "</td><td>" + RESOLVETIME + "</td><td>" + RESOLVERESULT + "</td><td>" + RESOLVEREMARK + "</td></tr>";
                     });
                     $('#ddv' + index).html(detailHtml);
                     $('#datagrid-row-r2-1-' + index).next('tr').css('height', +height + 'px');
@@ -129,6 +130,9 @@
 <style>
     .datagrid-row-detail td {
         padding: 0 5px;
+    }
+    .datagrid-row-detail tr {
+        height: 25px;
     }
     .datagrid-row-detail thead td {
         color: #777;
