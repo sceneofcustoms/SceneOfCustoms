@@ -35,12 +35,12 @@
 
 //3 查询条件  --操作人
 var search_operator = [
-    { code: 'jiedan', name: '报关人', selected: true },
-    { code: 'lihuo', name: '删单人' },
-    { code: 'jihuabaoguan', name: '改单人' },
-    { code: 'lihuoziliaoqiquan', name: '查验人' },
-    { code: 'baoguan', name: '单证放行人' },
-    { code: 'danzhengfangxing', name: '实物放行人' }
+    { code: 'BAOGUANUSERNAME', name: '报关人', selected: true },
+    { code: 'SHANDANKAISHIUSERNAME', name: '删单人' },
+    { code: 'GAIDANKAISHIUSERNAME', name: '改单人' },
+    { code: 'CHAYANSTARTUSERNAME', name: '查验人' },
+    { code: 'DANZHENGFANGXINGUSERNAME', name: '单证放行人' },
+    { code: 'SHIWUFANGXINGUSERNAME', name: '实物放行人' }
 ];
 
 //4 查询条件  --海关通关状态
@@ -64,16 +64,16 @@ var is_check = [
 
 //5 查询选择值  --业务类型
 var businessin_object = [
-    { code: '0', name: '空进' },
-    { code: '1', name: '海进' },
-    { code: '2', name: '陆进' },
+    { code: '11', name: '空进' },
+    { code: '21', name: '海进' },
+    { code: '31', name: '陆进' },
 ];
 
 //5 查询选择值  --业务类型
 var businessout_object = [
-    { code: '0', name: '空出' },
-    { code: '1', name: '海出' },
-    { code: '2', name: '陆出' },
+    { code: '10', name: '空出' },
+    { code: '20', name: '海出' },
+    { code: '30', name: '陆出' },
 ];
 
 //6 查询搜索值  --业务方式
@@ -377,6 +377,22 @@ function formatDECLWAY(val, row) {
 
 //搜索列表
 function search_form() {
+    var o = {};
+    var str = $('#searchform').serializeArray();        //form表单信息序列化
+    $.each(str, function () {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });                                     //form表单信息转换为json格式
+    var info = JSON.stringify(o);           //json格式转换为字符串传值
+    $('#datagrid').datagrid({
+        queryParams: { data: info },
+    });
 }
 
 

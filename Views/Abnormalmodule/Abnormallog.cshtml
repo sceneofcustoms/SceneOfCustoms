@@ -57,9 +57,7 @@
             valueField: 'code',
             textField: 'name'
         });
-        //获取异常数量
-        //$('#Abnormallogdatagrid').form('load', '/Abnormalmodule/AbnormallogYcnum?FWONO=' + rowData.ID);
-
+        //展开异常登记列表
         $('#Abnormallogdatagrid').datagrid({
             url: '/Order/GetData',
             rownumbers: true,

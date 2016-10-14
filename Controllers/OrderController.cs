@@ -84,12 +84,46 @@ namespace SceneOfCustoms.Controllers
         [HttpGet]
         public string GetData()
         {
-            string BUSITYPE = Request["BUSITYPE"];
+            string BUSITYPE = "";
             int PageSize = Convert.ToInt32(Request.Params["rows"]);
             int Page = Convert.ToInt32(Request.Params["page"]);
             int total = 0;
             string sql = "select t.* from list_order  t where 1=1  ";
-
+            //搜索查询 DLC 2016/10/14
+            string data = Request["data"];
+            if (data != null)
+            {
+                JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
+                BUSITYPE = jo.Value<string>("BUSITYPE");
+                if (jo.Value<string>("businessin_object") != "")
+                {
+                    sql += " AND BUSITYPE = '" + jo.Value<string>("businessin_object") + "' ";
+                }
+                if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
+                {
+                    sql += " AND " + jo.Value<string>("ordercode") + " ='" + jo.Value<string>("ordercode_value") + "'";
+                }
+                if (jo.Value<string>("oprname_value") != "")
+                {
+                    sql += " AND " + jo.Value<string>("oprname") + " ='" + jo.Value<string>("oprname_value") + "'";
+                }
+                if (jo.Value<string>("startdate") != "")
+                {
+                    sql += " AND " + jo.Value<string>("orderdate") + " >= to_date('" + jo.Value<string>("startdate") + "','yyyy-MM-dd')";
+                }
+                if (jo.Value<string>("stopdate") != "")
+                {
+                    sql += " AND " + jo.Value<string>("orderdate") + " <= to_date('" + jo.Value<string>("stopdate") + "','yyyy-MM-dd')";
+                }
+                if (jo.Value<string>("CUSTOMDISTRICTCODE") != "")
+                {
+                    sql += " AND CUSTOMDISTRICTCODE = '" + jo.Value<string>("CUSTOMDISTRICTCODE") + "' ";
+                }
+            }
+            else { 
+                BUSITYPE = Request["BUSITYPE"];
+            }
+            //end
             switch (BUSITYPE)
             {
                 case "ONEIN":
