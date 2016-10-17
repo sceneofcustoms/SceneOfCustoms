@@ -78,8 +78,8 @@ var businessout_object = [
 
 //6 查询搜索值  --业务方式
 var service_model = [
-    { code: '1', name: '进口' },
-    { code: '0', name: '出口' },
+    { code: '41', name: '进口' },
+    { code: '40', name: '出口' },
 ];
 
 //7 查询文档类型
@@ -109,9 +109,11 @@ var declare_type = [
 
 //9 查询 报关方式
 var declaration_type = [
-       { code: '1', name: '逐笔' },
-       { code: '2', name: '转厂' },
-       { code: '3', name: '集中' }
+       { code: 'W', name: '无纸报关' },
+       { code: 'D', name: '无纸带清单报关' },
+       { code: 'L', name: '有纸带清单报关' },
+       { code: 'O', name: '有纸报关' },
+       { code: 'M', name: '通关无纸化' }
 ];
 
 //10 转入 转出
@@ -361,17 +363,24 @@ function formatLAWCONDITION(val, row) {
             return "否";
     }
 }
-//报关方式改字段状态 DLC 2016/10/12
+//申报方式改字段状态 DLC 2016/10/12
 function formatDECLWAY(val, row) {
     switch (val) {
+        case 'W':
+            return "无纸报关";
+            break;
+        case 'D':
+            return "无纸带清单报关";
+            break;
         case 'L':
-            return "111";
+            return "有纸带清单报关";
+            break;
+        case 'O':
+            return "有纸报关";
             break;
         case 'M':
-            return "222";
+            return "通关无纸化";
             break;
-        default:
-            return "333";
     }
 }
 

@@ -50,12 +50,12 @@ namespace SceneOfCustoms.Controllers
             string result = JsonConvert.SerializeObject(dt, iso);
             result = result.Substring(1, result.Length - 1);
             result = result.Substring(0, result.Length - 1);
-            OrderEntity OrderEntity = JsonConvert.DeserializeObject<OrderEntity>(result);
-            string BUSITYPE = OrderEntity.BUSITYPE;
+            OrderEntity OrderEntity = JsonConvert.DeserializeObject<OrderEntity>(result);       //将json转换为实例化类的一个数组
+            string BUSITYPE = OrderEntity.BUSITYPE;                                             //取数组的一个值
             switch (BUSITYPE)
             {
                 case "10":
-                    OrderEntity.BUSITYPE = "空运出口";
+                    OrderEntity.BUSITYPE = "空运出口";                                          //更改数组的值
                     break;
                 case "11":
                     OrderEntity.BUSITYPE = "空运进口";
@@ -85,7 +85,7 @@ namespace SceneOfCustoms.Controllers
                     OrderEntity.BUSITYPE = "特殊区域进口";
                     break;
             }
-            var info =JsonConvert.SerializeObject(OrderEntity);
+            var info =JsonConvert.SerializeObject(OrderEntity);                                 //将数组再转换为json格式
             return info;
         }
         //异常登记编辑框详细信息 add DLC 20161009

@@ -95,15 +95,23 @@ namespace SceneOfCustoms.Controllers
             {
                 JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
                 BUSITYPE = jo.Value<string>("BUSITYPE");
-                if (jo.Value<string>("businessin_object") != "")
+                if (jo.Value<string>("businessin_object") != null && jo.Value<string>("businessin_object") != "")
                 {
                     sql += " AND BUSITYPE = '" + jo.Value<string>("businessin_object") + "' ";
+                }
+                if (jo.Value<string>("businessout_object") != null && jo.Value<string>("businessout_object") != "")
+                {
+                    sql += " AND BUSITYPE = '" + jo.Value<string>("businessout_object") + "' ";
+                }
+                if (jo.Value<string>("service_model") != null && jo.Value<string>("service_model") != "")
+                {
+                    sql += " AND BUSITYPE = '" + jo.Value<string>("service_model") + "' ";
                 }
                 if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
                 {
                     sql += " AND " + jo.Value<string>("ordercode") + " ='" + jo.Value<string>("ordercode_value") + "'";
                 }
-                if (jo.Value<string>("oprname_value") != "")
+                if (jo.Value<string>("oprname_value") != null && jo.Value<string>("oprname_value") != "")
                 {
                     sql += " AND " + jo.Value<string>("oprname") + " ='" + jo.Value<string>("oprname_value") + "'";
                 }
@@ -115,9 +123,21 @@ namespace SceneOfCustoms.Controllers
                 {
                     sql += " AND " + jo.Value<string>("orderdate") + " <= to_date('" + jo.Value<string>("stopdate") + "','yyyy-MM-dd')";
                 }
-                if (jo.Value<string>("CUSTOMDISTRICTCODE") != "")
+                if (jo.Value<string>("CUSTOMDISTRICTCODE") != null && jo.Value<string>("CUSTOMDISTRICTCODE") != "")
                 {
                     sql += " AND CUSTOMDISTRICTCODE = '" + jo.Value<string>("CUSTOMDISTRICTCODE") + "' ";
+                }
+                if (jo.Value<string>("declaration_type") != null && jo.Value<string>("declaration_type") != "")
+                {
+                    sql += " AND DECLWAY = '" + jo.Value<string>("declaration_type") + "' ";
+                }
+                if (jo.Value<string>("LAWCONDITION") != null && jo.Value<string>("LAWCONDITION") != "")
+                {
+                    sql += " AND LAWCONDITION = '" + jo.Value<string>("LAWCONDITION") + "' ";
+                }
+                if (jo.Value<string>("WOODPACKINGID") != null && jo.Value<string>("WOODPACKINGID") != "")
+                {
+                    sql += " AND WOODPACKINGID = '" + jo.Value<string>("WOODPACKINGID") + "' ";
                 }
             }
             else { 
@@ -128,21 +148,27 @@ namespace SceneOfCustoms.Controllers
             {
                 case "ONEIN":
                     sql += " and FOONO is not null  AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
+                    //sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
                     break;
                 case "ONEINBJ":
                     sql += " and FOONOBJ is not null  AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
+                    //sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
                     break;
                 case "ONEOUT":
                     sql += " and FOONO is not null  AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
+                    //sql += "  AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
                     break;
                 case "SPECIAL":
                     sql += " and FOONO is not null  and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
+                    //sql += "  and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
                     break;
                 case "BLC":
                     sql += " and FOONO is not null  and (BUSITYPE='40' OR BUSITYPE='41') ";
+                    //sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
                     break;
                 case "BLCBJ":
                     sql += " and FOONOBJ is not null  and (BUSITYPE='40' OR BUSITYPE='41') ";
+                    //sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
                     break;
             }
             string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";

@@ -1,27 +1,27 @@
 ﻿<script type="text/javascript">
     //1 查询条件 --日期
     var search_condition_date = [
-        { code: 'guanwujieshou', name: '关务接受日期', selected: true },
-        { code: 'baoruhaiguan', name: '报入海关日期' },
-        { code: 'shandankaishi', name: '删单开始日期' },
-        { code: 'shandanwancheng', name: '删单完成日期' },
-        { code: 'gaidankaishi', name: '改单开始日期' },
-        { code: 'gaidanwancheng', name: '改单完成日期' },
-        { code: 'chayanzhilingxiafa', name: '查验指令下发日期' },
-        { code: 'chayankaishi', name: '查验开始日期' },
-        { code: 'chayanwancheng', name: '查验完成日期' },
-        { code: 'danzhengfangxing', name: '单证放行日期' },
-        { code: 'shiwufangxing', name: '实物放行日期' },
+        { code: 'GUANWUJIESHOUTIME', name: '关务接受日期', selected: true },
+        { code: 'BAORUHAIGUANTIME', name: '报入海关日期' },
+        { code: 'SHANDANKAISHITIME', name: '删单开始日期' },
+        { code: 'SHANDANWANCHENGTIME', name: '删单完成日期' },
+        { code: 'GAIDANKAISHITIME', name: '改单开始日期' },
+        { code: 'GAIDANWANCHENGTIME', name: '改单完成日期' },
+        { code: 'CHAYANZHILINGXIAFATIME', name: '查验指令下发日期' },
+        { code: 'CHAYANSTARTTIME', name: '查验开始日期' },
+        { code: 'CHAYANENDTIME', name: '查验完成日期' },
+        { code: 'DANZHENGFANGXINGTIME', name: '单证放行日期' },
+        { code: 'SHIWUFANGXINGTIME', name: '实物放行日期' },
     ];
     //2 查询条件  --单据号
     var search_code = [
         {
-            code: 'jiedan', name: '业务编号', selected: true
+            code: 'CODE', name: '业务编号', selected: true
         },
-        { code: 'lihuo', name: '发票合同号' },
-        { code: 'koufangxing', name: '报关单号' },
-        { code: 'koufangxing', name: 'FWO订单号' },
-        { code: 'koufangxing', name: 'FO号' }
+        { code: 'CONTRACTNO', name: '发票合同号' },
+        { code: 'text', name: '报关单号' },
+        { code: 'FWONO', name: 'FWO订单号' },
+        { code: 'FOONO', name: 'FO号' }
     ];
     $(function () {
         loadListGrid('Declare/DomesticBlc_Edit');
@@ -49,7 +49,7 @@
                     <th data-options="field:'text',width:100">报关单号</th>
                     <th data-options="field:'text',width:100">出口报关单号</th>
                     <th data-options="field:'CONTRACTNO',width:100">发票合同号</th>
-                    <th data-options="field:'DECLWAY',width:70,formatter:formatDECLWAY">报关方式</th>                          
+                    <th data-options="field:'DECLWAY',width:70,formatter:formatDECLWAY">申报方式</th>                          
                 </tr>
             </thead>
             <thead>
@@ -77,6 +77,7 @@
         <div id="tb">
             <div class="tb_search">
                 <form id="searchform" method="post">
+                    <input type="hidden" name="BUSITYPE" value="BLC" />
                     <table>
                         <tr>
                             <td class="search_margin">
@@ -139,7 +140,7 @@
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
-                                    <option>报关方式</option>
+                                    <option>申报方式</option>
                                 </select>
                             </td>
                             <td>

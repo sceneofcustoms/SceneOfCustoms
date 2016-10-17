@@ -1,32 +1,31 @@
 ﻿<script type="text/javascript">
     //1 查询条件 --日期
     var search_condition_date = [
-        { code: 'guanwujieshou', name: '查验日期', selected: true },
-        { code: 'baoruhaiguan', name: '查验放行日期' },
-        { code: 'shandankaishi', name: '熏蒸日期' },
-        { code: 'shandanwancheng', name: '删单日期' },
-        { code: 'gaidankaishi', name: '改单日期' },
-        { code: 'gaidanwancheng', name: '报检日期' },
-        { code: 'chayanzhilingxiafa', name: '报检放行日期' }
+        { code: 'CHAYANZHILINGXIAFATIME', name: '查验日期', selected: true },
+        { code: 'CHAYANFANGXINGTIME', name: '查验放行日期' },
+        { code: 'XUNZHENGTIME', name: '熏蒸日期' },
+        { code: 'SHANDANKAISHITIME', name: '删单日期' },
+        { code: 'GAIDANKAISHITIME', name: '改单日期' },
+        { code: 'BAOJIANTIME', name: '报检日期' },
+        { code: 'BAOJIANFANGXINGTIME', name: '报检放行日期' }
     ];
 
     //2 查询条件  --单据号
     var search_code = [ 
         { 
-            code: 'jiedan', name: 'FWO订单号', selected: true
+            code: 'FWONO', name: 'FWO订单号', selected: true
         },
-        { code: 'koufangxing', name: 'FO号' },
-        { code: 'koufangxing', name: '分单号' },
-        { code: 'lihuo', name: '总单号' },
-        { code: 'lihuo', name: '分单号' },
-        { code: 'jihuabaoguan', name: '万达号' },
-        { code: 'koufangxing', name: '载货清单号' },
-        { code: 'koufangxing', name: '报检单号' },
-        { code: 'koufangxing', name: '业务编号' },
-        { code: 'shiwufangxing', name: '一程提运单号' },
-        { code: 'chuguanfeng', name: '二程提运单号' },
-        { code: 'chuguanfeng', name: '通关单号' },
-        { code: 'baoguan', name: '集装箱号' }
+        { code: 'FOCUSTOMSNO', name: 'FO号' },
+        { code: 'DIVIDENO', name: '分单号' },
+        { code: 'TOTALNO', name: '总单号' },
+        { code: 'text', name: '万达号' },
+        { code: 'MANIFEST', name: '载货清单号' },
+        { code: 'text', name: '报检单号' },
+        { code: 'CODE', name: '业务编号' },
+        { code: 'FIRSTLADINGBILLNO', name: '一程提运单号' },
+        { code: 'SECONDLADINGBILLNO', name: '二程提运单号' },
+        { code: 'CLEARANCENO', name: '通关单号' },
+        { code: 'CONTAINERNO', name: '集装箱号' }
     ];
 
 
@@ -56,7 +55,7 @@
                     <th data-options="field:'text',width:100,sortable:true">报检单号</th>
                     <th data-options="field:'INSPSTATUS',width:100,sortable:true">报检状态</th>
                     <th data-options="field:'DECLSTATUS',width:100,sortable:true">报关状态</th>
-                    <th data-options="field:'BUSITYPE',width:100">业务类型</th>
+                    <th data-options="field:'BUSITYPE',width:100,formatter:formatBUSITYPE">业务类型</th>
                 </tr>
             </thead>
             <thead> 
@@ -89,7 +88,8 @@
 
         <div id="tb">
             <div class="tb_search">
-                <div id="searchform" method="post">
+                <form id="searchform" method="post">
+                    <input type="hidden" name="BUSITYPE" value="ONEINBJ" />
                     <table>
                         <tr>
                             <td class="search_margin">
@@ -98,7 +98,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value" id="businessin_object" panelheight="auto" name="BUSITYPE"></select>
+                                <select class="easyui-combobox combobox_width value" id="businessin_object" panelheight="auto" name="businessin_object"></select>
                             </td>
 
                             <td class="search_margin">
@@ -141,7 +141,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value is_check" name="LAWCONDITION"></select>
+                                <select class="easyui-combobox combobox_width value is_check" name="LAWCONDITION" panelheight="auto"></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
@@ -150,7 +150,7 @@
                             </td>
 
                             <td>
-                                <select class="easyui-combobox combobox_width value is_check" name="WOODPACKINGID"></select>
+                                <select class="easyui-combobox combobox_width value is_check" name="WOODPACKINGID" panelheight="auto"></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
@@ -158,14 +158,14 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto"></select>
+                                <select class="easyui-combobox combobox_width value is_check" name="text" panelheight="auto"></select>
                             </td>
 
                         </tr>
 
-    
+
                     </table>
-                </div>
+                </form>
             </div>
             <div class="tb_but">
                 <div class="but_left">
