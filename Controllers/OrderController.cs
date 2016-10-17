@@ -76,7 +76,63 @@ namespace SceneOfCustoms.Controllers
             string result = JsonConvert.SerializeObject(dt, iso);
             result = result.Substring(1, result.Length - 1);
             result = result.Substring(0, result.Length - 1);
-            return result;
+
+            OrderEntity OrderEntity = JsonConvert.DeserializeObject<OrderEntity>(result);       //将json转换为实例化类的一个数组
+            string DECLWAY = OrderEntity.DECLWAY;                                             //取数组的一个值
+            switch (DECLWAY)
+            {
+                case "W":
+                    OrderEntity.DECLWAY = "无纸报关";                                          //更改数组的值
+                    break;
+                case "D":
+                    OrderEntity.DECLWAY = "无纸带清单报关";
+                    break;
+                case "L":
+                    OrderEntity.DECLWAY = "有纸带清单报关";
+                    break;
+                case "O":
+                    OrderEntity.DECLWAY = "有纸报关";
+                    break;
+                case "M":
+                    OrderEntity.DECLWAY = "通关无纸化";
+                    break;
+            }
+            string BUSITYPE = OrderEntity.BUSITYPE;                                             //取数组的一个值
+            switch (BUSITYPE)
+            {
+                case "10":
+                    OrderEntity.BUSITYPE = "空运出口";                                          //更改数组的值
+                    break;
+                case "11":
+                    OrderEntity.BUSITYPE = "空运进口";
+                    break;
+                case "20":
+                    OrderEntity.BUSITYPE = "海运出口";
+                    break;
+                case "21":
+                    OrderEntity.BUSITYPE = "海运进口";
+                    break;
+                case "30":
+                    OrderEntity.BUSITYPE = "陆运出口";
+                    break;
+                case "31":
+                    OrderEntity.BUSITYPE = "陆运进口";
+                    break;
+                case "40":
+                    OrderEntity.BUSITYPE = "国内出口";
+                    break;
+                case "41":
+                    OrderEntity.BUSITYPE = "国内进口";
+                    break;
+                case "50":
+                    OrderEntity.BUSITYPE = "特殊区域出口";
+                    break;
+                case "51":
+                    OrderEntity.BUSITYPE = "特殊区域进口";
+                    break;
+            }
+            var info = JsonConvert.SerializeObject(OrderEntity);                                 //将数组再转换为json格式
+            return info;
         }
 
 
@@ -148,29 +204,44 @@ namespace SceneOfCustoms.Controllers
             {
                 case "ONEIN":
                     sql += " and FOONO is not null  AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
-                    //sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
                     break;
                 case "ONEINBJ":
                     sql += " and FOONOBJ is not null  AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
-                    //sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
                     break;
                 case "ONEOUT":
                     sql += " and FOONO is not null  AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
-                    //sql += "  AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
                     break;
                 case "SPECIAL":
                     sql += " and FOONO is not null  and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
-                    //sql += "  and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
                     break;
                 case "BLC":
                     sql += " and FOONO is not null  and (BUSITYPE='40' OR BUSITYPE='41') ";
-                    //sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
                     break;
                 case "BLCBJ":
                     sql += " and FOONOBJ is not null  and (BUSITYPE='40' OR BUSITYPE='41') ";
-                    //sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
                     break;
             }
+            //switch (BUSITYPE)
+            //{
+            //    case "ONEIN":
+            //        sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
+            //        break;
+            //    case "ONEINBJ":
+            //        sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
+            //        break;
+            //    case "ONEOUT":
+            //        sql += "  AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
+            //        break;
+            //    case "SPECIAL":
+            //        sql += "  and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
+            //        break;
+            //    case "BLC":
+            //        sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
+            //        break;
+            //    case "BLCBJ":
+            //        sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
+            //        break;
+            //}
             string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
             string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
             sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
