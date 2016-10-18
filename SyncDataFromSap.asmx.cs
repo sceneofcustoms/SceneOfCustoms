@@ -42,45 +42,40 @@ namespace SceneOfCustoms
             int SaveSap_Res = SavaSapFoo(ld);
             if (SaveSap_Res == 0)
             {
-                MO.MSG_ID = 1;
-                MO.MSG_TYPE = "S";
-                MO.MSG_TXT = "保存指令失败";
-                MSList.Add(MO);
+                MSList.Add(set_MObj("E", "保存指令失败"));
+                save_log(MSList, ld, "1");
+                return MSList;
             }
-
 
             IDatabase db = SeRedis.redis.GetDatabase();//先将报文数据保存至缓存数据库
             db.ListRightPush("SyncDataFromSap", ld.ToString());
-            MSList = CheckData(ld);
-            if (MSList.Count <= 0)
+
+
+            if (ld.Count > 0)
             {
-                if (ld.Count > 0)
+                MSList = CheckData(ld);
+
+                if (MSList.Count <= 0)
                 {
                     int Order_Res = InsertOrder(ld);
                     if (Order_Res == 1)
                     {
-                        MO.MSG_ID = 1;
-                        MO.MSG_TYPE = "S";
-                        MO.MSG_TXT = "保存成功";
-                        MSList.Add(MO);
+                        MSList.Add(set_MObj("S", "保存成功"));
                     }
                     else
                     {
-                        MO.MSG_ID = 1;
-                        MO.MSG_TYPE = "E";
-                        MO.MSG_TXT = "保存失败";
-                        MSList.Add(MO);
+                        MSList.Add(set_MObj("E", "保存失败"));
                     }
+                }
 
-                }
-                else
-                {
-                    MO.MSG_ID = 1;
-                    MO.MSG_TYPE = "E";
-                    MO.MSG_TXT = "数据不可为空";
-                    MSList.Add(MO);
-                }
             }
+            else
+            {
+                MSList.Add(set_MObj("E", "没有指令"));
+            }
+
+
+            save_log(MSList, ld, "1");
 
             return MSList;
         }
@@ -94,7 +89,7 @@ namespace SceneOfCustoms
             string sql = "";
             foreach (OrderEn o in ld)
             {
-                
+
                 sql = @"insert into LIST_SAPFOO(
                       ID,
                       BUSITYPE,FWONO,FOONO,TOTALNO,
@@ -135,6 +130,50 @@ namespace SceneOfCustoms
         }
 
 
+        public Msgobj set_MObj(string MSG_TYPE, string MSG_TXT)
+        {
+            Msgobj MO = new Msgobj();
+            MO.MSG_ID = 1;
+            MO.MSG_TYPE = MSG_TYPE;
+            MO.MSG_TXT = MSG_TXT;
+            return MO;
+        }
+
+        //存日志  1 sap->现场  2 现场->单证云
+        private void save_log(List<Msgobj> MSList, List<OrderEn> ld, string source)
+        {
+            if (source == "1")
+            {
+                source = "SAP->新关务";
+            }
+            else if (source == "2")
+            {
+                source = "新关务->单证云";
+            }
+
+            string STATUS;
+            if (MSList[0].MSG_TYPE == "E")
+            {
+                STATUS = "失败";
+            }
+            else
+            {
+                STATUS = "成功";
+            }
+            string TEXT = "";
+            string FWONO = ld[0].CODE;
+            foreach (Msgobj m in MSList)
+            {
+                if (!string.IsNullOrEmpty(m.MSG_TXT))
+                {
+                    TEXT += "[" + m.MSG_TXT + "]";
+                }
+            }
+
+            string sql = @"INSERT INTO MSG (ID,FWONO,SOURCE,TEXT,STATUS,CREATETIME) VALUES (MSG_ID.Nextval,'" + FWONO + "','" + source + "','" + TEXT + "','" + STATUS + "',sysdate)";
+            DBMgr.ExecuteNonQuery(sql);
+        }
+
         //转换单证数据
         private ServiceReference1.OrderEn ZDOrderData(List<OrderEn> ListOrder)
         {
@@ -143,7 +182,7 @@ namespace SceneOfCustoms
             DataTable dt;
             ServiceReference1.OrderEn DZOrder = new ServiceReference1.OrderEn();
 
-            DZOrder.CUSNO = ListOrder[0].CUSNO; //企业编号
+            DZOrder.CUSNO = ListOrder[0].CODE; //企业编号
             DZOrder.REPNO = ""; //申报单位编号   --
             DZOrder.ENTRUSTTYPE = GetENTRUSTTYPEID(ListOrder, ListOrder[0].BUSITYPE); //委托类型代码
 
@@ -169,31 +208,42 @@ namespace SceneOfCustoms
             //申报方式代码
             sql = "select CODE, NAME from SYS_REPWAY where Enabled=1 and  NAME = '" + ListOrder[0].REPWAYID + "'";
             dt = DB_BaseData.GetDataTable(sql);
-            DZOrder.REPWAYID = dt.Rows[0]["CODE"] + "";
-            //申报方式名称 --
-            DZOrder.REPWAYNAME = dt.Rows[0]["NAME"] + "";
+            if (dt.Rows.Count > 0)
+            {
+                DZOrder.REPWAYID = dt.Rows[0]["CODE"] + "";
+                //申报方式名称 --
+                DZOrder.REPWAYNAME = dt.Rows[0]["NAME"] + "";
+            }
 
             //申报关区代码
             sql = "select CODE,NAME from BASE_CUSTOMDISTRICT  where ENABLED=1  and NAME='" + ListOrder[0].CUSTOMDISTRICTCODE + "' ORDER BY CODE";
             dt = DB_BaseData.GetDataTable(sql);
-            DZOrder.CUSTOMAREACODE = dt.Rows[0]["CODE"] + "";
-            //申报关区代码 --
-            DZOrder.CUSTOMAREANAME = dt.Rows[0]["NAME"] + "";
-
+            if (dt.Rows.Count > 0)
+            {
+                DZOrder.CUSTOMAREACODE = dt.Rows[0]["CODE"] + "";
+                //申报关区代码 --
+                DZOrder.CUSTOMAREANAME = dt.Rows[0]["NAME"] + "";
+            }
             //报关方式代码
             sql = "select CODE,NAME  from SYS_DECLWAY where enabled=1 and NAME ='" + ListOrder[0].DECLWAY + "'";
             dt = DB_BaseData.GetDataTable(sql);
-            DZOrder.DECLWAY = dt.Rows[0]["CODE"] + "";
-            //报关方式名称 --
-            DZOrder.DECLWAYNAME = dt.Rows[0]["NAME"] + "";
+            if (dt.Rows.Count > 0)
+            {
+                DZOrder.DECLWAY = dt.Rows[0]["CODE"] + "";
+                //报关方式名称 --
+                DZOrder.DECLWAYNAME = dt.Rows[0]["NAME"] + "";
+            }
 
             //经营单位代码
             name = ListOrder[0].BUSIUNITNAME.Remove(ListOrder[0].BUSIUNITNAME.Length - 10, 10);
             sql = "SELECT CODE,NAME FROM BASE_COMPANY where CODE is not null and enabled=1 and NAME ='" + name + "'";
             dt = DB_BaseData.GetDataTable(sql);
-            DZOrder.BUSIUNITCODE = dt.Rows[0]["CODE"] + "";
-            //经营单位名称
-            DZOrder.BUSIUNITNAME = dt.Rows[0]["NAME"] + "";
+            if (dt.Rows.Count > 0)
+            {
+                DZOrder.BUSIUNITCODE = dt.Rows[0]["CODE"] + "";
+                //经营单位名称
+                DZOrder.BUSIUNITNAME = dt.Rows[0]["NAME"] + "";
+            }
 
             //经营单位社会号
             DZOrder.BUSIUNITNUM = "";
@@ -204,8 +254,13 @@ namespace SceneOfCustoms
             //毛重
             DZOrder.GOODSGW = decimal.Parse(ListOrder[0].GOODSWEIGHT);
 
+
             //净重
-            DZOrder.GOODSNW = decimal.Parse(ListOrder[0].CHECKEDWEIGHT);
+            //if (string.IsNullOrEmpty(ListOrder[0].CHECKEDWEIGHT))
+            //{
+            //    DZOrder.GOODSNW = decimal.Parse(ListOrder[0].CHECKEDWEIGHT);
+
+            //}
 
             //包装种类名称
             DZOrder.PACKKINDNAME = ListOrder[0].PACKKIND;
@@ -213,10 +268,17 @@ namespace SceneOfCustoms
             //订单要求 --
             DZOrder.ORDERREQUEST = ListOrder[0].ENTRUSTREQUEST;
 
+            //委托单位代码
+            DZOrder.CUSTOMERCODE = "3223980001";
+            //委托单位代码
+            DZOrder.CUSTOMERNAME = "昆山吉时报关有限公司";
+
+
             //申报单位  报关 报检
 
             if (DZOrder.ENTRUSTTYPE == "01")
             {
+
                 DZOrder.REPUNITCODE = ListOrder[0].REPUNITCODE.Substring(ListOrder[0].REPUNITCODE.Length - 10, 10);
                 DZOrder.REPUNITNAME = ListOrder[0].REPUNITCODE.Remove(ListOrder[0].REPUNITCODE.Length - 10, 10);
             }
@@ -232,6 +294,9 @@ namespace SceneOfCustoms
                 DZOrder.INSPREPCODE = ListOrder[0].REPUNITCODE.Substring(ListOrder[0].INSPUNITNAME.Length - 10, 10);
                 DZOrder.INSPREPNAME = ListOrder[0].REPUNITCODE.Remove(ListOrder[0].INSPUNITNAME.Length - 10, 10);
             }
+
+
+
 
             //总单号
             DZOrder.TOTALNO = ListOrder[0].TOTALNO;
@@ -422,124 +487,169 @@ namespace SceneOfCustoms
                 DZOrder = new ServiceReference1.OrderEn();
                 //转成单证的数据
                 DZOrder = ZDOrderData(ListOrder);
+                DZOrderList.Add(DZOrder);
 
                 //生成现场订单
                 XCOrderData(ListOrder);
-                DZOrderList.Add(DZOrder);
+
+
             }
 
-            string text = danzheng.SendOrderData(DZOrderList.ToArray());
+            string DZ_res = danzheng.SendOrderData(DZOrderList.ToArray());
+            Msgobj MO = new Msgobj();
+            List<Msgobj> MSList = new List<Msgobj>();
+            if (DZ_res == "success")
+            {
+                MO.MSG_TYPE = "S";
+            }
+            else
+            {
+                MO.MSG_TYPE = "E";
+                MO.MSG_TXT = DZ_res;
+            }
+            MSList.Add(MO);
+            save_log(MSList, ld, "2");
+
             return Order_Res;
         }
 
         //检查数据
         private List<Msgobj> CheckData(List<OrderEn> ld)
         {
-            IDatabase db = SeRedis.redis.GetDatabase();
             DataTable dt;
             string sql = "";
-            Msgobj m;
             List<Msgobj> MsgobjList = new List<Msgobj>();
+            //判断委托类型
+            bool is_empty;
+            string ENTRUSTTYPEID = ld[0].ENTRUSTTYPEID;
+            if (ENTRUSTTYPEID == "")
+            {
+                is_empty = true;
+            }
+            else if (ENTRUSTTYPEID == "进口企业" || ENTRUSTTYPEID == "出口企业" || ENTRUSTTYPEID == "HUB仓进" || ENTRUSTTYPEID == "HUB仓出")
+            {
+                is_empty = false;
+            }
+            else
+            {
+                is_empty = true;
+            }
+            foreach (OrderEn o in ld)
+            {
+                if (is_empty)
+                {
+                    if (!string.IsNullOrEmpty(o.ENTRUSTTYPEID))
+                    {
+                        MsgobjList.Add(set_MObj("E", "委托方式有异常"));
+                        return MsgobjList;
+                    }
+
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(o.ENTRUSTTYPEID))
+                    {
+                        MsgobjList.Add(set_MObj("E", "委托方式有异常"));
+                        return MsgobjList;
+                    }
+
+                }
+
+            }
+
+
+            //验证一组单子是否正常
+            List<List<OrderEn>> GroupOrder = GroupByFoo(ld);
+            foreach (List<OrderEn> ListOrder in GroupOrder)
+            {
+                if (ListOrder.Count > 2)
+                {
+                    MsgobjList.Add(set_MObj("E", "指令数量异常"));
+                    return MsgobjList;
+                }
+                else if (ListOrder.Count == 2)
+                {
+                    if (ListOrder[0].FOONO.Length >= 4 && ListOrder[1].FOONO.Length >= 4)
+                    {
+                        string FOONO = ListOrder[0].FOONO.Substring(0, 4) + ListOrder[1].FOONO.Substring(0, 4);
+                        if (FOONO != "SOBGSOBJ" && FOONO != "SOBJSOBG")
+                        {
+                            MsgobjList.Add(set_MObj("E", "FOONO不符合"));
+                            return MsgobjList;
+                        }
+                    }
+                    else
+                    {
+                        MsgobjList.Add(set_MObj("E", "FOONO不符合"));
+                        return MsgobjList;
+                    }
+
+
+                }
+                else if (ListOrder.Count == 1)
+                {
+                    if (ListOrder[0].FOONO.Length >= 4)
+                    {
+                        string FOONO = ListOrder[0].FOONO.Substring(0, 4);
+                        if (FOONO != "SOBG" && FOONO != "SOBJ")
+                        {
+                            MsgobjList.Add(set_MObj("E", "FOONO(" + ListOrder[0].FOONO + ")不符合"));
+                            return MsgobjList;
+                        }
+                    }
+                    else
+                    {
+                        MsgobjList.Add(set_MObj("E", "FOONO(" + ListOrder[0].FOONO + ")不符合"));
+                        return MsgobjList;
+                    }
+
+                }
+            }
+
+
+            //报关单  报检单 
 
             foreach (OrderEn o in ld)
             {
                 if (string.IsNullOrEmpty(o.CODE))
                 {
-                    m = new Msgobj();
-                    m.MSG_ID = 1;
-                    m.MSG_TYPE = "E";
-                    m.MSG_TXT = "FWO不可为空";
-                    MsgobjList.Add(m);
+                    MsgobjList.Add(set_MObj("E", "FWO不可为空"));
                 }
 
                 if (string.IsNullOrEmpty(o.FOONO))
                 {
-                    m = new Msgobj();
-                    m.MSG_ID = 1;
-                    m.MSG_TYPE = "E";
-                    m.MSG_TXT = "FOONO不可为空";
-                    MsgobjList.Add(m);
-                }
-                else if (o.FOONO.Substring(0, 4) != "SOBG" && o.FOONO.Substring(0, 4) != "SOBJ")
-                {
-                    m = new Msgobj();
-                    m.MSG_ID = 1;
-                    m.MSG_TYPE = "E";
-                    m.MSG_TXT = "FOONO(" + o.FOONO + ")不符合";
-                    MsgobjList.Add(m);
+                    MsgobjList.Add(set_MObj("E", "FOONO不可为空"));
                 }
 
                 string BUSITYPE;
                 BUSITYPE = JudgeBusiType(o.BUSITYPE, o.ENTRUSTTYPEID);
                 if (string.IsNullOrEmpty(o.BUSITYPE))
                 {
-                    m = new Msgobj();
-                    m.MSG_ID = 1;
-                    m.MSG_TYPE = "E";
-                    m.MSG_TXT = "凭证类型不可为空";
-                    MsgobjList.Add(m);
+                    MsgobjList.Add(set_MObj("E", "凭证类型不可为空"));
                 }
                 else if (BUSITYPE == "0")
                 {
-                    m = new Msgobj();
-                    m.MSG_ID = 1;
-                    m.MSG_TYPE = "E";
-                    m.MSG_TXT = "凭证类型无法配";
-                    MsgobjList.Add(m);
+                    MsgobjList.Add(set_MObj("E", "凭证类型无法配"));
 
                 }
 
-                //委托类型
-                string ENTRUSTTYPEID = GetENTRUSTTYPEID(ld, BUSITYPE);
 
-                if (!string.IsNullOrEmpty(ENTRUSTTYPEID))
+                //报关申报单位
+                if (o.FOONO.Substring(0, 4) == "SOBG" && string.IsNullOrEmpty(o.REPUNITCODE))
                 {
-                    if (ENTRUSTTYPEID == "01")
-                    {
-                        if (string.IsNullOrEmpty(o.REPUNITCODE))
-                        {
-                            m = new Msgobj();
-                            m.MSG_ID = 1;
-                            m.MSG_TYPE = "E";
-                            m.MSG_TXT = "报关申报单位不可为空";
-                            MsgobjList.Add(m);
-                        }
+                    MsgobjList.Add(set_MObj("E", "报关申报单位不可为空"));
+                }
 
-                    }
-                    else if (ENTRUSTTYPEID == "02")
-                    {
-                        if (string.IsNullOrEmpty(o.INSPUNITNAME))
-                        {
-                            m = new Msgobj();
-                            m.MSG_ID = 1;
-                            m.MSG_TYPE = "E";
-                            m.MSG_TXT = "报检申报单位不可为空";
-                            MsgobjList.Add(m);
-                        }
-                    }
-                    else if (ENTRUSTTYPEID == "03")
-                    {
-
-                        if (string.IsNullOrEmpty(o.REPUNITCODE) || string.IsNullOrEmpty(o.INSPUNITNAME))
-                        {
-                            m = new Msgobj();
-                            m.MSG_ID = 1;
-                            m.MSG_TYPE = "E";
-                            m.MSG_TXT = "报关申报单位/报检申报单位不可为空";
-                            MsgobjList.Add(m);
-                        }
-                    }
-
+                //报检申报单位
+                if (o.FOONO.Substring(0, 4) == "SOBJ" && string.IsNullOrEmpty(o.INSPUNITNAME))
+                {
+                    MsgobjList.Add(set_MObj("E", "报检申报单位不可为空"));
                 }
 
 
                 if (string.IsNullOrEmpty(o.REPWAYID))
                 {
-                    m = new Msgobj();
-                    m.MSG_ID = 1;
-                    m.MSG_TYPE = "E";
-                    m.MSG_TXT = "申报方式不可为空";
-                    MsgobjList.Add(m);
+                    MsgobjList.Add(set_MObj("E", "申报方式不可为空"));
                 }
                 else
                 {
@@ -548,21 +658,13 @@ namespace SceneOfCustoms
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
                     {
-                        m = new Msgobj();
-                        m.MSG_ID = 1;
-                        m.MSG_TYPE = "E";
-                        m.MSG_TXT = "申报方式(" + o.REPWAYID + ")无法匹配";
-                        MsgobjList.Add(m);
+                        MsgobjList.Add(set_MObj("E", "申报方式(" + o.REPWAYID + ")无法匹配"));
                     }
                 }
 
                 if (string.IsNullOrEmpty(o.CUSTOMDISTRICTCODE))
                 {
-                    m = new Msgobj();
-                    m.MSG_ID = 1;
-                    m.MSG_TYPE = "E";
-                    m.MSG_TXT = "申报关区不可为空";
-                    MsgobjList.Add(m);
+                    MsgobjList.Add(set_MObj("E", "申报关区不可为空"));
                 }
                 else
                 {
@@ -571,11 +673,7 @@ namespace SceneOfCustoms
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
                     {
-                        m = new Msgobj();
-                        m.MSG_ID = 1;
-                        m.MSG_TYPE = "E";
-                        m.MSG_TXT = "申报关区(" + o.CUSTOMDISTRICTCODE + ")无法匹配";
-                        MsgobjList.Add(m);
+                        MsgobjList.Add(set_MObj("E", "申报关区(" + o.CUSTOMDISTRICTCODE + ")无法匹配"));
                     }
 
                 }
@@ -584,11 +682,7 @@ namespace SceneOfCustoms
 
                 if (string.IsNullOrEmpty(o.DECLWAY))
                 {
-                    m = new Msgobj();
-                    m.MSG_ID = 1;
-                    m.MSG_TYPE = "E";
-                    m.MSG_TXT = "报关方式不可为空";
-                    MsgobjList.Add(m);
+                    MsgobjList.Add(set_MObj("E", "报关方式不可为空"));
                 }
                 else
                 {
@@ -596,21 +690,13 @@ namespace SceneOfCustoms
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
                     {
-                        m = new Msgobj();
-                        m.MSG_ID = 1;
-                        m.MSG_TYPE = "E";
-                        m.MSG_TXT = "申报关区(" + o.DECLWAY + ")无法匹配";
-                        MsgobjList.Add(m);
+                        MsgobjList.Add(set_MObj("E", "申报关区(" + o.DECLWAY + ")无法匹配"));
                     }
                 }
 
                 if (string.IsNullOrEmpty(o.PORTCODE))
                 {
-                    m = new Msgobj();
-                    m.MSG_ID = 1;
-                    m.MSG_TYPE = "E";
-                    m.MSG_TXT = "口岸关区不可为空";
-                    MsgobjList.Add(m);
+                    MsgobjList.Add(set_MObj("E", "口岸关区不可为空"));
                 }
                 else
                 {
@@ -618,21 +704,13 @@ namespace SceneOfCustoms
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
                     {
-                        m = new Msgobj();
-                        m.MSG_ID = 1;
-                        m.MSG_TYPE = "E";
-                        m.MSG_TXT = "口岸关区(" + o.PORTCODE + ")无法匹配";
-                        MsgobjList.Add(m);
+                        MsgobjList.Add(set_MObj("E", "口岸关区(" + o.PORTCODE + ")无法匹配"));
                     }
                 }
 
                 if (string.IsNullOrEmpty(o.BUSIUNITNAME))
                 {
-                    m = new Msgobj();
-                    m.MSG_ID = 1;
-                    m.MSG_TYPE = "E";
-                    m.MSG_TXT = "经营单位不可为空";
-                    MsgobjList.Add(m);
+                    MsgobjList.Add(set_MObj("E", "经营单位不可为空"));
                 }
                 else
                 {
@@ -641,42 +719,26 @@ namespace SceneOfCustoms
                     dt = DB_BaseData.GetDataTable(sql);
                     if (dt.Rows.Count <= 0)
                     {
-                        m = new Msgobj();
-                        m.MSG_ID = 1;
-                        m.MSG_TYPE = "E";
-                        m.MSG_TXT = "经营单位(" + o.BUSIUNITNAME + ")无法匹配";
-                        MsgobjList.Add(m);
+                        MsgobjList.Add(set_MObj("E", "经营单位(" + o.BUSIUNITNAME + ")无法匹配"));
                     }
                 }
 
 
                 if (string.IsNullOrEmpty(o.GOODSWEIGHT))
                 {
-                    m = new Msgobj();
-                    m.MSG_ID = 1;
-                    m.MSG_TYPE = "E";
-                    m.MSG_TXT = "毛重不可为空";
-                    MsgobjList.Add(m);
+                    MsgobjList.Add(set_MObj("E", "毛重不可为空"));
                 }
 
 
                 if (string.IsNullOrEmpty(o.GOODSNUM))
                 {
-                    m = new Msgobj();
-                    m.MSG_ID = 1;
-                    m.MSG_TYPE = "E";
-                    m.MSG_TXT = "件数不可为空";
-                    MsgobjList.Add(m);
+                    MsgobjList.Add(set_MObj("E", "件数不可为空"));
                 }
 
 
                 if (string.IsNullOrEmpty(o.TRADEWAYCODES))
                 {
-                    m = new Msgobj();
-                    m.MSG_ID = 1;
-                    m.MSG_TYPE = "E";
-                    m.MSG_TXT = "贸易方式不可为空";
-                    MsgobjList.Add(m);
+                    MsgobjList.Add(set_MObj("E", "贸易方式不可为空"));
                 }
                 else
                 {
@@ -689,11 +751,7 @@ namespace SceneOfCustoms
                         dt = DB_BaseData.GetDataTable(sql);
                         if (dt.Rows.Count <= 0)
                         {
-                            m = new Msgobj();
-                            m.MSG_ID = 1;
-                            m.MSG_TYPE = "E";
-                            m.MSG_TXT = "贸易方式(" + arr[i] + ")无法匹配";
-                            MsgobjList.Add(m);
+                            MsgobjList.Add(set_MObj("E", "贸易方式(" + arr[i] + ")无法匹配"));
                         }
                     }
 
@@ -705,20 +763,12 @@ namespace SceneOfCustoms
                 {
                     if (string.IsNullOrEmpty(o.DIVIDENO))
                     {
-                        m = new Msgobj();
-                        m.MSG_ID = 1;
-                        m.MSG_TYPE = "E";
-                        m.MSG_TXT = "分单号不可为空";
-                        MsgobjList.Add(m);
+                        MsgobjList.Add(set_MObj("E", "分单号不可为空"));
                     }
 
                     if (string.IsNullOrEmpty(o.WOODPACKINGID))
                     {
-                        m = new Msgobj();
-                        m.MSG_ID = 1;
-                        m.MSG_TYPE = "E";
-                        m.MSG_TXT = "木质包装不可为空";
-                        MsgobjList.Add(m);
+                        MsgobjList.Add(set_MObj("E", "木质包装不可为空"));
                     }
 
                 }
@@ -729,29 +779,17 @@ namespace SceneOfCustoms
                 {
                     if (string.IsNullOrEmpty(o.SHIPNAME))
                     {
-                        m = new Msgobj();
-                        m.MSG_ID = 1;
-                        m.MSG_TYPE = "E";
-                        m.MSG_TXT = "船名不可为空";
-                        MsgobjList.Add(m);
+                        MsgobjList.Add(set_MObj("E", "船名不可为空"));
                     }
 
                     if (string.IsNullOrEmpty(o.FILGHTNO))
                     {
-                        m = new Msgobj();
-                        m.MSG_ID = 1;
-                        m.MSG_TYPE = "E";
-                        m.MSG_TXT = "航次不可为空";
-                        MsgobjList.Add(m);
+                        MsgobjList.Add(set_MObj("E", "航次不可为空"));
                     }
 
                     if (string.IsNullOrEmpty(o.GOODSTYPEID))
                     {
-                        m = new Msgobj();
-                        m.MSG_ID = 1;
-                        m.MSG_TYPE = "E";
-                        m.MSG_TXT = "货物类型不可为空";
-                        MsgobjList.Add(m);
+                        MsgobjList.Add(set_MObj("E", "货物类型不可为空"));
                     }
                 }
 
@@ -761,11 +799,7 @@ namespace SceneOfCustoms
                 {
                     if (string.IsNullOrEmpty(o.WOODPACKINGID))
                     {
-                        m = new Msgobj();
-                        m.MSG_ID = 1;
-                        m.MSG_TYPE = "E";
-                        m.MSG_TXT = "木质包装不可为空";
-                        MsgobjList.Add(m);
+                        MsgobjList.Add(set_MObj("E", "木质包装不可为空"));
                     }
                 }
 
@@ -885,9 +919,6 @@ namespace SceneOfCustoms
         }
 
 
-        private ActionResult Json(object p, JsonRequestBehavior jsonRequestBehavior)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

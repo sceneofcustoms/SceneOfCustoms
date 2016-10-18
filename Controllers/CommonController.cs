@@ -52,7 +52,7 @@ namespace SceneOfCustoms.Controllers
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             string sql = @"select * from LIST_SAPFOO";
-            DataTable dt = DBMgr.GetDataTable(Extension.GetPageSql(sql, "createtime", "desc", ref total, Convert.ToInt32(Request["start"]), Convert.ToInt32(Request["limit"])));
+            DataTable dt = DBMgr.GetDataTable(Extension.GetPageSql(sql, "id", "desc", ref total, Convert.ToInt32(Request["start"]), Convert.ToInt32(Request["limit"])));
             string filedata = JsonConvert.SerializeObject(dt, iso);
             return "{rows:" + filedata + ",total:" + total + "}";
         }
