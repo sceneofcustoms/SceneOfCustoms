@@ -50,42 +50,42 @@ namespace SceneOfCustoms.Controllers
             string result = JsonConvert.SerializeObject(dt, iso);
             result = result.Substring(1, result.Length - 1);
             result = result.Substring(0, result.Length - 1);
-            OrderEntity OrderEntity = JsonConvert.DeserializeObject<OrderEntity>(result);       //将json转换为实例化类的一个数组
-            string BUSITYPE = OrderEntity.BUSITYPE;                                             //取数组的一个值
+            JObject OrderArray = JsonConvert.DeserializeObject<JObject>(result);
+            string BUSITYPE = OrderArray.Value<string>("BUSITYPE");                                            //取数组的一个值
             switch (BUSITYPE)
             {
                 case "10":
-                    OrderEntity.BUSITYPE = "空运出口";                                          //更改数组的值
+                    OrderArray["BUSITYPE"] = "空运出口";                                          //更改数组的值
                     break;
                 case "11":
-                    OrderEntity.BUSITYPE = "空运进口";
+                    OrderArray["BUSITYPE"] = "空运进口";
                     break;
                 case "20":
-                    OrderEntity.BUSITYPE = "海运出口";
+                    OrderArray["BUSITYPE"] = "海运出口";
                     break;
                 case "21":
-                    OrderEntity.BUSITYPE = "海运进口";
+                    OrderArray["BUSITYPE"] = "海运进口";
                     break;
                 case "30":
-                    OrderEntity.BUSITYPE = "陆运出口";
+                    OrderArray["BUSITYPE"] = "陆运出口";
                     break;
                 case "31":
-                    OrderEntity.BUSITYPE = "陆运进口";
+                    OrderArray["BUSITYPE"] = "陆运进口";
                     break;
                 case "40":
-                    OrderEntity.BUSITYPE = "国内出口";
+                    OrderArray["BUSITYPE"] = "国内出口";
                     break;
                 case "41":
-                    OrderEntity.BUSITYPE = "国内进口";
+                    OrderArray["BUSITYPE"] = "国内进口";
                     break;
                 case "50":
-                    OrderEntity.BUSITYPE = "特殊区域出口";
+                    OrderArray["BUSITYPE"] = "特殊区域出口";
                     break;
                 case "51":
-                    OrderEntity.BUSITYPE = "特殊区域进口";
+                    OrderArray["BUSITYPE"] = "特殊区域进口";
                     break;
             }
-            var info =JsonConvert.SerializeObject(OrderEntity);                                 //将数组再转换为json格式
+            var info = JsonConvert.SerializeObject(OrderArray);                               //将数组再转换为json格式
             return info;
         }
         //异常登记编辑框详细信息 add DLC 20161009
