@@ -76,9 +76,9 @@
         <div id="tb">
             <div class="tb_search">
                 <form id="searchform" method="post">
+                    <input type="hidden" name="BUSITYPE" value="SPECIAL" />
                     <table>
                         <tr>
-
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
                                     <option>业务方式</option>
@@ -140,8 +140,8 @@
             </div>
             <div class="tb_but">
                 <div class="but_left">
-                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-refresh"></i> 批量更新</a>
-                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="fa fa-share-square-o" aria-hidden="true"></i> 导出</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="refresh_form()"><i class="icon-refresh"></i> 批量更新</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="export_form()"><i class="fa fa-share-square-o" aria-hidden="true"></i> 导出</a>
                 </div>
                 <div class="but_right">
                     <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-search"></i> 搜索</a>

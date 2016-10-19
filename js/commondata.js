@@ -383,7 +383,30 @@ function formatDECLWAY(val, row) {
             break;
     }
 }
-
+//数据导出
+function export_form() {
+    debugger;
+    var ids = "";
+    var BUSITYPE = $("input[name='BUSITYPE']").val();
+    var row = $('#datagrid').datagrid('getSelected');
+    if (row == null) {
+        $.messager.alert("提示", "请选择数据！");
+        return;
+    }
+    $(".datagrid-row-selected input[name='ID']").each(function () {
+        ids += this.value + ",";
+    });
+    var host = window.location.host;
+    $.ajax({
+        url: '/Order/testOut',                          // 跳转到 action
+        data: { "ids": ids, "BUSITYPE": BUSITYPE },
+        type: 'post',
+        dataType: 'json',
+        success: function (data) {
+            window.open("http://" + host + data.path);
+        },
+    });
+}
 //搜索列表
 function search_form() {
     var o = {};
@@ -403,8 +426,6 @@ function search_form() {
         queryParams: { data: info },
     });
 }
-
-
 //重置搜索表表单
 function reset_form() {
     $('.value').each(function (i) {
@@ -415,8 +436,6 @@ function reset_form() {
         $(this).textbox('setValue', '');
     });
 }
-
-
 function formatItem(row) {
     var s = '<span style="font-weight:bold">' + row.CODE + '</span> &nbsp;&nbsp;' +
             '<span style="color:#888">' + row.NAME + '</span>';
