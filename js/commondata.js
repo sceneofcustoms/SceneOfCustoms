@@ -363,6 +363,16 @@ function formatLAWCONDITION(val, row) {
             return "否";
     }
 }
+//木质包装改字段状态 DLC 2016/10/19
+function formatWOODPACKINGID(val, row) {
+    switch (val) {
+        case "1":
+            return "是";
+            break;
+        default:
+            return "否";
+    }
+}
 //申报方式改字段状态 DLC 2016/10/12
 function formatDECLWAY(val, row) {
     switch (val) {
