@@ -395,7 +395,6 @@ function formatDECLWAY(val, row) {
 }
 //数据导出
 function export_form() {
-    debugger;
     var ids = "";
     var BUSITYPE = $("input[name='BUSITYPE']").val();
     var row = $('#datagrid').datagrid('getSelected');

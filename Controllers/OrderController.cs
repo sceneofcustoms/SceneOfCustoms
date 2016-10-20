@@ -19,7 +19,7 @@ namespace SceneOfCustoms.Controllers
     //订单方法
     public class OrderController : Controller
     {
-        //一线进口导出明细
+        //报关一线进口导出明细
         public DataTable One_lineIn(string ids)
         {
             DataTable dt = new DataTable();
@@ -86,7 +86,7 @@ namespace SceneOfCustoms.Controllers
             }
             return dt;
         }
-        //一线出口导出明细
+        //报关一线出口导出明细
         public DataTable One_lineOut(string ids)
         {
             DataTable dt = new DataTable();
@@ -135,7 +135,7 @@ namespace SceneOfCustoms.Controllers
             }
             return dt;
         }
-        //国内结转导出明细
+        //报关国内结转导出明细
         public DataTable DomesticBlc(string ids)
         {
             DataTable dt = new DataTable();
@@ -194,7 +194,7 @@ namespace SceneOfCustoms.Controllers
             }
             return dt;
         }
-        //特殊监管导出明细
+        //报关特殊监管导出明细
         public DataTable SpecialSupervision(string ids)
         {
             DataTable dt = new DataTable();
@@ -239,6 +239,69 @@ namespace SceneOfCustoms.Controllers
             }
             return dt;
         }
+        //报检一线进口导出明细
+        public DataTable One_lineInbj(string ids)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("收货人");
+            dt.Columns.Add("一程提运单号");
+            dt.Columns.Add("二程提运单号");
+            dt.Columns.Add("总件数");
+            dt.Columns.Add("总重量");
+            dt.Columns.Add("业务编号");
+            dt.Columns.Add("报检单号");
+            dt.Columns.Add("FWO订单号");
+            dt.Columns.Add("FO号");
+            dt.Columns.Add("总单号");
+            dt.Columns.Add("分单号");
+            dt.Columns.Add("万达号");
+            dt.Columns.Add("载货清单号");
+            dt.Columns.Add("木质包装");
+            dt.Columns.Add("通关单标志");
+            dt.Columns.Add("通关单张数");
+            dt.Columns.Add("通关单号");
+            dt.Columns.Add("合同/发票号");
+            dt.Columns.Add("报检时间");
+            dt.Columns.Add("报检人");
+            dt.Columns.Add("放行时间");
+            dt.Columns.Add("放行人");
+            dt.Columns.Add("报关状态");
+            dt.Columns.Add("报检状态");
+            string IDS = ids.Substring(0, ids.LastIndexOf(","));
+            string sql = "select * from list_order where ID in(" + IDS + ")";
+            DataTable data_dt = DBMgr.GetDataTable(sql);
+            DataRow dr;
+            for (int i = 0; i < data_dt.Rows.Count; i++)
+            {
+                dr = dt.NewRow();
+                dr["收货人"] = data_dt.Rows[i]["BUSIUNITNAME"];
+                dr["一程提运单号"] = data_dt.Rows[i]["FIRSTLADINGBILLNO"];
+                dr["二程提运单号"] = data_dt.Rows[i]["SECONDLADINGBILLNO"];
+                dr["总件数"] = data_dt.Rows[i]["GOODSNUM"];
+                dr["总重量"] = data_dt.Rows[i]["GOODSWEIGHT"];
+                dr["业务编号"] = data_dt.Rows[i]["CODE"];
+                //dr["报检单号"] = data_dt.Rows[i]["text"];
+                dr["FWO订单号"] = data_dt.Rows[i]["FWONO"];
+                dr["FO号"] = data_dt.Rows[i]["FOONO"];
+                dr["总单号"] = data_dt.Rows[i]["TOTALNO"];
+                dr["分单号"] = data_dt.Rows[i]["DIVIDENO"];
+                //dr["万达号"] = data_dt.Rows[i]["text"];
+                dr["载货清单号"] = data_dt.Rows[i]["MANIFEST"];
+                dr["木质包装"] = data_dt.Rows[i]["WOODPACKINGID"];
+                //dr["通关单标志"] = data_dt.Rows[i]["text"];
+                //dr["通关单张数"] = data_dt.Rows[i]["text"];
+                dr["通关单号"] = data_dt.Rows[i]["CLEARANCENO"];
+                dr["合同/发票号"] = data_dt.Rows[i]["CONTRACTNO"];
+                dr["报检时间"] = data_dt.Rows[i]["BAOJIANTIME"];
+                //dr["报检人"] = data_dt.Rows[i]["text"];
+                dr["放行时间"] = data_dt.Rows[i]["BAOJIANFANGXINGTIME"];
+                dr["放行人"] = data_dt.Rows[i]["BAOJIANFANGXINGUSERNAME"];
+                dr["报关状态"] = data_dt.Rows[i]["DECLSTATUS"];
+                dr["报检状态"] = data_dt.Rows[i]["INSPSTATUS"];
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
 
         //导出数据
         [HttpPost]
@@ -253,24 +316,29 @@ namespace SceneOfCustoms.Controllers
             switch (BUSITYPE)
             {
                 case "ONEIN":
-                    path = "/Export/一线进口" + Nowtime + ".xls";
+                    path = "/Export/报关一线进口" + Nowtime + ".xls";
                     OutPath = Server.MapPath("~" + path);
                     dt = One_lineIn(IDS);
                     break;
                 case "ONEOUT":
-                    path = "/Export/一线出口" + Nowtime + ".xls";
+                    path = "/Export/报关一线出口" + Nowtime + ".xls";
                     OutPath = Server.MapPath("~" + path);
                     dt = One_lineOut(IDS);
                     break;
                 case "BLC":
-                    path = "/Export/国内结转" + Nowtime + ".xls";
+                    path = "/Export/报关国内结转" + Nowtime + ".xls";
                     OutPath = Server.MapPath("~" + path);
                     dt = DomesticBlc(IDS);
                     break;
                 case "SPECIAL":
-                    path = "/Export/特殊监管" + Nowtime + ".xls";
+                    path = "/Export/报关特殊监管" + Nowtime + ".xls";
                     OutPath = Server.MapPath("~" + path);
                     dt = SpecialSupervision(IDS);
+                    break;
+                case "ONEINBJ":
+                    path = "/Export/报检一线进口" + Nowtime + ".xls";
+                    OutPath = Server.MapPath("~" + path);
+                    dt = One_lineInbj(IDS);
                     break;
             }
             OutFileToDisk(dt, OutPath);
