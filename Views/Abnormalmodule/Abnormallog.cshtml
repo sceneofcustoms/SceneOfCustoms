@@ -8,27 +8,27 @@
     //2 查询条件  --单据号
     var search_code = [
         {
-            code: 'jiedan', name: '报关单号', selected: true
+            code: 'text', name: '报关单号', selected: true
         },
-        { code: 'koufangxing', name: '报检单号' },
-        { code: 'lihuo', name: '总单号' },
-        { code: 'lihuo', name: '分单号' },
-        { code: 'shiwufangxing', name: '一程提运单号' },
-        { code: 'chuguanfeng', name: '二程提运单号' },
-        { code: 'jihuabaoguan', name: '万达号' },
-        { code: 'koufangxing', name: '载货清单号' }
+        { code: 'text', name: '报检单号' },
+        { code: 'TOTALNO', name: '总单号' },
+        { code: 'DIVIDENO', name: '分单号' },
+        { code: 'FIRSTLADINGBILLNO', name: '一程提运单号' },
+        { code: 'SECONDLADINGBILLNO', name: '二程提运单号' },
+        { code: 'text', name: '万达号' },
+        { code: 'MANIFEST', name: '载货清单号' }
     ];
     //3 查询条件 --
     var BUSITYPE = [
-        { code: 'guanwujieshou', name: '空运进口' },
-        { code: 'guanwujieshou', name: '空运出口' },
-        { code: 'guanwujieshou', name: '海运进口' },
-        { code: 'guanwujieshou', name: '海运出口' },
-        { code: 'guanwujieshou', name: '陆运进口' },
-        { code: 'guanwujieshou', name: '陆运出口' },
-        { code: 'guanwujieshou', name: '国内结转' },
-        { code: 'baoruhaiguan', name: '叠加保税' },
-        { code: 'chayanzhilingxiafa', name: '特殊监管区' }
+        { code: '11', name: '空运进口' },
+        { code: '10', name: '空运出口' },
+        { code: '21', name: '海运进口' },
+        { code: '20', name: '海运出口' },
+        { code: '31', name: '陆运进口' },
+        { code: '30', name: '陆运出口' },
+        { code: 'GUONEIJIEZHUAN', name: '国内结转' },
+        { code: 'DIEJIABAOSHUI', name: '叠加保税' },
+        { code: 'TESHUJIANGUANQU', name: '特殊监管区' }
     ];
     var Abnormaltype = [
         { code: 'baoruhaiguan', name: '一级异常' },
@@ -58,7 +58,7 @@
             textField: 'name'
         });
         //展开异常登记列表
-        $('#Abnormallogdatagrid').datagrid({
+        $('#datagrid').datagrid({
             url: '/Order/GetData',
             rownumbers: true,
             dataType: 'json',
@@ -81,10 +81,10 @@
                     border: false,
                     cache: false,
                     onLoad: function () {
-                        $('#Abnormallogdatagrid').datagrid('fixDetailRowHeight', rowIndex);
+                        $('#datagrid').datagrid('fixDetailRowHeight', rowIndex);
                     }
                 });
-                $('#Abnormallogdatagrid').datagrid('fixDetailRowHeight', rowIndex);//加载之后固定高度
+                $('#datagrid').datagrid('fixDetailRowHeight', rowIndex);//加载之后固定高度
             }
         });
     })
@@ -140,7 +140,7 @@
 </style>
 <div class="ibox-content">
     <div class="table-responsive">
-        <table id="Abnormallogdatagrid" class="easyui-datagrid" title="异常登记" style="height:auto;min-height:500px;max-height:800px"
+        <table id="datagrid" class="easyui-datagrid" title="异常登记" style="height:auto;min-height:500px;max-height:800px"
                data-options="queryParams:{}">
             <thead>
                 <tr>
@@ -196,7 +196,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value" id="BUSITYPE" panelheight="auto" name="BUSITYPE"></select>
+                                <select class="easyui-combobox combobox_width value" id="BUSITYPE" panelheight="auto" name="YCBUSITYPE"></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
@@ -261,7 +261,7 @@
                 });
         }
         function Add_Abnormal() {
-            var row = $('#Abnormallogdatagrid').datagrid('getSelected');
+            var row = $('#datagrid').datagrid('getSelected');
             if (row == null) {
                 $.messager.alert("提示", "请选择数据！");
                 return;

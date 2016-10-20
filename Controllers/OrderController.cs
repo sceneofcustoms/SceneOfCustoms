@@ -302,7 +302,65 @@ namespace SceneOfCustoms.Controllers
             }
             return dt;
         }
-
+        //报检国内结转导出明细
+        public DataTable DomesticKnotbj(string ids)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("FWO订单号");
+            dt.Columns.Add("FO号");
+            dt.Columns.Add("业务编号");
+            dt.Columns.Add("报关单号");
+            dt.Columns.Add("实物放行时间");
+            dt.Columns.Add("实物放行人");
+            dt.Columns.Add("业务类型");
+            dt.Columns.Add("企业");
+            dt.Columns.Add("发票合同");
+            dt.Columns.Add("贸易方式");
+            dt.Columns.Add("件数");
+            dt.Columns.Add("重量");
+            dt.Columns.Add("关务接受时间");
+            dt.Columns.Add("报入海关时间");
+            dt.Columns.Add("报关人");
+            dt.Columns.Add("单证放行时间");
+            dt.Columns.Add("单证放行人");
+            dt.Columns.Add("报关状态");
+            dt.Columns.Add("报检状态");
+            dt.Columns.Add("报关方式");
+            dt.Columns.Add("关区代码");
+            dt.Columns.Add("海关通关状态");
+            string IDS = ids.Substring(0, ids.LastIndexOf(","));
+            string sql = "select * from list_order where ID in(" + IDS + ")";
+            DataTable data_dt = DBMgr.GetDataTable(sql);
+            DataRow dr;
+            for (int i = 0; i < data_dt.Rows.Count; i++)
+            {
+                dr = dt.NewRow();
+                dr["FWO订单号"] = data_dt.Rows[i]["FWONO"];
+                dr["FO号"] = data_dt.Rows[i]["FOONO"];
+                dr["业务编号"] = data_dt.Rows[i]["CODE"];
+                //dr["报关单号"] = data_dt.Rows[i]["ASSOCIATEPEDECLNO"];
+                dr["实物放行时间"] = data_dt.Rows[i]["SHIWUFANGXINGTIME"];
+                dr["实物放行人"] = data_dt.Rows[i]["SHIWUFANGXINGUSERNAME"];
+                dr["业务类型"] = data_dt.Rows[i]["BUSITYPE"];
+                dr["企业"] = data_dt.Rows[i]["BUSIUNITNAME"];
+                dr["发票合同"] = data_dt.Rows[i]["CONTRACTNO"];
+                dr["贸易方式"] = data_dt.Rows[i]["ASSOCIATETRADEWAY"];
+                dr["件数"] = data_dt.Rows[i]["GOODSNUM"];
+                dr["重量"] = data_dt.Rows[i]["GOODSWEIGHT"];
+                dr["关务接受时间"] = data_dt.Rows[i]["GUANWUJIESHOUTIME"];
+                dr["报入海关时间"] = data_dt.Rows[i]["BAORUHAIGUANTIME"];
+                dr["报关人"] = data_dt.Rows[i]["BAOGUANUSERNAME"];
+                dr["单证放行时间"] = data_dt.Rows[i]["DANZHENGFANGXINGTIME"];
+                dr["单证放行人"] = data_dt.Rows[i]["DANZHENGFANGXINGUSERNAME"];
+                dr["报关状态"] = data_dt.Rows[i]["DECLSTATUS"];
+                dr["报检状态"] = data_dt.Rows[i]["INSPSTATUS"];
+                dr["报关方式"] = data_dt.Rows[i]["DECLWAY"];
+                dr["关区代码"] = data_dt.Rows[i]["CUSTOMDISTRICTCODE"];
+                //dr["海关通关状态"] = data_dt.Rows[i]["text"];
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
         //导出数据
         [HttpPost]
         public ActionResult testOut()
@@ -339,6 +397,11 @@ namespace SceneOfCustoms.Controllers
                     path = "/Export/报检一线进口" + Nowtime + ".xls";
                     OutPath = Server.MapPath("~" + path);
                     dt = One_lineInbj(IDS);
+                    break;
+                case "BLCBJ":
+                    path = "/Export/报检国内结转" + Nowtime + ".xls";
+                    OutPath = Server.MapPath("~" + path);
+                    dt = DomesticKnotbj(IDS);
                     break;
             }
             OutFileToDisk(dt, OutPath);
@@ -535,9 +598,44 @@ namespace SceneOfCustoms.Controllers
                 {
                     sql += " AND BUSITYPE = '" + jo.Value<string>("businessout_object") + "' ";
                 }
+                string YCBUSITYPE = jo.Value<string>("YCBUSITYPE");
+                switch (YCBUSITYPE)
+                {
+                    case "10":
+                        sql += " AND BUSITYPE = '10' ";
+                        break;
+                    case "11":
+                        sql += " AND BUSITYPE = '11' ";
+                        break;
+                    case "20":
+                        sql += " AND BUSITYPE = '20' ";
+                        break;
+                    case "21":
+                        sql += " AND BUSITYPE = '21' ";
+                        break;
+                    case "30":
+                        sql += " AND BUSITYPE = '30' ";
+                        break;
+                    case "31":
+                        sql += " AND BUSITYPE = '31' ";
+                        break;
+                    case "GUONEIJIEZHUAN":
+                        sql += " AND ASSOCIATENO is not null and CORRESPONDNO is null";
+                        break;
+                    case "DIEJIABAOSHUI":
+                        sql += " AND ASSOCIATENO is not null and CORRESPONDNO is not null";
+                        break;
+                    case "TESHUJIANGUANQU":
+                        sql += " AND BUSITYPE='50' or BUSITYPE='51'";
+                        break;
+                }
                 if (jo.Value<string>("service_model") != null && jo.Value<string>("service_model") != "")
                 {
-                    sql += " AND BUSITYPE = '" + jo.Value<string>("service_model") + "' ";
+                    sql += " AND WTFS = '" + jo.Value<string>("service_model") + "' ";
+                }
+                if (jo.Value<string>("out_in") != null && jo.Value<string>("out_in") != "")
+                {
+                    sql += " AND WTFS = '" + jo.Value<string>("out_in") + "' ";
                 }
                 if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
                 {
@@ -577,48 +675,48 @@ namespace SceneOfCustoms.Controllers
                 BUSITYPE = Request["BUSITYPE"];
             }
             //end
-            switch (BUSITYPE)
-            {
-                case "ONEIN":
-                    sql += " and FOONO is not null  AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
-                    break;
-                case "ONEINBJ":
-                    sql += " and FOONOBJ is not null  AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
-                    break;
-                case "ONEOUT":
-                    sql += " and FOONO is not null  AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
-                    break;
-                case "SPECIAL":
-                    sql += " and FOONO is not null  and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
-                    break;
-                case "BLC":
-                    sql += " and FOONO is not null  and (BUSITYPE='40' OR BUSITYPE='41') ";
-                    break;
-                case "BLCBJ":
-                    sql += " and FOONOBJ is not null  and (BUSITYPE='40' OR BUSITYPE='41') ";
-                    break;
-            }
             //switch (BUSITYPE)
             //{
             //    case "ONEIN":
-            //        sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
+            //        sql += " and FOONO is not null  AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
             //        break;
             //    case "ONEINBJ":
-            //        sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
+            //        sql += " and FOONOBJ is not null  AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
             //        break;
             //    case "ONEOUT":
-            //        sql += "  AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
+            //        sql += " and FOONO is not null  AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
             //        break;
             //    case "SPECIAL":
-            //        sql += "  and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
+            //        sql += " and FOONO is not null  and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
             //        break;
             //    case "BLC":
-            //        sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
+            //        sql += " and FOONO is not null  and (BUSITYPE='40' OR BUSITYPE='41') ";
             //        break;
             //    case "BLCBJ":
-            //        sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
+            //        sql += " and FOONOBJ is not null  and (BUSITYPE='40' OR BUSITYPE='41') ";
             //        break;
             //}
+            switch (BUSITYPE)
+            {
+                case "ONEIN":
+                    sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
+                    break;
+                case "ONEINBJ":
+                    sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
+                    break;
+                case "ONEOUT":
+                    sql += "  AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
+                    break;
+                case "SPECIAL":
+                    sql += "  and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
+                    break;
+                case "BLC":
+                    sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
+                    break;
+                case "BLCBJ":
+                    sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
+                    break;
+            }
             string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
             string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
             sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
@@ -628,19 +726,12 @@ namespace SceneOfCustoms.Controllers
             string result = JsonConvert.SerializeObject(dt, iso);
             result = "{\"total\":" + total + ",\"rows\":" + result + "}";
             return result;
-
         }
-
-
         [HttpPost]
         public ActionResult SaveData(FormCollection form)
         {
-
             string ID = Request.Form["ID"];
             string sql = "update list_order set ";
-
-
-
             if (Request.Params.AllKeys.Contains("REPUNITCODE"))
             {
                 sql += "  REPUNITCODE =  '" + Request.Form["REPUNITCODE"] + "',";

@@ -78,8 +78,8 @@ var businessout_object = [
 
 //6 查询搜索值  --业务方式
 var service_model = [
-    { code: '41', name: '进口' },
-    { code: '40', name: '出口' },
+    { code: '进口企业', name: '进口' },
+    { code: '出口企业', name: '出口' },
 ];
 
 //7 查询文档类型
@@ -118,8 +118,8 @@ var declaration_type = [
 
 //10 转入 转出
 var out_in = [
-       { code: '1', name: '转出' },
-       { code: '1', name: '转入' }
+       { code: 'HUB 仓出', name: '转出' },
+       { code: 'HUB 仓进', name: '转入' }
 ];
 
 
