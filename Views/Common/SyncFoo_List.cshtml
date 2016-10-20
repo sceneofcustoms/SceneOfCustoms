@@ -6,7 +6,7 @@
 
 
         var store = Ext.create('Ext.data.JsonStore', {
-            fields: ['ID', 'BUSITYPE', 'CUSNO', 'CONTRACTNO', 'TOTALNO', 'DIVIDENO', 'WOODPACKINGID', 'GOODSNUM',
+            fields: ['ID', 'CODE', 'BUSITYPE', 'CUSNO', 'CONTRACTNO', 'TOTALNO', 'DIVIDENO', 'WOODPACKINGID', 'GOODSNUM',
               'GOODSWEIGHT', 'REPWAYID', 'CUSTOMDISTRICTCODE', 'PORTCODE', 'REPUNITCODE', 'INSPUNITCODE', 'CREATETIME',
               'ENTRUSTREQUEST', 'ENTRUSTTYPEID', 'MANIFEST', 'SHIPNAME', 'FILGHTNO', 'LADINGBILLNO', 'TRADEWAYCODES',
               'DECLWAY', 'PACKKIND', 'ARRIVEDNO', 'FIRSTLADINGBILLNO', 'SECONDLADINGBILLNO', 'GOODSTYPEID', 'BUSIUNITNAME',
@@ -61,6 +61,7 @@
             { xtype: 'rownumberer', width: 35 },
             { header: 'FWO号', dataIndex: 'FWONO', width: 200 },
             { header: 'FOO指令号', dataIndex: 'FOONO', width: 200 },
+            { header: '订单号', dataIndex: 'CODE', width: 200 },
             { header: 'ID', dataIndex: 'ID', hidden: true },
             { header: '业务类型', dataIndex: 'BUSITYPE', width: 150 },
             { header: '客户编号', dataIndex: 'CUSNO', width: 120 },

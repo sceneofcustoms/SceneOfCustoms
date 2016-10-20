@@ -72,9 +72,8 @@ namespace SceneOfCustoms.Models
         public string FGOODSUNIT { get; set; }
         public string SGOODSUNIT { get; set; }
         public string ALLOWDECLARE { get; set; }
+        public string ORDERCODE { get; set; }
 
 
-
-        
     }
 }

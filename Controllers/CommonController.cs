@@ -117,6 +117,8 @@ namespace SceneOfCustoms.Controllers
                 VALUES(LIST_ATTACHMENT_ID.Nextval,'/Upload/" + name + "','" + fileUpload.FileName + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','" + username + "',sysdate,1)";
                 DBMgr.ExecuteNonQuery(sql);
             }
+            //回传TM 接口
+            IFS.ZSZLSJ_TM(FWONO, FOONO);
             return Content("chunk uploaded", "text/plain");
         }
 

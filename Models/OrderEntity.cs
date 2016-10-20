@@ -685,8 +685,13 @@ namespace SceneOfCustoms.Models
         public string FOONOBJ { get; set; }
 
 
+
         //报关集装箱车辆信息表
         public List<Declcontainertruck> Declcontainertruck { get; set; }
+
+
+
+
 
     }
 }
