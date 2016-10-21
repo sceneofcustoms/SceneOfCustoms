@@ -717,48 +717,48 @@ namespace SceneOfCustoms.Controllers
                 BUSITYPE = Request["BUSITYPE"];
             }
             //end
-            //switch (BUSITYPE)
-            //{
-            //    case "ONEIN":
-            //        sql += " and FOONO is not null  AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
-            //        break;
-            //    case "ONEINBJ":
-            //        sql += " and FOONOBJ is not null  AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
-            //        break;
-            //    case "ONEOUT":
-            //        sql += " and FOONO is not null  AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
-            //        break;
-            //    case "SPECIAL":
-            //        sql += " and FOONO is not null  and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
-            //        break;
-            //    case "BLC":
-            //        sql += " and FOONO is not null  and (BUSITYPE='40' OR BUSITYPE='41') ";
-            //        break;
-            //    case "BLCBJ":
-            //        sql += " and FOONOBJ is not null  and (BUSITYPE='40' OR BUSITYPE='41') ";
-            //        break;
-            //}
             switch (BUSITYPE)
             {
                 case "ONEIN":
-                    sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
+                    sql += " and FOONO is not null  AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
                     break;
                 case "ONEINBJ":
-                    sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
+                    sql += " and FOONOBJ is not null  AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
                     break;
                 case "ONEOUT":
-                    sql += "  AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
+                    sql += " and FOONO is not null  AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
                     break;
                 case "SPECIAL":
-                    sql += "  and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
+                    sql += " and FOONO is not null  and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
                     break;
                 case "BLC":
-                    sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
+                    sql += " and FOONO is not null  and (BUSITYPE='40' OR BUSITYPE='41') ";
                     break;
                 case "BLCBJ":
-                    sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
+                    sql += " and FOONOBJ is not null  and (BUSITYPE='40' OR BUSITYPE='41') ";
                     break;
             }
+            //switch (BUSITYPE)
+            //{
+            //    case "ONEIN":
+            //        sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
+            //        break;
+            //    case "ONEINBJ":
+            //        sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
+            //        break;
+            //    case "ONEOUT":
+            //        sql += "  AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
+            //        break;
+            //    case "SPECIAL":
+            //        sql += "  and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
+            //        break;
+            //    case "BLC":
+            //        sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
+            //        break;
+            //    case "BLCBJ":
+            //        sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
+            //        break;
+            //}
             string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
             string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
             sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
