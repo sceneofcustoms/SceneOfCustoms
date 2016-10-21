@@ -36,50 +36,10 @@ namespace SceneOfCustoms
         <br>28实际毛重(ACTUALGOODSGW)<br>29货物类型(整箱或散箱用中文标记)(GOODSTYPE)<br>30报关提单号(SECONDLADINGBILLNO)")]
         public List<Msgobj> SyncData(List<OrderEn> ld)
         {
-            ld[0].BUSITYPE = "飞力达FWO-空运进口";
-            ld[0].CODE = "00000320000000000396";
-            ld[0].FOONO = "SOBG00000000800000003276";
-            ld[0].TOTALNO = "00000000000";
-            ld[0].DIVIDENO = "1Z5V74R20461785089";
-            ld[0].GOODSNUM = "1";
-            ld[0].GOODSWEIGHT = "2.8";
-
-            ld[0].FGOODSUNIT = "天津罗升企业有限公司1210949105";
-
-            ld[0].PACKKIND = "纸箱";
-            ld[0].REPWAYID = "一般进口";
-            ld[0].DECLWAY = "通关无纸化";
-            ld[0].TRADEWAYCODES = "进料对口";
-            //ld[0].CUSNO = "123123123";
-            ld[0].CUSTOMDISTRICTCODE = "昆山综保";
-            ld[0].PORTCODE = "浦东机场";
-            //ld[0].PRICEIMPACT = "1231231";
-            //ld[0].PAYPOYALTIES = "123123";
-            ld[0].REPUNITCODE = "江苏飞力达国际物流股份有限公司3223980002";
-            ld[0].CREATEUSERNAME = "冒建秋";
-
-            //20161021022352.2939590 
-            ld[0].CREATETIME = "20161021022352.2939590";
-            //ld[0].ARRIVEDNO = "123";
-            //ld[0].CHECKEDGOODSNUM = "123";
-            //ld[0].CHECKEDWEIGHT = "123";
-            //ld[0].ENTRUSTTYPEID = "123";
-            //ld[0].GOODSXT = "123";
-            ld[0].BUSIUNITNAME = "天津罗升企业有限公司1210949105";
-            ld[0].GOODSTYPEID = "集装设备和散装";
-            ld[0].LADINGBILLNO = "1Z5V74R20461785089";
-
-            ld[0].SGOODSUNIT = "天津罗升企业有限公司1210949105";
-            ld[0].ALLOWDECLARE = "X";
-            ld[0].ORDERCODE = "AI1610000042";
-
-            IDatabase db = SeRedis.redis.GetDatabase();//先将报文数据保存至缓存数据库
-            db.ListRightPush("SyncDataFromSap", ld.ToString());
-
-
+            //IDatabase db = SeRedis.redis.GetDatabase();//先将报文数据保存至缓存数据库
+            //db.ListRightPush("SyncDataFromSap", ld.ToString());
             Msgobj MO = new Msgobj();
             List<Msgobj> MSList = new List<Msgobj>();
-
             int SaveSap_Res = SavaSapFoo(ld);
             if (SaveSap_Res == 0)
             {
@@ -87,8 +47,6 @@ namespace SceneOfCustoms
                 IFS.save_log(MSList, ld[0].CODE, "1");
                 return MSList;
             }
-
-
 
             if (ld.Count > 0)
             {
@@ -113,10 +71,7 @@ namespace SceneOfCustoms
             {
                 MSList.Add(IFS.set_MObj("E", "没有指令"));
             }
-
-
             IFS.save_log(MSList, ld[0].CODE, "1");
-
             return MSList;
         }
 
@@ -149,9 +104,6 @@ namespace SceneOfCustoms
                     '{27}','{28}','{29}','{30}','{31}','{32}','{33}','{34}','{35}','{36}',
                     '{37}','{38}','{39}','{40}','{41}','{42}','{43}','{44}','{45}','{46}'
                     )";
-
-
-
                 try
                 {
                     sql = string.Format(sql,
