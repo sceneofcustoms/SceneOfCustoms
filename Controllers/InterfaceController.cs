@@ -45,85 +45,108 @@ namespace SceneOfCustoms.Controllers
             string ids = Request.Form["ids"];
             string sql = "select * from list_sapfoo where id in(" + ids + ") order by id desc";
             DataTable dt = DBMgr.GetDataTable(sql);
+
+
+            bd.SyncDataFromSapSoapClient xc = new bd.SyncDataFromSapSoapClient();
+            bd.OrderEn lcorder = new bd.OrderEn();
+            List<bd.OrderEn> list = new List<bd.OrderEn>();
+
+
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 obj = new OrderEn();
-                obj.BUSITYPE = dt.Rows[i]["BUSITYPE"] + "";
-                obj.CODE = dt.Rows[i]["FWONO"] + "";
-                obj.FOONO = dt.Rows[i]["FOONO"] + "";
-                obj.ORDERCODE = dt.Rows[i]["CODE"] + "";
-                obj.TOTALNO = dt.Rows[i]["TOTALNO"] + "";
-                obj.DIVIDENO = dt.Rows[i]["DIVIDENO"] + "";
-                obj.GOODSNUM = dt.Rows[i]["GOODSNUM"] + "";
-                obj.GOODSWEIGHT = dt.Rows[i]["GOODSWEIGHT"] + "";
-                obj.PACKKIND = dt.Rows[i]["PACKKIND"] + "";
-                obj.REPWAYID = dt.Rows[i]["REPWAYID"] + "";
-                obj.DECLWAY = dt.Rows[i]["DECLWAY"] + "";
-                obj.TRADEWAYCODES = dt.Rows[i]["TRADEWAYCODES"] + "";
-                obj.CUSNO = dt.Rows[i]["CUSNO"] + "";
-                obj.CUSTOMDISTRICTCODE = dt.Rows[i]["CUSTOMDISTRICTCODE"] + "";
-                obj.PORTCODE = dt.Rows[i]["PORTCODE"] + "";
-                obj.PRICEIMPACT = dt.Rows[i]["PRICEIMPACT"] + "";
-                obj.PAYPOYALTIES = dt.Rows[i]["PAYPOYALTIES"] + "";
-                //obj.SFGOODSUNIT = dt.Rows[i]["SFGOODSUNIT"] + "";
+                lcorder.BUSITYPE = dt.Rows[i]["BUSITYPE"] + "";
+                //lcorder.CODE = dt.Rows[i]["FWONO"] + "";
+                //lcorder.FOONO = dt.Rows[i]["FOONO"] + "";
+                //lcorder.ORDERCODE = dt.Rows[i]["CODE"] + "";
+                //lcorder.TOTALNO = dt.Rows[i]["TOTALNO"] + "";
+                //lcorder.DIVIDENO = dt.Rows[i]["DIVIDENO"] + "";
+                //lcorder.GOODSNUM = dt.Rows[i]["GOODSNUM"] + "";
+                //lcorder.GOODSWEIGHT = dt.Rows[i]["GOODSWEIGHT"] + "";
+                //lcorder.PACKKIND = dt.Rows[i]["PACKKIND"] + "";
+                //lcorder.REPWAYID = dt.Rows[i]["REPWAYID"] + "";
+                //lcorder.DECLWAY = dt.Rows[i]["DECLWAY"] + "";
+                //lcorder.TRADEWAYCODES = dt.Rows[i]["TRADEWAYCODES"] + "";
+                //lcorder.CUSNO = dt.Rows[i]["CUSNO"] + "";
+                //lcorder.CUSTOMDISTRICTCODE = dt.Rows[i]["CUSTOMDISTRICTCODE"] + "";
+                //lcorder.PORTCODE = dt.Rows[i]["PORTCODE"] + "";
+                //lcorder.PRICEIMPACT = dt.Rows[i]["PRICEIMPACT"] + "";
+                //lcorder.PAYPOYALTIES = dt.Rows[i]["PAYPOYALTIES"] + "";
+                ////lcorder.SFGOODSUNIT = dt.Rows[i]["SFGOODSUNIT"] + "";
 
-                obj.FGOODSUNIT = dt.Rows[i]["FGOODSUNIT"] + "";
-                obj.SGOODSUNIT = dt.Rows[i]["SGOODSUNIT"] + "";
-                obj.ALLOWDECLARE = dt.Rows[i]["ALLOWDECLARE"] + "";
+                //lcorder.FGOODSUNIT = dt.Rows[i]["FGOODSUNIT"] + "";
+                //lcorder.SGOODSUNIT = dt.Rows[i]["SGOODSUNIT"] + "";
+                //lcorder.ALLOWDECLARE = dt.Rows[i]["ALLOWDECLARE"] + "";
 
-                obj.REPUNITCODE = dt.Rows[i]["REPUNITCODE"] + "";
-                obj.CREATEUSERNAME = dt.Rows[i]["CREATEUSERNAME"] + "";
-                obj.CREATETIME = DateTime.Now.ToLocalTime().ToString();
-                obj.ARRIVEDNO = dt.Rows[i]["ARRIVEDNO"] + "";
-                obj.CHECKEDGOODSNUM = dt.Rows[i]["CHECKEDGOODSNUM"] + "";
-                obj.CHECKEDWEIGHT = dt.Rows[i]["CHECKEDWEIGHT"] + "";
-                obj.ENTRUSTTYPEID = dt.Rows[i]["ENTRUSTTYPEID"] + "";
-                obj.GOODSXT = dt.Rows[i]["GOODSXT"] + "";
-                obj.BUSIUNITNAME = dt.Rows[i]["BUSIUNITNAME"] + "";
-                obj.GOODSTYPEID = dt.Rows[i]["GOODSTYPEID"] + "";
-                obj.LADINGBILLNO = dt.Rows[i]["LADINGBILLNO"] + "";
-                obj.ISPREDECLARE = dt.Rows[i]["ISPREDECLARE"] + "";
-                obj.ENTRUSTREQUEST = dt.Rows[i]["ENTRUSTREQUEST"] + "";
-                obj.CONTRACTNO = dt.Rows[i]["CONTRACTNO"] + "";
-                obj.FIRSTLADINGBILLNO = dt.Rows[i]["FIRSTLADINGBILLNO"] + "";
-                obj.SECONDLADINGBILLNO = dt.Rows[i]["SECONDLADINGBILLNO"] + "";
-                obj.MANIFEST = dt.Rows[i]["MANIFEST"] + "";
-                obj.WOODPACKINGID = dt.Rows[i]["WOODPACKINGID"] + "";
-                obj.WEIGHTCHECK = dt.Rows[i]["WEIGHTCHECK"] + "";
-                obj.ISWEIGHTCHECK = dt.Rows[i]["ISCHECKEDWEIGHT"] + "";
-                obj.SHIPNAME = dt.Rows[i]["SHIPNAME"] + "";
-                obj.FILGHTNO = dt.Rows[i]["FILGHTNO"] + "";
-                obj.INSPUNITNAME = dt.Rows[i]["INSPUNITCODE"] + "";
-                obj.TURNPRENO = dt.Rows[i]["TURNPRENO"] + "";
-                obj.INVOICENO = dt.Rows[i]["INVOICENO"] + "";
-                obj.SPECIALRELATIONSHIP = dt.Rows[i]["SPECIALRELATIONSHIP"] + "";
-                ld.Add(obj);
+                //lcorder.REPUNITCODE = dt.Rows[i]["REPUNITCODE"] + "";
+                //lcorder.CREATEUSERNAME = dt.Rows[i]["CREATEUSERNAME"] + "";
+                //lcorder.CREATETIME = DateTime.Now.ToLocalTime().ToString();
+                //lcorder.ARRIVEDNO = dt.Rows[i]["ARRIVEDNO"] + "";
+                //lcorder.CHECKEDGOODSNUM = dt.Rows[i]["CHECKEDGOODSNUM"] + "";
+                //lcorder.CHECKEDWEIGHT = dt.Rows[i]["CHECKEDWEIGHT"] + "";
+                //lcorder.ENTRUSTTYPEID = dt.Rows[i]["ENTRUSTTYPEID"] + "";
+                //lcorder.GOODSXT = dt.Rows[i]["GOODSXT"] + "";
+                //lcorder.BUSIUNITNAME = dt.Rows[i]["BUSIUNITNAME"] + "";
+                //lcorder.GOODSTYPEID = dt.Rows[i]["GOODSTYPEID"] + "";
+                //lcorder.LADINGBILLNO = dt.Rows[i]["LADINGBILLNO"] + "";
+                //lcorder.ISPREDECLARE = dt.Rows[i]["ISPREDECLARE"] + "";
+                //lcorder.ENTRUSTREQUEST = dt.Rows[i]["ENTRUSTREQUEST"] + "";
+                //lcorder.CONTRACTNO = dt.Rows[i]["CONTRACTNO"] + "";
+                //lcorder.FIRSTLADINGBILLNO = dt.Rows[i]["FIRSTLADINGBILLNO"] + "";
+                //lcorder.SECONDLADINGBILLNO = dt.Rows[i]["SECONDLADINGBILLNO"] + "";
+                //lcorder.MANIFEST = dt.Rows[i]["MANIFEST"] + "";
+                //lcorder.WOODPACKINGID = dt.Rows[i]["WOODPACKINGID"] + "";
+                //lcorder.WEIGHTCHECK = dt.Rows[i]["WEIGHTCHECK"] + "";
+                //lcorder.ISWEIGHTCHECK = dt.Rows[i]["ISCHECKEDWEIGHT"] + "";
+                //lcorder.SHIPNAME = dt.Rows[i]["SHIPNAME"] + "";
+                //lcorder.FILGHTNO = dt.Rows[i]["FILGHTNO"] + "";
+                //lcorder.INSPUNITNAME = dt.Rows[i]["INSPUNITCODE"] + "";
+                //lcorder.TURNPRENO = dt.Rows[i]["TURNPRENO"] + "";
+                //lcorder.INVOICENO = dt.Rows[i]["INVOICENO"] + "";
+                //lcorder.SPECIALRELATIONSHIP = dt.Rows[i]["SPECIALRELATIONSHIP"] + "";
+                list.Add(lcorder);
             }
-            if (ld.Count > 0)
+
+            bd.Msgobj[] mo = xc.SyncData(list.ToArray());
+
+            if (list.Count > 0)
             {
 
-                MSList = IFS.CheckData(ld);
-                int Order_Res = IFS.InsertOrder(ld);
+                //MSList = IFS.CheckData(ld);
 
-                if (MSList.Count <= 0)
-                {
-                    if (Order_Res == 1)
-                    {
-                        MSList.Add(IFS.set_MObj("S", "保存成功"));
-                    }
-                    else
-                    {
-                        MSList.Add(IFS.set_MObj("E", "保存失败"));
-                    }
-                }
+
+
+                //    if (MSList.Count <= 0)
+                //    {
+                //        //int Order_Res = IFS.XCOrderData(ld);
+
+
+
+
+                //        //ServiceReference1.CustomerServiceSoapClient danzheng = new ServiceReference1.CustomerServiceSoapClient();
+                //        //ServiceReference1.OrderEn DZOrder;
+                //        //List<ServiceReference1.OrderEn> DZOrderList = new List<ServiceReference1.OrderEn>();
+
+
+                //        //if (Order_Res == 1)
+                //        //{
+                //        //    MSList.Add(IFS.set_MObj("S", "保存成功"));
+                //        //    IFS.SaveDZOrder(ld[0].CODE);
+
+                //        //}
+                //        //else
+                //        //{
+                //        //    MSList.Add(IFS.set_MObj("E", "保存失败"));
+                //        //}
+                //    }
 
             }
-            else
-            {
-                MSList.Add(IFS.set_MObj("E", "没有指令"));
-            }
+            //else
+            //{
+            //    MSList.Add(IFS.set_MObj("E", "没有指令"));
+            //}
 
-            IFS.save_log(MSList, ld[0].CODE, "1");
+            //IFS.save_log(MSList, list[0].CODE, "1");
 
             return "1";
         }

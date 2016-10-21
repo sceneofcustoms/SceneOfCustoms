@@ -17,6 +17,7 @@ namespace SceneOfCustoms.Common
         private static Lazy<ConnectionMultiplexer> lazyConnection = new Lazy<ConnectionMultiplexer>(() =>
         {
             return ConnectionMultiplexer.Connect(constr);
+
         });
 
         public static ConnectionMultiplexer redis

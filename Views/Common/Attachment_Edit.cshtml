@@ -107,8 +107,13 @@
 
             });
             uploader.bind('Error', function (up, file) {
-                Ext.MessageBox.alert("错误", "文件太大，无法上传！");
-
+                debugger;
+                if (file.message == "File size error.") {
+                    Ext.MessageBox.alert("错误", "文件太大，无法上传！");
+                }
+                if (file.message == "HTTP Error.") {
+                    Ext.MessageBox.alert("错误", "回传SAP状态失败！");
+                }
             });
         }
 
@@ -165,8 +170,8 @@
                     html: "<div id='fileViewDiv' style='height: 100%;width: 100%;'></div>"
                 }]
             });
-                win.show();
-                document.getElementById('fileViewDiv').innerHTML = '<embed id="pdf" width="100%" height="100%" src="../../' + recs[0].get("FILEPATH") + '"></embed>';
+            win.show();
+            document.getElementById('fileViewDiv').innerHTML = '<embed id="pdf" width="100%" height="100%" src="../../' + recs[0].get("FILEPATH") + '"></embed>';
         }
 
     </script>

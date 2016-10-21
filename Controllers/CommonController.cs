@@ -107,19 +107,22 @@ namespace SceneOfCustoms.Controllers
             chunk = chunk ?? 0;
             string FWONO = Request.QueryString["FWONO"];
             string FOONO = Request.QueryString["FOONO"];
-            using (var fs = new FileStream(Path.Combine(uploadPath, name), chunk == 0 ? FileMode.Create : FileMode.Append))
-            {
-                var buffer = new byte[fileUpload.InputStream.Length];
-                fileUpload.InputStream.Read(buffer, 0, buffer.Length);
-                fs.Write(buffer, 0, buffer.Length);
-                string username = CurrentUser();
-                string sql = @"insert into list_attachment(ID,FILEPATH,FILENAME,FILESIZE,FWONO,FOONO,CREATENAME,CREATETIME,STATUS) 
-                VALUES(LIST_ATTACHMENT_ID.Nextval,'/Upload/" + name + "','" + fileUpload.FileName + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','" + username + "',sysdate,1)";
-                DBMgr.ExecuteNonQuery(sql);
-            }
             //回传TM 接口
-            IFS.ZSZLSJ_TM(FWONO, FOONO);
+
+                using (var fs = new FileStream(Path.Combine(uploadPath, name), chunk == 0 ? FileMode.Create : FileMode.Append))
+                {
+                    var buffer = new byte[fileUpload.InputStream.Length];
+                    fileUpload.InputStream.Read(buffer, 0, buffer.Length);
+                    fs.Write(buffer, 0, buffer.Length);
+                    string username = CurrentUser();
+                    string sql = @"insert into list_attachment(ID,FILEPATH,FILENAME,FILESIZE,FWONO,FOONO,CREATENAME,CREATETIME,STATUS) 
+                VALUES(LIST_ATTACHMENT_ID.Nextval,'/Upload/" + name + "','" + fileUpload.FileName + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','" + username + "',sysdate,1)";
+                    DBMgr.ExecuteNonQuery(sql);
+                    string status = IFS.ZSZLSJ_TM(FWONO, FOONO);
+
+                }
             return Content("chunk uploaded", "text/plain");
+
         }
 
         [HttpPost]
