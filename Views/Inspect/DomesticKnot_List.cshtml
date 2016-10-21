@@ -33,9 +33,9 @@
 
     //3 查询条件 --
     var BUSITYPE = [
-        { code: 'guanwujieshou', name: '国内结转'},
-        { code: 'baoruhaiguan', name: '叠加保税' },
-        { code: 'chayanzhilingxiafa', name: '特殊监管区' }
+        { code: 'GUONEIJIEZHUAN', name: '国内结转' },
+        { code: 'DIEJIABAOSHUI', name: '叠加保税' },
+        { code: 'TESHUJIANGUANQU', name: '特殊监管区' }
     ];
 
     $(function () {
@@ -105,7 +105,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value" id="BUSITYPE" panelheight="auto"></select>
+                                <select class="easyui-combobox combobox_width value" id="BUSITYPE" panelheight="auto" name="YCBUSITYPE"></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">

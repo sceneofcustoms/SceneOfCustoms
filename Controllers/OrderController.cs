@@ -50,7 +50,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("FO号");
             dt.Columns.Add("海关通关状态");
             string IDS = ids.Substring(0, ids.LastIndexOf(","));
-            string sql = "select * from list_order where ID in(" + IDS + ")";
+            string sql = "select * from list_order where ID in(" + IDS + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
             DataRow dr;
             for (int i = 0; i < data_dt.Rows.Count; i++)
@@ -108,7 +108,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("关区代码");
             dt.Columns.Add("海关通关状态");
             string IDS = ids.Substring(0, ids.LastIndexOf(","));
-            string sql = "select * from list_order where ID in(" + IDS + ")";
+            string sql = "select * from list_order where ID in(" + IDS + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
             DataRow dr;
             for (int i = 0; i < data_dt.Rows.Count; i++)
@@ -162,7 +162,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("关区代码");
             dt.Columns.Add("海关通关状态");
             string IDS = ids.Substring(0, ids.LastIndexOf(","));
-            string sql = "select * from list_order where ID in(" + IDS + ")";
+            string sql = "select * from list_order where ID in(" + IDS + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
             DataRow dr;
             for (int i = 0; i < data_dt.Rows.Count; i++)
@@ -214,7 +214,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("FWO订单号");
             dt.Columns.Add("FO号");
             string IDS = ids.Substring(0, ids.LastIndexOf(","));
-            string sql = "select * from list_order where ID in(" + IDS + ")";
+            string sql = "select * from list_order where ID in(" + IDS + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
             DataRow dr;
             for (int i = 0; i < data_dt.Rows.Count; i++)
@@ -268,7 +268,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("报关状态");
             dt.Columns.Add("报检状态");
             string IDS = ids.Substring(0, ids.LastIndexOf(","));
-            string sql = "select * from list_order where ID in(" + IDS + ")";
+            string sql = "select * from list_order where ID in(" + IDS + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
             DataRow dr;
             for (int i = 0; i < data_dt.Rows.Count; i++)
@@ -329,7 +329,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("关区代码");
             dt.Columns.Add("海关通关状态");
             string IDS = ids.Substring(0, ids.LastIndexOf(","));
-            string sql = "select * from list_order where ID in(" + IDS + ")";
+            string sql = "select * from list_order where ID in(" + IDS + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
             DataRow dr;
             for (int i = 0; i < data_dt.Rows.Count; i++)
@@ -357,6 +357,43 @@ namespace SceneOfCustoms.Controllers
                 dr["报关方式"] = data_dt.Rows[i]["DECLWAY"];
                 dr["关区代码"] = data_dt.Rows[i]["CUSTOMDISTRICTCODE"];
                 //dr["海关通关状态"] = data_dt.Rows[i]["text"];
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
+        //异常登记导出明细
+        public DataTable Abnormal(string ids)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("FWO订单号");
+            dt.Columns.Add("FO号");
+            dt.Columns.Add("业务编号");
+            dt.Columns.Add("总单号");
+            dt.Columns.Add("分单号");
+            dt.Columns.Add("一程提运单号");
+            dt.Columns.Add("二程提运单号");
+            dt.Columns.Add("万达号");
+            dt.Columns.Add("载货清单号");
+            dt.Columns.Add("报关单号");
+            dt.Columns.Add("报检单号");
+            string IDS = ids.Substring(0, ids.LastIndexOf(","));
+            string sql = "select * from list_order where ID in(" + IDS + ") order by ID desc";
+            DataTable data_dt = DBMgr.GetDataTable(sql);
+            DataRow dr;
+            for (int i = 0; i < data_dt.Rows.Count; i++)
+            {
+                dr = dt.NewRow();
+                dr["FWO订单号"] = data_dt.Rows[i]["FWONO"];
+                dr["FO号"] = data_dt.Rows[i]["FOONO"];
+                dr["业务编号"] = data_dt.Rows[i]["CODE"];
+                dr["总单号"] = data_dt.Rows[i]["TOTALNO"];
+                dr["分单号"] = data_dt.Rows[i]["DIVIDENO"];
+                dr["一程提运单号"] = data_dt.Rows[i]["FIRSTLADINGBILLNO"];
+                dr["二程提运单号"] = data_dt.Rows[i]["SECONDLADINGBILLNO"];
+                //dr["万达号"] = data_dt.Rows[i]["text"];
+                dr["载货清单号"] = data_dt.Rows[i]["MANIFEST"];
+                //dr["报关单号"] = data_dt.Rows[i]["ASSOCIATEPEDECLNO"];
+                //dr["报检单号"] = data_dt.Rows[i]["text"];
                 dt.Rows.Add(dr);
             }
             return dt;
@@ -402,6 +439,11 @@ namespace SceneOfCustoms.Controllers
                     path = "/Export/报检国内结转" + Nowtime + ".xls";
                     OutPath = Server.MapPath("~" + path);
                     dt = DomesticKnotbj(IDS);
+                    break;
+                default:
+                    path = "/Export/异常登记" + Nowtime + ".xls";
+                    OutPath = Server.MapPath("~" + path);
+                    dt = Abnormal(IDS);
                     break;
             }
             OutFileToDisk(dt, OutPath);
