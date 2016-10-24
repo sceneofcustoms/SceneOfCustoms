@@ -47,25 +47,67 @@ namespace SceneOfCustoms.Controllers
             string filedata = JsonConvert.SerializeObject(dt, iso);
             return "{rows:" + filedata + ",total:" + total + "}";
         }
-        public string LoadFooList()
+        [HttpGet]
+        public string GetData()
         {
-            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
-            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-            string sql = @"select * from LIST_SAPFOO";
-            DataTable dt = DBMgr.GetDataTable(Extension.GetPageSql(sql, "id", "desc", ref total, Convert.ToInt32(Request["start"]), Convert.ToInt32(Request["limit"])));
-            string filedata = JsonConvert.SerializeObject(dt, iso);
-            return "{rows:" + filedata + ",total:" + total + "}";
-        }
+            string BUSITYPE = "";
+            int PageSize = Convert.ToInt32(Request.Params["rows"]);
+            int Page = Convert.ToInt32(Request.Params["page"]);
+            int total = 0;
+            string sql = "";
 
-        //日志消息
-        public string LoadMsgList()
-        {
+            string data = Request["data"];
+            if (data != null)
+            {
+                JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
+                BUSITYPE = jo.Value<string>("BUSITYPE");
+            }
+            else
+            {
+                BUSITYPE = Request["BUSITYPE"];
+            }
+
+
+            switch (BUSITYPE)
+            {
+                case "SyncFoo":
+                    sql = " select * from LIST_SAPFOO where 1=1";
+                    break;
+                case "SyncMsg":
+                    sql = " select * from MSG where 1=1";
+                    break;
+            }
+
+            if (data != null)
+            {
+                JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
+                if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
+                {
+                    sql += " AND " + jo.Value<string>("ordercode") + " ='" + jo.Value<string>("ordercode_value") + "'";
+                }
+                if (jo.Value<string>("startdate") != "")
+                {
+                    sql += " AND TIME >= to_date('" + jo.Value<string>("startdate") + "','yyyy-MM-dd')";
+                }
+                if (jo.Value<string>("stopdate") != "")
+                {
+                    sql += " AND TIME <= to_date('" + jo.Value<string>("stopdate") + "','yyyy-MM-dd')";
+                }
+                if (jo.Value<string>("customs_busitype") != null && jo.Value<string>("customs_busitype") != "")
+                {
+                    sql += " AND BUSITYPE = '" + jo.Value<string>("customs_busitype") + "' ";
+                }
+            }
+
+            string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
+            string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
+            sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
+            DataTable dt = DBMgr.GetDataTable(sql);
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-            string sql = @"select * from MSG";
-            DataTable dt = DBMgr.GetDataTable(Extension.GetPageSql(sql, "createtime", "desc", ref total, Convert.ToInt32(Request["start"]), Convert.ToInt32(Request["limit"])));
-            string filedata = JsonConvert.SerializeObject(dt, iso);
-            return "{rows:" + filedata + ",total:" + total + "}";
+            string result = JsonConvert.SerializeObject(dt, iso);
+            result = "{\"total\":" + total + ",\"rows\":" + result + "}";
+            return result;
         }
 
         public ActionResult Attachment_Edit()

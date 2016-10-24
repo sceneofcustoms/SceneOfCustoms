@@ -49,8 +49,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("FWO订单号");
             dt.Columns.Add("FO号");
             dt.Columns.Add("海关通关状态");
-            string IDS = ids.Substring(0, ids.LastIndexOf(","));
-            string sql = "select * from list_order where ID in(" + IDS + ") order by ID desc";
+            string sql = "select * from list_order where ID in(" + ids + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
             DataRow dr;
             for (int i = 0; i < data_dt.Rows.Count; i++)
@@ -107,8 +106,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("转关预录入号");
             dt.Columns.Add("关区代码");
             dt.Columns.Add("海关通关状态");
-            string IDS = ids.Substring(0, ids.LastIndexOf(","));
-            string sql = "select * from list_order where ID in(" + IDS + ") order by ID desc";
+            string sql = "select * from list_order where ID in(" + ids + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
             DataRow dr;
             for (int i = 0; i < data_dt.Rows.Count; i++)
@@ -161,8 +159,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("报关方式");
             dt.Columns.Add("关区代码");
             dt.Columns.Add("海关通关状态");
-            string IDS = ids.Substring(0, ids.LastIndexOf(","));
-            string sql = "select * from list_order where ID in(" + IDS + ") order by ID desc";
+            string sql = "select * from list_order where ID in(" + ids + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
             DataRow dr;
             for (int i = 0; i < data_dt.Rows.Count; i++)
@@ -213,8 +210,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("申报方式");
             dt.Columns.Add("FWO订单号");
             dt.Columns.Add("FO号");
-            string IDS = ids.Substring(0, ids.LastIndexOf(","));
-            string sql = "select * from list_order where ID in(" + IDS + ") order by ID desc";
+            string sql = "select * from list_order where ID in(" + ids + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
             DataRow dr;
             for (int i = 0; i < data_dt.Rows.Count; i++)
@@ -267,8 +263,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("放行人");
             dt.Columns.Add("报关状态");
             dt.Columns.Add("报检状态");
-            string IDS = ids.Substring(0, ids.LastIndexOf(","));
-            string sql = "select * from list_order where ID in(" + IDS + ") order by ID desc";
+            string sql = "select * from list_order where ID in(" + ids + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
             DataRow dr;
             for (int i = 0; i < data_dt.Rows.Count; i++)
@@ -328,8 +323,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("报关方式");
             dt.Columns.Add("关区代码");
             dt.Columns.Add("海关通关状态");
-            string IDS = ids.Substring(0, ids.LastIndexOf(","));
-            string sql = "select * from list_order where ID in(" + IDS + ") order by ID desc";
+            string sql = "select * from list_order where ID in(" + ids + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
             DataRow dr;
             for (int i = 0; i < data_dt.Rows.Count; i++)
@@ -376,8 +370,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("载货清单号");
             dt.Columns.Add("报关单号");
             dt.Columns.Add("报检单号");
-            string IDS = ids.Substring(0, ids.LastIndexOf(","));
-            string sql = "select * from list_order where ID in(" + IDS + ") order by ID desc";
+            string sql = "select * from list_order where ID in(" + ids + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
             DataRow dr;
             for (int i = 0; i < data_dt.Rows.Count; i++)
@@ -398,9 +391,143 @@ namespace SceneOfCustoms.Controllers
             }
             return dt;
         }
+        //后台同步日志导出明细
+        public DataTable SyncFoo(string ids)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("唯一号");
+            dt.Columns.Add("FWO号");
+            dt.Columns.Add("FOO指令号");
+            dt.Columns.Add("发送时间");
+            dt.Columns.Add("订单号");
+            dt.Columns.Add("业务类型");
+            dt.Columns.Add("客户编号");
+            dt.Columns.Add("合同发票号");
+            dt.Columns.Add("总单号");
+            dt.Columns.Add("分单号");
+            dt.Columns.Add("木质包装");
+            dt.Columns.Add("件数");
+            dt.Columns.Add("重量");
+            dt.Columns.Add("申报方式");
+            dt.Columns.Add("申报关区");
+            dt.Columns.Add("口岸");
+            dt.Columns.Add("报关申报单位");
+            dt.Columns.Add("报检申报单位");
+            dt.Columns.Add("订单需求");
+            dt.Columns.Add("委托类型");
+            dt.Columns.Add("载货清单");
+            dt.Columns.Add("船名");
+            dt.Columns.Add("航次");
+            dt.Columns.Add("提单号");
+            dt.Columns.Add("贸易方式");
+            dt.Columns.Add("报关方式");
+            dt.Columns.Add("包装种类");
+            dt.Columns.Add("运抵编号");
+            dt.Columns.Add("一程提单号");
+            dt.Columns.Add("二程提单号");
+            dt.Columns.Add("货物类型");
+            dt.Columns.Add("经营单位");
+            dt.Columns.Add("创建人");
+            dt.Columns.Add("特殊关系确认");
+            dt.Columns.Add("价格影响确认");
+            dt.Columns.Add("支付特许权使用费确认");
+            dt.Columns.Add("是否需要重量确认");
+            dt.Columns.Add("确认件数");
+            dt.Columns.Add("确认重量");
+            dt.Columns.Add("发货单位+编码");
+            dt.Columns.Add("委托时间");
+            dt.Columns.Add("收货单位+编码");
+            dt.Columns.Add("报关可执行");
+            dt.Columns.Add("集装箱及车辆信息");
+            dt.Columns.Add("货物形态");
+            dt.Columns.Add("是否提前报关");
+            dt.Columns.Add("二线合同专用发票号");
+            dt.Columns.Add("重量确认标志");
+            string sql = "select * from LIST_SAPFOO where ID in(" + ids + ") order by ID desc";
+            DataTable data_dt = DBMgr.GetDataTable(sql);
+            DataRow dr;
+            for (int i = 0; i < data_dt.Rows.Count; i++)
+            {
+                dr = dt.NewRow();
+                dr["唯一号"] = data_dt.Rows[i]["ONLYCODE"];
+                dr["FWO号"] = data_dt.Rows[i]["FWONO"];
+                dr["FOO指令号"] = data_dt.Rows[i]["FOONO"];
+                dr["发送时间"] = data_dt.Rows[i]["TIME"];
+                dr["订单号"] = data_dt.Rows[i]["CODE"];
+                dr["业务类型"] = data_dt.Rows[i]["BUSITYPE"];
+                dr["客户编号"] = data_dt.Rows[i]["CUSNO"];
+                dr["合同发票号"] = data_dt.Rows[i]["CONTRACTNO"];
+                dr["总单号"] = data_dt.Rows[i]["TOTALNO"];
+                dr["分单号"] = data_dt.Rows[i]["DIVIDENO"];
+                dr["木质包装"] = data_dt.Rows[i]["WOODPACKINGID"];
+                dr["件数"] = data_dt.Rows[i]["GOODSNUM"];
+                dr["重量"] = data_dt.Rows[i]["GOODSWEIGHT"];
+                dr["申报方式"] = data_dt.Rows[i]["REPWAYID"];
+                dr["申报关区"] = data_dt.Rows[i]["CUSTOMDISTRICTCODE"];
+                dr["口岸"] = data_dt.Rows[i]["PORTCODE"];
+                dr["报关申报单位"] = data_dt.Rows[i]["REPUNITCODE"];
+                dr["报检申报单位"] = data_dt.Rows[i]["INSPUNITCODE"];
+                dr["订单需求"] = data_dt.Rows[i]["ENTRUSTREQUEST"];
+                dr["委托类型"] = data_dt.Rows[i]["ENTRUSTTYPEID"];
+                dr["载货清单"] = data_dt.Rows[i]["MANIFEST"];
+                dr["船名"] = data_dt.Rows[i]["SHIPNAME"];
+                dr["航次"] = data_dt.Rows[i]["FILGHTNO"];
+                dr["提单号"] = data_dt.Rows[i]["LADINGBILLNO"];
+                dr["贸易方式"] = data_dt.Rows[i]["TRADEWAYCODES"];
+                dr["报关方式"] = data_dt.Rows[i]["DECLWAY"];
+                dr["包装种类"] = data_dt.Rows[i]["PACKKIND"];
+                dr["运抵编号"] = data_dt.Rows[i]["ARRIVEDNO"];
+                dr["一程提单号"] = data_dt.Rows[i]["FIRSTLADINGBILLNO"];
+                dr["二程提单号"] = data_dt.Rows[i]["SECONDLADINGBILLNO"];
+                dr["货物类型"] = data_dt.Rows[i]["GOODSTYPEID"];
+                dr["经营单位"] = data_dt.Rows[i]["BUSIUNITNAME"];
+                dr["创建人"] = data_dt.Rows[i]["CREATEUSERNAME"];
+                dr["特殊关系确认"] = data_dt.Rows[i]["SPECIALRELATIONSHIP"];
+                dr["价格影响确认"] = data_dt.Rows[i]["PRICEIMPACT"];
+                dr["支付特许权使用费确认"] = data_dt.Rows[i]["PAYPOYALTIES"];
+                dr["是否需要重量确认"] = data_dt.Rows[i]["WEIGHTCHECK"];
+                dr["确认件数"] = data_dt.Rows[i]["CHECKEDGOODSNUM"];
+                dr["确认重量"] = data_dt.Rows[i]["CHECKEDWEIGHT"];
+                dr["发货单位+编码"] = data_dt.Rows[i]["FGOODSUNIT"];
+                dr["委托时间"] = data_dt.Rows[i]["CREATETIME"];
+                dr["收货单位+编码"] = data_dt.Rows[i]["SGOODSUNIT"];
+                dr["报关可执行"] = data_dt.Rows[i]["ALLOWDECLARE"];
+                dr["集装箱及车辆信息"] = data_dt.Rows[i]["CONTAINERTRUCKS"];
+                dr["货物形态"] = data_dt.Rows[i]["GOODSXT"];
+                dr["是否提前报关"] = data_dt.Rows[i]["ISPREDECLARE"];
+                dr["二线合同专用发票号"] = data_dt.Rows[i]["INVOICENO"];
+                dr["重量确认标志"] = data_dt.Rows[i]["ISCHECKEDWEIGHT"];
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
+        //后台同步状态导出明细
+        public DataTable SyncMsg(string ids)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("FWO号");
+            dt.Columns.Add("来源");
+            dt.Columns.Add("描述");
+            dt.Columns.Add("状态");
+            dt.Columns.Add("时间");
+            string sql = "select * from MSG where ID in(" + ids + ") order by ID desc";
+            DataTable data_dt = DBMgr.GetDataTable(sql);
+            DataRow dr;
+            for (int i = 0; i < data_dt.Rows.Count; i++)
+            {
+                dr = dt.NewRow();
+                dr["FWO号"] = data_dt.Rows[i]["FWONO"];
+                dr["来源"] = data_dt.Rows[i]["SOURCE"];
+                dr["描述"] = data_dt.Rows[i]["TEXT"];
+                dr["状态"] = data_dt.Rows[i]["STATUS"];
+                dr["时间"] = data_dt.Rows[i]["CREATETIME"];
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
         //导出数据
         [HttpPost]
-        public ActionResult testOut()
+        public ActionResult DataExportOut()
         {
             string IDS = Request["ids"];
             string BUSITYPE = Request["BUSITYPE"];
@@ -439,6 +566,16 @@ namespace SceneOfCustoms.Controllers
                     path = "/Export/报检国内结转" + Nowtime + ".xls";
                     OutPath = Server.MapPath("~" + path);
                     dt = DomesticKnotbj(IDS);
+                    break;
+                case "SyncFoo":
+                    path = "/Export/后台同步日志" + Nowtime + ".xls";
+                    OutPath = Server.MapPath("~" + path);
+                    dt = SyncFoo(IDS);
+                    break;
+                case "SyncMsg":
+                    path = "/Export/后台同步状态" + Nowtime + ".xls";
+                    OutPath = Server.MapPath("~" + path);
+                    dt = SyncMsg(IDS);
                     break;
                 default:
                     path = "/Export/异常登记" + Nowtime + ".xls";

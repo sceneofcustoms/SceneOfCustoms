@@ -1,157 +1,194 @@
-﻿<link href="/js/Extjs42/resources/css/ext-all-gray.css" rel="stylesheet" type="text/css" />
-<script src="/js/Extjs42/bootstrap.js" type="text/javascript"></script>
-<script type="text/javascript">
-    var gridpanel;
-    Ext.onReady(function () {
-
-
-        var store = Ext.create('Ext.data.JsonStore', {
-            fields: ['ID', 'CODE','TIME', 'ONLYCODE', 'BUSITYPE', 'CUSNO', 'CONTRACTNO', 'TOTALNO', 'DIVIDENO', 'WOODPACKINGID', 'GOODSNUM',
-              'GOODSWEIGHT', 'REPWAYID', 'CUSTOMDISTRICTCODE', 'PORTCODE', 'REPUNITCODE', 'INSPUNITCODE', 'CREATETIME',
-              'ENTRUSTREQUEST', 'ENTRUSTTYPEID', 'MANIFEST', 'SHIPNAME', 'FILGHTNO', 'LADINGBILLNO', 'TRADEWAYCODES',
-              'DECLWAY', 'PACKKIND', 'ARRIVEDNO', 'FIRSTLADINGBILLNO', 'SECONDLADINGBILLNO', 'GOODSTYPEID', 'BUSIUNITNAME',
-              'CREATEUSERNAME', 'SPECIALRELATIONSHIP', 'PRICEIMPACT', 'PAYPOYALTIES', 'WEIGHTCHECK', 'CHECKEDGOODSNUM',
-              'CHECKEDWEIGHT', 'FWONO', 'FOONO', 'FGOODSUNIT', 'SGOODSUNIT', 'ALLOWDECLARE', 'CONTAINERTRUCKS', 'GOODSXT', 'ISPREDECLARE', 'INVOICENO',
-              'ISCHECKEDWEIGHT'
-            ],
-            pageSize: 500,
-            proxy: {
-                type: 'ajax',
-                url: '/Common/LoadFooList',
-                reader: {
-                    root: 'rows',
-                    type: 'json',
-                    totalProperty: 'total'
-                }
-            },
-            autoLoad: true,
-            listeners: {
-                //beforeload: function () {
-                //    store_Trade.getProxy().extraParams = {
-                //        busitypeid: 11,
-                //        OnlySelf: Ext.get('OnlySelfi').el.dom.className,
-                //        seniorsearch: seniorcondition,
-                //        CONDITION1: Ext.getCmp('CONDITION1').getValue(), VALUE1: Ext.getCmp("CONDITION1_1").getValue(),
-                //        CONDITION2: Ext.getCmp('CONDITION2').getValue(), VALUE2: Ext.getCmp("CONDITION2_1").getValue(),
-                //        CONDITION3: Ext.getCmp('CONDITION3').getValue(), VALUE3: Ext.getCmp("CONDITION3_1").getValue(),
-                //        CONDITION4: Ext.getCmp('CONDITION4').getValue(), VALUE4_1: Ext.Date.format(Ext.getCmp("CONDITION4_1").getValue(), 'Y-m-d H:i:s'), VALUE4_2: Ext.Date.format(Ext.getCmp("CONDITION4_2").getValue(), 'Y-m-d H:i:s'),
-                //        CONDITION5: Ext.getCmp('CONDITION5').getValue(), VALUE5: Ext.getCmp("CONDITION5_1").getValue(),
-                //        CONDITION6: Ext.getCmp('CONDITION6').getValue(), VALUE6: Ext.getCmp("CONDITION6_1").getValue(),
-                //        CONDITION7: Ext.getCmp('CONDITION7').getValue(), VALUE7: Ext.getCmp("CONDITION7_1").getValue(),
-                //        CONDITION8: Ext.getCmp('CONDITION8').getValue(), VALUE8_1: Ext.Date.format(Ext.getCmp("CONDITION8_1").getValue(), 'Y-m-d H:i:s'), VALUE8_2: Ext.Date.format(Ext.getCmp("CONDITION8_2").getValue(), 'Y-m-d H:i:s')
-                //    }
-                //}
-            }
-        })
-
-        var pgbar = Ext.create('Ext.toolbar.Paging', {
-            displayMsg: '显示 {0} - {1} 条,共计 {2} 条',
-            store: store,
-            id: 'pagebar',
-            displayInfo: true
-        })
-        gridpanel = Ext.create('Ext.grid.Panel', {
-            renderTo: "div_foo",
-            store: store,
-            height: 500,
-            selModel: { selType: 'checkboxmodel' },
-            bbar: pgbar,
-            enableColumnHide: false,
-            columns: [
-            { xtype: 'rownumberer', width: 35 },
-            { header: '唯一号', dataIndex: 'ONLYCODE', width: 150 },
-            { header: 'FWO号', dataIndex: 'FWONO', width: 200 },
-            { header: 'FOO指令号', dataIndex: 'FOONO', width: 200 },
-            { header: '发送时间', dataIndex: 'TIME', width: 200 },
-            { header: '订单号', dataIndex: 'CODE', width: 200 },
-            { header: 'ID', dataIndex: 'ID', hidden: true },
-            { header: '业务类型', dataIndex: 'BUSITYPE', width: 150 },
-            { header: '客户编号', dataIndex: 'CUSNO', width: 120 },
-            { header: '合同发票号', dataIndex: 'CONTRACTNO', width: 130 },
-            { header: '总单号', dataIndex: 'TOTALNO', width: 100 },
-            { header: '分单号', dataIndex: 'DIVIDENO', width: 100 },
-            { header: '木质包装', dataIndex: 'WOODPACKINGID', width: 100 },
-            { header: '件数', dataIndex: 'GOODSNUM', width: 100 },
-            { header: '重量', dataIndex: 'GOODSWEIGHT', width: 100 },
-            { header: '申报方式', dataIndex: 'REPWAYID', width: 100 },
-            { header: '申报关区', dataIndex: 'CUSTOMDISTRICTCODE', width: 100 },
-            { header: '口岸', dataIndex: 'PORTCODE', width: 100 },
-            { header: '报关申报单位', dataIndex: 'REPUNITCODE', width: 300 },
-            { header: '报检申报单位', dataIndex: 'INSPUNITCODE', width: 300 },
-            { header: '订单需求', dataIndex: 'ENTRUSTREQUEST', width: 100 },
-            { header: '委托类型', dataIndex: 'ENTRUSTTYPEID', width: 100 },
-            { header: '载货清单', dataIndex: 'MANIFEST', width: 100 },
-            { header: '船名', dataIndex: 'SHIPNAME', width: 100 },
-            { header: '航次', dataIndex: 'FILGHTNO', width: 100 },
-            { header: '提单号', dataIndex: 'LADINGBILLNO', width: 100 },
-            { header: '贸易方式', dataIndex: 'TRADEWAYCODES', width: 150 },
-            { header: '报关方式', dataIndex: 'DECLWAY', width: 100 },
-            { header: '包装种类', dataIndex: 'PACKKIND', width: 100 },
-            { header: '运抵编号', dataIndex: 'ARRIVEDNO', width: 100 },
-            { header: '一程提单号', dataIndex: 'FIRSTLADINGBILLNO', width: 100 },
-            { header: '二程提单号', dataIndex: 'SECONDLADINGBILLNO', width: 100 },
-            { header: '货物类型', dataIndex: 'GOODSTYPEID', width: 100 },
-            { header: '经营单位', dataIndex: 'BUSIUNITNAME', width: 200 },
-            { header: '创建人', dataIndex: 'CREATEUSERNAME', width: 100 },
-            { header: '特殊关系确认', dataIndex: 'SPECIALRELATIONSHIP', width: 120 },
-            { header: '价格影响确认', dataIndex: 'PRICEIMPACT', width: 120 },
-            { header: '支付特许权使用费确认', dataIndex: 'PAYPOYALTIES', width: 150 },
-            { header: '是否需要重量确认', dataIndex: 'WEIGHTCHECK', width: 150 },
-            { header: '确认件数', dataIndex: 'CHECKEDGOODSNUM', width: 100 },
-            { header: '确认重量', dataIndex: 'CHECKEDWEIGHT', width: 100 },
-            { header: '发货单位+编码', dataIndex: 'FGOODSUNIT', width: 200 },
-            { header: '委托时间', dataIndex: 'CREATETIME', width: 130 },
-            { header: '收货单位+编码', dataIndex: 'SGOODSUNIT', width: 200 },
-            { header: '报关可执行', dataIndex: 'ALLOWDECLARE', width: 200 },
-            { header: '集装箱及车辆信息', dataIndex: 'CONTAINERTRUCKS', width: 150 },
-            { header: '货物形态', dataIndex: 'GOODSXT', width: 100 },
-            { header: '是否提前报关', dataIndex: 'ISPREDECLARE', width: 100 },
-            { header: '二线合同专用发票号', dataIndex: 'INVOICENO', width: 100 },
-            { header: '重量确认标志', dataIndex: 'ISCHECKEDWEIGHT', width: 100 }
-            ],
-            viewConfig: {
-                enableTextSelection: true
-            }
-        })
-    })
-
+﻿<script type="text/javascript">
+    // 查询条件  --单据号
+    var search_code = [
+        {
+            code: 'ONLYCODE', name: '唯一号', selected: true
+        },
+        { code: 'FWONO', name: 'FWO号' },
+        { code: 'FOONO', name: 'FOO指令号' },
+        { code: 'CODE', name: '订单号' }
+    ];
+    // 查询条件  --业务类型
+    var customs_busitype = [
+        {
+            name: '飞力达FWO-空运出口', selected: true
+        },
+        { name: '飞力达FWO-空运出口-外包服务(备用)' },
+        { name: '飞力达FWO-空运出口-服务无运输(ZCA)' },
+        { name: '飞力达FWO-空运进口' },
+        { name: '飞力达FWO-空运进口-外包服务(备用)' },
+        { name: '飞力达FWO-空运进口-服务无运输(ZCA)' },
+        { name: '飞力达FWO-叠加保税' },
+        { name: '飞力达FWO-空运出口配套' },
+        { name: '飞力达FWO-国内结转' },
+        { name: '飞力达FWO-国内空运(备用)' },
+        { name: '飞力达FWO-陆运-服务无运输(ZCD)' },
+        { name: '飞力达FWO-陆运出口' },
+        { name: '飞力达FWO-陆运运输' },
+        { name: '飞力达FWO-陆运进口' },
+        { name: '飞力达FWO-公铁联运(集装箱)' },
+        { name: '飞力达FWO-公铁联运(零担)' },
+        { name: '飞力达FWO-海运出口-整箱' },
+        { name: '飞力达FWO-海运出口-拼箱' },
+        { name: '飞力达FWO-海运出口-外包服务(备用)' },
+        { name: '飞力达FWO-海运出口-服务无运输(ZCB)' },
+        { name: '飞力达FWO-海运进口-整箱' },
+        { name: '飞力达FWO-海运进口-拼箱' },
+        { name: '飞力达FWO-海运进口-直通分拨-直通整箱' },
+        { name: '飞力达FWO-海运进口-直通分拨-分拨拼箱' },
+        { name: '飞力达FWO-海运进口-直通分拨-直通拼箱(备用)' },
+        { name: '飞力达FWO-海运进口-外包服务(备用)' },
+        { name: '飞力达FWO-海运进口-服务无运输(ZCB)' },
+        { name: '飞力达FWO-特殊监管' },
+    ];
     $(function () {
+        loadSynclistGrid('');
+        $('#searchform #search_code').combobox({
+            data: search_code,
+            valueField: 'code',
+            textField: 'name'
+        });
+        $('#searchform #customs_busitype').combobox({
+            data: customs_busitype,
+            valueField: 'name',
+            textField: 'name'
+        });
+
+        $('#customs_busitype').next('span').css('width', '300px');
+        $('#customs_busitype').next('span').children('.textbox-text').css('width', '300px');
+
+        var width = '';
+
+        $('.panel-body').each(function () {
+            debugger;
+            widt = $();
+        });
+
         $("#syncdata").click(function () {
-            var recs = gridpanel.getView().getSelectionModel().getSelection();
-            if (recs.length > 0)
-            {
-                var i = 0;
-                var ids = "";
-                for (i; i < recs.length; i++) {
-                    if (i + 1 == recs.length) {
-                        ids += recs[i].get("ID");
-                    } else {
-                        ids += recs[i].get("ID") + ",";
-                    }
-                }
-                debugger;
-                $.ajax({
-                    url: '/Interface/testtm',// 跳转到 action
-                    data: {
-                        'ids': ids
-                    },
-                    type: 'post',
-                    dataType: 'json',
-                    success: function (data) {
-                    }
-                });
-
-            } else {
-                Ext.MessageBox.alert("提示框", "请选择数据！");
+            var ids = "";
+            var row = $('#datagrid').datagrid('getSelected');
+            if (row == null) {
+                $.messager.alert("提示", "请选择数据！");
+                return;
             }
-
-
+            $(".datagrid-row-selected input[name='ID']").each(function () {
+                ids += this.value + ",";
+            });
+            ids = ids.substring(0, ids.length - 1);
+            $.ajax({
+                url: '/Interface/testtm',                          // 跳转到 action
+                data: { "ids": ids },
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                },
+            });
         });
     })
-</script>
-<div>
-    <a class="btn btn-primary btn-xs" href="javascript:void(0)" id="syncdata">同步</a>
+</script> 
+<div class="ibox-content">
+    <div class="table-responsive">
+        <table id="datagrid" class="easyui-datagrid" title="同步日志" style="height:auto;min-height:500px;max-height:800px" data-options="queryParams:{BUSITYPE:'SyncFoo'}">
+            <thead>
+                <tr>
+                 <th data-options="field: 'ID',width:80,checkbox:true"></th>
+                 <th data-options="field:'ONLYCODE',width:150,sortable:true">唯一号</th>
+                 <th data-options="field:'FWONO',width:200,sortable:true">FWO号</th>
+                 <th data-options="field:'FOONO',width:200,sortable:true">FOO指令号</th>
+                 <th data-options="field:'TIME',width:150,sortable:true">发送时间</th>
+                 <th data-options="field:'CODE',width:150,sortable:true">订单号</th>
+                 <th data-options="field:'BUSITYPE',width:150,sortable:true">业务类型</th>
+                 <th data-options="field:'CUSNO',width:120,sortable:true">客户编号</th>
+                 <th data-options="field:'CONTRACTNO',width:130,sortable:true">合同发票号</th>
+                 <th data-options="field:'TOTALNO',width:100,sortable:true">总单号</th>
+                 <th data-options="field:'DIVIDENO',width:100,sortable:true">分单号</th>
+                 <th data-options="field:'WOODPACKINGID',width:50,sortable:true">木质包装</th>
+                 <th data-options="field:'GOODSNUM',width:50,sortable:true">件数</th>
+                 <th data-options="field:'GOODSWEIGHT',width:70,sortable:true">重量</th>
+                 <th data-options="field:'REPWAYID',width:100,sortable:true">申报方式</th>
+                 <th data-options="field:'CUSTOMDISTRICTCODE',width:70,sortable:true">申报关区</th>
+                 <th data-options="field:'PORTCODE',width:70,sortable:true">口岸</th>
+                 <th data-options="field:'REPUNITCODE',width:300,sortable:true">报关申报单位</th>
+                 <th data-options="field:'INSPUNITCODE',width:300,sortable:true">报检申报单位</th>
+                 <th data-options="field:'ENTRUSTREQUEST',width:100,sortable:true">订单需求</th>
+                 <th data-options="field:'ENTRUSTTYPEID',width:70,sortable:true">委托类型</th>
+                 <th data-options="field:'MANIFEST',width:100,sortable:true">载货清单</th>
+                 <th data-options="field:'SHIPNAME',width:100,sortable:true">船名</th>
+                 <th data-options="field:'FILGHTNO',width:100,sortable:true">航次</th>
+                 <th data-options="field:'LADINGBILLNO',width:100,sortable:true">提单号</th>
+                 <th data-options="field:'TRADEWAYCODES',width:100,sortable:true">贸易方式</th>
+                 <th data-options="field:'DECLWAY',width:100,sortable:true">报关方式</th>
+                 <th data-options="field:'PACKKIND',width:70,sortable:true">包装种类</th>
+                 <th data-options="field:'ARRIVEDNO',width:150,sortable:true">运抵编号</th>
+                 <th data-options="field:'FIRSTLADINGBILLNO',width:100,sortable:true">一程提单号</th>
+                 <th data-options="field:'SECONDLADINGBILLNO',width:100,sortable:true">二程提单号</th>
+                 <th data-options="field:'GOODSTYPEID',width:100,sortable:true">货物类型</th>
+                 <th data-options="field:'BUSIUNITNAME',width:200,sortable:true">经营单位</th>
+                 <th data-options="field:'CREATEUSERNAME',width:70,sortable:true">创建人</th>
+                 <th data-options="field:'SPECIALRELATIONSHIP',width:50,sortable:true">特殊关系确认</th>
+                 <th data-options="field:'PRICEIMPACT',width:80,sortable:true">价格影响确认</th>
+                 <th data-options="field:'PAYPOYALTIES',width:100,sortable:true">支付特许权使用费确认</th>
+                 <th data-options="field:'WEIGHTCHECK',width:100,sortable:true">是否需要重量确认</th>
+                 <th data-options="field:'CHECKEDGOODSNUM',width:100,sortable:true">确认件数</th>
+                 <th data-options="field:'CHECKEDWEIGHT',width:100,sortable:true">确认重量</th>
+                 <th data-options="field:'FGOODSUNIT',width:200,sortable:true">发货单位+编码</th>
+                 <th data-options="field:'CREATETIME',width:200,sortable:true">委托时间</th>
+                 <th data-options="field:'SGOODSUNIT',width:200,sortable:true">收货单位+编码</th>
+                 <th data-options="field:'ALLOWDECLARE',width:70,sortable:true">报关可执行</th>
+                 <th data-options="field:'CONTAINERTRUCKS',width:100,sortable:true">集装箱及车辆信息</th>
+                 <th data-options="field:'GOODSXT',width:100,sortable:true">货物形态</th>
+                 <th data-options="field:'ISPREDECLARE',width:80,sortable:true">是否提前报关</th>
+                 <th data-options="field:'INVOICENO',width:100,sortable:true">二线合同专用发票号</th>
+                 <th data-options="field:'ISCHECKEDWEIGHT',width:100,sortable:true">重量确认标志</th>
+                </tr>
+            </thead>
+        </table>
+        <div id="tb">
+            <div class="tb_search">
+                <form id="searchform" method="post">
+                    <input type="hidden" name="BUSITYPE" value="SyncFoo" />
+                    <table>
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value placeholderclass" type="text" name="ordercode_value" placeholder="单据号" />
+                            </td>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>业务类型</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox value dlc" id="customs_busitype" style="width:130px" panelheight="auto" name="customs_busitype"></select>
+                            </td>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>发送时间</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value  placeholderclass" name="startdate" placeholder="开始时间">
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value  placeholderclass" name="stopdate" placeholder="结束时间">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="tb_but">
+                <div class="but_left">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" id="syncdata"><i class="fa fa-exchange" aria-hidden="true"></i> 同 步</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="export_form()"><i class="fa fa-share-square-o" aria-hidden="true"></i> 导出</a>
+                </div>
+                <div class="but_right">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="fa fa-retweet" aria-hidden="true"></i> 重置</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- end ibox-content -->
 </div>
-<div id="div_foo">
-
-</div> 

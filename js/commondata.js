@@ -405,9 +405,10 @@ function export_form() {
     $(".datagrid-row-selected input[name='ID']").each(function () {
         ids += this.value + ",";
     });
+    ids = ids.substring(0, ids.length - 1);
     var host = window.location.host;
     $.ajax({
-        url: '/Order/testOut',                          // 跳转到 action
+        url: '/Order/DataExportOut',                          // 跳转到 action
         data: { "ids": ids, "BUSITYPE": BUSITYPE },
         type: 'post',
         dataType: 'json',
@@ -574,6 +575,28 @@ function loadListGrid(page) {
         toolbar: '#tb',
         pageSize: 20,
         pageList: [20, 40, 60, 80, 100,300],
+        pagination: true,
+        onDblClickCell: function (index, field, value) {
+            if (page != "") {
+                var row = $('#datagrid').datagrid('getData').rows[index];
+                if (row.ID != "") {
+                    window.location.href = "/" + page + "?ID=" + row.ID;
+                }
+            }
+
+        }
+    });
+}
+//加载后台管理datagrid
+function loadSynclistGrid(page) {
+    $('#datagrid').datagrid({
+        url: '/Common/GetData',
+        rownumbers: true,
+        dataType: 'json',
+        method: 'get',
+        toolbar: '#tb',
+        pageSize: 20,
+        pageList: [20, 40, 60, 80, 100, 300],
         pagination: true,
         onDblClickCell: function (index, field, value) {
             if (page != "") {
