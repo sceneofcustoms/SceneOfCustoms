@@ -36,6 +36,69 @@ namespace SceneOfCustoms
         <br>28实际毛重(ACTUALGOODSGW)<br>29货物类型(整箱或散箱用中文标记)(GOODSTYPE)<br>30报关提单号(SECONDLADINGBILLNO)")]
         public List<Msgobj> SyncData(List<OrderEn> ld)
         {
+
+
+            //bd.SyncDataFromSapSoapClient xc = new bd.SyncDataFromSapSoapClient();
+            //bd.OrderEn lcorder;
+            //List<bd.OrderEn> list = new List<bd.OrderEn>();
+
+            //foreach (OrderEn o in ld)
+            //{
+            //    lcorder = new bd.OrderEn();
+            //    lcorder.BUSITYPE = o.BUSITYPE;
+            //    lcorder.CODE = o.CODE;
+            //    lcorder.FOONO = o.FOONO;
+            //    lcorder.ORDERCODE = o.ORDERCODE;
+            //    lcorder.TOTALNO = o.TOTALNO;
+            //    lcorder.DIVIDENO = o.DIVIDENO;
+            //    lcorder.GOODSNUM = o.GOODSNUM;
+            //    lcorder.GOODSWEIGHT = o.GOODSWEIGHT;
+            //    lcorder.PACKKIND = o.PACKKIND;
+            //    lcorder.REPWAYID = o.REPWAYID;
+            //    lcorder.DECLWAY = o.DECLWAY;
+            //    lcorder.TRADEWAYCODES = o.TRADEWAYCODES;
+            //    lcorder.CUSNO = o.CUSNO;
+            //    lcorder.CUSTOMDISTRICTCODE = o.CUSTOMDISTRICTCODE;
+            //    lcorder.PORTCODE = o.PORTCODE;
+            //    lcorder.PRICEIMPACT = o.PRICEIMPACT;
+            //    lcorder.PAYPOYALTIES = o.PAYPOYALTIES;
+            //    //lcorder.SFGOODSUNIT = o.SFGOODSUNIT;
+
+            //    lcorder.FGOODSUNIT = o.FGOODSUNIT;
+            //    lcorder.SGOODSUNIT = o.SGOODSUNIT;
+            //    lcorder.ALLOWDECLARE = o.ALLOWDECLARE;
+
+            //    lcorder.REPUNITCODE = o.REPUNITCODE;
+            //    lcorder.CREATEUSERNAME = o.CREATEUSERNAME;
+            //    lcorder.CREATETIME = o.CREATETIME;
+            //    lcorder.ARRIVEDNO = o.ARRIVEDNO;
+            //    lcorder.CHECKEDGOODSNUM = o.CHECKEDGOODSNUM;
+            //    lcorder.CHECKEDWEIGHT = o.CHECKEDWEIGHT;
+            //    lcorder.ENTRUSTTYPEID = o.ENTRUSTTYPEID;
+            //    lcorder.GOODSXT = o.GOODSXT;
+            //    lcorder.BUSIUNITNAME = o.BUSIUNITNAME;
+            //    lcorder.GOODSTYPEID = o.GOODSTYPEID;
+            //    lcorder.LADINGBILLNO = o.LADINGBILLNO;
+            //    lcorder.ISPREDECLARE = o.ISPREDECLARE;
+            //    lcorder.ENTRUSTREQUEST = o.ENTRUSTREQUEST;
+            //    lcorder.CONTRACTNO = o.CONTRACTNO;
+            //    lcorder.FIRSTLADINGBILLNO = o.FIRSTLADINGBILLNO;
+            //    lcorder.SECONDLADINGBILLNO = o.SECONDLADINGBILLNO;
+            //    lcorder.MANIFEST = o.MANIFEST;
+            //    lcorder.WOODPACKINGID = o.WOODPACKINGID;
+            //    lcorder.WEIGHTCHECK = o.WEIGHTCHECK;
+            //    lcorder.ISWEIGHTCHECK = o.ISWEIGHTCHECK;
+            //    lcorder.SHIPNAME = o.SHIPNAME;
+            //    lcorder.FILGHTNO = o.FILGHTNO;
+            //    lcorder.INSPUNITNAME = o.INSPUNITNAME;
+            //    lcorder.TURNPRENO = o.TURNPRENO;
+            //    lcorder.INVOICENO = o.INVOICENO;
+            //    lcorder.SPECIALRELATIONSHIP = o.SPECIALRELATIONSHIP;
+            //    list.Add(lcorder);
+            //}
+
+            //bd.Msgobj[] mo = xc.SyncData(list.ToArray());
+
             //IDatabase db = SeRedis.redis.GetDatabase();//先将报文数据保存至缓存数据库
             //db.ListRightPush("SyncDataFromSap", ld.ToString());
             Msgobj MO = new Msgobj();

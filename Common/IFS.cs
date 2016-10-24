@@ -214,12 +214,17 @@ namespace SceneOfCustoms.Common
 
                 string TRADEWAYCODES = o[0].TRADEWAYCODES;
                 //贸易方式
-                string[] arr = o[0].TRADEWAYCODES.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-                if (arr.Length > 0)
+
+                if (!string.IsNullOrEmpty(o[0].TRADEWAYCODES))
                 {
-                    o[0].TRADEWAYCODES = arr[0];
-                    o[0].ENTRUSTREQUEST += TRADEWAYCODES;
+                    string[] arr = o[0].TRADEWAYCODES.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (arr.Length > 0)
+                    {
+                        o[0].TRADEWAYCODES = arr[0];
+                        o[0].ENTRUSTREQUEST += TRADEWAYCODES;
+                    }
                 }
+
 
                 //客户编号
                 if (!string.IsNullOrEmpty(o[0].CUSTOMDISTRICTCODE))
@@ -292,19 +297,56 @@ namespace SceneOfCustoms.Common
 
                     if (o[0].FOONO.Substring(0, 4) == "SOBG")
                     {
-                        REPUNITNAME = o[0].REPUNITCODE.Remove(o[0].REPUNITCODE.Length - 10, 10);
-                        o[0].REPUNITCODE = o[0].REPUNITCODE.Substring(o[0].REPUNITCODE.Length - 10, 10);
+                        if (!string.IsNullOrEmpty(o[0].REPUNITCODE) && o[0].REPUNITCODE.Length > 10)
+                        {
+                            REPUNITNAME = o[0].REPUNITCODE.Remove(o[0].REPUNITCODE.Length - 10, 10);
+                            o[0].REPUNITCODE = o[0].REPUNITCODE.Substring(o[0].REPUNITCODE.Length - 10, 10);
+                        }
+                        else
+                        {
+                            REPUNITNAME = "";
+                            o[0].REPUNITCODE = "";
+                        }
 
-                        INSPUNITCODE = o[1].INSPUNITNAME.Substring(o[1].INSPUNITNAME.Length - 10, 10);
-                        o[0].INSPUNITNAME = o[1].INSPUNITNAME.Remove(o[1].INSPUNITNAME.Length - 10, 10);
+
+
+                        if (!string.IsNullOrEmpty(o[1].INSPUNITNAME) && o[1].INSPUNITNAME.Length > 10)
+                        {
+                            INSPUNITCODE = o[1].INSPUNITNAME.Substring(o[1].INSPUNITNAME.Length - 10, 10);
+                            o[0].INSPUNITNAME = o[1].INSPUNITNAME.Remove(o[1].INSPUNITNAME.Length - 10, 10);
+                        }
+                        else
+                        {
+                            INSPUNITCODE = "";
+                            o[0].INSPUNITNAME = "";
+                        }
+
                     }
                     else
                     {
-                        o[0].REPUNITCODE = o[1].REPUNITCODE.Substring(o[1].REPUNITCODE.Length - 10, 10);
-                        REPUNITNAME = o[1].REPUNITCODE.Remove(o[1].REPUNITCODE.Length - 10, 10);
+                        if (!string.IsNullOrEmpty(o[1].REPUNITCODE) && o[1].REPUNITCODE.Length > 10)
+                        {
+                            o[0].REPUNITCODE = o[1].REPUNITCODE.Substring(o[1].REPUNITCODE.Length - 10, 10);
+                            REPUNITNAME = o[1].REPUNITCODE.Remove(o[1].REPUNITCODE.Length - 10, 10);
+                        }
+                        else
+                        {
+                            o[0].REPUNITCODE = "";
+                            REPUNITNAME = "";
+                        }
 
-                        INSPUNITCODE = o[0].INSPUNITNAME.Substring(o[0].INSPUNITNAME.Length - 10, 10);
-                        o[0].INSPUNITNAME = o[0].INSPUNITNAME.Remove(o[0].INSPUNITNAME.Length - 10, 10);
+
+                        if (!string.IsNullOrEmpty(o[0].INSPUNITNAME) && o[0].INSPUNITNAME.Length > 10)
+                        {
+                            INSPUNITCODE = o[0].INSPUNITNAME.Substring(o[0].INSPUNITNAME.Length - 10, 10);
+                            o[0].INSPUNITNAME = o[0].INSPUNITNAME.Remove(o[0].INSPUNITNAME.Length - 10, 10);
+                        }
+                        else
+                        {
+                            INSPUNITCODE = "";
+                            o[0].INSPUNITNAME = "";
+                        }
+
                     }
                 }
                 //报关/报检指令 
@@ -502,7 +544,7 @@ namespace SceneOfCustoms.Common
                 }
                 else if (ListOrder.Count == 2)
                 {
-                    if (ListOrder[0].FOONO.Length >= 4 && ListOrder[1].FOONO.Length >= 4)
+                    if (!string.IsNullOrEmpty(ListOrder[0].FOONO) && ListOrder[0].FOONO.Length >= 4 && !string.IsNullOrEmpty(ListOrder[1].FOONO) && ListOrder[1].FOONO.Length >= 4)
                     {
                         string FOONO = ListOrder[0].FOONO.Substring(0, 4) + ListOrder[1].FOONO.Substring(0, 4);
                         if (FOONO != "SOBGSOBJ" && FOONO != "SOBJSOBG")
@@ -521,7 +563,7 @@ namespace SceneOfCustoms.Common
                 }
                 else if (ListOrder.Count == 1)
                 {
-                    if (ListOrder[0].FOONO.Length >= 4)
+                    if (!string.IsNullOrEmpty(ListOrder[0].FOONO) && ListOrder[0].FOONO.Length >= 4)
                     {
                         string FOONO = ListOrder[0].FOONO.Substring(0, 4);
                         if (FOONO != "SOBG" && FOONO != "SOBJ")
@@ -803,7 +845,7 @@ namespace SceneOfCustoms.Common
             }
 
 
-            if (busitype.IndexOf("叠加保税") >= 0)
+            if (busitype.IndexOf("叠加保税") >= 0 || busitype.IndexOf("国内") >= 0)
             {
                 //委托方式   进口企业/出口企业/HUB仓进/HUB仓出
 
@@ -854,10 +896,22 @@ namespace SceneOfCustoms.Common
                         oes_split4.Add(oe);
                     }
                 }
-                lloes.Add(oes_split1);
-                lloes.Add(oes_split2);
-                lloes.Add(oes_split3);
-                lloes.Add(oes_split4);
+                if (oes_split1.Count > 0)
+                {
+                    lloes.Add(oes_split1);
+                }
+                if (oes_split2.Count > 0)
+                {
+                    lloes.Add(oes_split2);
+                }
+                if (oes_split3.Count > 0)
+                {
+                    lloes.Add(oes_split3);
+                }
+                if (oes_split4.Count > 0)
+                {
+                    lloes.Add(oes_split4);
+                }
             }
             return lloes;
         }
