@@ -55,7 +55,6 @@ namespace SceneOfCustoms.Controllers
             int Page = Convert.ToInt32(Request.Params["page"]);
             int total = 0;
             string sql = "";
-
             string data = Request["data"];
             if (data != null)
             {
@@ -66,8 +65,6 @@ namespace SceneOfCustoms.Controllers
             {
                 BUSITYPE = Request["BUSITYPE"];
             }
-
-
             switch (BUSITYPE)
             {
                 case "SyncFoo":
@@ -77,7 +74,6 @@ namespace SceneOfCustoms.Controllers
                     sql = " select * from MSG where 1=1";
                     break;
             }
-
             if (data != null)
             {
                 JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
@@ -114,7 +110,6 @@ namespace SceneOfCustoms.Controllers
                     sql += " AND STATUS = '" + jo.Value<string>("businessin_status") + "' ";
                 }
             }
-
             string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
             string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
             sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);

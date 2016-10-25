@@ -59,7 +59,8 @@
                 width = $(this).css('width');
                 if (width == '300px') {
                     $(this).css('height', '300px');
-                    $(this).css('overflow', 'scroll');
+                    $(this).css('overflow-x', 'hidden');
+                    $(this).css('overflow-y', 'auto');
                 }
             });
         });
@@ -160,7 +161,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox value dlc" id="customs_busitype" style="width:130px" panelheight="auto" name="customs_busitype"></select>
+                                <select class="easyui-combobox value dlc" editable="false" id="customs_busitype" style="width:130px" panelheight="auto" name="customs_busitype"></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
@@ -168,10 +169,10 @@
                                 </select>
                             </td>
                             <td>
-                                <input class="easyui-datebox value  placeholderclass" name="startdate" placeholder="开始时间">
+                                <input class="easyui-datebox value  placeholderclass" editable="false" name="startdate" placeholder="开始时间">
                             </td>
                             <td>
-                                <input class="easyui-datebox value  placeholderclass" name="stopdate" placeholder="结束时间">
+                                <input class="easyui-datebox value  placeholderclass" editable="false" name="stopdate" placeholder="结束时间">
                             </td>
                         </tr>
                     </table>
