@@ -221,7 +221,7 @@ $(function () {
         }
     })
 
-    //改状态 叠加保税  报关
+    //改状态 叠加保税(多个表单)  报关
     $('.DECLSTATUS2').click(function () {
         var type = this.getAttribute("datatype");
         if (type == 'BAORUHAIGUAN') {

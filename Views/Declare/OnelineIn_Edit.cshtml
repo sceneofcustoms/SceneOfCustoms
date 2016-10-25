@@ -9,8 +9,8 @@
                     <input class="easyui-textbox" type="text" name="FWONO" disabled="disabled" />
                 </td>
                 <td>
-                    <label for="FOCUSTOMSNO">FO号:</label>
-                    <input class="easyui-textbox" type="text" name="FOCUSTOMSNO" disabled="disabled" />
+                    <label for="FOONO">FO号:</label>
+                    <input class="easyui-textbox" type="text" name="FOONO" disabled="disabled" />
                 </td>
                 <td>
                     <label for="CODE">业务编号:</label>
@@ -90,7 +90,7 @@
             <tr>
                 <td>
                     <label for="GUANWUJIESHOUTIME"> 关务接受时间:</label>
-                    <input class="easyui-textbox  time_input" id="GUANWUJIESHOUTIME" data-options="text:'填充时间'" type="text" name="GUANWUJIESHOUTIME" disabled="disabled" />
+                    <input class="easyui-datetimebox  time_input " id="GUANWUJIESHOUTIME" data-options="text:'填充时间'" type="text" editable="false" name="GUANWUJIESHOUTIME" />
                     <a href="javascript:void(0)" datatype="GUANWUJIESHOU" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>
                 </td>
                 <td>
@@ -99,7 +99,7 @@
                 </td>
                 <td>
                     <label for="BAORUHAIGUANTIME"> 报入海关时间:</label>
-                    <input class="easyui-textbox time_input" type="text" id="BAORUHAIGUANTIME" name="BAORUHAIGUANTIME" disabled="disabled" />
+                    <input class="easyui-textbox time_input" type="text" id="BAORUHAIGUANTIME" name="BAORUHAIGUANTIME" editable="false"  />
                     <a href="javascript:void(0)" datatype="BAORUHAIGUAN" class="easyui-linkbutton fillingData DECLSTATUS"><i class="icon-time"></i></a>
                 </td>
                 <td>
@@ -321,4 +321,24 @@
 
 <script type="text/javascript">
     Edit();
+
+    $(function () {
+
+        $('.time_input').datetimebox({
+            stopFirstChangeEvent: true,
+            onChange: function() {
+                var options = $(this).datetimebox('options');
+
+                if(options.stopFirstChangeEvent) {
+                    options.stopFirstChangeEvent = false;
+                    return;
+                }
+                //以下写onchange的逻辑
+                alert('1');
+            }
+        });
+
+
+    });
+    
 </script>
