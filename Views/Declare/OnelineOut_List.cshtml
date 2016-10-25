@@ -28,7 +28,6 @@
         { code: 'FOCUSTOMSNO', name: 'FO号' },
         { code: 'ARRIVEDNO', name: '运抵编号' }
     ];
-
     $(function () {
         loadListGrid('Declare/OnelineOut_Edit');
         $('#searchform #search_condition_date').combobox({
@@ -89,7 +88,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value" id="businessout_object" panelheight="auto" name="businessout_object"></select>
+                                <select class="easyui-combobox combobox_width value" editable="false" id="businessout_object" panelheight="auto" name="businessout_object"></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
@@ -108,10 +107,10 @@
                                 <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
                             </td>
                             <td>
-                                <input class="easyui-datebox value placeholderclass" name="startdate" placeholder="开始时间">
+                                <input class="easyui-datebox value placeholderclass" editable="false" name="startdate" placeholder="开始时间">
                             </td>
                             <td>
-                                <input class="easyui-datebox value placeholderclass" name="stopdate" placeholder="结束时间">
+                                <input class="easyui-datebox value placeholderclass" editable="false" name="stopdate" placeholder="结束时间">
                             </td>
                         </tr>
                         <tr>
@@ -121,7 +120,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox value" id="customs_state" style="width:130px" panelheight="auto" name="customs_state"></select>
+                                <select class="easyui-combobox value" editable="false" id="customs_state" style="width:130px" panelheight="auto" name="customs_state"></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">

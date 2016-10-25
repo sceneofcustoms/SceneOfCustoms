@@ -40,7 +40,6 @@
             valueField: 'code',
             textField: 'name'
         });
-
         $('#searchform #search_condition_date').combobox({
             data: search_condition_date,
             valueField: 'code',
@@ -51,7 +50,6 @@
             valueField: 'code',
             textField: 'name'
         });
-
         $('#searchform #Abnormaltype').combobox({
             data: Abnormaltype,
             valueField: 'code',
@@ -122,7 +120,6 @@
                 }
             },
             error: function (err) {
-                
             }
         });
     }
@@ -196,13 +193,13 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value" id="BUSITYPE" panelheight="auto" name="YCBUSITYPE"></select>
+                                <select class="easyui-combobox combobox_width value" editable="false" id="BUSITYPE" panelheight="auto" name="YCBUSITYPE"></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
                             </td>
                             <td>
-                                <input class="easyui-textbox value" type="text" name="ordercode_value" />
+                                <input class="easyui-textbox value placeholderclass" type="text" name="ordercode_value" placeholder="单据号" />
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
@@ -210,16 +207,16 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value" id="Abnormaltype" panelheight="auto" name=""></select>
+                                <select class="easyui-combobox combobox_width value" editable="false" id="Abnormaltype" panelheight="auto" name=""></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
                             </td>
                             <td>
-                                <input class="easyui-datebox value" name="startdate" placeholder="开始时间">
+                                <input class="easyui-datebox value" editable="false" name="startdate" placeholder="开始时间">
                             </td>
                             <td>
-                                <input class="easyui-datebox value" name="stopdate" placeholder="结束时间">
+                                <input class="easyui-datebox value" editable="false" name="stopdate" placeholder="结束时间">
                             </td>
                         </tr>
                         <tr>
@@ -229,7 +226,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name="LAWCONDITION"></select>
+                                <select class="easyui-combobox combobox_width value is_check" editable="false" panelheight="auto" name="LAWCONDITION"></select>
                             </td>
                         </tr>
                     </table>
