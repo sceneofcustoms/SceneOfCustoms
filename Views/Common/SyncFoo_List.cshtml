@@ -40,7 +40,6 @@
         { name: '飞力达FWO-特殊监管' },
     ];
     $(function () {
-        loadSynclistGrid('');
         $('#searchform #search_code').combobox({
             data: search_code,
             valueField: 'code',
@@ -88,58 +87,66 @@
 </script> 
 <div class="ibox-content">
     <div class="table-responsive">
-        <table id="datagrid" class="easyui-datagrid" title="同步日志" style="height:auto;min-height:500px;max-height:800px" data-options="queryParams:{BUSITYPE:'SyncFoo'}">
+        <table id="datagrid" class="easyui-datagrid" title="同步日志" style="height:auto;min-height:500px;max-height:800px"
+               data-options="url: '/Common/LoadFooList',
+                            rownumbers: true,
+                            dataType: 'json',
+                            method: 'get',
+                            toolbar: '#tb',
+                            pageSize: 20,
+                            pageList: [20, 40, 60, 80, 100, 300],
+                            pagination: true,">
             <thead>
                 <tr>
-                 <th data-options="field: 'ID',width:80,checkbox:true"></th>
-                 <th data-options="field:'ONLYCODE',width:150,sortable:true">唯一号</th>
-                 <th data-options="field:'FWONO',width:200,sortable:true">FWO号</th>
-                 <th data-options="field:'FOONO',width:200,sortable:true">FOO指令号</th>
-                 <th data-options="field:'TIME',width:150,sortable:true">发送时间</th>
-                 <th data-options="field:'CODE',width:150,sortable:true">订单号</th>
-                 <th data-options="field:'BUSITYPE',width:150,sortable:true">业务类型</th>
-                 <th data-options="field:'CUSNO',width:120,sortable:true">客户编号</th>
-                 <th data-options="field:'CONTRACTNO',width:130,sortable:true">合同发票号</th>
-                 <th data-options="field:'TOTALNO',width:100,sortable:true">总单号</th>
-                 <th data-options="field:'DIVIDENO',width:100,sortable:true">分单号</th>
-                 <th data-options="field:'WOODPACKINGID',width:50,sortable:true">木质包装</th>
-                 <th data-options="field:'GOODSNUM',width:50,sortable:true">件数</th>
-                 <th data-options="field:'GOODSWEIGHT',width:70,sortable:true">重量</th>
-                 <th data-options="field:'REPWAYID',width:100,sortable:true">申报方式</th>
-                 <th data-options="field:'CUSTOMDISTRICTCODE',width:70,sortable:true">申报关区</th>
-                 <th data-options="field:'PORTCODE',width:70,sortable:true">口岸</th>
-                 <th data-options="field:'REPUNITCODE',width:300,sortable:true">报关申报单位</th>
-                 <th data-options="field:'INSPUNITCODE',width:300,sortable:true">报检申报单位</th>
-                 <th data-options="field:'ENTRUSTREQUEST',width:100,sortable:true">订单需求</th>
-                 <th data-options="field:'ENTRUSTTYPEID',width:70,sortable:true">委托类型</th>
-                 <th data-options="field:'MANIFEST',width:100,sortable:true">载货清单</th>
-                 <th data-options="field:'SHIPNAME',width:100,sortable:true">船名</th>
-                 <th data-options="field:'FILGHTNO',width:100,sortable:true">航次</th>
-                 <th data-options="field:'LADINGBILLNO',width:100,sortable:true">提单号</th>
-                 <th data-options="field:'TRADEWAYCODES',width:100,sortable:true">贸易方式</th>
-                 <th data-options="field:'DECLWAY',width:100,sortable:true">报关方式</th>
-                 <th data-options="field:'PACKKIND',width:70,sortable:true">包装种类</th>
-                 <th data-options="field:'ARRIVEDNO',width:150,sortable:true">运抵编号</th>
-                 <th data-options="field:'FIRSTLADINGBILLNO',width:100,sortable:true">一程提单号</th>
-                 <th data-options="field:'SECONDLADINGBILLNO',width:100,sortable:true">二程提单号</th>
-                 <th data-options="field:'GOODSTYPEID',width:100,sortable:true">货物类型</th>
-                 <th data-options="field:'BUSIUNITNAME',width:200,sortable:true">经营单位</th>
-                 <th data-options="field:'CREATEUSERNAME',width:70,sortable:true">创建人</th>
-                 <th data-options="field:'SPECIALRELATIONSHIP',width:50,sortable:true">特殊关系确认</th>
-                 <th data-options="field:'PRICEIMPACT',width:80,sortable:true">价格影响确认</th>
-                 <th data-options="field:'PAYPOYALTIES',width:100,sortable:true">支付特许权使用费确认</th>
-                 <th data-options="field:'WEIGHTCHECK',width:100,sortable:true">是否需要重量确认</th>
-                 <th data-options="field:'CHECKEDGOODSNUM',width:100,sortable:true">确认件数</th>
-                 <th data-options="field:'CHECKEDWEIGHT',width:100,sortable:true">确认重量</th>
-                 <th data-options="field:'FGOODSUNIT',width:200,sortable:true">发货单位+编码</th>
-                 <th data-options="field:'CREATETIME',width:200,sortable:true">委托时间</th>
-                 <th data-options="field:'SGOODSUNIT',width:200,sortable:true">收货单位+编码</th>
-                 <th data-options="field:'ALLOWDECLARE',width:70,sortable:true">报关可执行</th>
-                 <th data-options="field:'CONTAINERTRUCKS',width:100,sortable:true">集装箱及车辆信息</th>
-                 <th data-options="field:'GOODSXT',width:100,sortable:true">货物形态</th>
-                 <th data-options="field:'ISPREDECLARE',width:80,sortable:true">是否提前报关</th>
-                 <th data-options="field:'INVOICENO',width:100,sortable:true">二线合同专用发票号</th>
-                 <th data-options="field:'ISCHECKEDWEIGHT',width:100,sortable:true">重量确认标志</th>
+                    <th data-options="field: 'ID',width:80,checkbox:true"></th>
+                    <th data-options="field:'ONLYCODE',width:150,sortable:true">唯一号</th>
+                    <th data-options="field:'FWONO',width:200,sortable:true">FWO号</th>
+                    <th data-options="field:'FOONO',width:200,sortable:true">FOO指令号</th>
+                    <th data-options="field:'TIME',width:150,sortable:true">发送时间</th>
+                    <th data-options="field:'CODE',width:150,sortable:true">订单号</th>
+                    <th data-options="field:'BUSITYPE',width:150,sortable:true">业务类型</th>
+                    <th data-options="field:'CUSNO',width:120,sortable:true">客户编号</th>
+                    <th data-options="field:'CONTRACTNO',width:130,sortable:true">合同发票号</th>
+                    <th data-options="field:'TOTALNO',width:100,sortable:true">总单号</th>
+                    <th data-options="field:'DIVIDENO',width:100,sortable:true">分单号</th>
+                    <th data-options="field:'WOODPACKINGID',width:50,sortable:true">木质包装</th>
+                    <th data-options="field:'GOODSNUM',width:50,sortable:true">件数</th>
+                    <th data-options="field:'GOODSWEIGHT',width:70,sortable:true">重量</th>
+                    <th data-options="field:'REPWAYID',width:100,sortable:true">申报方式</th>
+                    <th data-options="field:'CUSTOMDISTRICTCODE',width:70,sortable:true">申报关区</th>
+                    <th data-options="field:'PORTCODE',width:70,sortable:true">口岸</th>
+                    <th data-options="field:'REPUNITCODE',width:300,sortable:true">报关申报单位</th>
+                    <th data-options="field:'INSPUNITCODE',width:300,sortable:true">报检申报单位</th>
+                    <th data-options="field:'ENTRUSTREQUEST',width:100,sortable:true">订单需求</th>
+                    <th data-options="field:'ENTRUSTTYPEID',width:70,sortable:true">委托类型</th>
+                    <th data-options="field:'MANIFEST',width:100,sortable:true">载货清单</th>
+                    <th data-options="field:'SHIPNAME',width:100,sortable:true">船名</th>
+                    <th data-options="field:'FILGHTNO',width:100,sortable:true">航次</th>
+                    <th data-options="field:'LADINGBILLNO',width:100,sortable:true">提单号</th>
+                    <th data-options="field:'TRADEWAYCODES',width:100,sortable:true">贸易方式</th>
+                    <th data-options="field:'DECLWAY',width:100,sortable:true">报关方式</th>
+                    <th data-options="field:'PACKKIND',width:70,sortable:true">包装种类</th>
+                    <th data-options="field:'ARRIVEDNO',width:150,sortable:true">运抵编号</th>
+                    <th data-options="field:'FIRSTLADINGBILLNO',width:100,sortable:true">一程提单号</th>
+                    <th data-options="field:'SECONDLADINGBILLNO',width:100,sortable:true">二程提单号</th>
+                    <th data-options="field:'GOODSTYPEID',width:100,sortable:true">货物类型</th>
+                    <th data-options="field:'BUSIUNITNAME',width:200,sortable:true">经营单位</th>
+                    <th data-options="field:'CREATEUSERNAME',width:70,sortable:true">创建人</th>
+                    <th data-options="field:'SPECIALRELATIONSHIP',width:50,sortable:true">特殊关系确认</th>
+                    <th data-options="field:'PRICEIMPACT',width:80,sortable:true">价格影响确认</th>
+                    <th data-options="field:'PAYPOYALTIES',width:100,sortable:true">支付特许权使用费确认</th>
+                    <th data-options="field:'WEIGHTCHECK',width:100,sortable:true">是否需要重量确认</th>
+                    <th data-options="field:'CHECKEDGOODSNUM',width:100,sortable:true">确认件数</th>
+                    <th data-options="field:'CHECKEDWEIGHT',width:100,sortable:true">确认重量</th>
+                    <th data-options="field:'FGOODSUNIT',width:200,sortable:true">发货单位+编码</th>
+                    <th data-options="field:'CREATETIME',width:200,sortable:true">委托时间</th>
+                    <th data-options="field:'SGOODSUNIT',width:200,sortable:true">收货单位+编码</th>
+                    <th data-options="field:'ALLOWDECLARE',width:70,sortable:true">报关可执行</th>
+                    <th data-options="field:'CONTAINERTRUCKS',width:100,sortable:true">集装箱及车辆信息</th>
+                    <th data-options="field:'GOODSXT',width:100,sortable:true">货物形态</th>
+                    <th data-options="field:'ISPREDECLARE',width:80,sortable:true">是否提前报关</th>
+                    <th data-options="field:'INVOICENO',width:100,sortable:true">二线合同专用发票号</th>
+                    <th data-options="field:'ISCHECKEDWEIGHT',width:100,sortable:true">重量确认标志</th>
                 </tr>
             </thead>
         </table>
