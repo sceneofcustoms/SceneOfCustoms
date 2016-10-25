@@ -10,9 +10,7 @@
     ];
     // 查询条件  --业务类型
     var customs_busitype = [
-        {
-            name: '飞力达FWO-空运出口', selected: true
-        },
+        { name: '飞力达FWO-空运出口'},
         { name: '飞力达FWO-空运出口-外包服务(备用)' },
         { name: '飞力达FWO-空运出口-服务无运输(ZCA)' },
         { name: '飞力达FWO-空运进口' },
@@ -53,17 +51,18 @@
             valueField: 'name',
             textField: 'name'
         });
-
         $('#customs_busitype').next('span').css('width', '300px');
         $('#customs_busitype').next('span').children('.textbox-text').css('width', '300px');
-
         var width = '';
-
-        $('.panel-body').each(function () {
-            debugger;
-            widt = $();
+        $("#customs_busitype").next('span').click(function () {
+            $('.panel-body-noheader').each(function () {
+                width = $(this).css('width');
+                if (width == '300px') {
+                    $(this).css('height', '300px');
+                    $(this).css('overflow', 'scroll');
+                }
+            });
         });
-
         $("#syncdata").click(function () {
             var ids = "";
             var row = $('#datagrid').datagrid('getSelected');

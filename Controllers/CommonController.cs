@@ -85,17 +85,33 @@ namespace SceneOfCustoms.Controllers
                 {
                     sql += " AND " + jo.Value<string>("ordercode") + " ='" + jo.Value<string>("ordercode_value") + "'";
                 }
-                if (jo.Value<string>("startdate") != "")
+                if (jo.Value<string>("startdate") != "" && jo.Value<string>("startdate") != null)
                 {
                     sql += " AND TIME >= to_date('" + jo.Value<string>("startdate") + "','yyyy-MM-dd')";
                 }
-                if (jo.Value<string>("stopdate") != "")
+                if (jo.Value<string>("stopdate") != "" && jo.Value<string>("stopdate") != null)
                 {
                     sql += " AND TIME <= to_date('" + jo.Value<string>("stopdate") + "','yyyy-MM-dd')";
+                }
+                if (jo.Value<string>("starttime") != "" && jo.Value<string>("starttime") != null)
+                {
+                    sql += " AND CREATETIME >= to_date('" + jo.Value<string>("starttime") + "','yyyy-MM-dd')";
+                }
+                if (jo.Value<string>("stoptime") != "" && jo.Value<string>("stoptime") != null)
+                {
+                    sql += " AND CREATETIME <= to_date('" + jo.Value<string>("stoptime") + "','yyyy-MM-dd')";
                 }
                 if (jo.Value<string>("customs_busitype") != null && jo.Value<string>("customs_busitype") != "")
                 {
                     sql += " AND BUSITYPE = '" + jo.Value<string>("customs_busitype") + "' ";
+                }
+                if (jo.Value<string>("businessin_source") != null && jo.Value<string>("businessin_source") != "")
+                {
+                    sql += " AND SOURCE = '" + jo.Value<string>("businessin_source") + "' ";
+                }
+                if (jo.Value<string>("businessin_status") != null && jo.Value<string>("businessin_status") != "")
+                {
+                    sql += " AND STATUS = '" + jo.Value<string>("businessin_status") + "' ";
                 }
             }
 
