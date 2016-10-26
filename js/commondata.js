@@ -209,109 +209,42 @@ $(function () {
     });
 
 
-    ////改状态  报关
-    //$('.DECLSTATUS').click(function () {
-    //    var type = this.getAttribute("datatype");
-    //    if (type == 'BAORUHAIGUAN') {
-    //        $("#DECLSTATUS").textbox('setValue', '报关');
-    //    } else if (type == 'CHAYANSTART') {
-    //        $("#DECLSTATUS").textbox('setValue', '查验');
-    //    } else if (type == 'DANZHENGFANGXING') {
-    //        $("#DECLSTATUS").textbox('setValue', '放行');
-    //    }
-    //})
-
-    ////改状态 叠加保税(多个表单)  报关
-    //$('.DECLSTATUS2').click(function () {
-    //    var type = this.getAttribute("datatype");
-    //    if (type == 'BAORUHAIGUAN') {
-    //        $("#DECLSTATUS2").textbox('setValue', '报关');
-    //    } else if (type == 'CHAYANSTART') {
-    //        $("#DECLSTATUS2").textbox('setValue', '查验');
-    //    } else if (type == 'DANZHENGFANGXING') {
-    //        $("#DECLSTATUS2").textbox('setValue', '放行');
-    //    }
-    //})
-
-
-    ////改状态  报检
-    //$('.INSPSTATUS').click(function () {
-    //    var type = this.getAttribute("datatype");
-    //    if (type == 'BAOJIAN') {
-    //        $("#INSPSTATUS").textbox('setValue', '报检');
-    //    } else if (type == 'CHAYANSTART') {
-    //        $("#INSPSTATUS").textbox('setValue', '查验');
-    //    } else if (type == 'XUNZHENG') {
-    //        $("#INSPSTATUS").textbox('setValue', '熏蒸');
-    //    }
-    //})
-
-    //时间  状态 
-    $('.time_input').datetimebox({
-        stopFirstChangeEvent: true,
-        onChange: function () {
-            var options = $(this).datetimebox('options');
-
-            if (options.stopFirstChangeEvent) {
-                options.stopFirstChangeEvent = false;
-                return;
-            }
-            var type = this.getAttribute("datatype");
-            if ($(this).hasClass('DECLSTATUS')) {
-                if (type == 'BAORUHAIGUAN') {
-                    $("#DECLSTATUS").textbox('setValue', '报关');
-                } else if (type == 'CHAYANSTART') {
-                    $("#DECLSTATUS").textbox('setValue', '查验');
-                } else if (type == 'DANZHENGFANGXING') {
-                    $("#DECLSTATUS").textbox('setValue', '放行');
-                }
-            } else if ($(this).hasClass('DECLSTATUS2')) {
-                if (type == 'BAORUHAIGUAN') {
-                    $("#DECLSTATUS2").textbox('setValue', '报关');
-                } else if (type == 'CHAYANSTART') {
-                    $("#DECLSTATUS2").textbox('setValue', '查验');
-                } else if (type == 'DANZHENGFANGXING') {
-                    $("#DECLSTATUS2").textbox('setValue', '放行');
-                }
-            } else if ($(this).hasClass('INSPSTATUS')) {
-                if (type == 'BAOJIAN') {
-                    $("#INSPSTATUS").textbox('setValue', '报检');
-                } else if (type == 'CHAYANSTART') {
-                    $("#INSPSTATUS").textbox('setValue', '查验');
-                } else if (type == 'XUNZHENG') {
-                    $("#INSPSTATUS").textbox('setValue', '熏蒸');
-                }
-            }
-            var form = $(this).parents('.OrderFrom').attr('id');//查找哪个form
-            var id_val = "#" + form + " #" + this.id;
-            var date = $(id_val).datetimebox('getValue');
-            var findname = "#" + form + " input[name=ID]";
-            var ID = $(findname).val();
-            $.ajax({
-                url: '/Order/Edit_Ajax_Scene',// 跳转到 action
-                data: {
-                    'ID': ID,
-                    'type': type,
-                    'date': date
-                },
-                type: 'post',
-                dataType: 'json',
-                success: function (data) {
-                    debugger;
-                    if (data.Success == true) {
-                        var name = "#" + form + " #" + type + 'USERNAME';
-                        $(name).textbox('setValue', data.name);
-
-                    } else {
-                        $.messager.alert('异常', '联系管理员');
-                    }
-                },
-
-            });
-
+    //改状态  报关
+    $('.DECLSTATUS').click(function () {
+        var type = this.getAttribute("datatype");
+        if (type == 'BAORUHAIGUAN') {
+            $("#DECLSTATUS").textbox('setValue', '报关');
+        } else if (type == 'CHAYANSTART') {
+            $("#DECLSTATUS").textbox('setValue', '查验');
+        } else if (type == 'DANZHENGFANGXING') {
+            $("#DECLSTATUS").textbox('setValue', '放行');
         }
-    });
+    })
 
+    //改状态 叠加保税(多个表单)  报关
+    $('.DECLSTATUS2').click(function () {
+        var type = this.getAttribute("datatype");
+        if (type == 'BAORUHAIGUAN') {
+            $("#DECLSTATUS2").textbox('setValue', '报关');
+        } else if (type == 'CHAYANSTART') {
+            $("#DECLSTATUS2").textbox('setValue', '查验');
+        } else if (type == 'DANZHENGFANGXING') {
+            $("#DECLSTATUS2").textbox('setValue', '放行');
+        }
+    })
+
+
+    //改状态  报检
+    $('.INSPSTATUS').click(function () {
+        var type = this.getAttribute("datatype");
+        if (type == 'BAOJIAN') {
+            $("#INSPSTATUS").textbox('setValue', '报检');
+        } else if (type == 'CHAYANSTART') {
+            $("#INSPSTATUS").textbox('setValue', '查验');
+        } else if (type == 'XUNZHENG') {
+            $("#INSPSTATUS").textbox('setValue', '熏蒸');
+        }
+    })
 
     function loadsucc(data) {
         if (data['PASSMODE'] != "" && data['PASSMODE'] != null) {
@@ -326,67 +259,68 @@ $(function () {
     $('#OrderFrom').form({ onLoadSuccess: loadsucc });
 
 
-    //$('#OrderFrom .fillingData').click(function () {
-    //    var type = this.getAttribute("datatype");
-    //    var ID = getQueryString('ID');
-    //    $.ajax({
-    //        url: '/Order/Edit_Ajax_Scene',// 跳转到 action
-    //        data: {
-    //            'ID': ID,
-    //            'type': type
-    //        },
-    //        type: 'post',
-    //        dataType: 'json',
-    //        success: function (data) {
-    //            if (data.Success == true) {
-    //                var time = "#" + type + 'TIME';
-    //                var name = "#" + type + 'USERNAME';
-    //                $(time).textbox('setValue', data.datetime);
-    //                $(name).textbox('setValue', data.name);
-    //            } else {
-    //                $.messager.alert('异常', '联系管理员');
-    //            }
-    //        },
+    $('#OrderFrom .fillingData').click(function () {
+        var type = this.getAttribute("datatype");
+        var ID = getQueryString('ID');
+        $.ajax({
+            url: '/Order/Edit_Ajax_Scene',// 跳转到 action
+            data: {
+                'ID': ID,
+                'type': type
+            },
+            type: 'post',
+            dataType: 'json',
+            success: function (data) {
+                if (data.Success == true) {
+                    var time = "#" + type + 'TIME';
+                    var name = "#" + type + 'USERNAME';
+                    $(time).textbox('setValue', data.datetime);
+                    $(name).textbox('setValue', data.name);
+                } else {
+                    $.messager.alert('异常', '联系管理员');
+                }
+            },
 
-    //    });
+        });
 
-    //});
+    });
 
 
-    //$('#many_form .fillingData').click(function () {
-    //    var type = this.getAttribute("datatype");
-    //    var form = $(this).parents('.OrderFrom').attr('id');//查找哪个form
-    //    var findname = "#" + form + " input[name=ID]";
-    //    var ID = $(findname).val();
-    //    $.ajax({
-    //        url: '/Order/Edit_Ajax_Scene',// 跳转到 action
-    //        data: {
-    //            'ID': ID,
-    //            'type': type
-    //        },
-    //        type: 'post',
-    //        dataType: 'json',
-    //        success: function (data) {
-    //            if (data.Success == true) {
-    //                var time = "#" + form + " #" + type + 'TIME';
-    //                var name = "#" + form + " #" + type + 'USERNAME';
-    //                $(time).textbox('setValue', data.datetime);
-    //                $(name).textbox('setValue', data.name);
-    //            } else {
-    //                $.messager.alert('异常', '联系管理员');
-    //            }
-    //        },
+    $('#many_form .fillingData').click(function () {
+        var type = this.getAttribute("datatype");
+        var form = $(this).parents('.OrderFrom').attr('id');//查找哪个form
+        var findname = "#" + form + " input[name=ID]";
+        var ID = $(findname).val();
+        $.ajax({
+            url: '/Order/Edit_Ajax_Scene',// 跳转到 action
+            data: {
+                'ID': ID,
+                'type': type
+            },
+            type: 'post',
+            dataType: 'json',
+            success: function (data) {
+                if (data.Success == true) {
+                    var time = "#" + form + " #" + type + 'TIME';
+                    var name = "#" + form + " #" + type + 'USERNAME';
+                    $(time).textbox('setValue', data.datetime);
+                    $(name).textbox('setValue', data.name);
+                } else {
+                    $.messager.alert('异常', '联系管理员');
+                }
+            },
 
-    //    });
+        });
 
-    //});
+    });
     window.onload = numberInputPlaceholder();
 
 })
 
 //业务类型改字段状态 DLC 2016/10/12
 function formatBUSITYPE(val, row) {
-    switch (val) {
+    switch(val)
+    {
         case '10':
             return "空运出口";
             break;
@@ -640,7 +574,7 @@ function loadListGrid(page) {
         method: 'get',
         toolbar: '#tb',
         pageSize: 20,
-        pageList: [20, 40, 60, 80, 100, 300],
+        pageList: [20, 40, 60, 80, 100,300],
         pagination: true,
         onDblClickCell: function (index, field, value) {
             if (page != "") {

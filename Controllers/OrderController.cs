@@ -1083,11 +1083,6 @@ namespace SceneOfCustoms.Controllers
 
             if (DBMgr.ExecuteNonQuery(sql) == 1)
             {
-                string type = Request.Form["type"];
-                if (type == "02")
-                {
-                    IFS.ZSBJ_ABNO(ID);
-                }
 
                 return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
             }
@@ -1108,17 +1103,27 @@ namespace SceneOfCustoms.Controllers
             string sql = "update list_order set ";
             if (type != "")
             {
+
+                //to_date('{28}','yyyy-mm-dd hh24:mi:ss');
                 string time = type + "TIME";
                 string userid = type + "USERID";
                 string username = type + "USERNAME";
-                sql += time + "  = to_date('" + datetime + "','yyyy-mm-dd hh24:mi:ss') ," + username + " ='" + jo.Value<string>("REALNAME") + "', " + userid + " =  " + jo.Value<string>("ID");
+                if (!string.IsNullOrEmpty(datetime))
+                {
+                    sql += time + "  = to_date('" + datetime + "','yyyy-mm-dd hh24:mi:ss') ," + username + " ='" + jo.Value<string>("REALNAME") + "', " + userid + " =  " + jo.Value<string>("ID");
+                }
+                else
+                {
+                    sql += time + "  = sysdate ," + username + " ='" + jo.Value<string>("REALNAME") + "', " + userid + " =  " + jo.Value<string>("ID");
+                }
+
             }
             sql += " where ID =" + ID;
+
             int res = DBMgr.ExecuteNonQuery(sql);
 
             if (res == 1)
             {
-                IFS.Callback_TM(type, ID);
                 datetime = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
                 return Json(new { Success = true, datetime = datetime, name = jo.Value<string>("REALNAME") }, JsonRequestBehavior.AllowGet);
             }
