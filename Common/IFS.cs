@@ -989,41 +989,163 @@ namespace SceneOfCustoms.Common
         }
 
 
-        //测试回传 sap 接口 销保时间
-        public static void ZSXBSJ_tm()
+
+        public static void Callback_TM(string type, string id)
+        {
+            if (type == "XIAOBAO")
+            {
+                ZSXBSJ(id);
+            }
+        }
+
+
+        // 报检异常
+        public static void ZSBJ_ABNO(string id)
         {
             sap.SI_CUS_CUS1002Service api = new sap.SI_CUS_CUS1002Service();
             api.Timeout = 6000000;
             api.Credentials = new NetworkCredential("soapcall", "soapcall");
 
             sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
+            string sql = "select *　from list_order where id ='" + id + "'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string FWONO = "";
+            string FOONO = "";
+            if (dt.Rows.Count > 0)
+            {
+                FWONO = dt.Rows[0]["FWONO"] + "";
+                FOONO = dt.Rows[0]["FOONOBJ"] + "";
+                m.ZDDCS = dt.Rows[0]["TIAODANGTIMES"] + "";//调档次数
+                m.ZBGSDCS = dt.Rows[0]["SHANDANTOTAL"] + "";//删单次数
+                m.ZBGGDCS = dt.Rows[0]["GAIDANTOTAL"] + "";//改单次数
+                m.ZHGXYBZ = dt.Rows[0]["CHAYANREMARK"] + "";//查验备注
 
-            //table
-            sap.DT_CUS_CUS1002_REQITEMORDER order = new sap.DT_CUS_CUS1002_REQITEMORDER();
-            sap.DT_CUS_CUS1002_REQITEMORDER order1 = new sap.DT_CUS_CUS1002_REQITEMORDER();
+                //调档标记
 
-            order.ZBGDH = "1";
-            order.ZBGDZS = "2";
-            order.ZMYFS = "3";
+                //删单
+                if (dt.Rows[0]["IFSHANDAN"] + "" == "1")
+                {
+                    m.ZSFBGSD = "X";
+                }
+                //改单
+                if (dt.Rows[0]["IFGAIDAN"] + "" == "1")
+                {
+                    m.ZSFBGGD = "X";
+                }
 
-            order1.ZBGDH = "a";
-            order1.ZBGDZS = "b";
-            order1.ZMYFS = "c";
+                //查验
+                if (dt.Rows[0]["IFCHAYAN"] + "" == "1")
+                {
+                    m.ZBJCYBJ = "X";
+                }
 
-            List<sap.DT_CUS_CUS1002_REQITEMORDER> orderList = new List<sap.DT_CUS_CUS1002_REQITEMORDER>();
-            orderList.Add(order);
-            orderList.Add(order1);
+                //熏蒸
+                if (dt.Rows[0]["IFXUNZHENG"] + "" == "1")
+                {
+                    m.ZXZBJ = "X";
+                }
+                //调档标记
+            }
+            if (!string.IsNullOrEmpty(FOONO))
+            {
+                FOONO = FOONO.Remove(0, 4);
+            }
 
-            m.EVENT_CODE = "ZSXBSJ";
-            m.FWO_ID = "12312312";
-            m.FOO_ID = "12312312";
-            m.EVENT_DAT = "12312312";
-            m.ORDER = orderList.ToArray();
+            string datetime = DateTime.Now.ToLocalTime().ToString("yyyyMMddHHmmss");
+            m.EVENT_CODE = "ZSBJ_ABNO";
+            m.FWO_ID = FWONO;
+            m.FOO_ID = FOONO;
+            m.EVENT_DAT = datetime;
+
 
             sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
             mlist[0] = m;
 
-            sap.DT_CUS_CUS1002_RES res = api.SI_CUS_CUS1002(mlist);
+            List<Msgobj> MSList = new List<Msgobj>();
+            sap.DT_CUS_CUS1002_RES res;
+            try
+            {
+                res = api.SI_CUS_CUS1002(mlist);
+                MSList.Add(set_MObj(res.EV_ERROR, "ZSBJ_ABNO(" + res.EV_MSG + ")"));
+                save_log(MSList, FWONO, "3");
+            }
+            catch (Exception e)
+            {
+                MSList.Add(set_MObj("E", "ZSBJ_ABNO(接口回调报错)"));
+                save_log(MSList, FWONO, "3");
+            }
+
+        }
+
+
+
+
+        // 销保时间
+        public static void ZSXBSJ(string id)
+        {
+            sap.SI_CUS_CUS1002Service api = new sap.SI_CUS_CUS1002Service();
+            api.Timeout = 6000000;
+            api.Credentials = new NetworkCredential("soapcall", "soapcall");
+            sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
+
+            //table
+            //sap.DT_CUS_CUS1002_REQITEMORDER order = new sap.DT_CUS_CUS1002_REQITEMORDER();
+            //sap.DT_CUS_CUS1002_REQITEMORDER order1 = new sap.DT_CUS_CUS1002_REQITEMORDER();
+
+            //order.ZBGDH = "1";
+            //order.ZBGDZS = "2";
+            //order.ZMYFS = "3";
+
+            //order1.ZBGDH = "a";
+            //order1.ZBGDZS = "b";
+            //order1.ZMYFS = "c";
+
+            //List<sap.DT_CUS_CUS1002_REQITEMORDER> orderList = new List<sap.DT_CUS_CUS1002_REQITEMORDER>();
+            //orderList.Add(order);
+            //orderList.Add(order1);
+
+            string sql = "select *　from list_order where id ='" + id + "'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string FWONO = "";
+            string FOONO = "";
+            string EVENT_DAT = "";
+            if (dt.Rows.Count > 0)
+            {
+                FWONO = dt.Rows[0]["FWONO"] + "";
+                FOONO = dt.Rows[0]["FOONO"] + "";
+                if (!string.IsNullOrEmpty(dt.Rows[0]["XIAOBAOTIME"] + ""))
+                {
+                    EVENT_DAT = DateTime.ParseExact(dt.Rows[0]["XIAOBAOTIME"] + "", "yyyy/MM/dd HH:mm:ss", System.Globalization.CultureInfo.CurrentCulture).ToString("yyyyMMddHHmmss");
+                }
+            }
+            if (!string.IsNullOrEmpty(FOONO))
+            {
+                FOONO = FOONO.Remove(0, 4);
+            }
+
+
+            //string datetime = DateTime.Now.ToLocalTime().ToString("yyyyMMddHHmmss");
+            m.EVENT_CODE = "ZSXBSJ";
+            m.FWO_ID = FWONO;
+            m.FOO_ID = FOONO;
+            m.EVENT_DAT = EVENT_DAT;
+            //m.ORDER = orderList.ToArray();
+            sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+            mlist[0] = m;
+
+            List<Msgobj> MSList = new List<Msgobj>();
+            sap.DT_CUS_CUS1002_RES res;
+            try
+            {
+                res = api.SI_CUS_CUS1002(mlist);
+                MSList.Add(set_MObj(res.EV_ERROR, "ZSZLSJ(" + res.EV_MSG + ")"));
+                save_log(MSList, FWONO, "3");
+            }
+            catch (Exception e)
+            {
+                MSList.Add(set_MObj("E", "ZSZLSJ(接口回调报错)"));
+                save_log(MSList, FWONO, "3");
+            }
 
         }
 
@@ -1066,6 +1188,29 @@ namespace SceneOfCustoms.Common
 
             sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
 
+
+            //table
+            //sap.DT_CUS_CUS1002_REQITEMORDER order = new sap.DT_CUS_CUS1002_REQITEMORDER();
+            //sap.DT_CUS_CUS1002_REQITEMORDER order1 = new sap.DT_CUS_CUS1002_REQITEMORDER();
+
+            //order.ZBGDH = "1";
+            //order.ZBGDZS = "2";
+            //order.ZMYFS = "3";
+
+            //order1.ZBGDH = "a";
+            //order1.ZBGDZS = "b";
+            //order1.ZMYFS = "c";
+
+            //List<sap.DT_CUS_CUS1002_REQITEMORDER> orderList = new List<sap.DT_CUS_CUS1002_REQITEMORDER>();
+            //orderList.Add(order);
+            //orderList.Add(order1);
+
+            //string datetime = DateTime.Now.ToLocalTime().ToString("yyyyMMddHHmmss");
+            //m.EVENT_CODE = "ZSXBSJ";
+            //m.FWO_ID = FWONO;
+            //m.FOO_ID = FOONO;
+            //m.EVENT_DAT = datetime;
+            //m.ORDER = orderList.ToArray();
 
 
 
