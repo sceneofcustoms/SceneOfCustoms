@@ -655,28 +655,6 @@ function loadListGrid(page) {
         }
     });
 }
-//加载后台管理datagrid
-function loadSynclistGrid(page) {
-    $('#datagrid').datagrid({
-        url: '/Common/GetData',
-        rownumbers: true,
-        dataType: 'json',
-        method: 'get',
-        toolbar: '#tb',
-        pageSize: 20,
-        pageList: [20, 40, 60, 80, 100, 300],
-        pagination: true,
-        onDblClickCell: function (index, field, value) {
-            if (page != "") {
-                var row = $('#datagrid').datagrid('getData').rows[index];
-                if (row.ID != "") {
-                    window.location.href = "/" + page + "?ID=" + row.ID;
-                }
-            }
-
-        }
-    });
-}
 //弹窗
 function opencenterwin(url, width, height) {
     var iWidth = width ? width : "1000", iHeight = height ? height : "600";

@@ -40,46 +40,58 @@ namespace SceneOfCustoms.Controllers
 
         public string LoadAttachmentList()
         {
-            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
-            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-            string sql = @"select * from LIST_ATTACHMENT";
-            DataTable dt = DBMgr.GetDataTable(Extension.GetPageSql(sql, "createtime", "desc", ref total, Convert.ToInt32(Request["start"]), Convert.ToInt32(Request["limit"])));
-            string filedata = JsonConvert.SerializeObject(dt, iso);
-            return "{rows:" + filedata + ",total:" + total + "}";
-        }
-        [HttpGet]
-        public string GetData()
-        {
-            string BUSITYPE = "";
             int PageSize = Convert.ToInt32(Request.Params["rows"]);
             int Page = Convert.ToInt32(Request.Params["page"]);
             int total = 0;
-            string sql = "";
+            string sql = "select * from LIST_ATTACHMENT where 1=1";
             string data = Request["data"];
-            if (data != null)
-            {
-                JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
-                BUSITYPE = jo.Value<string>("BUSITYPE");
-            }
-            else
-            {
-                BUSITYPE = Request["BUSITYPE"];
-            }
-            switch (BUSITYPE)
-            {
-                case "SyncFoo":
-                    sql = " select * from LIST_SAPFOO where 1=1";
-                    break;
-                case "SyncMsg":
-                    sql = " select * from MSG where 1=1";
-                    break;
-            }
             if (data != null)
             {
                 JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
                 if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
                 {
                     sql += " AND " + jo.Value<string>("ordercode") + " ='" + jo.Value<string>("ordercode_value") + "'";
+                }
+                if (jo.Value<string>("businessin_createname") != null && jo.Value<string>("businessin_createname") != "")
+                {
+                    sql += " AND CREATENAME = '" + jo.Value<string>("businessin_createname") + "' ";
+                }
+                if (jo.Value<string>("starttime") != "" && jo.Value<string>("starttime") != null)
+                {
+                    sql += " AND CREATETIME >= to_date('" + jo.Value<string>("starttime") + "','yyyy-MM-dd')";
+                }
+                if (jo.Value<string>("stoptime") != "" && jo.Value<string>("stoptime") != null)
+                {
+                    sql += " AND CREATETIME <= to_date('" + jo.Value<string>("stoptime") + "','yyyy-MM-dd')";
+                }
+            }
+            string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
+            string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
+            sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
+            DataTable dt = DBMgr.GetDataTable(sql);
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string result = JsonConvert.SerializeObject(dt, iso);
+            result = "{\"total\":" + total + ",\"rows\":" + result + "}";
+            return result;
+        }
+        public string LoadFooList()
+        {
+            int PageSize = Convert.ToInt32(Request.Params["rows"]);
+            int Page = Convert.ToInt32(Request.Params["page"]);
+            int total = 0;
+            string sql = "select * from LIST_SAPFOO where 1=1";
+            string data = Request["data"];
+            if (data != null)
+            {
+                JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
+                if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
+                {
+                    sql += " AND " + jo.Value<string>("ordercode") + " ='" + jo.Value<string>("ordercode_value") + "'";
+                }
+                if (jo.Value<string>("customs_busitype") != null && jo.Value<string>("customs_busitype") != "")
+                {
+                    sql += " AND BUSITYPE = '" + jo.Value<string>("customs_busitype") + "' ";
                 }
                 if (jo.Value<string>("startdate") != "" && jo.Value<string>("startdate") != null)
                 {
@@ -88,6 +100,33 @@ namespace SceneOfCustoms.Controllers
                 if (jo.Value<string>("stopdate") != "" && jo.Value<string>("stopdate") != null)
                 {
                     sql += " AND TIME <= to_date('" + jo.Value<string>("stopdate") + "','yyyy-MM-dd')";
+                }
+            }
+            string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
+            string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
+            sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
+            DataTable dt = DBMgr.GetDataTable(sql);
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string result = JsonConvert.SerializeObject(dt, iso);
+            result = "{\"total\":" + total + ",\"rows\":" + result + "}";
+            return result;
+        }
+
+        //日志消息
+        public string LoadMsgList()
+        {
+            int PageSize = Convert.ToInt32(Request.Params["rows"]);
+            int Page = Convert.ToInt32(Request.Params["page"]);
+            int total = 0;
+            string sql = "select * from MSG where 1=1";
+            string data = Request["data"];
+            if (data != null)
+            {
+                JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
+                if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
+                {
+                    sql += " AND " + jo.Value<string>("ordercode") + " ='" + jo.Value<string>("ordercode_value") + "'";
                 }
                 if (jo.Value<string>("starttime") != "" && jo.Value<string>("starttime") != null)
                 {
@@ -162,18 +201,18 @@ namespace SceneOfCustoms.Controllers
             string FOONO = Request.QueryString["FOONO"];
             //回传TM 接口
 
-                using (var fs = new FileStream(Path.Combine(uploadPath, name), chunk == 0 ? FileMode.Create : FileMode.Append))
-                {
-                    var buffer = new byte[fileUpload.InputStream.Length];
-                    fileUpload.InputStream.Read(buffer, 0, buffer.Length);
-                    fs.Write(buffer, 0, buffer.Length);
-                    string username = CurrentUser();
-                    string sql = @"insert into list_attachment(ID,FILEPATH,FILENAME,FILESIZE,FWONO,FOONO,CREATENAME,CREATETIME,STATUS) 
+            using (var fs = new FileStream(Path.Combine(uploadPath, name), chunk == 0 ? FileMode.Create : FileMode.Append))
+            {
+                var buffer = new byte[fileUpload.InputStream.Length];
+                fileUpload.InputStream.Read(buffer, 0, buffer.Length);
+                fs.Write(buffer, 0, buffer.Length);
+                string username = CurrentUser();
+                string sql = @"insert into list_attachment(ID,FILEPATH,FILENAME,FILESIZE,FWONO,FOONO,CREATENAME,CREATETIME,STATUS) 
                 VALUES(LIST_ATTACHMENT_ID.Nextval,'/Upload/" + name + "','" + fileUpload.FileName + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','" + username + "',sysdate,1)";
-                    DBMgr.ExecuteNonQuery(sql);
-                    string status = IFS.ZSZLSJ_TM(FWONO, FOONO);
+                DBMgr.ExecuteNonQuery(sql);
+                string status = IFS.ZSZLSJ_TM(FWONO, FOONO);
 
-                }
+            }
             return Content("chunk uploaded", "text/plain");
 
         }

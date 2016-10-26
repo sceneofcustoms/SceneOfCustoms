@@ -1,5 +1,4 @@
 ﻿<script type="text/javascript">
-
     //1 查询条件 --日期
     var search_condition_date = [
         { code: 'BAOJIANTIME', name: '报检日期', selected: true },
@@ -10,7 +9,6 @@
         { code: 'SHANDANKAISHITIME', name: '删单日期' },
         { code: 'GAIDANKAISHITIME', name: '改单日期' }
     ];
-
     //2 查询条件  --单据号
     var search_code = [
         {
@@ -28,23 +26,18 @@
         { code: 'CLEARANCENO', name: '通关单号' },
         { code: 'CONTAINERNO', name: '集装箱号' }
     ];
-
-
-
     //3 查询条件 --
     var BUSITYPE = [
         { code: 'GUONEIJIEZHUAN', name: '国内结转' },
         { code: 'DIEJIABAOSHUI', name: '叠加保税' },
         { code: 'TESHUJIANGUANQU', name: '特殊监管区' }
     ];
-
     $(function () {
         $('#searchform #BUSITYPE').combobox({
             data: BUSITYPE,
             valueField: 'code',
             textField: 'name'
         });
-
         $('#searchform #search_condition_date').combobox({
             data: search_condition_date,
             valueField: 'code',
@@ -92,7 +85,6 @@
                 </tr>
             </thead>
         </table>
-
         <div id="tb">
             <div class="tb_search">
                 <form id="searchform" method="post">
@@ -105,7 +97,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value" id="BUSITYPE" panelheight="auto" name="YCBUSITYPE"></select>
+                                <select class="easyui-combobox combobox_width value" editable="false" id="BUSITYPE" panelheight="auto" name="YCBUSITYPE"></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
@@ -113,7 +105,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value" id="service_model" panelheight="auto" name="service_model"></select>
+                                <select class="easyui-combobox combobox_width value" editable="false" id="service_model" panelheight="auto" name="service_model"></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
@@ -125,10 +117,10 @@
                                 <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
                             </td>
                             <td>
-                                <input class="easyui-datebox value placeholderclass" name="startdate" placeholder="开始时间">
+                                <input class="easyui-datebox value placeholderclass" editable="false" name="startdate" placeholder="开始时间">
                             </td>
                             <td>
-                                <input class="easyui-datebox value placeholderclass" name="stopdate" placeholder="结束时间">
+                                <input class="easyui-datebox value placeholderclass" editable="false" name="stopdate" placeholder="结束时间">
                             </td>
                         </tr>
                         <tr>
@@ -138,7 +130,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value" id="out_in" panelheight="auto" name="out_in"></select>
+                                <select class="easyui-combobox combobox_width value" editable="false" id="out_in" panelheight="auto" name="out_in"></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
@@ -146,7 +138,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" name="LAWCONDITION"></select>
+                                <select class="easyui-combobox combobox_width value is_check" editable="false" panelheight="auto" name="LAWCONDITION"></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
@@ -154,13 +146,12 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value is_check" panelheight="auto" ></select>
+                                <select class="easyui-combobox combobox_width value is_check" editable="false" panelheight="auto"></select>
                             </td>
                         </tr>
                     </table>
                 </form>
             </div>
-
             <div class="tb_but">
                 <div class="but_left">
                     <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="refresh_form()"><i class="icon-refresh"></i> 批量更新</a>
@@ -172,9 +163,7 @@
                 </div>
             </div>
         </div>
-
     </div>
- 
 </div>
  
 

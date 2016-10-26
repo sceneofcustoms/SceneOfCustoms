@@ -27,8 +27,6 @@
         { code: 'CLEARANCENO', name: '通关单号' },
         { code: 'CONTAINERNO', name: '集装箱号' }
     ];
-
-
     $(function () {
         loadListGrid('Inspect/OnelineIn_Edit');
         $('#searchform #search_condition_date').combobox({
@@ -85,7 +83,6 @@
                 </tr>
             </thead>
         </table>
-
         <div id="tb">
             <div class="tb_search">
                 <form id="searchform" method="post">
@@ -98,34 +95,30 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value" id="businessin_object" panelheight="auto" name="businessin_object"></select>
+                                <select class="easyui-combobox combobox_width value" editable="false" id="businessin_object" panelheight="auto" name="businessin_object"></select>
                             </td>
-
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
                             </td>
                             <td>
                                 <input class="easyui-textbox value placeholderclass" type="text" name="ordercode_value" placeholder="单据号" />
                             </td>
-
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_operator" panelheight="auto" name="oprname"></select>
                             </td>
                             <td>
                                 <input class="easyui-textbox value placeholderclass" type="text" name="oprname_value" placeholder="操作人" />
                             </td>
-
                             <td class="search_margin">
                                 <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
                             </td>
                             <td>
-                                <input class="easyui-datebox value placeholderclass" name="startdate" placeholder="开始时间">
+                                <input class="easyui-datebox value placeholderclass" editable="false" name="startdate" placeholder="开始时间">
                             </td>
                             <td>
-                                <input class="easyui-datebox value placeholderclass" name="stopdate" placeholder="结束时间">
+                                <input class="easyui-datebox value placeholderclass" editable="false" name="stopdate" placeholder="结束时间">
                             </td>
                         </tr>
-
                         <tr>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
@@ -141,16 +134,15 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value is_check" name="LAWCONDITION" panelheight="auto"></select>
+                                <select class="easyui-combobox combobox_width value is_check" editable="false" name="LAWCONDITION" panelheight="auto"></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
                                     <option>木质包装</option>
                                 </select>
                             </td>
-
                             <td>
-                                <select class="easyui-combobox combobox_width value is_check" name="WOODPACKINGID" panelheight="auto"></select>
+                                <select class="easyui-combobox combobox_width value is_check" editable="false" name="WOODPACKINGID" panelheight="auto"></select>
                             </td>
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
@@ -158,12 +150,9 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value is_check" name="text" panelheight="auto"></select>
+                                <select class="easyui-combobox combobox_width value is_check" editable="false" name="text" panelheight="auto"></select>
                             </td>
-
                         </tr>
-
-
                     </table>
                 </form>
             </div>
@@ -178,7 +167,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <!-- end ibox-content -->
 </div>
