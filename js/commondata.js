@@ -283,12 +283,10 @@ $(function () {
                 }
             }
             var form = $(this).parents('.OrderFrom').attr('id');//查找哪个form
-            debugger;
             var id_val = "#" + form + " #" + this.id;
             var date = $(id_val).datetimebox('getValue');
             var findname = "#" + form + " input[name=ID]";
             var ID = $(findname).val();
-            debugger;
             $.ajax({
                 url: '/Order/Edit_Ajax_Scene',// 跳转到 action
                 data: {

@@ -1115,7 +1115,7 @@ namespace SceneOfCustoms.Common
                 FOONO = dt.Rows[0]["FOONO"] + "";
                 if (!string.IsNullOrEmpty(dt.Rows[0]["XIAOBAOTIME"] + ""))
                 {
-                    EVENT_DAT = DateTime.ParseExact(dt.Rows[0]["XIAOBAOTIME"] + "", "yyyy/MM/dd HH:mm:ss", System.Globalization.CultureInfo.CurrentCulture).ToString("yyyyMMddHHmmss");
+                    EVENT_DAT = Convert.ToDateTime(dt.Rows[0]["XIAOBAOTIME"]).ToString("yyyyMMddHHmmss");
                 }
             }
             if (!string.IsNullOrEmpty(FOONO))
