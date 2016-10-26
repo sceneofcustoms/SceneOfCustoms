@@ -287,6 +287,7 @@ $(function () {
             var date = $(id_val).datetimebox('getValue');
             var findname = "#" + form + " input[name=ID]";
             var ID = $(findname).val();
+            debugger;
             $.ajax({
                 url: '/Order/Edit_Ajax_Scene',// 跳转到 action
                 data: {
@@ -645,6 +646,11 @@ function loadListGrid(page) {
         onDblClickCell: function (index, field, value) {
             if (page != "") {
                 var row = $('#datagrid').datagrid('getData').rows[index];
+                if (page == "Declare/DomesticBlc_Edit") {
+                    if (row.CORRESPONDNO != "") {
+                        page = "Declare/OverlayBonded_Edit";
+                    }
+                }
                 if (row.ID != "") {
                     window.location.href = "/" + page + "?ID=" + row.ID;
                 }
