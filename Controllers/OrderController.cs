@@ -1130,6 +1130,7 @@ namespace SceneOfCustoms.Controllers
             ViewData["USERID"] = jo.Value<string>("ID");
             return View();
         }
+        //报关批量更新保存
         public ActionResult SaveUpdateData(FormCollection form)
         {
             string ids = Request.Form["ids"];
@@ -1149,15 +1150,15 @@ namespace SceneOfCustoms.Controllers
             {
                 sql += "  SHIWUFANGXINGTIME =  to_date('" + Request.Form["SHIWUFANGXINGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
             }
-            if (bname != "")
+            if (bname != "" && bname != null)
             {
                 sql += "  BAORUHAIGUANUSERNAME =  '" + bname + "',";
             }
-            if (dname != "")
+            if (dname != "" && dname != null)
             {
                 sql += "  DANZHENGFANGXINGUSERNAME =  '" + dname + "',";
             }
-            if (sname != "")
+            if (sname != "" && sname != null)
             {
                 sql += "  SHIWUFANGXINGUSERNAME =  '" + sname + "',";
             }
@@ -1172,6 +1173,7 @@ namespace SceneOfCustoms.Controllers
                 return Json(new { Success = false, sql = sql }, JsonRequestBehavior.AllowGet);
             }
         }
+        //报检批量更新保存
         public ActionResult SavebjUpdateData(FormCollection form)
         {
             string ids = Request.Form["ids"];
@@ -1201,23 +1203,23 @@ namespace SceneOfCustoms.Controllers
             {
                 sql += "  CHAYANFANGXINGTIME =  to_date('" + Request.Form["CHAYANFANGXINGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
             }
-            if (bjname != "")
+            if (bjname != "" && bjname != null)
             {
                 sql += "  BAOJIANUSERNAME =  '" + bjname + "',";
             }
-            if (bjfxname != "")
+            if (bjfxname != "" && bjfxname != null)
             {
                 sql += "  BAOJIANFANGXINGUSERNAME =  '" + bjfxname + "',";
             }
-            if (xzname != "")
+            if (xzname != "" && xzname != null)
             {
                 sql += "  XUNZHENGUSERNAME =  '" + xzname + "',";
             }
-            if (cyname != "")
+            if (cyname != "" && cyname != null)
             {
                 sql += "  CHAYANZHILINGXIAFAUSERNAME =  '" + cyname + "',";
             }
-            if (cyfxname != "")
+            if (cyfxname != "" && cyfxname != null)
             {
                 sql += "  CHAYANFANGXINGUSERNAME =  '" + cyfxname + "',";
             }
