@@ -1,0 +1,112 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    #mainWin {
+        padding-left: 30px;
+        padding-top: 20px;
+    }
+</style>
+<form id="bjUpdateFrom" class="OrderFrom" method="post">
+    <input type="hidden" name="ids" value="@ViewData["ids"]" />
+    <input type="hidden" name="USERID" value="@ViewData["USERID"]" />
+    <input type="hidden" name="USERNAME" id="USERNAME" value="@ViewData["USERNAME"]" />
+    <table id="scene">
+        <tr>
+            <td>
+                <label for="BAOJIANTIME"> 报检时间:</label>
+                <input class="easyui-datetimebox  time_input" id="BAOJIANTIME" datatype="BAOJIANUSERNAME" data-options="text:'填充时间'" editable="false" name="BAOJIANTIME" />
+            </td>
+            <td>
+                <label for="BAOJIANUSERNAME">报检人:</label>
+                <input class="easyui-textbox " type="text" id="BAOJIANUSERNAME" name="BAOJIANUSERNAME" disabled="disabled" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="BAOJIANFANGXINGTIME"> 报检放行时间:</label>
+                <input class="easyui-datetimebox  time_input " id="BAOJIANFANGXINGTIME" datatype="BAOJIANFANGXINGUSERNAME" data-options="text:'填充时间'" editable="false" name="BAOJIANFANGXINGTIME" />
+            </td>
+            <td>
+                <label for="BAOJIANFANGXINGUSERNAME">报检放行人:</label>
+                <input class="easyui-textbox " type="text" id="BAOJIANFANGXINGUSERNAME" name="BAOJIANFANGXINGUSERNAME" disabled="disabled" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="XUNZHENGTIME">熏蒸时间:</label>
+                <input class="easyui-datetimebox  time_input " id="XUNZHENGTIME" datatype="XUNZHENGUSERNAME" data-options="text:'填充时间'" editable="false" name="XUNZHENGTIME" />
+            </td>
+            <td>
+                <label for="XUNZHENGUSERNAME">熏蒸人:</label>
+                <input class="easyui-textbox " type="text" id="XUNZHENGUSERNAME" name="XUNZHENGUSERNAME" disabled="disabled" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="CHAYANZHILINGXIAFATIME">查验时间:</label>
+                <input class="easyui-datetimebox  time_input " id="CHAYANZHILINGXIAFATIME" datatype="CHAYANZHILINGXIAFAUSERNAME" data-options="text:'填充时间'" editable="false" name="CHAYANZHILINGXIAFATIME" />
+            </td>
+            <td>
+                <label for="CHAYANZHILINGXIAFAUSERNAME">查验人:</label>
+                <input class="easyui-textbox " type="text" id="CHAYANZHILINGXIAFAUSERNAME" name="CHAYANZHILINGXIAFAUSERNAME" disabled="disabled" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="CHAYANFANGXINGTIME">查验放行时间:</label>
+                <input class="easyui-datetimebox  time_input " id="CHAYANFANGXINGTIME" datatype="CHAYANFANGXINGUSERNAME" data-options="text:'填充时间'" editable="false" name="CHAYANFANGXINGTIME" />
+            </td>
+            <td>
+                <label for="CHAYANFANGXINGUSERNAME">查验放行人:</label>
+                <input class="easyui-textbox " type="text" id="CHAYANFANGXINGUSERNAME" name="CHAYANFANGXINGUSERNAME" disabled="disabled" />
+            </td>
+        </tr>
+    </table>
+    <div style="text-align:center;padding:5px 0;margin-top: 30px;">
+        <a class="btn btn-primary" href="javascript:void(0)" style="margin-right: 20px;" onclick="submitUpdateFrom()"><i class="fa fa-floppy-o"></i> 保存 </a>
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="closeFrom()"><i class="fa fa-times" aria-hidden="true"></i> 关闭 </a>
+    </div>
+</form>
+
+<script type="text/javascript">
+    function submitUpdateFrom() {
+        var bjname = $("#BAOJIANUSERNAME").val();
+        var bjfxname = $("#BAOJIANFANGXINGUSERNAME").val();
+        var xzname = $("#XUNZHENGUSERNAME").val();
+        var cyname = $("#CHAYANZHILINGXIAFAUSERNAME").val();
+        var cyfxname = $("#CHAYANFANGXINGUSERNAME").val();
+        $('#bjUpdateFrom').form('submit', {
+            url: "/Order/SavebjUpdateData?bjname=" + bjname + "&bjfxname=" + bjfxname + "&xzname=" + xzname + "&cyname=" + cyname + "&cyfxname" + cyfxname,
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                var data = eval('(' + data + ')');  // change the JSON string to javascript object
+                if (data.Success) {
+                    $.messager.alert('成功', '保存成功');
+                    closeFrom();
+                } else {
+                    $.messager.alert('失败', '保存失败');
+                }
+            }
+        });
+    }
+    function closeFrom() {
+        $('#mainWin').dialog('close');
+    }
+    $(function () {
+        $('.time_input').datetimebox({
+            stopFirstChangeEvent: true,
+            onChange: function () {
+                var USERNAME = $("#USERNAME").val();
+                var name = "#" + this.getAttribute("datatype");
+                $(name).textbox('setValue', USERNAME);
+            }
+        });
+    })
+</script>

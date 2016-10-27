@@ -1112,12 +1112,21 @@ namespace SceneOfCustoms.Controllers
             }
 
         }
-        //批量更新
+        //报关批量更新
         public ActionResult BatchUpdate()
         {
             ViewData["ids"] = Request["ids"];
             JObject jo = Extension.Get_UserInfo(HttpContext.User.Identity.Name);    //获取会员信息
             ViewData["USERNAME"] =jo.Value<string>("REALNAME");
+            ViewData["USERID"] = jo.Value<string>("ID");
+            return View();
+        }
+        //报检批量更新
+        public ActionResult bjBatchUpdate()
+        {
+            ViewData["ids"] = Request["ids"];
+            JObject jo = Extension.Get_UserInfo(HttpContext.User.Identity.Name);    //获取会员信息
+            ViewData["USERNAME"] = jo.Value<string>("REALNAME");
             ViewData["USERID"] = jo.Value<string>("ID");
             return View();
         }
@@ -1151,6 +1160,66 @@ namespace SceneOfCustoms.Controllers
             if (sname != "")
             {
                 sql += "  SHIWUFANGXINGUSERNAME =  '" + sname + "',";
+            }
+            sql = sql.Substring(0, sql.Length - 1);
+            sql += " where ID in (" + ids + ")";
+            if (DBMgr.ExecuteNonQuery(sql) != 0)
+            {
+                return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { Success = false, sql = sql }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult SavebjUpdateData(FormCollection form)
+        {
+            string ids = Request.Form["ids"];
+            string bjname = Request["bjname"];
+            string bjfxname = Request["bjfxname"];
+            string xzname = Request["xzname"];
+            string cyname = Request["cyname"];
+            string cyfxname = Request["cyfxname"];
+            string sql = "update list_order set ";
+            if (Request.Form["BAOJIANTIME"] != "")
+            {
+                sql += "  BAOJIANTIME =  to_date('" + Request.Form["BAOJIANTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+            }
+            if (Request.Form["BAOJIANFANGXINGTIME"] != "")
+            {
+                sql += "  BAOJIANFANGXINGTIME =  to_date('" + Request.Form["BAOJIANFANGXINGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+            }
+            if (Request.Form["XUNZHENGTIME"] != "")
+            {
+                sql += "  XUNZHENGTIME =  to_date('" + Request.Form["XUNZHENGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+            }
+            if (Request.Form["CHAYANZHILINGXIAFATIME"] != "")
+            {
+                sql += "  CHAYANZHILINGXIAFATIME =  to_date('" + Request.Form["CHAYANZHILINGXIAFATIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+            }
+            if (Request.Form["CHAYANFANGXINGTIME"] != "")
+            {
+                sql += "  CHAYANFANGXINGTIME =  to_date('" + Request.Form["CHAYANFANGXINGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+            }
+            if (bjname != "")
+            {
+                sql += "  BAOJIANUSERNAME =  '" + bjname + "',";
+            }
+            if (bjfxname != "")
+            {
+                sql += "  BAOJIANFANGXINGUSERNAME =  '" + bjfxname + "',";
+            }
+            if (xzname != "")
+            {
+                sql += "  XUNZHENGUSERNAME =  '" + xzname + "',";
+            }
+            if (cyname != "")
+            {
+                sql += "  CHAYANZHILINGXIAFAUSERNAME =  '" + cyname + "',";
+            }
+            if (cyfxname != "")
+            {
+                sql += "  CHAYANFANGXINGUSERNAME =  '" + cyfxname + "',";
             }
             sql = sql.Substring(0, sql.Length - 1);
             sql += " where ID in (" + ids + ")";
