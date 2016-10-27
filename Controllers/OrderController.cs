@@ -1088,6 +1088,10 @@ namespace SceneOfCustoms.Controllers
                 {
                     IFS.ZSBJ_ABNO(ID);
                 }
+                else
+                {
+                    IFS.ZSBG_ABNO(ID);
+                }
 
                 return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
             }
