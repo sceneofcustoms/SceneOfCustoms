@@ -393,6 +393,26 @@ function formatDECLWAY(val, row) {
             break;
     }
 }
+//批量更新
+function refresh_form() {
+    var ids = "";
+    var row = $('#datagrid').datagrid('getSelected');
+    if (row == null) {
+        $.messager.alert("提示", "请选择数据！");
+        return;
+    }
+    $(".datagrid-row-selected input[name='ID']").each(function () {
+        ids += this.value + ",";
+    });
+    ids = ids.substring(0, ids.length - 1);
+    $('#mainWin').dialog({
+        title: '批量更新',
+        width: 800,
+        height: 400,
+        modal: true,
+        href: "/Order/BatchUpdate?ids=" + ids
+    });
+}
 //数据导出
 function export_form() {
     var ids = "";

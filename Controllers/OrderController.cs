@@ -876,27 +876,6 @@ namespace SceneOfCustoms.Controllers
                     sql += " and FOONOBJ is not null  and (BUSITYPE='40' OR BUSITYPE='41') ";
                     break;
             }
-            //switch (BUSITYPE)
-            //{
-            //    case "ONEIN":
-            //        sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
-            //        break;
-            //    case "ONEINBJ":
-            //        sql += " AND (BUSITYPE='11' OR BUSITYPE='21' OR BUSITYPE='31')";
-            //        break;
-            //    case "ONEOUT":
-            //        sql += "  AND (BUSITYPE='10' OR BUSITYPE='20' OR BUSITYPE='30')";
-            //        break;
-            //    case "SPECIAL":
-            //        sql += "  and (BUSITYPE='50' OR BUSITYPE='51') "; //特殊监管
-            //        break;
-            //    case "BLC":
-            //        sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
-            //        break;
-            //    case "BLCBJ":
-            //        sql += "  and (BUSITYPE='40' OR BUSITYPE='41') ";
-            //        break;
-            //}
             string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
             string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
             sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
@@ -1133,30 +1112,71 @@ namespace SceneOfCustoms.Controllers
             }
 
         }
-
-
+        //批量更新
+        public ActionResult BatchUpdate()
+        {
+            ViewData["ids"] = Request["ids"];
+            JObject jo = Extension.Get_UserInfo(HttpContext.User.Identity.Name);    //获取会员信息
+            ViewData["USERNAME"] =jo.Value<string>("REALNAME");
+            ViewData["USERID"] = jo.Value<string>("ID");
+            return View();
+        }
+        public ActionResult SaveUpdateData(FormCollection form)
+        {
+            string ids = Request.Form["ids"];
+            string bname = Request["bname"];
+            string dname = Request["dname"];
+            string sname = Request["sname"];
+            string sql = "update list_order set ";
+            if (Request.Form["BAORUHAIGUANTIME"] != "")
+            {
+                sql += "  BAORUHAIGUANTIME =  to_date('" + Request.Form["BAORUHAIGUANTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+            }
+            if (Request.Form["DANZHENGFANGXINGTIME"] != "")
+            {
+                sql += "  DANZHENGFANGXINGTIME =  to_date('" + Request.Form["DANZHENGFANGXINGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+            }
+            if (Request.Form["SHIWUFANGXINGTIME"] != "")
+            {
+                sql += "  SHIWUFANGXINGTIME =  to_date('" + Request.Form["SHIWUFANGXINGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+            }
+            if (bname != "")
+            {
+                sql += "  BAORUHAIGUANUSERNAME =  '" + bname + "',";
+            }
+            if (dname != "")
+            {
+                sql += "  DANZHENGFANGXINGUSERNAME =  '" + dname + "',";
+            }
+            if (sname != "")
+            {
+                sql += "  SHIWUFANGXINGUSERNAME =  '" + sname + "',";
+            }
+            sql = sql.Substring(0, sql.Length - 1);
+            sql += " where ID in (" + ids + ")";
+            if (DBMgr.ExecuteNonQuery(sql) != 0)
+            {
+                return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { Success = false, sql = sql }, JsonRequestBehavior.AllowGet);
+            }
+        }
         //急装箱信息
         public ActionResult JizhuangxiangInfo()
         {
             return View();
         }
-
-
         //报关单信息
         public ActionResult BaoguandanInfo()
         {
             return View();
         }
-
-
         //通关单信息
         public ActionResult TongguandanInfo()
         {
             return View();
         }
-
-
-
-
     }
 }
