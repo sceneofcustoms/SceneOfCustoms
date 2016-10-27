@@ -1281,53 +1281,6 @@ namespace SceneOfCustoms.Common
 
 
 
-        // 销保时间
-        public static void ZSXBSJ(string id)
-        {
-            sap.SI_CUS_CUS1002Service api = new sap.SI_CUS_CUS1002Service();
-            api.Timeout = 6000000;
-            api.Credentials = new NetworkCredential("soapcall", "soapcall");
-            sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
-            string sql = "select *　from list_order where id ='" + id + "'";
-            DataTable dt = DBMgr.GetDataTable(sql);
-            string FWONO = "";
-            string FOONO = "";
-            string EVENT_DAT = "";
-            if (dt.Rows.Count > 0)
-            {
-                if (!string.IsNullOrEmpty(dt.Rows[0]["FOONO"] + ""))
-                {
-                    FOONO = dt.Rows[0]["FOONO"] + "";
-                    FOONO = FOONO.Remove(0, 4);
-                    FWONO = dt.Rows[0]["FWONO"] + "";
-                    if (!string.IsNullOrEmpty(dt.Rows[0]["XIAOBAOTIME"] + ""))
-                    {
-                        EVENT_DAT = Convert.ToDateTime(dt.Rows[0]["XIAOBAOTIME"]).ToString("yyyyMMddHHmmss");
-                    }
-                    m.EVENT_CODE = "ZSXBSJ";
-                    m.FWO_ID = FWONO;
-                    m.FOO_ID = FOONO;
-                    m.EVENT_DAT = EVENT_DAT;
-                    sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
-                    mlist[0] = m;
-
-                    List<Msgobj> MSList = new List<Msgobj>();
-                    sap.DT_CUS_CUS1002_RES res;
-                    try
-                    {
-                        res = api.SI_CUS_CUS1002(mlist);
-                        MSList.Add(set_MObj(res.EV_ERROR, "ZSZLSJ(" + res.EV_MSG + ")"));
-                        save_log(MSList, FWONO, "3");
-                    }
-                    catch (Exception e)
-                    {
-                        MSList.Add(set_MObj("E", "ZSZLSJ(接口回调报错)"));
-                        save_log(MSList, FWONO, "3");
-                    }
-
-                }
-            }
-        }
 
 
 
