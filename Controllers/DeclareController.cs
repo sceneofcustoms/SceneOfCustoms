@@ -198,25 +198,38 @@ namespace SceneOfCustoms.Controllers
                 string correspondno = dt.Rows[0]["CORRESPONDNO"] + "";//四单关联号
 
                 string CODE = correspondno.Replace("GF", ""); // 第一个订单
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE='" + CODE+"'";
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE='" + CODE + "'";
                 dt = DBMgr.GetDataTable(sql);
-                ViewData["id1"] = dt.Rows[0]["ID"] + "";
+                if (dt.Rows.Count > 0)
+                {
+                    ViewData["id1"] = dt.Rows[0]["ID"] + "";
+                }
 
                 string ASSOCIATENO = correspondno.Replace("GF", "GL");
                 sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !='" + CODE + "'";
                 dt = DBMgr.GetDataTable(sql);
-                ViewData["id2"] = dt.Rows[0]["ID"] + "";// 第二个订单
-                ViewData["BUSIUNITNAME2"] = dt.Rows[0]["BUSIUNITNAME"] + "";
+                if (dt.Rows.Count > 0)
+                {
+                    ViewData["id2"] = dt.Rows[0]["ID"] + "";// 第二个订单
+                    ViewData["BUSIUNITNAME2"] = dt.Rows[0]["BUSIUNITNAME"] + "";
+                }
 
 
                 sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = '41'";
                 dt = DBMgr.GetDataTable(sql);
-                ViewData["id3"] = dt.Rows[0]["ID"] + "";// 第三个订单
+                if (dt.Rows.Count > 0)
+                {
+                    ViewData["id3"] = dt.Rows[0]["ID"] + "";// 第三个订单
+                }
+
 
                 sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = '40'";
                 dt = DBMgr.GetDataTable(sql);
-                ViewData["id4"] = dt.Rows[0]["ID"] + "";// 第四个订单
-                ViewData["BUSIUNITNAME4"] = dt.Rows[0]["BUSIUNITNAME"] + "";
+                if (dt.Rows.Count > 0)
+                {
+                    ViewData["id4"] = dt.Rows[0]["ID"] + "";// 第四个订单
+                    ViewData["BUSIUNITNAME4"] = dt.Rows[0]["BUSIUNITNAME"] + "";
+                }
             }
             else
             {
@@ -225,13 +238,19 @@ namespace SceneOfCustoms.Controllers
                 if (!string.IsNullOrEmpty(ASSOCIATENO))
                 {
                     string CODE = ASSOCIATENO.Replace("GL", ""); // 第一个订单
-                    sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE;
+                    sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE='" + CODE + "'";
                     dt = DBMgr.GetDataTable(sql);
-                    ViewData["id1"] = dt.Rows[0]["ID"] + "";
-
-                    sql = "select ID,CODE,ASSOCIATENO,CORRESPONDNO from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !=" + CODE;
+                    if (dt.Rows.Count > 0)
+                    {
+                        ViewData["id1"] = dt.Rows[0]["ID"] + "";
+                    }
+                    sql = "select ID,CODE,ASSOCIATENO,CORRESPONDNO from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !='" + CODE + "'";
                     dt = DBMgr.GetDataTable(sql);
-                    ViewData["id2"] = dt.Rows[0]["ID"] + "";// 第二个订单
+                    if (dt.Rows.Count > 0)
+                    {
+                        ViewData["id2"] = dt.Rows[0]["ID"] + "";//二单ID
+                        ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
+                    }
                 }
 
             }
@@ -261,12 +280,19 @@ namespace SceneOfCustoms.Controllers
 
                 sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE + " and BUSITYPE =41";
                 dt = DBMgr.GetDataTable(sql);
-                ViewData["id1"] = dt.Rows[0]["ID"] + "";//一单ID
+                if (dt.Rows.Count > 0)
+                {
+                    ViewData["id1"] = dt.Rows[0]["ID"] + "";//一单ID
+                }
 
                 sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE =40";
                 dt = DBMgr.GetDataTable(sql);
-                ViewData["id2"] = dt.Rows[0]["ID"] + "";//二单ID
-                ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
+                if (dt.Rows.Count > 0)
+                {
+                    ViewData["id2"] = dt.Rows[0]["ID"] + "";//二单ID
+                    ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
+                }
+
             }
 
             return View();

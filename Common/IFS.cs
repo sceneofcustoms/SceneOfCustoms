@@ -50,9 +50,9 @@ namespace SceneOfCustoms.Common
                 {
                     DZOrder.GOODSGW = Decimal.Parse(dt.Rows[i]["GOODSWEIGHT"] + "");
                 }
-                DZOrder.PACKKIND = dt.Rows[i]["PACKKIND"] + "";
 
-
+                DZOrder.PACKKINDNAME = dt.Rows[i]["PACKKIND"] + "";
+                DZOrder.GOODSTYPEID = dt.Rows[i]["GOODSTYPEID"] + "";
                 //贸易方式
                 DZOrder.TRADEWAYCODE = dt.Rows[i]["TRADEWAYCODES"] + "";
                 DZOrder.ORDERREQUEST = dt.Rows[i]["ENTRUSTREQUEST"] + "";
@@ -80,7 +80,7 @@ namespace SceneOfCustoms.Common
                 }
                 if (!string.IsNullOrEmpty(dt.Rows[i]["SPECIALRELATIONSHIP"] + ""))
                 {
-                    DZOrder.PAYPOYALTIES = Int32.Parse(dt.Rows[i]["SPECIALRELATIONSHIP"] + "");
+                    DZOrder.SPECIALRELATIONSHIP = Int32.Parse(dt.Rows[i]["SPECIALRELATIONSHIP"] + "");
                 }
 
 
@@ -467,6 +467,18 @@ namespace SceneOfCustoms.Common
                 else
                 {
                     o[0].ALLOWDECLARE = "1";
+                }
+
+                if (!string.IsNullOrEmpty(o[0].GOODSTYPEID + ""))
+                {
+                    if (o[0].GOODSTYPEID + "" == "FCL（整箱装载）")
+                    {
+                        o[0].GOODSTYPEID = "1";
+                    }
+                    else
+                    {
+                        o[0].GOODSTYPEID = "2";
+                    }
                 }
 
 
@@ -1030,7 +1042,38 @@ namespace SceneOfCustoms.Common
         {
             if (type == "XIAOBAO")
             {
+                //销保时间
                 ZSXBSJ(id);
+            }
+            else if (type == "CHAYANSTART")
+            {
+                //查验起始时间
+                ZSHGXY(id);
+            }
+            else if (type == "CHAYANZHILINGXIAFA")
+            {
+                //查验时间
+                ZSBJCY(id);
+            }
+            else if (type == "BAOJIANFANGXING")
+            {
+                //报检放行时间
+                ZSSJFX(id);
+            }
+            else if (type == "CHAYANFANGXING")
+            {
+                //查验放行时间
+                ZSSJCYWC(id);
+            }
+            else if (type == "BAORUHAIGUAN")
+            {
+                //报入海关时间
+                ZSXCBG(id);
+            }
+            else if (type == "SHIWUFANGXING")
+            {
+                //实物放行时间
+                ZSSWFX(id);
             }
         }
 
@@ -1241,41 +1284,45 @@ namespace SceneOfCustoms.Common
             string EVENT_DAT = "";
             if (dt.Rows.Count > 0)
             {
-                FWONO = dt.Rows[0]["FWONO"] + "";
-                FOONO = dt.Rows[0]["FOONO"] + "";
-                if (!string.IsNullOrEmpty(dt.Rows[0]["XIAOBAOTIME"] + ""))
+                if (!string.IsNullOrEmpty(dt.Rows[0]["XIAOBAOTIME"] + "") && !string.IsNullOrEmpty(dt.Rows[0]["FOONO"] + ""))
                 {
-                    EVENT_DAT = Convert.ToDateTime(dt.Rows[0]["XIAOBAOTIME"]).ToString("yyyyMMddHHmmss");
-                }
-            }
-            if (!string.IsNullOrEmpty(FOONO))
-            {
-                FOONO = FOONO.Remove(0, 4);
-            }
+                    FWONO = dt.Rows[0]["FWONO"] + "";
+                    FOONO = dt.Rows[0]["FOONO"] + "";
+                    if (!string.IsNullOrEmpty(dt.Rows[0]["XIAOBAOTIME"] + ""))
+                    {
+                        EVENT_DAT = Convert.ToDateTime(dt.Rows[0]["XIAOBAOTIME"]).ToString("yyyyMMddHHmmss");
+                    }
 
+                    if (!string.IsNullOrEmpty(FOONO))
+                    {
+                        FOONO = FOONO.Remove(0, 4);
+                    }
+                    m.EVENT_CODE = "ZSXBSJ";
+                    m.FWO_ID = FWONO;
+                    m.FOO_ID = FOONO;
+                    m.EVENT_DAT = EVENT_DAT;
+                    sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+                    mlist[0] = m;
+
+                    List<Msgobj> MSList = new List<Msgobj>();
+                    sap.DT_CUS_CUS1002_RES res;
+                    try
+                    {
+                        res = api.SI_CUS_CUS1002(mlist);
+                        MSList.Add(set_MObj(res.EV_ERROR, "ZSXBSJ(" + res.EV_MSG + ")"));
+                        save_log(MSList, FWONO, "3");
+                    }
+                    catch (Exception e)
+                    {
+                        MSList.Add(set_MObj("E", "ZSXBSJ(接口回调报错)"));
+                        save_log(MSList, FWONO, "3");
+                    }
+                }
+
+            }
 
             //string datetime = DateTime.Now.ToLocalTime().ToString("yyyyMMddHHmmss");
-            m.EVENT_CODE = "ZSXBSJ";
-            m.FWO_ID = FWONO;
-            m.FOO_ID = FOONO;
-            m.EVENT_DAT = EVENT_DAT;
             //m.ORDER = orderList.ToArray();
-            sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
-            mlist[0] = m;
-
-            List<Msgobj> MSList = new List<Msgobj>();
-            sap.DT_CUS_CUS1002_RES res;
-            try
-            {
-                res = api.SI_CUS_CUS1002(mlist);
-                MSList.Add(set_MObj(res.EV_ERROR, "ZSZLSJ(" + res.EV_MSG + ")"));
-                save_log(MSList, FWONO, "3");
-            }
-            catch (Exception e)
-            {
-                MSList.Add(set_MObj("E", "ZSZLSJ(接口回调报错)"));
-                save_log(MSList, FWONO, "3");
-            }
 
         }
 
@@ -1408,6 +1455,291 @@ namespace SceneOfCustoms.Common
             MSList.Add(set_MObj(res.EV_ERROR, res.EV_MSG));
             save_log(MSList, FWO, "3");
             return res.EV_ERROR;
+        }
+
+
+
+        // 海关查验时间
+        public static void ZSHGXY(string id)
+        {
+            sap.SI_CUS_CUS1002Service api = new sap.SI_CUS_CUS1002Service();
+            api.Timeout = 6000000;
+            api.Credentials = new NetworkCredential("soapcall", "soapcall");
+            sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
+            string sql = "select *　from list_order where id ='" + id + "'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string FWONO = "";
+            string FOONO = "";
+            string EVENT_DAT = "";
+            if (dt.Rows.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(dt.Rows[0]["FOONO"] + ""))
+                {
+                    FOONO = dt.Rows[0]["FOONO"] + "";
+                    FOONO = FOONO.Remove(0, 4);
+                    FWONO = dt.Rows[0]["FWONO"] + "";
+                    if (!string.IsNullOrEmpty(dt.Rows[0]["CHAYANSTARTTIME"] + ""))
+                    {
+                        EVENT_DAT = Convert.ToDateTime(dt.Rows[0]["CHAYANSTARTTIME"]).ToString("yyyyMMddHHmmss");
+                    }
+                    m.EVENT_CODE = "ZSHGXY";
+                    m.FWO_ID = FWONO;
+                    m.FOO_ID = FOONO;
+                    m.EVENT_DAT = EVENT_DAT;
+                    sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+                    mlist[0] = m;
+
+                    List<Msgobj> MSList = new List<Msgobj>();
+                    sap.DT_CUS_CUS1002_RES res;
+                    try
+                    {
+                        res = api.SI_CUS_CUS1002(mlist);
+                        MSList.Add(set_MObj(res.EV_ERROR, "ZSHGXY(" + res.EV_MSG + ")"));
+                        save_log(MSList, FWONO, "3");
+                    }
+                    catch (Exception e)
+                    {
+                        MSList.Add(set_MObj("E", "ZSHGXY(接口回调报错)"));
+                        save_log(MSList, FWONO, "3");
+                    }
+
+                }
+            }
+        }
+        // 实物放行（口岸／属地）
+        public static void ZSSWFX(string id)
+        {
+            sap.SI_CUS_CUS1002Service api = new sap.SI_CUS_CUS1002Service();
+            api.Timeout = 6000000;
+            api.Credentials = new NetworkCredential("soapcall", "soapcall");
+            sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
+            string sql = "select *　from list_order where id ='" + id + "'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string FWONO = "";
+            string FOONO = "";
+            string EVENT_DAT = "";
+            if (dt.Rows.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(dt.Rows[0]["FOONO"] + ""))
+                {
+                    FOONO = dt.Rows[0]["FOONO"] + "";
+                    FOONO = FOONO.Remove(0, 4);
+                    FWONO = dt.Rows[0]["FWONO"] + "";
+                    if (!string.IsNullOrEmpty(dt.Rows[0]["SHIWUFANGXINGTIME"] + ""))
+                    {
+                        EVENT_DAT = Convert.ToDateTime(dt.Rows[0]["SHIWUFANGXINGTIME"]).ToString("yyyyMMddHHmmss");
+                    }
+                    m.EVENT_CODE = "ZSSWFX";
+                    m.FWO_ID = FWONO;
+                    m.FOO_ID = FOONO;
+                    m.EVENT_DAT = EVENT_DAT;
+                    sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+                    mlist[0] = m;
+
+                    List<Msgobj> MSList = new List<Msgobj>();
+                    sap.DT_CUS_CUS1002_RES res;
+                    try
+                    {
+                        res = api.SI_CUS_CUS1002(mlist);
+                        MSList.Add(set_MObj(res.EV_ERROR, "ZSSWFX(" + res.EV_MSG + ")"));
+                        save_log(MSList, FWONO, "3");
+                    }
+                    catch (Exception e)
+                    {
+                        MSList.Add(set_MObj("E", "ZSSWFX(接口回调报错)"));
+                        save_log(MSList, FWONO, "3");
+                    }
+
+                }
+            }
+        }
+        // 现场报关（口岸／属地）
+        public static void ZSXCBG(string id)
+        {
+            sap.SI_CUS_CUS1002Service api = new sap.SI_CUS_CUS1002Service();
+            api.Timeout = 6000000;
+            api.Credentials = new NetworkCredential("soapcall", "soapcall");
+            sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
+            string sql = "select *　from list_order where id ='" + id + "'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string FWONO = "";
+            string FOONO = "";
+            string EVENT_DAT = "";
+            if (dt.Rows.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(dt.Rows[0]["FOONO"] + ""))
+                {
+                    FOONO = dt.Rows[0]["FOONO"] + "";
+                    FOONO = FOONO.Remove(0, 4);
+                    FWONO = dt.Rows[0]["FWONO"] + "";
+                    if (!string.IsNullOrEmpty(dt.Rows[0]["BAORUHAIGUANTIME"] + ""))
+                    {
+                        EVENT_DAT = Convert.ToDateTime(dt.Rows[0]["BAORUHAIGUANTIME"]).ToString("yyyyMMddHHmmss");
+                    }
+                    m.EVENT_CODE = "ZSXCBG";
+                    m.FWO_ID = FWONO;
+                    m.FOO_ID = FOONO;
+                    m.EVENT_DAT = EVENT_DAT;
+                    sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+                    mlist[0] = m;
+
+                    List<Msgobj> MSList = new List<Msgobj>();
+                    sap.DT_CUS_CUS1002_RES res;
+                    try
+                    {
+                        res = api.SI_CUS_CUS1002(mlist);
+                        MSList.Add(set_MObj(res.EV_ERROR, "ZSXCBG(" + res.EV_MSG + ")"));
+                        save_log(MSList, FWONO, "3");
+                    }
+                    catch (Exception e)
+                    {
+                        MSList.Add(set_MObj("E", "ZSXCBG(接口回调报错)"));
+                        save_log(MSList, FWONO, "3");
+                    }
+
+                }
+            }
+        }
+        // 报检查验
+        public static void ZSBJCY(string id)
+        {
+            sap.SI_CUS_CUS1002Service api = new sap.SI_CUS_CUS1002Service();
+            api.Timeout = 6000000;
+            api.Credentials = new NetworkCredential("soapcall", "soapcall");
+            sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
+            string sql = "select *　from list_order where id ='" + id + "'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string FWONO = "";
+            string FOONO = "";
+            string EVENT_DAT = "";
+            if (dt.Rows.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(dt.Rows[0]["FOONOBJ"] + ""))
+                {
+                    FOONO = dt.Rows[0]["FOONOBJ"] + "";
+                    FOONO = FOONO.Remove(0, 4);
+                    FWONO = dt.Rows[0]["FWONO"] + "";
+                    if (!string.IsNullOrEmpty(dt.Rows[0]["CHAYANZHILINGXIAFATIME"] + ""))
+                    {
+                        EVENT_DAT = Convert.ToDateTime(dt.Rows[0]["CHAYANZHILINGXIAFATIME"]).ToString("yyyyMMddHHmmss");
+                    }
+                    m.EVENT_CODE = "ZSBJCY";
+                    m.FWO_ID = FWONO;
+                    m.FOO_ID = FOONO;
+                    m.EVENT_DAT = EVENT_DAT;
+                    sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+                    mlist[0] = m;
+
+                    List<Msgobj> MSList = new List<Msgobj>();
+                    sap.DT_CUS_CUS1002_RES res;
+                    try
+                    {
+                        res = api.SI_CUS_CUS1002(mlist);
+                        MSList.Add(set_MObj(res.EV_ERROR, "ZSBJCY(" + res.EV_MSG + ")"));
+                        save_log(MSList, FWONO, "3");
+                    }
+                    catch (Exception e)
+                    {
+                        MSList.Add(set_MObj("E", "ZSBJCY(接口回调报错)"));
+                        save_log(MSList, FWONO, "3");
+                    }
+
+                }
+            }
+        }
+        // 商检放行
+        public static void ZSSJFX(string id)
+        {
+            sap.SI_CUS_CUS1002Service api = new sap.SI_CUS_CUS1002Service();
+            api.Timeout = 6000000;
+            api.Credentials = new NetworkCredential("soapcall", "soapcall");
+            sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
+            string sql = "select *　from list_order where id ='" + id + "'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string FWONO = "";
+            string FOONO = "";
+            string EVENT_DAT = "";
+            if (dt.Rows.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(dt.Rows[0]["FOONOBJ"] + ""))
+                {
+                    FOONO = dt.Rows[0]["FOONOBJ"] + "";
+                    FOONO = FOONO.Remove(0, 4);
+                    FWONO = dt.Rows[0]["FWONO"] + "";
+                    if (!string.IsNullOrEmpty(dt.Rows[0]["BAOJIANFANGXINGTIME"] + ""))
+                    {
+                        EVENT_DAT = Convert.ToDateTime(dt.Rows[0]["BAOJIANFANGXINGTIME"]).ToString("yyyyMMddHHmmss");
+                    }
+                    m.EVENT_CODE = "ZSSJFX";
+                    m.FWO_ID = FWONO;
+                    m.FOO_ID = FOONO;
+                    m.EVENT_DAT = EVENT_DAT;
+                    sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+                    mlist[0] = m;
+
+                    List<Msgobj> MSList = new List<Msgobj>();
+                    sap.DT_CUS_CUS1002_RES res;
+                    try
+                    {
+                        res = api.SI_CUS_CUS1002(mlist);
+                        MSList.Add(set_MObj(res.EV_ERROR, "ZSSJFX(" + res.EV_MSG + ")"));
+                        save_log(MSList, FWONO, "3");
+                    }
+                    catch (Exception e)
+                    {
+                        MSList.Add(set_MObj("E", "ZSSJFX(接口回调报错)"));
+                        save_log(MSList, FWONO, "3");
+                    }
+
+                }
+            }
+        }
+        // 商检查验完成
+        public static void ZSSJCYWC(string id)
+        {
+            sap.SI_CUS_CUS1002Service api = new sap.SI_CUS_CUS1002Service();
+            api.Timeout = 6000000;
+            api.Credentials = new NetworkCredential("soapcall", "soapcall");
+            sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
+            string sql = "select *　from list_order where id ='" + id + "'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string FWONO = "";
+            string FOONO = "";
+            string EVENT_DAT = "";
+            if (dt.Rows.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(dt.Rows[0]["FOONOBJ"] + ""))
+                {
+                    FOONO = dt.Rows[0]["FOONOBJ"] + "";
+                    FOONO = FOONO.Remove(0, 4);
+                    FWONO = dt.Rows[0]["FWONO"] + "";
+                    if (!string.IsNullOrEmpty(dt.Rows[0]["CHAYANFANGXINGTIME"] + ""))
+                    {
+                        EVENT_DAT = Convert.ToDateTime(dt.Rows[0]["CHAYANFANGXINGTIME"]).ToString("yyyyMMddHHmmss");
+                    }
+                    m.EVENT_CODE = "ZSSJCYWC";
+                    m.FWO_ID = FWONO;
+                    m.FOO_ID = FOONO;
+                    m.EVENT_DAT = EVENT_DAT;
+                    sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+                    mlist[0] = m;
+
+                    List<Msgobj> MSList = new List<Msgobj>();
+                    sap.DT_CUS_CUS1002_RES res;
+                    try
+                    {
+                        res = api.SI_CUS_CUS1002(mlist);
+                        MSList.Add(set_MObj(res.EV_ERROR, "ZSSJCYWC(" + res.EV_MSG + ")"));
+                        save_log(MSList, FWONO, "3");
+                    }
+                    catch (Exception e)
+                    {
+                        MSList.Add(set_MObj("E", "ZSSJCYWC(接口回调报错)"));
+                        save_log(MSList, FWONO, "3");
+                    }
+
+                }
+            }
         }
 
     }

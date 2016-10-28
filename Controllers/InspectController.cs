@@ -122,12 +122,17 @@ namespace SceneOfCustoms.Controllers
 
                 sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE='" + CODE + "' and BUSITYPE ='41'";
                 dt = DBMgr.GetDataTable(sql);
-                ViewData["id1"] = dt.Rows[0]["ID"] + "";//一单ID
-
+                if (dt.Rows.Count > 0)
+                {
+                    ViewData["id1"] = dt.Rows[0]["ID"] + "";//一单ID
+                }
                 sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE ='40'";
                 dt = DBMgr.GetDataTable(sql);
-                ViewData["id2"] = dt.Rows[0]["ID"] + "";//二单ID
-                ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
+                if (dt.Rows.Count > 0)
+                {
+                    ViewData["id2"] = dt.Rows[0]["ID"] + "";//二单ID
+                    ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
+                }
 
             }
 
