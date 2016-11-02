@@ -886,17 +886,17 @@ namespace SceneOfCustoms.Common
                 }
                 else
                 {
-                    if (o.CUSTOMDISTRICTCODE != "昆山海关" || o.CUSTOMDISTRICTCODE != "昆山综保")
+                    if (o.CUSTOMDISTRICTCODE != "昆山海关" && o.CUSTOMDISTRICTCODE != "昆山综保")
                     {
                         MsgobjList.Add(set_MObj("E", "申报关区必须是2325或者是2369" + o.FOONO));
                     }
 
-                    sql = "select CODE,NAME from BASE_CUSTOMDISTRICT  where ENABLED=1  and NAME='" + o.CUSTOMDISTRICTCODE + "' ORDER BY CODE";
-                    dt = DB_BaseData.GetDataTable(sql);
-                    if (dt.Rows.Count <= 0)
-                    {
-                        MsgobjList.Add(set_MObj("E", "申报关区(" + o.CUSTOMDISTRICTCODE + ")无法匹配" + o.FOONO));
-                    }
+                    //sql = "select CODE,NAME from BASE_CUSTOMDISTRICT  where ENABLED=1  and NAME='" + o.CUSTOMDISTRICTCODE + "' ORDER BY CODE";
+                    //dt = DB_BaseData.GetDataTable(sql);
+                    //if (dt.Rows.Count <= 0)
+                    //{
+                    //    MsgobjList.Add(set_MObj("E", "申报关区(" + o.CUSTOMDISTRICTCODE + ")无法匹配" + o.FOONO));
+                    //}
 
                 }
 
