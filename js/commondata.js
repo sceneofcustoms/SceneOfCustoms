@@ -635,12 +635,13 @@ function BaoguandanInfo() {
 }
 
 function JizhuangxiangInfo() {
+    var CODE = $("input[name='CODE']").val();
     $('#mainWin').dialog({
         title: '集装箱信息',
         width: 800,
         height: 400,
         modal: true,
-        href: '/Order/JizhuangxiangInfo'
+        href: '/Order/JizhuangxiangInfo?CODE=' + CODE
     });
 }
 function TongguandanInfo() {

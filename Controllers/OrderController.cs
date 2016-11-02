@@ -819,11 +819,20 @@ namespace SceneOfCustoms.Controllers
                 }
                 if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
                 {
-                    sql += " AND " + jo.Value<string>("ordercode") + " ='" + jo.Value<string>("ordercode_value") + "'";
+                    string ordercode_value = jo.Value<string>("ordercode_value").Replace(" ", "");
+                    if (jo.Value<string>("ordercode") != "FWONO" && jo.Value<string>("ordercode") != "FOONO" && jo.Value<string>("ordercode") != "FOONOBJ")
+                    {
+                        sql += " AND " + jo.Value<string>("ordercode") + " ='" + ordercode_value + "'";
+                    }
+                    else
+                    {
+                        sql += " AND " + jo.Value<string>("ordercode") + " like '%" + ordercode_value + "%'";
+                    }
                 }
                 if (jo.Value<string>("oprname_value") != null && jo.Value<string>("oprname_value") != "")
                 {
-                    sql += " AND " + jo.Value<string>("oprname") + " ='" + jo.Value<string>("oprname_value") + "'";
+                    string oprname_value = jo.Value<string>("oprname_value").Replace(" ", "");
+                    sql += " AND " + jo.Value<string>("oprname") + " ='" + oprname_value + "'";
                 }
                 if (jo.Value<string>("startdate") != "")
                 {
@@ -841,14 +850,34 @@ namespace SceneOfCustoms.Controllers
                 {
                     sql += " AND DECLWAY = '" + jo.Value<string>("declaration_type") + "' ";
                 }
-                if (jo.Value<string>("LAWCONDITION") != null && jo.Value<string>("LAWCONDITION") != "")
+
+
+                if (jo.Value<string>("LAWCONDITION") == "1")
                 {
-                    sql += " AND LAWCONDITION = '" + jo.Value<string>("LAWCONDITION") + "' ";
+                    sql += " AND LAWCONDITION = '1' ";
                 }
-                if (jo.Value<string>("WOODPACKINGID") != null && jo.Value<string>("WOODPACKINGID") != "")
+                else if (jo.Value<string>("LAWCONDITION") == "0")
                 {
-                    sql += " AND WOODPACKINGID = '" + jo.Value<string>("WOODPACKINGID") + "' ";
+                    sql += " AND (LAWCONDITION is null or LAWCONDITION='0') ";
                 }
+
+
+                //if (jo.Value<string>("WOODPACKINGID") != null && jo.Value<string>("WOODPACKINGID") != "")
+                //{
+                //    sql += " AND WOODPACKINGID = '" + jo.Value<string>("WOODPACKINGID") + "' ";
+                //}
+
+
+                if (jo.Value<string>("LIHUOSIGN") == "1")
+                {
+                    sql += " AND LIHUOSIGN = '1' ";
+                }
+                else if (jo.Value<string>("LIHUOSIGN") == "0")
+                {
+                    sql += " AND LIHUOSIGN is null ";
+                }
+
+
             }
             else
             {
@@ -1236,13 +1265,79 @@ namespace SceneOfCustoms.Controllers
         //急装箱信息
         public ActionResult JizhuangxiangInfo()
         {
+            ViewData["CODE"] = Request["CODE"];
             return View();
+        }
+        //急装箱列表
+        public string LoadJzxList()
+        {
+            string CODE = Request["data"];
+            int PageSize = Convert.ToInt32(Request.Params["rows"]);
+            int Page = Convert.ToInt32(Request.Params["page"]);
+            int total = 0;
+            string sql = "select * from LIST_DECLCONTAINERTRUCK where ORDERCODE='" + CODE + "'";
+            string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
+            string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
+            sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
+            DataTable dt = DBMgr.GetDataTable(sql);
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string result = JsonConvert.SerializeObject(dt, iso);
+            result = "{\"total\":" + total + ",\"rows\":" + result + "}";
+            return result;
         }
         //报关单信息
         public ActionResult BaoguandanInfo()
         {
             return View();
         }
+
+        //报关单列表
+        public string LoadBgdList()
+        {
+            int PageSize = Convert.ToInt32(Request.Params["rows"]);
+            int Page = Convert.ToInt32(Request.Params["page"]);
+            int total = 0;
+            string sql = "select * from list_declaration where 1=1";
+            string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
+            string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
+            sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
+            DataTable dt = DBMgr.GetDataTable(sql);
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string result = JsonConvert.SerializeObject(dt, iso);
+            result = "{\"total\":" + total + ",\"rows\":" + result + "}";
+            return result;
+        }
+
+        //报关单信息更新保存
+        public ActionResult SaveBgdinfo()
+        {
+            string ID = Request.Form["ID"];
+            string sql = "update list_declaration set ";
+
+            if (Request.Params.AllKeys.Contains("ISPRINT"))
+            {
+                sql += "  ISPRINT =  '" + Request.Form["ISPRINT"] + "',";
+            }
+            if (Request.Params.AllKeys.Contains("PRINTNUM"))
+            {
+                sql += "  PRINTNUM =  '" + Request.Form["PRINTNUM"] + "',";
+            }
+
+            sql = sql.Substring(0, sql.Length - 1);
+            sql += " where ID=" + ID;
+            if (DBMgr.ExecuteNonQuery(sql) != 0)
+            {
+                return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { Success = false, sql = sql }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         //通关单信息
         public ActionResult TongguandanInfo()
         {

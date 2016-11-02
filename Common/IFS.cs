@@ -133,7 +133,7 @@ namespace SceneOfCustoms.Common
             string CORRESPONDNO = "";
             string ASS1 = "";
             string ASS2 = "";
-            List<List<OrderEn>> GroupOrder = GroupByFoo(ld);
+            List<List<OrderEn>> GroupOrder = GroupByConFoo(ld);
 
 
             //关联号 如果4单 2单和4单关联号一样，下面在去判断 2单关联号
@@ -300,6 +300,20 @@ namespace SceneOfCustoms.Common
                 {
                     o[0].PAYPOYALTIES = "1";
                 }
+
+                //木质包装  取报检的指令
+                string WOODPACKINGID = "";
+                if (o.Count == 2 && o[0].FOONO.Substring(0, 4) == "SOBG")
+                {
+                        WOODPACKINGID = o[1].WOODPACKINGID;
+                }
+                else
+                {
+                    WOODPACKINGID = o[0].WOODPACKINGID;
+                }
+
+                //报关/报检指令 
+                string FOONOBJ = "";
                 //申报单位  报关 报检
                 string REPUNITNAME = "";
                 string INSPUNITCODE = "";
@@ -312,6 +326,7 @@ namespace SceneOfCustoms.Common
                         o[0].INSPUNITNAME = "";
                     }
 
+
                 }
                 else if (o[0].ENTRUSTTYPEID == "02")
                 {
@@ -321,6 +336,9 @@ namespace SceneOfCustoms.Common
                         INSPUNITCODE = o[0].INSPUNITNAME.Substring(o[0].INSPUNITNAME.Length - 10, 10);
                         o[0].INSPUNITNAME = o[0].INSPUNITNAME.Remove(o[0].INSPUNITNAME.Length - 10, 10);
                     }
+
+                    FOONOBJ = o[0].FOONO;//报检
+                    o[0].FOONO = "";//报关
                 }
                 else if (o[0].ENTRUSTTYPEID == "03")
                 {
@@ -351,6 +369,9 @@ namespace SceneOfCustoms.Common
                             o[0].INSPUNITNAME = "";
                         }
 
+                        //第一条指令为报关的话， 第二条指令一定为报检
+                        FOONOBJ = o[1].FOONO;
+
                     }
                     else
                     {
@@ -377,29 +398,13 @@ namespace SceneOfCustoms.Common
                             o[0].INSPUNITNAME = "";
                         }
 
-                    }
-                }
-                //报关/报检指令 
-                string FOONOBJ = "";
-                if (o[0].ENTRUSTTYPEID == "02")
-                {
-                    FOONOBJ = o[0].FOONO;//报检
-                    o[0].FOONO = "";//报关
-                }
-                if (o[0].ENTRUSTTYPEID == "03")
-                {
-                    if (o[0].FOONO.Substring(0, 4) == "SOBG")
-                    {
-                        //第一条指令为报关的话， 第二条指令一定为报检
-                        FOONOBJ = o[1].FOONO;
-                    }
-                    else
-                    {
                         //第一条指令为报检的话，第二条指令一定为报关
                         FOONOBJ = o[0].FOONO;
                         o[0].FOONO = o[1].FOONO;
+
                     }
                 }
+
                 //委托人
                 string SUBMITUSERNAME = o[0].CREATEUSERNAME;
                 //委托时间
@@ -519,12 +524,22 @@ namespace SceneOfCustoms.Common
                     o[0].ARRIVEDNO, o[0].CHECKEDGOODSNUM, o[0].CHECKEDWEIGHT, o[0].BUSIUNITNAME,
                     BUSIUNITCODE, o[0].GOODSTYPEID, o[0].LADINGBILLNO, o[0].ISPREDECLARE,
                     o[0].ENTRUSTREQUEST, o[0].CONTRACTNO, o[0].FIRSTLADINGBILLNO, o[0].SECONDLADINGBILLNO,
-                    o[0].MANIFEST, o[0].WOODPACKINGID, o[0].WEIGHTCHECK, o[0].ISWEIGHTCHECK,
+                    o[0].MANIFEST, WOODPACKINGID, o[0].WEIGHTCHECK, o[0].ISWEIGHTCHECK,
                     o[0].SHIPNAME, o[0].FILGHTNO, o[0].TURNPRENO, o[0].INVOICENO,
                     o[0].ALLOWDECLARE, o[0].ORDERCODE, ASSOCIATENO, CORRESPONDNO,
                     WTFS
                     );
                 DBMgr.ExecuteNonQuery(sql);
+
+                //卡号 车号
+                foreach (Declcontainertruck d in o[0].Declcontainertruck)
+                {
+                    sql = @"insert into LIST_DECLCONTAINERTRUCK(ID,ORDERCODE,CDCARNAME,CONTAINERNO,CONTAINERTYPE) 
+                    values(LIST_DECLCONTAINERTRUCK_ID.Nextval,'" + o[0].ORDERCODE + "','" + d.CDCARNAME + "','" + d.CONTAINERNO + "','" + d.CONTAINERTYPE + "')";
+                    DBMgr.ExecuteNonQuery(sql);
+                }
+
+
             }
             //保存到单证
             return 1;
@@ -600,6 +615,24 @@ namespace SceneOfCustoms.Common
                         MsgobjList.Add(set_MObj("E", "FOONO不符合"));
                         return MsgobjList;
                     }
+
+                    if (!string.IsNullOrEmpty(ListOrder[0].ORDERCODE) && !string.IsNullOrEmpty(ListOrder[1].ORDERCODE))
+                    {
+                        if (ListOrder[0].ORDERCODE != ListOrder[1].ORDERCODE)
+                        {
+                            MsgobjList.Add(set_MObj("E", "业务单号生成有异常"));
+                            return MsgobjList;
+                        }
+                    }
+                    else
+                    {
+                        MsgobjList.Add(set_MObj("E", "业务单号不可为空"));
+                        return MsgobjList;
+                    }
+
+
+
+
 
 
                 }
@@ -846,6 +879,28 @@ namespace SceneOfCustoms.Common
                     MsgobjList.Add(set_MObj("E", "业务单号不可为空" + o.FOONO));
                 }
 
+
+                if (string.IsNullOrEmpty(o.CUSTOMDISTRICTCODE))
+                {
+                    MsgobjList.Add(set_MObj("E", "申报关区不可为空" + o.FOONO));
+                }
+                else
+                {
+                    if (o.CUSTOMDISTRICTCODE != "昆山海关" || o.CUSTOMDISTRICTCODE != "昆山综保")
+                    {
+                        MsgobjList.Add(set_MObj("E", "申报关区必须是2325或者是2369" + o.FOONO));
+                    }
+
+                    sql = "select CODE,NAME from BASE_CUSTOMDISTRICT  where ENABLED=1  and NAME='" + o.CUSTOMDISTRICTCODE + "' ORDER BY CODE";
+                    dt = DB_BaseData.GetDataTable(sql);
+                    if (dt.Rows.Count <= 0)
+                    {
+                        MsgobjList.Add(set_MObj("E", "申报关区(" + o.CUSTOMDISTRICTCODE + ")无法匹配" + o.FOONO));
+                    }
+
+                }
+
+
             }
             return MsgobjList;
 
@@ -963,6 +1018,151 @@ namespace SceneOfCustoms.Common
             }
             return lloes;
         }
+
+
+
+        //整合订单 并且把报关的FOO放在第一个，报关单FOO为主数据
+        public static List<List<OrderEn>> GroupByConFoo(List<OrderEn> oes)
+        {
+            List<List<OrderEn>> lloes = new List<List<OrderEn>>();
+            List<OrderEn> oes_split1 = new List<OrderEn>();
+            List<OrderEn> oes_split2 = new List<OrderEn>();
+            List<OrderEn> oes_split3 = new List<OrderEn>();
+            List<OrderEn> oes_split4 = new List<OrderEn>();
+            List<OrderEn> new_oes;
+            string FOONO = "";
+
+            // 进口企业/出口企业/HUB仓进/HUB仓出
+            if (string.IsNullOrEmpty(oes[0].ENTRUSTTYPEID))
+            {
+                if (oes.Count == 2)
+                {
+                    FOONO = oes[0].FOONO.Substring(0, 4);
+                    if (FOONO == "SOBJ")
+                    {
+                        new_oes = new List<OrderEn>();
+                        new_oes.Add(oes[1]);
+                        new_oes.Add(oes[0]);
+
+                        lloes.Add(new_oes);
+                    }
+                }
+                else
+                {
+                    lloes.Add(oes);
+                }
+            }
+            else
+            {
+                foreach (OrderEn oe in oes)
+                {
+                    if (oe.ENTRUSTTYPEID == "进口企业")
+                    {
+                        oes_split1.Add(oe);
+                    }
+                    if (oe.ENTRUSTTYPEID == "出口企业")
+                    {
+                        oes_split2.Add(oe);
+                    }
+                    if (oe.ENTRUSTTYPEID == "HUB 仓进")
+                    {
+                        oes_split3.Add(oe);
+                    }
+                    if (oe.ENTRUSTTYPEID == "HUB 仓出")
+                    {
+                        oes_split4.Add(oe);
+                    }
+                }
+
+                if (oes_split1.Count == 2)
+                {
+                    FOONO = oes_split1[0].FOONO.Substring(0, 4);
+                    if (FOONO == "SOBJ")
+                    {
+                        new_oes = new List<OrderEn>();
+                        new_oes.Add(oes_split1[1]);
+                        new_oes.Add(oes_split1[0]);
+                        lloes.Add(new_oes);
+                    }
+                    else
+                    {
+                        lloes.Add(oes_split1);
+                    }
+                }
+                else if (oes_split1.Count == 1)
+                {
+                    lloes.Add(oes_split1);
+                }
+
+
+                if (oes_split2.Count == 2)
+                {
+                    FOONO = oes_split2[0].FOONO.Substring(0, 4);
+                    if (FOONO == "SOBJ")
+                    {
+                        new_oes = new List<OrderEn>();
+                        new_oes.Add(oes_split2[1]);
+                        new_oes.Add(oes_split2[0]);
+                        lloes.Add(new_oes);
+                    }
+                    else
+                    {
+                        lloes.Add(oes_split2);
+                    }
+                }
+                else if (oes_split2.Count == 1)
+                {
+                    lloes.Add(oes_split2);
+                }
+
+
+                if (oes_split3.Count == 2)
+                {
+                    FOONO = oes_split3[0].FOONO.Substring(0, 4);
+                    if (FOONO == "SOBJ")
+                    {
+                        new_oes = new List<OrderEn>();
+                        new_oes.Add(oes_split3[1]);
+                        new_oes.Add(oes_split3[0]);
+                        lloes.Add(new_oes);
+                    }
+                    else
+                    {
+                        lloes.Add(oes_split3);
+                    }
+                }
+                else if (oes_split3.Count == 1)
+                {
+                    lloes.Add(oes_split3);
+                }
+
+
+                if (oes_split4.Count == 2)
+                {
+                    FOONO = oes_split4[0].FOONO.Substring(0, 4);
+                    if (FOONO == "SOBJ")
+                    {
+                        new_oes = new List<OrderEn>();
+                        new_oes.Add(oes_split4[1]);
+                        new_oes.Add(oes_split4[0]);
+                        lloes.Add(new_oes);
+                    }
+                    else
+                    {
+                        lloes.Add(oes_split4);
+                    }
+                }
+                else if (oes_split4.Count == 1)
+                {
+                    lloes.Add(oes_split4);
+                }
+
+            }
+            return lloes;
+        }
+
+
+
 
         //获取委托类型
         public static string GetENTRUSTTYPEID(List<OrderEn> oes, string busitype)

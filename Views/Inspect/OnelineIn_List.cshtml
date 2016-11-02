@@ -15,7 +15,7 @@
         { 
             code: 'FWONO', name: 'FWO订单号', selected: true
         },
-        { code: 'FOCUSTOMSNO', name: 'FO号' },
+        { code: 'FOONOBJ', name: 'FO号' },
         { code: 'DIVIDENO', name: '分单号' },
         { code: 'TOTALNO', name: '总单号' },
         { code: 'text', name: '万达号' },
@@ -77,8 +77,8 @@
                     <th data-options="field:'XUNZHENGTIME',width:100,sortable:true">熏蒸时间</th>
                     <th data-options="field:'SHANDANKAISHITIME',width:100,sortable:true">删单时间</th>
                     <th data-options="field:'GAIDANKAISHITIME',width:100,sortable:true">改单时间</th>
-                    <th data-options="field:'FWONO',width:100,sortable:true">FWO号</th>
-                    <th data-options="field:'FOONOBJ',width:100">FOO报检服务号</th>
+                    <th data-options="field:'FWONO',width:200,sortable:true">FWO号</th>
+                    <th data-options="field:'FOONOBJ',width:200">FOO报检服务号</th>
                     <th data-options="field:'CODE',width:100,sortable:true">业务编号</th>
                 </tr>
             </thead>
@@ -158,7 +158,7 @@
             </div>
             <div class="tb_but">
                 <div class="but_left">
-                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="refresh_form()"><i class="icon-refresh"></i> 批量更新</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="bjrefresh_form()"><i class="icon-refresh"></i> 批量更新</a>
                     <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="export_form()"><i class="fa fa-share-square-o" aria-hidden="true"></i> 导出</a>
                 </div>
                 <div class="but_right">

@@ -14,7 +14,7 @@
         {
             code: 'FWONO', name: 'FWO订单号', selected: true
         },
-        { code: 'FOCUSTOMSNO', name: 'FO号' },
+        { code: 'FOONOBJ', name: 'FO号' },
         { code: 'TOTALNO', name: '总单号' },
         { code: 'DIVIDENO', name: '分单号' },
         { code: 'text', name: '万达号' },
@@ -140,21 +140,13 @@
                             <td>
                                 <select class="easyui-combobox combobox_width value is_check" editable="false" panelheight="auto" name="LAWCONDITION"></select>
                             </td>
-                            <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto">
-                                    <option>通关单标志</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="easyui-combobox combobox_width value is_check" editable="false" panelheight="auto"></select>
-                            </td>
                         </tr>
                     </table>
                 </form>
             </div>
             <div class="tb_but">
                 <div class="but_left">
-                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="refresh_form()"><i class="icon-refresh"></i> 批量更新</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="bjrefresh_form()"><i class="icon-refresh"></i> 批量更新</a>
                     <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="export_form()"><i class="fa fa-share-square-o" aria-hidden="true"></i> 导出</a>
                 </div>
                 <div class="but_right">

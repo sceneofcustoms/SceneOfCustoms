@@ -1,20 +1,30 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
-
-<table id="dg" style="height:250px" class="easyui-datagrid"
-       data-options=" rownumbers:true,
-                                   dataType : 'json',
-                                   method:'get'">
+<table id="dg" style="height:320px" class="easyui-datagrid"
+       data-options="url: '/Order/LoadJzxList',
+                    rownumbers: true,
+                    dataType: 'json',
+                    method: 'get',
+                    toolbar: '#tb',
+                    pageSize: 10,
+                    pageList: [10,20, 40, 60, 80, 100, 300],
+                    pagination: true,">
     <thead>
+        <input type="hidden" name="CODE" value="@ViewData["CODE"]" />
         <tr>
             <th data-options="field: 'ck', checkbox: true"></th>
-            <th data-options="field:'BUSIUNITNAME',sortable:true,width:200,align:'center'">集装箱号</th>
-            <th data-options="field:'DIVIDENO',width:100,align:'center'">箱型</th>
-            <th data-options="field:'DIVIDENO',width:100,align:'center'">标箱数量</th>
-            <th data-options="field:'GOODSNUM',width:50,align:'center'">件数</th>
-            <th data-options="field:'GOODSWEIGHT',width:50,align:'center'">重量</th>
+            <th data-options="field:'ORDERCODE',sortable:true,width:200,align:'center'">订单号</th>
+            <th data-options="field:'CONTAINERNO',sortable:true,width:200,align:'center'">集装箱号</th>
+            <th data-options="field:'CONTAINERTYPE',width:100,align:'center'">箱型</th>
+            <th data-options="field:'CONTAINERSIZEC',width:100,align:'center'">集装箱尺寸</th>
+            <th data-options="field:'CONTAINERWEIGHT',width:50,align:'center'">重量</th>
         </tr>
     </thead>
 </table>
+<script type="text/javascript">
+    var CODE = $("input[name='CODE']").val();
+    $('#dg').datagrid({
+        queryParams: { data: CODE },
+    });
+</script>

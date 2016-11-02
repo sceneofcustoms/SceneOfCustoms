@@ -24,9 +24,16 @@ namespace SceneOfCustoms
     public class ECDSSyncData : System.Web.Services.WebService
     {
 
-       [WebMethod(Description = @"测试阶段：调通即可")]
+        [WebMethod(Description = @"测试阶段：调通即可")]
         public List<Msgobj> SyncData(List<OrderECDS> ld)
         {
+
+            string sql = "";
+            //foreach (List<OrderECDS> o in ld)
+            //{            
+
+            //}
+
             Msgobj MO = new Msgobj();
             MO.MSG_TXT = "测试通过";
             MO.MSG_TYPE = "S";

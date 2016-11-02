@@ -37,7 +37,11 @@ namespace SceneOfCustoms.Controllers
             ViewData["crumb"] = "后台管理-->同步状态";
             return View();
         }
-
+        public ActionResult BackMsg_List()
+        {
+            ViewData["crumb"] = "后台管理-->返回状态";
+            return View();
+        }
         public string LoadAttachmentList()
         {
             int PageSize = Convert.ToInt32(Request.Params["rows"]);
@@ -87,7 +91,15 @@ namespace SceneOfCustoms.Controllers
                 JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
                 if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
                 {
-                    sql += " AND " + jo.Value<string>("ordercode") + " ='" + jo.Value<string>("ordercode_value") + "'";
+                    string ordercode_value = jo.Value<string>("ordercode_value").Replace(" ", "");
+                    if (jo.Value<string>("ordercode") != "FWONO" && jo.Value<string>("ordercode") != "FOONO" && jo.Value<string>("ordercode") != "FOONOBJ")
+                    {
+                        sql += " AND " + jo.Value<string>("ordercode") + " ='" + ordercode_value + "'";
+                    }
+                    else
+                    {
+                        sql += " AND " + jo.Value<string>("ordercode") + " like '%" + ordercode_value + "%'";
+                    }
                 }
                 if (jo.Value<string>("customs_busitype") != null && jo.Value<string>("customs_busitype") != "")
                 {
@@ -126,7 +138,15 @@ namespace SceneOfCustoms.Controllers
                 JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
                 if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
                 {
-                    sql += " AND " + jo.Value<string>("ordercode") + " ='" + jo.Value<string>("ordercode_value") + "'";
+                    string ordercode_value = jo.Value<string>("ordercode_value").Replace(" ", "");
+                    if (jo.Value<string>("ordercode") != "FWONO" && jo.Value<string>("ordercode") != "FOONO" && jo.Value<string>("ordercode") != "FOONOBJ")
+                    {
+                        sql += " AND " + jo.Value<string>("ordercode") + " ='" + ordercode_value + "'";
+                    }
+                    else
+                    {
+                        sql += " AND " + jo.Value<string>("ordercode") + " like '%" + ordercode_value + "%'";
+                    }
                 }
                 if (jo.Value<string>("starttime") != "" && jo.Value<string>("starttime") != null)
                 {
@@ -159,6 +179,46 @@ namespace SceneOfCustoms.Controllers
             result = "{\"total\":" + total + ",\"rows\":" + result + "}";
             return result;
         }
+        //返回消息
+        public string LoadBackMsgList()
+        {
+            int PageSize = Convert.ToInt32(Request.Params["rows"]);
+            int Page = Convert.ToInt32(Request.Params["page"]);
+            int total = 0;
+            string sql = "select * from list_statuslog where 1=1";
+            string data = Request["data"];
+            if (data != null)
+            {
+                JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
+                if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
+                {
+                    string ordercode_value = jo.Value<string>("ordercode_value").Replace(" ", "");
+                    sql += " AND " + jo.Value<string>("ordercode") + " ='" + ordercode_value + "'";
+                }
+                if (jo.Value<string>("starttime") != "" && jo.Value<string>("starttime") != null)
+                {
+                    sql += " AND STATUSTIME >= to_date('" + jo.Value<string>("starttime") + "','yyyy-MM-dd')";
+                }
+                if (jo.Value<string>("stoptime") != "" && jo.Value<string>("stoptime") != null)
+                {
+                    sql += " AND STATUSTIME <= to_date('" + jo.Value<string>("stoptime") + "','yyyy-MM-dd')";
+                }
+                if (jo.Value<string>("businessin_type") != null && jo.Value<string>("businessin_type") != "")
+                {
+                    sql += " AND TYPE = '" + jo.Value<string>("businessin_type") + "' ";
+                }
+            }
+            string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
+            string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
+            sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
+            DataTable dt = DBMgr.GetDataTable(sql);
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string result = JsonConvert.SerializeObject(dt, iso);
+            result = "{\"total\":" + total + ",\"rows\":" + result + "}";
+            return result;
+        }
+
 
         public ActionResult Attachment_Edit()
         {
@@ -178,6 +238,7 @@ namespace SceneOfCustoms.Controllers
             }
             return View();
         }
+
 
         public string load_file()
         {

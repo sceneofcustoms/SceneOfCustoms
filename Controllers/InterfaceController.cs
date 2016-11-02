@@ -104,6 +104,22 @@ namespace SceneOfCustoms.Controllers
                 lcorder.TURNPRENO = dt.Rows[i]["TURNPRENO"] + "";
                 lcorder.INVOICENO = dt.Rows[i]["INVOICENO"] + "";
                 lcorder.SPECIALRELATIONSHIP = dt.Rows[i]["SPECIALRELATIONSHIP"] + "";
+
+                List<bd.Declcontainertruck> dlist = new List<bd.Declcontainertruck>();
+                bd.Declcontainertruck d = new bd.Declcontainertruck();
+                d.CDCARNAME = "1";
+                d.CONTAINERNO = "2";
+                d.CONTAINERTYPE = "3";
+
+                dlist.Add(d);
+                bd.Declcontainertruck d1 = new bd.Declcontainertruck();
+                d1.CDCARNAME = "1";
+                d1.CONTAINERNO = "2";
+                d1.CONTAINERTYPE = "3";
+
+                dlist.Add(d1);
+
+                lcorder.Declcontainertruck = dlist.ToArray();
                 list.Add(lcorder);
             }
 

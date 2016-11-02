@@ -215,7 +215,7 @@ namespace SceneOfCustoms.Controllers
                 }
 
 
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = '41'";
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = '40'";
                 dt = DBMgr.GetDataTable(sql);
                 if (dt.Rows.Count > 0)
                 {
@@ -223,7 +223,7 @@ namespace SceneOfCustoms.Controllers
                 }
 
 
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = '40'";
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where CORRESPONDNO='" + correspondno + "' and ASSOCIATENO !='" + ASSOCIATENO + "' and BUSITYPE = '41'";
                 dt = DBMgr.GetDataTable(sql);
                 if (dt.Rows.Count > 0)
                 {
@@ -244,7 +244,7 @@ namespace SceneOfCustoms.Controllers
                     {
                         ViewData["id1"] = dt.Rows[0]["ID"] + "";
                     }
-                    sql = "select ID,CODE,ASSOCIATENO,CORRESPONDNO from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !='" + CODE + "'";
+                    sql = "select ID,CODE,ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and CODE !='" + CODE + "'";
                     dt = DBMgr.GetDataTable(sql);
                     if (dt.Rows.Count > 0)
                     {
@@ -278,18 +278,20 @@ namespace SceneOfCustoms.Controllers
                 string ASSOCIATENO = dt.Rows[0]["ASSOCIATENO"] + "";
                 string CODE = ASSOCIATENO.Replace("GL", "");
 
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where CODE=" + CODE + " and BUSITYPE =41";
+
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE ='41'";
                 dt = DBMgr.GetDataTable(sql);
                 if (dt.Rows.Count > 0)
                 {
-                    ViewData["id1"] = dt.Rows[0]["ID"] + "";//一单ID
+                    ViewData["id1"] = dt.Rows[0]["ID"] + "";//1单ID
+                    ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
                 }
 
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE =40";
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where CODE='" + CODE + "' and BUSITYPE ='40'";
                 dt = DBMgr.GetDataTable(sql);
                 if (dt.Rows.Count > 0)
                 {
-                    ViewData["id2"] = dt.Rows[0]["ID"] + "";//二单ID
+                    ViewData["id2"] = dt.Rows[0]["ID"] + "";//2单ID
                     ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
                 }
 
