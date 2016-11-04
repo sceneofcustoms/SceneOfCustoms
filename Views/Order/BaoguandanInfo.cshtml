@@ -1,33 +1,38 @@
 ﻿@{
     Layout = null;
 }
-<table id="Bgdinfo" style="height:320px" class="easyui-datagrid"
-       data-options="url: '/Order/LoadBgdList',
+<div id="Bgd">
+    <table id="Bgdinfo" style="height:320px" class="easyui-datagrid"
+           data-options="url: '/Order/LoadBgdList',
                 updateUrl: '/Order/SaveBgdinfo',
-                rownumbers: true,
                 dataType: 'json',
                 method: 'get',
                 toolbar: '#tb',
                 pageSize: 10,
                 pageList: [10,20, 40, 60, 80, 100, 300],
                 pagination: true,">
-    <thead>
-        <tr>
-            <th data-options="field: 'ck', checkbox: true"></th>
-            <th data-options="field:'DECLARATIONCODE',sortable:true,width:200,align:'center'">报关单号</th>
-            <th data-options="field:'TRADECODE',width:100,align:'center'">贸易方式</th>
-            <th data-options="field:'GOODSNUM',width:50,align:'center'">件数</th>
-            <th data-options="field:'GOODSGW',width:50,align:'center'">重量</th>
-            <th data-options="field:'CUSTOMSSTATUS',width:100,align:'center'">海关通关状态</th>
-            <th data-options="field:'ISPRINT',width:80,align:'center',formatter:formatISPRINT" editor="{type:'checkbox',options:{on:'1',off:'0'}}">是否打印</th>
-            <th data-options="field:'PRINTNUM',width:80,align:'center'" editor="{type:'numberbox'}">打印次数</th>
-            <th data-options="field:'action',width:80,align:'center',formatter:formatter">操作</th>
-        </tr>
-    </thead>
-</table>
+        <thead>
+            <input type="hidden" name="CODE" value="@ViewData["CODE"]" />
+            <input type="hidden" name="ID" value="@ViewData["ID"]" />
+            <tr>
+                <th data-options="field: 'ck', checkbox: true"></th>
+                <th data-options="field:'DECLARATIONCODE',sortable:true,width:100,align:'center'">报关单号</th>
+                <th data-options="field:'ORDERCODE',sortable:true,width:100,align:'center'">订单编号</th>
+                <th data-options="field:'TRADECODE',width:80,align:'center'">贸易方式</th>
+                <th data-options="field:'GOODSNUM',width:50,align:'center'">件数</th>
+                <th data-options="field:'GOODSGW',width:50,align:'center'">重量</th>
+                <th data-options="field:'CUSTOMSSTATUS',width:100,align:'center'">海关通关状态</th>
+                <th data-options="field:'ISPRINT',width:80,align:'center',formatter:formatISPRINT" editor="{type:'checkbox',options:{on:'1',off:'0'}}">是否打印</th>
+                <th data-options="field:'PRINTNUM',width:80,align:'center'" editor="{type:'numberbox'}">打印次数</th>
+                <th data-options="field:'action',width:50,align:'center',formatter:formatter">操作</th>
+            </tr>
+        </thead>
+    </table>
+</div>
 <script type="text/javascript">
+    var CODE = $("input[name='CODE']").val();
     $('#Bgdinfo').edatagrid({
-
+        queryParams: { data: CODE }
     });
     function formatISPRINT(value) {
         if (value == 0) {
@@ -37,12 +42,17 @@
         }
     }
     function formatter(value, row, index) {
-        var s = '<a href="javascript:void(0)" onclick="saveRow(this)">查看</a> ';
+        var DECLARATIONCODE = row.DECLARATIONCODE;
+        var s = '<a href="javascript:void(0)" onclick="view(' + DECLARATIONCODE + ')">查看</a> ';
         return s;
     }
-    function saveRow(target) {
-        $('#datagrid-row-r2-2-0 td').click();
-        $('#datagrid-row-r2-2-9 td').click();
-        window.location.href = "https://www.baidu.com/";
+    function view(DECLARATIONCODE) {
+        var host = window.location.host;
+        var ID = $("input[name='ID']").val();
+        var page = $("input[name='page']").val();
+        window.location.href = "http://" + host + page + "?ID=" + ID + "&DECLARATIONCODE=" + DECLARATIONCODE;
     }
+    $(document).on("change", "#Bgd input", function () {
+        $("#Bgdinfo").edatagrid('saveRow');
+    });
 </script>

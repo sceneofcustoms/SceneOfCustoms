@@ -682,11 +682,11 @@ namespace SceneOfCustoms.Controllers
             return "";
         }
 
-
         public string Edit_Order()
         {
             string ID = Request.QueryString["ID"];
-            string sql = "select t.*, t.rowid from list_order t where  ID = " + ID;
+            string DECLARATIONCODE = Request.QueryString["DECLARATIONCODE"];//报关单号
+            string sql = "select * from list_order  where  ID = " + ID;
             DataTable dt = DBMgr.GetDataTable(sql);
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
@@ -694,6 +694,77 @@ namespace SceneOfCustoms.Controllers
             result = result.Substring(1, result.Length - 1);
             result = result.Substring(0, result.Length - 1);
             JObject OrderArray = JsonConvert.DeserializeObject<JObject>(result);                //json转换为数组
+            string CODE = OrderArray.Value<string>("CODE");                               //取数组的一个值
+            if (string.IsNullOrEmpty(DECLARATIONCODE))
+            {
+                sql = "select ORDERCODE,DECLARATIONCODE from LIST_DECLARATION where id=(select min(ID) from LIST_DECLARATION where ORDERCODE='" + CODE + "')";
+                dt = DBMgr.GetDataTable(sql);
+                if (dt.Rows.Count > 0)
+                {
+                    DECLARATIONCODE = dt.Rows[0]["DECLARATIONCODE"] + "";
+                    OrderArray["DECLARATIONCODE"] = DECLARATIONCODE;
+                    OrderArray["ORDERCODE"] = OrderArray.Value<string>("CODE");
+                }
+            }
+            else
+            {
+                OrderArray["DECLARATIONCODE"] = DECLARATIONCODE;
+                OrderArray["ORDERCODE"] = OrderArray.Value<string>("CODE");
+            }
+            sql = "select * from LIST_DECLARATIONXC where DECLARATIONCODE='" + DECLARATIONCODE + "'";
+            dt = DBMgr.GetDataTable(sql);
+            if (dt.Rows.Count > 0)
+            {
+                OrderArray["IFYIJIAO"] = dt.Rows[0]["IFYIJIAO"] + "";
+                OrderArray["LIHUOSIGN"] = dt.Rows[0]["LIHUOSIGN"] + "";
+                OrderArray["IFSHANDAN"] = dt.Rows[0]["IFSHANDAN"] + "";
+                OrderArray["SHANDANTOTAL"] = dt.Rows[0]["SHANDANTOTAL"] + "";
+                OrderArray["SHANDANDESC"] = dt.Rows[0]["SHANDANDESC"] + "";
+                OrderArray["IFGAIDAN"] = dt.Rows[0]["IFGAIDAN"] + "";
+                OrderArray["GAIDANTOTAL"] = dt.Rows[0]["GAIDANTOTAL"] + "";
+                OrderArray["GAIDANDESC"] = dt.Rows[0]["GAIDANDESC"] + "";
+                OrderArray["IFCHAYAN"] = dt.Rows[0]["IFCHAYAN"] + "";
+                OrderArray["CHAYANTIMES"] = dt.Rows[0]["CHAYANTIMES"] + "";
+                OrderArray["CHAYANREMARK"] = dt.Rows[0]["CHAYANREMARK"] + "";
+                if (!string.IsNullOrEmpty(dt.Rows[0]["CHAYANZHILINGXIAFATIME"] + ""))
+                {
+                    OrderArray["CHAYANZHILINGXIAFATIME"] = Convert.ToDateTime(dt.Rows[0]["CHAYANZHILINGXIAFATIME"]).ToString("yyyy-MM-dd HH:mm:ss");
+                }
+
+                OrderArray["IFTIAODANG"] = dt.Rows[0]["IFTIAODANG"] + "";
+                OrderArray["TIAODANGTIMES"] = dt.Rows[0]["TIAODANGTIMES"] + "";
+                OrderArray["KOUHUOSIGN"] = dt.Rows[0]["KOUHUOSIGN"] + "";
+                if (!string.IsNullOrEmpty(dt.Rows[0]["KOUHUOTIME"] + ""))
+                {
+                    OrderArray["KOUHUOTIME"] = Convert.ToDateTime(dt.Rows[0]["KOUHUOTIME"]).ToString("yyyy-MM-dd HH:mm:ss");
+                }
+
+
+                OrderArray["IFXUNZHENG"] = dt.Rows[0]["IFXUNZHENG"] + "";
+                OrderArray["XUNZHENGDESC"] = dt.Rows[0]["XUNZHENGDESC"] + "";
+            }
+            else
+            {
+                OrderArray["IFYIJIAO"] = "";
+                OrderArray["LIHUOSIGN"] = "";
+                OrderArray["IFSHANDAN"] = "";
+                OrderArray["SHANDANTOTAL"] = "";
+                OrderArray["SHANDANDESC"] = "";
+                OrderArray["IFGAIDAN"] = "";
+                OrderArray["GAIDANTOTAL"] = "";
+                OrderArray["GAIDANDESC"] = "";
+                OrderArray["IFCHAYAN"] = "";
+                OrderArray["CHAYANTIMES"] = "";
+                OrderArray["CHAYANREMARK"] = "";
+                OrderArray["CHAYANZHILINGXIAFATIME"] = "";
+                OrderArray["IFTIAODANG"] = "";
+                OrderArray["TIAODANGTIMES"] = "";
+                OrderArray["KOUHUOSIGN"] = "";
+                OrderArray["KOUHUOTIME"] = "";
+                OrderArray["IFXUNZHENG"] = "";
+                OrderArray["XUNZHENGDESC"] = "";
+            }
+
             string DECLWAY = OrderArray.Value<string>("DECLWAY");                               //取数组的一个值
             switch (DECLWAY)
             {
@@ -750,20 +821,14 @@ namespace SceneOfCustoms.Controllers
             var info = JsonConvert.SerializeObject(OrderArray);                                 //将数组再转换为json格式
             return info;
         }
-
-
-
-
-
-
         [HttpGet]
         public string GetData()
         {
             string BUSITYPE = "";
             int PageSize = Convert.ToInt32(Request.Params["rows"]);
             int Page = Convert.ToInt32(Request.Params["page"]);
-            int total = 0;
-            string sql = "select t.* from list_order  t where 1=1  ";
+            int total = 0;//DECLARATIONCODE
+            string sql = "select t.* from list_order  t where DECLARATIONCODE is not null ";
             //搜索查询 DLC 2016/10/14
             string data = Request["data"];
             if (data != null)
@@ -919,6 +984,7 @@ namespace SceneOfCustoms.Controllers
         public ActionResult SaveData(FormCollection form)
         {
             string ID = Request.Form["ID"];
+            string DECLARATIONCODE = Request.Form["DECLARATIONCODE"];
             string sql = "update list_order set ";
             if (Request.Params.AllKeys.Contains("REPUNITCODE"))
             {
@@ -932,24 +998,24 @@ namespace SceneOfCustoms.Controllers
 
             sql += "  PASSMODE =  '" + Request.Form["PASSMODE"] + "',";
 
-            sql += "  IFCHAYAN =  '" + Request.Form["IFCHAYAN"] + "',";
+            //sql += "  IFCHAYAN =  '" + Request.Form["IFCHAYAN"] + "',";
 
-            sql += "  KOUHUOSIGN =  '" + Request.Form["KOUHUOSIGN"] + "',";
+            //sql += "  KOUHUOSIGN =  '" + Request.Form["KOUHUOSIGN"] + "',";
 
-            sql += "  IFTIAODANG =  '" + Request.Form["IFTIAODANG"] + "',";
+            //sql += "  IFTIAODANG =  '" + Request.Form["IFTIAODANG"] + "',";
 
-            sql += "  LIHUOSIGN =  '" + Request.Form["LIHUOSIGN"] + "',";
+            //sql += "  LIHUOSIGN =  '" + Request.Form["LIHUOSIGN"] + "',";
 
 
-            if (Request.Params.AllKeys.Contains("CHAYANTIMES"))
-            {
-                sql += "  CHAYANTIMES =  '" + Request.Form["CHAYANTIMES"] + "',";
-            }
+            //if (Request.Params.AllKeys.Contains("CHAYANTIMES"))
+            //{
+            //    sql += "  CHAYANTIMES =  '" + Request.Form["CHAYANTIMES"] + "',";
+            //}
 
-            if (Request.Params.AllKeys.Contains("CHAYANREMARK"))
-            {
-                sql += "  CHAYANREMARK =  '" + Request.Form["CHAYANREMARK"] + "',";
-            }
+            //if (Request.Params.AllKeys.Contains("CHAYANREMARK"))
+            //{
+            //    sql += "  CHAYANREMARK =  '" + Request.Form["CHAYANREMARK"] + "',";
+            //}
 
 
             if (Request.Params.AllKeys.Contains("LIHUOTIMES"))
@@ -958,10 +1024,10 @@ namespace SceneOfCustoms.Controllers
             }
 
 
-            if (Request.Params.AllKeys.Contains("TIAODANGTIMES"))
-            {
-                sql += "  TIAODANGTIMES =  '" + Request.Form["TIAODANGTIMES"] + "',";
-            }
+            //if (Request.Params.AllKeys.Contains("TIAODANGTIMES"))
+            //{
+            //    sql += "  TIAODANGTIMES =  '" + Request.Form["TIAODANGTIMES"] + "',";
+            //}
 
             if (Request.Params.AllKeys.Contains("DECLCARNO"))
             {
@@ -1024,43 +1090,43 @@ namespace SceneOfCustoms.Controllers
             }
 
 
-            if (Request.Params.AllKeys.Contains("SHANDANTOTAL"))
-            {
-                sql += "  SHANDANTOTAL =  '" + Request.Form["SHANDANTOTAL"] + "',";
-            }
-            if (Request.Params.AllKeys.Contains("SHANDANDESC"))
-            {
-                sql += "  SHANDANDESC =  '" + Request.Form["SHANDANDESC"] + "',";
-            }
-            if (Request.Params.AllKeys.Contains("GAIDANTOTAL"))
-            {
-                sql += "  GAIDANTOTAL =  '" + Request.Form["GAIDANTOTAL"] + "',";
-            }
-            if (Request.Params.AllKeys.Contains("GAIDANDESC"))
-            {
-                sql += "  GAIDANDESC =  '" + Request.Form["GAIDANDESC"] + "',";
-            }
+            //if (Request.Params.AllKeys.Contains("SHANDANTOTAL"))
+            //{
+            //    sql += "  SHANDANTOTAL =  '" + Request.Form["SHANDANTOTAL"] + "',";
+            //}
+            //if (Request.Params.AllKeys.Contains("SHANDANDESC"))
+            //{
+            //    sql += "  SHANDANDESC =  '" + Request.Form["SHANDANDESC"] + "',";
+            //}
+            //if (Request.Params.AllKeys.Contains("GAIDANTOTAL"))
+            //{
+            //    sql += "  GAIDANTOTAL =  '" + Request.Form["GAIDANTOTAL"] + "',";
+            //}
+            //if (Request.Params.AllKeys.Contains("GAIDANDESC"))
+            //{
+            //    sql += "  GAIDANDESC =  '" + Request.Form["GAIDANDESC"] + "',";
+            //}
 
             //SYY 9-27
-            if (Request.Params.AllKeys.Contains("CHAYANZHILINGXIAFATIME"))
-            {
-                sql += "  CHAYANZHILINGXIAFATIME =  to_date('" + Request.Form["CHAYANZHILINGXIAFATIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
-            }
-            if (Request.Params.AllKeys.Contains("KOUHUOTIME"))
-            {
-                sql += "  KOUHUOTIME =  to_date('" + Request.Form["KOUHUOTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
-            }
+            //if (Request.Params.AllKeys.Contains("CHAYANZHILINGXIAFATIME"))
+            //{
+            //    sql += "  CHAYANZHILINGXIAFATIME =  to_date('" + Request.Form["CHAYANZHILINGXIAFATIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+            //}
+            //if (Request.Params.AllKeys.Contains("KOUHUOTIME"))
+            //{
+            //    sql += "  KOUHUOTIME =  to_date('" + Request.Form["KOUHUOTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+            //}
 
             //lakers
-            if (Request.Params.AllKeys.Contains("IFXUNZHENG"))
-            {
-                sql += "  IFXUNZHENG =  '" + Request.Form["IFXUNZHENG"] + "',";
-            }
+            //if (Request.Params.AllKeys.Contains("IFXUNZHENG"))
+            //{
+            //    sql += "  IFXUNZHENG =  '" + Request.Form["IFXUNZHENG"] + "',";
+            //}
 
-            if (Request.Params.AllKeys.Contains("XUNZHENGDESC"))
-            {
-                sql += "  XUNZHENGDESC =  '" + Request.Form["XUNZHENGDESC"] + "',";
-            }
+            //if (Request.Params.AllKeys.Contains("XUNZHENGDESC"))
+            //{
+            //    sql += "  XUNZHENGDESC =  '" + Request.Form["XUNZHENGDESC"] + "',";
+            //}
             if (Request.Params.AllKeys.Contains("CHAYANTYPE"))
             {
                 sql += "  CHAYANTYPE =  '" + Request.Form["CHAYANTYPE"] + "',";
@@ -1081,9 +1147,9 @@ namespace SceneOfCustoms.Controllers
                 sql += "  JGCZCBH =  '" + Request.Form["JGCZCBH"] + "',";
             }
 
-            sql += "  IFSHANDAN =  '" + Request.Form["IFSHANDAN"] + "',";
-            sql += "  IFGAIDAN =  '" + Request.Form["IFGAIDAN"] + "',";
-            sql += "  IFYIJIAO =  '" + Request.Form["IFYIJIAO"] + "',";
+            //sql += "  IFSHANDAN =  '" + Request.Form["IFSHANDAN"] + "',";
+            //sql += "  IFGAIDAN =  '" + Request.Form["IFGAIDAN"] + "',";
+            //sql += "  IFYIJIAO =  '" + Request.Form["IFYIJIAO"] + "',";
             sql += "  LAWCONDITION =  '" + Request.Form["LAWCONDITION"] + "',";
 
             sql = sql.Substring(0, sql.Length - 1);
@@ -1091,14 +1157,16 @@ namespace SceneOfCustoms.Controllers
 
             if (DBMgr.ExecuteNonQuery(sql) == 1)
             {
+                string FORMINFO = Request.Form.ToString();
+                UpdateXcinfo(DECLARATIONCODE, FORMINFO);
                 string type = Request.Form["type"];
                 if (type == "02")
                 {
-                    IFS.ZSBJ_ABNO(ID);
+                    //IFS.ZSBJ_ABNO(ID);
                 }
                 else
                 {
-                    IFS.ZSBG_ABNO(ID);
+                    //IFS.ZSBG_ABNO(ID);
                 }
 
                 return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
@@ -1110,12 +1178,88 @@ namespace SceneOfCustoms.Controllers
 
         }
 
+
+
+        //同步报关单现场表里的数据 DLC 2016-11-3
+        public static void UpdateXcinfo(string DECLARATIONCODE, string FORMINFO)
+        {
+            System.Collections.Specialized.NameValueCollection Request = System.Web.HttpUtility.ParseQueryString(FORMINFO);
+            string sql = "select ID from LIST_DECLARATIONXC where DECLARATIONCODE= '" + DECLARATIONCODE + "'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            if (dt.Rows.Count > 0)
+            {
+                sql = "update LIST_DECLARATIONXC set ";
+                sql += "  IFYIJIAO =  '" + Request["IFYIJIAO"] + "',";
+                sql += "  LIHUOSIGN =  '" + Request["LIHUOSIGN"] + "',";
+                sql += "  IFSHANDAN =  '" + Request["IFSHANDAN"] + "',";
+                if (Request.AllKeys.Contains("SHANDANTOTAL"))
+                {
+                    sql += "  SHANDANTOTAL =  '" + Request["SHANDANTOTAL"] + "',";
+                }
+                if (Request.AllKeys.Contains("SHANDANDESC"))
+                {
+                    sql += "  SHANDANDESC =  '" + Request["SHANDANDESC"] + "',";
+                }
+                sql += "  IFGAIDAN =  '" + Request["IFGAIDAN"] + "',";
+                if (Request.AllKeys.Contains("GAIDANTOTAL"))
+                {
+                    sql += "  GAIDANTOTAL =  '" + Request["GAIDANTOTAL"] + "',";
+                }
+                if (Request.AllKeys.Contains("GAIDANDESC"))
+                {
+                    sql += "  GAIDANDESC =  '" + Request["GAIDANDESC"] + "',";
+                }
+                sql += "  IFCHAYAN =  '" + Request["IFCHAYAN"] + "',";
+                if (Request.AllKeys.Contains("CHAYANTIMES"))
+                {
+                    sql += "  CHAYANTIMES =  '" + Request["CHAYANTIMES"] + "',";
+                }
+
+                if (Request.AllKeys.Contains("CHAYANREMARK"))
+                {
+                    sql += "  CHAYANREMARK =  '" + Request["CHAYANREMARK"] + "',";
+                }
+                if (Request.AllKeys.Contains("CHAYANZHILINGXIAFATIME"))
+                {
+                    sql += "  CHAYANZHILINGXIAFATIME =  to_date('" + Request["CHAYANZHILINGXIAFATIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+                }
+                sql += "  IFTIAODANG =  '" + Request["IFTIAODANG"] + "',";
+                if (Request.AllKeys.Contains("TIAODANGTIMES"))
+                {
+                    sql += "  TIAODANGTIMES =  '" + Request["TIAODANGTIMES"] + "',";
+                }
+                sql += "  KOUHUOSIGN =  '" + Request["KOUHUOSIGN"] + "',";
+                if (Request.AllKeys.Contains("KOUHUOTIME"))
+                {
+                    sql += "  KOUHUOTIME =  to_date('" + Request["KOUHUOTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+                }
+                if (Request.AllKeys.Contains("IFXUNZHENG"))
+                {
+                    sql += "  IFXUNZHENG =  '" + Request["IFXUNZHENG"] + "',";
+                }
+                if (Request.AllKeys.Contains("XUNZHENGDESC"))
+                {
+                    sql += "  XUNZHENGDESC =  '" + Request["XUNZHENGDESC"] + "',";
+                }
+                sql = sql.Substring(0, sql.Length - 1);
+                sql += " where DECLARATIONCODE =" + DECLARATIONCODE;
+                DBMgr.ExecuteNonQuery(sql);
+            }
+            else
+            {
+                sql = @"insert into LIST_DECLARATIONXC(ID,CODE,ORDERCODE,DECLARATIONCODE,IFYIJIAO,LIHUOSIGN,IFSHANDAN,SHANDANTOTAL,SHANDANDESC,IFGAIDAN,GAIDANTOTAL,GAIDANDESC,IFCHAYAN,CHAYANTIMES,CHAYANREMARK,CHAYANZHILINGXIAFATIME,IFTIAODANG,TIAODANGTIMES,KOUHUOSIGN,KOUHUOTIME,IFXUNZHENG,XUNZHENGDESC,DECLARATIONID,CREATETIME) VALUES(LIST_DECLARATIONXC_ID.Nextval,'','" + Request["ORDERCODE"] + "','" + Request["DECLARATIONCODE"] + "','" + Request["IFYIJIAO"] + "','" + Request["LIHUOSIGN"] + "','" + Request["IFSHANDAN"] + "','" + Request["SHANDANTOTAL"] + "','" + Request["SHANDANDESC"] + "','" + Request["IFGAIDAN"] + "','" + Request["GAIDANTOTAL"] + "','" + Request["GAIDANDESC"] + "','" + Request["IFCHAYAN"] + "','" + Request["CHAYANTIMES"] + "','" + Request["CHAYANREMARK"] + "',to_date('" + Request["CHAYANZHILINGXIAFATIME"] + "','yyyy-mm-dd hh24:mi:ss'),'" + Request["IFTIAODANG"] + "','" + Request["TIAODANGTIMES"] + "','" + Request["KOUHUOSIGN"] + "',to_date('" + Request["KOUHUOTIME"] + "','yyyy-mm-dd hh24:mi:ss'),'" + Request["IFXUNZHENG"] + "','" + Request["XUNZHENGDESC"] + "','',sysdate)";
+                DBMgr.ExecuteNonQuery(sql);
+            }
+        }
+
         [HttpPost]
         public ActionResult Edit_Ajax_Scene(FormCollection form)
         {
             string ID = Request.Form["ID"];
             string type = Request.Form["type"];
             string datetime = Request.Form["date"];
+            string ASSOCIATENO = Request.Form["ASSOCIATENO"];
+
             JObject jo = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
             string sql = "update list_order set ";
             if (type != "")
@@ -1130,7 +1274,7 @@ namespace SceneOfCustoms.Controllers
 
             if (res == 1)
             {
-                IFS.Callback_TM(type, ID);
+                IFS.Callback_TM(type, ID, ASSOCIATENO);
                 datetime = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
                 return Json(new { Success = true, datetime = datetime, name = jo.Value<string>("REALNAME") }, JsonRequestBehavior.AllowGet);
             }
@@ -1140,12 +1284,14 @@ namespace SceneOfCustoms.Controllers
             }
 
         }
+
+
         //报关批量更新
         public ActionResult BatchUpdate()
         {
             ViewData["ids"] = Request["ids"];
             JObject jo = Extension.Get_UserInfo(HttpContext.User.Identity.Name);    //获取会员信息
-            ViewData["USERNAME"] =jo.Value<string>("REALNAME");
+            ViewData["USERNAME"] = jo.Value<string>("REALNAME");
             ViewData["USERID"] = jo.Value<string>("ID");
             return View();
         }
@@ -1158,6 +1304,8 @@ namespace SceneOfCustoms.Controllers
             ViewData["USERID"] = jo.Value<string>("ID");
             return View();
         }
+
+
         //报关批量更新保存
         public ActionResult SaveUpdateData(FormCollection form)
         {
@@ -1262,6 +1410,7 @@ namespace SceneOfCustoms.Controllers
                 return Json(new { Success = false, sql = sql }, JsonRequestBehavior.AllowGet);
             }
         }
+
         //急装箱信息
         public ActionResult JizhuangxiangInfo()
         {
@@ -1295,10 +1444,11 @@ namespace SceneOfCustoms.Controllers
         //报关单列表
         public string LoadBgdList()
         {
+            string CODE = Request["data"];
             int PageSize = Convert.ToInt32(Request.Params["rows"]);
             int Page = Convert.ToInt32(Request.Params["page"]);
             int total = 0;
-            string sql = "select * from list_declaration where 1=1";
+            string sql = "select * from list_declaration where ORDERCODE='" + CODE + "'";
             string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
             string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
             sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
@@ -1336,7 +1486,6 @@ namespace SceneOfCustoms.Controllers
                 return Json(new { Success = false, sql = sql }, JsonRequestBehavior.AllowGet);
             }
         }
-
 
         //通关单信息
         public ActionResult TongguandanInfo()

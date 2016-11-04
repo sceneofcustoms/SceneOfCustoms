@@ -19,18 +19,7 @@ namespace SceneOfCustoms.Controllers
         //测试接口  单证
         public ActionResult test()
         {
-            ServiceReference1.CustomerServiceSoapClient danzheng = new ServiceReference1.CustomerServiceSoapClient();
-            ServiceReference1.OrderEn dzOrder = new ServiceReference1.OrderEn();
-
-            dzOrder.ARRIVEDNO = "1";
-            dzOrder.REPNO = "1";
-            //dzOrder.BUSIUNITCODE = "1";
-
-            List<ServiceReference1.OrderEn> orderList = new List<ServiceReference1.OrderEn>();
-
-            orderList.Add(dzOrder);
-            string text = danzheng.SendOrderData(orderList.ToArray());
-            ViewData["text"] = text;
+            IFS.ZSDZGJ("");
             return View();
         }
 

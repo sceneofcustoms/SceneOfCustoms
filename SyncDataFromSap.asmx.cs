@@ -103,7 +103,8 @@ namespace SceneOfCustoms
             //db.ListRightPush("SyncDataFromSap", ld.ToString());
             Msgobj MO = new Msgobj();
             List<Msgobj> MSList = new List<Msgobj>();
-            int SaveSap_Res = SavaSapFoo(ld);
+            string Nowtime = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            int SaveSap_Res = SavaSapFoo(ld, Nowtime);
             if (SaveSap_Res == 0)
             {
                 MSList.Add(IFS.set_MObj("E", "保存指令失败"));
@@ -117,11 +118,11 @@ namespace SceneOfCustoms
 
                 if (MSList.Count <= 0)
                 {
-                    int Order_Res = IFS.XCOrderData(ld);
+                    int Order_Res = IFS.XCOrderData(ld, Nowtime);
                     if (Order_Res == 1)
                     {
                         MSList.Add(IFS.set_MObj("S", "保存成功"));
-                        IFS.SaveDZOrder(ld[0].CODE);
+                        IFS.SaveDZOrder(ld[0].CODE,Nowtime);
                     }
                     else
                     {
@@ -140,11 +141,10 @@ namespace SceneOfCustoms
 
 
         // 保存指令 方法
-        private int SavaSapFoo(List<OrderEn> ld)
+        private int SavaSapFoo(List<OrderEn> ld, string Nowtime)
         {
             int Order_Res = 0;
             DateTime dt = DateTime.Now;
-            string Nowtime = DateTime.Now.ToString("yyyyMMddHHmmssfff");
             string sql = "";
             foreach (OrderEn o in ld)
             {

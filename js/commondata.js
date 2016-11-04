@@ -251,7 +251,6 @@ $(function () {
         stopFirstChangeEvent: true,
         onChange: function () {
             var options = $(this).datetimebox('options');
-
             if (options.stopFirstChangeEvent) {
                 options.stopFirstChangeEvent = false;
                 return;
@@ -287,18 +286,21 @@ $(function () {
             var date = $(id_val).datetimebox('getValue');
             var findname = "#" + form + " input[name=ID]";
             var ID = $(findname).val();
-            debugger;
+            var ASSOCIATENO = "";
+            if ($("input[name='ASSOCIATENO']").length > 0) {
+                ASSOCIATENO = $("input[name='ASSOCIATENO']").val();
+            }
             $.ajax({
                 url: '/Order/Edit_Ajax_Scene',// 跳转到 action
                 data: {
                     'ID': ID,
                     'type': type,
-                    'date': date
+                    'date': date,
+                    'ASSOCIATENO': ASSOCIATENO,
                 },
                 type: 'post',
                 dataType: 'json',
                 success: function (data) {
-                    debugger;
                     if (data.Success == true) {
                         var name = "#" + form + " #" + type + 'USERNAME';
                         $(name).textbox('setValue', data.name);
@@ -593,8 +595,10 @@ function submitForm() {
 //加载单个form
 function Edit() {
     var ID = getQueryString('ID');
-    $('#OrderFrom').form('load', '/Order/Edit_Order?ID=' + ID);
+    var DECLARATIONCODE = getQueryString('DECLARATIONCODE') ? getQueryString('DECLARATIONCODE') : "";
+    $('#OrderFrom').form('load', '/Order/Edit_Order?ID=' + ID + "&DECLARATIONCODE=" + DECLARATIONCODE);
 }
+
 
 
 
@@ -627,8 +631,8 @@ function manySubmitForm() {
 function BaoguandanInfo() {
     $('#mainWin').dialog({
         title: '报关单信息',
-        width: 800,
-        height: 400,
+        width: 1000,
+        height: 600,
         modal: true,
         href: '/Order/BaoguandanInfo'
     });
@@ -688,6 +692,7 @@ function loadListGrid(page) {
         pageList: [20, 40, 60, 80, 100, 300],
         pagination: true,
         onDblClickCell: function (index, field, value) {
+            debugger;
             if (page != "") {
                 var row = $('#datagrid').datagrid('getData').rows[index];
                 if (page == "Declare/DomesticBlc_Edit") {

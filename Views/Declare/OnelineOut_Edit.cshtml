@@ -3,6 +3,8 @@
          data-options="collapsible:true">
         <input type="hidden" name="ID" />
         <input type="hidden" name="type" value="01" />
+        <input type="text" name="DECLARATIONCODE" />
+        <input type="text" name="ORDERCODE" />
         <table>
             <tr>
                 <td>
@@ -205,6 +207,10 @@
                     <label for="DECLSTATUS"> 报关状态:</label>
                     <input class="easyui-textbox" type="text" name="DECLSTATUS" id="DECLSTATUS" />
                 </td>
+                <td>
+                    <label for="JGCZCBH"> 监管仓暂存号:</label>
+                    <input class="easyui-textbox" type="text" name="JGCZCBH" id="JGCZCBH" />
+                </td>
 
                 @*<td style="text-align:left">
                         <label for="LAWCONDITION">法检标志:</label>
@@ -257,7 +263,7 @@
                 </td>
                 <td>
                     <label for="CHAYANZHILINGXIAFATIME" style="width:100px;">查验指令下发时间:</label>
-                    <input class="easyui-datebox value" name="CHAYANZHILINGXIAFATIME" placeholder="开始时间">
+                    <input class="easyui-datetimebox value" type="text" name="CHAYANZHILINGXIAFATIME" editable="false">
                 </td>
             </tr>
             <tr>
@@ -278,10 +284,6 @@
                         <label for="KOUHUOTIME" style="width:100px;">扣货时间:</label>
                         <input class="easyui-datebox value" name="KOUHUOTIME" placeholder="开始时间">
                     </td>*@
-                <td>
-                    <label for="JGCZCBH"> 监管仓暂存号:</label>
-                    <input class="easyui-textbox" type="text" name="JGCZCBH" id="JGCZCBH" />
-                </td>
             </tr>
         </table>
     </div>

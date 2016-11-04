@@ -13,13 +13,13 @@ namespace SceneOfCustoms.Common
     {
 
         //推送到单证的数据
-        public static void SaveDZOrder(string FWO)
+        public static void SaveDZOrder(string FWO, string ONLYCODE)
         {
             ServiceReference1.CustomerServiceSoapClient danzheng = new ServiceReference1.CustomerServiceSoapClient();
             ServiceReference1.OrderEn DZOrder;
             List<ServiceReference1.OrderEn> DZOrderList = new List<ServiceReference1.OrderEn>();
             DataTable dt;
-            string sql = "select * from list_order where FWONO ='" + FWO + "'  ";
+            string sql = "select * from list_order where ONLYCODE ='" + ONLYCODE + "'  ";
             dt = DBMgr.GetDataTable(sql);
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -127,7 +127,7 @@ namespace SceneOfCustoms.Common
         }
 
         //保存现场数据
-        public static int XCOrderData(List<OrderEn> ld)
+        public static int XCOrderData(List<OrderEn> ld, string Nowtime)
         {
             string ASSOCIATENO = "";
             string CORRESPONDNO = "";
@@ -305,7 +305,7 @@ namespace SceneOfCustoms.Common
                 string WOODPACKINGID = "";
                 if (o.Count == 2 && o[0].FOONO.Substring(0, 4) == "SOBG")
                 {
-                        WOODPACKINGID = o[1].WOODPACKINGID;
+                    WOODPACKINGID = o[1].WOODPACKINGID;
                 }
                 else
                 {
@@ -478,11 +478,11 @@ namespace SceneOfCustoms.Common
                 {
                     if (o[0].GOODSTYPEID + "" == "FCL（整箱装载）")
                     {
-                        o[0].GOODSTYPEID = "1";
+                        o[0].GOODSTYPEID = "1";//整箱
                     }
                     else
                     {
-                        o[0].GOODSTYPEID = "2";
+                        o[0].GOODSTYPEID = "2"; //散货
                     }
                 }
 
@@ -503,13 +503,13 @@ namespace SceneOfCustoms.Common
                    MANIFEST,WOODPACKINGID,WEIGHTCHECK,ISWEIGHTCHECK,
                    SHIPNAME,FILGHTNO,TURNPRENO,INVOICENO,
                    ALLOWDECLARE,CODE,ASSOCIATENO,CORRESPONDNO,
-                   WTFS
+                   WTFS,ONLYCODE
                   ) VALUES(
                    LIST_ORDER_ID.Nextval,sysdate,'SAP',
                    '{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}',
                    '{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}',to_date('{28}','yyyy-mm-dd hh24:mi:ss'),'{29}','{30}','{31}','{32}',
                    '{33}','{34}','{35}','{36}','{37}','{38}','{39}','{40}','{41}','{42}','{43}','{44}','{45}','{46}','{47}',
-                   '{48}','{49}','{50}','{51}','{52}','{53}'
+                   '{48}','{49}','{50}','{51}','{52}','{53}','{54}'
                   )";
 
                 sql = string.Format(sql,
@@ -527,7 +527,7 @@ namespace SceneOfCustoms.Common
                     o[0].MANIFEST, WOODPACKINGID, o[0].WEIGHTCHECK, o[0].ISWEIGHTCHECK,
                     o[0].SHIPNAME, o[0].FILGHTNO, o[0].TURNPRENO, o[0].INVOICENO,
                     o[0].ALLOWDECLARE, o[0].ORDERCODE, ASSOCIATENO, CORRESPONDNO,
-                    WTFS
+                    WTFS, Nowtime
                     );
                 DBMgr.ExecuteNonQuery(sql);
 
@@ -623,6 +623,11 @@ namespace SceneOfCustoms.Common
                             MsgobjList.Add(set_MObj("E", "业务单号生成有异常"));
                             return MsgobjList;
                         }
+                        else
+                        {
+                            //checd 订单号
+                            sql = "select id from list_order where code =" + ListOrder[0].ORDERCODE;
+                        }
                     }
                     else
                     {
@@ -687,6 +692,10 @@ namespace SceneOfCustoms.Common
                 {
                     MsgobjList.Add(set_MObj("E", "业务单号不可为空" + o.FOONO));
                 }
+
+
+
+
 
 
                 ////报关申报单位
@@ -1238,7 +1247,7 @@ namespace SceneOfCustoms.Common
 
 
 
-        public static void Callback_TM(string type, string id)
+        public static void Callback_TM(string type, string id, string ASSOCIATENO)
         {
             if (type == "XIAOBAO")
             {
@@ -1529,6 +1538,82 @@ namespace SceneOfCustoms.Common
 
 
 
+        // 单证过机
+        public static void ZSDZGJ(string id)
+        {
+            id = "1605";
+            sap.SI_CUS_CUS1002Service api = new sap.SI_CUS_CUS1002Service();
+            api.Timeout = 6000000;
+            api.Credentials = new NetworkCredential("soapcall", "soapcall");
+            sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
+            sap.DT_CUS_CUS1002_REQITEMORDER Declaration;
+            List<sap.DT_CUS_CUS1002_REQITEMORDER> Declaration_List = new List<sap.DT_CUS_CUS1002_REQITEMORDER>();
+
+            string sql;
+            DataTable dt;
+            sql = "select *　from list_order where id ='" + id + "'";
+            dt = DBMgr.GetDataTable(sql);
+            string FWONO = "";
+            string FOONO = "";
+            if (dt.Rows.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(dt.Rows[0]["FOONO"] + ""))
+                {
+                    FWONO = dt.Rows[0]["FWONO"] + "";
+                    FOONO = dt.Rows[0]["FOONO"] + "";
+                    if (!string.IsNullOrEmpty(FOONO))
+                    {
+                        FOONO = FOONO.Remove(0, 4);
+                    }
+                    m.EVENT_CODE = "ZSDZGJ";
+                    m.FWO_ID = FWONO;
+                    m.FOO_ID = FOONO;
+                    m.EVENT_DAT = DateTime.Now.ToLocalTime().ToString("yyyyMMddHHmmss"); ;
+                    sql = "select * from list_declaration where ORDERCODE='" + dt.Rows[0]["CODE"] + "'";
+                    dt = DBMgr.GetDataTable(sql);
+                    int COMMODITYNUM = 0;
+                    if (dt.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            Declaration = new sap.DT_CUS_CUS1002_REQITEMORDER();
+                            Declaration.ZBGDH = dt.Rows[0]["DECLARATIONCODE"] + "";
+                            Declaration.ZBGDZS = dt.Rows[0]["SHEETNUM"] + "";
+                            //Declaration.ZMYFS = dt.Rows[0]["COMMODITYNUM"] + "";
+                            COMMODITYNUM += int.Parse(dt.Rows[0]["COMMODITYNUM"] + "");
+                            Declaration_List.Add(Declaration);
+                        }
+                    }
+                    if (Declaration_List.Count > 0)
+                    {
+                        m.ORDER = Declaration_List.ToArray();
+                    }
+                    m.ZBGDGS = COMMODITYNUM + "";
+
+                    sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+                    mlist[0] = m;
+                    List<Msgobj> MSList = new List<Msgobj>();
+                    sap.DT_CUS_CUS1002_RES res;
+                    try
+                    {
+                        res = api.SI_CUS_CUS1002(mlist);
+                        MSList.Add(set_MObj(res.EV_ERROR, "ZSDZGJ(" + res.EV_MSG + ")"));
+                        save_log(MSList, FWONO, "3");
+                    }
+                    catch (Exception e)
+                    {
+                        MSList.Add(set_MObj("E", "ZSDZGJ(接口回调报错)"));
+                        save_log(MSList, FWONO, "3");
+                    }
+                }
+
+            }
+
+        }
+
+
+
+
 
 
         //测试回传 sap 接口 关务接单
@@ -1666,8 +1751,12 @@ namespace SceneOfCustoms.Common
             api.Timeout = 6000000;
             api.Credentials = new NetworkCredential("soapcall", "soapcall");
             sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
-            string sql = "select *　from list_order where id ='" + id + "'";
-            DataTable dt = DBMgr.GetDataTable(sql);
+            DataTable dt;
+            string sql;
+            sap.DT_CUS_CUS1002_REQITEM[] mlist;
+            List<Msgobj> MSList;
+            sql = "select *　from list_order where id ='" + id + "'";
+            dt = DBMgr.GetDataTable(sql);
             string FWONO = "";
             string FOONO = "";
             string EVENT_DAT = "";
@@ -1686,10 +1775,9 @@ namespace SceneOfCustoms.Common
                     m.FWO_ID = FWONO;
                     m.FOO_ID = FOONO;
                     m.EVENT_DAT = EVENT_DAT;
-                    sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+                    mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
                     mlist[0] = m;
-
-                    List<Msgobj> MSList = new List<Msgobj>();
+                    MSList = new List<Msgobj>();
                     sap.DT_CUS_CUS1002_RES res;
                     try
                     {
@@ -1702,8 +1790,51 @@ namespace SceneOfCustoms.Common
                         MSList.Add(set_MObj("E", "ZSHGXY(接口回调报错)"));
                         save_log(MSList, FWONO, "3");
                     }
-
                 }
+
+                string CODE = dt.Rows[0]["CODE"] + "";
+                string ASSOCIATENO = dt.Rows[0]["ASSOCIATENO"] + "";
+                if (!string.IsNullOrEmpty(ASSOCIATENO))
+                {
+                    sql = "select *　from list_order where ASSOCIATENO ='" + ASSOCIATENO + "' and CODE !='" + CODE + "'";
+                    dt = DBMgr.GetDataTable(sql);
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (!string.IsNullOrEmpty(dt.Rows[0]["FOONO"] + ""))
+                        {
+                            FOONO = dt.Rows[0]["FOONO"] + "";
+                            FOONO = FOONO.Remove(0, 4);
+                            FWONO = dt.Rows[0]["FWONO"] + "";
+                            m.EVENT_CODE = "ZSHGXY";
+                            m.FWO_ID = FWONO;
+                            m.FOO_ID = FOONO;
+                            if (!string.IsNullOrEmpty(EVENT_DAT))
+                            {
+                                m.EVENT_DAT = EVENT_DAT;
+                            }
+                            else
+                            {
+                                EVENT_DAT = DateTime.Now.ToLocalTime().ToString("yyyyMMddHHmmss");
+                            }
+                            mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+                            mlist[0] = m;
+                            MSList = new List<Msgobj>();
+                            sap.DT_CUS_CUS1002_RES res;
+                            try
+                            {
+                                res = api.SI_CUS_CUS1002(mlist);
+                                MSList.Add(set_MObj(res.EV_ERROR, "ZSHGXY(" + res.EV_MSG + ")"));
+                                save_log(MSList, FWONO, "3");
+                            }
+                            catch (Exception e)
+                            {
+                                MSList.Add(set_MObj("E", "ZSHGXY(接口回调报错)"));
+                                save_log(MSList, FWONO, "3");
+                            }
+                        }
+                    }
+                }
+
             }
         }
         // 实物放行（口岸／属地）
@@ -1713,8 +1844,12 @@ namespace SceneOfCustoms.Common
             api.Timeout = 6000000;
             api.Credentials = new NetworkCredential("soapcall", "soapcall");
             sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
-            string sql = "select *　from list_order where id ='" + id + "'";
-            DataTable dt = DBMgr.GetDataTable(sql);
+            DataTable dt;
+            string sql;
+            sap.DT_CUS_CUS1002_REQITEM[] mlist;
+            List<Msgobj> MSList;
+            sql = "select *　from list_order where id ='" + id + "'";
+            dt = DBMgr.GetDataTable(sql);
             string FWONO = "";
             string FOONO = "";
             string EVENT_DAT = "";
@@ -1733,10 +1868,10 @@ namespace SceneOfCustoms.Common
                     m.FWO_ID = FWONO;
                     m.FOO_ID = FOONO;
                     m.EVENT_DAT = EVENT_DAT;
-                    sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+                    mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
                     mlist[0] = m;
 
-                    List<Msgobj> MSList = new List<Msgobj>();
+                    MSList = new List<Msgobj>();
                     sap.DT_CUS_CUS1002_RES res;
                     try
                     {
@@ -1749,8 +1884,56 @@ namespace SceneOfCustoms.Common
                         MSList.Add(set_MObj("E", "ZSSWFX(接口回调报错)"));
                         save_log(MSList, FWONO, "3");
                     }
-
                 }
+
+                string CODE = dt.Rows[0]["CODE"] + "";
+                string ASSOCIATENO = dt.Rows[0]["ASSOCIATENO"] + "";
+                if (!string.IsNullOrEmpty(ASSOCIATENO))
+                {
+                    sql = "select *　from list_order where ASSOCIATENO ='" + ASSOCIATENO + "' and CODE !='" + CODE + "'";
+                    dt = DBMgr.GetDataTable(sql);
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (!string.IsNullOrEmpty(dt.Rows[0]["FOONO"] + ""))
+                        {
+                            FOONO = dt.Rows[0]["FOONO"] + "";
+                            FOONO = FOONO.Remove(0, 4);
+                            FWONO = dt.Rows[0]["FWONO"] + "";
+                            m.EVENT_DAT = EVENT_DAT;
+                            m.EVENT_CODE = "ZSSWFX";
+                            m.FWO_ID = FWONO;
+                            m.FOO_ID = FOONO;
+                            if (!string.IsNullOrEmpty(EVENT_DAT))
+                            {
+                                m.EVENT_DAT = EVENT_DAT;
+                            }
+                            else
+                            {
+                                EVENT_DAT = DateTime.Now.ToLocalTime().ToString("yyyyMMddHHmmss");
+                            }
+                            mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+                            mlist[0] = m;
+
+                            MSList = new List<Msgobj>();
+                            sap.DT_CUS_CUS1002_RES res;
+                            try
+                            {
+                                res = api.SI_CUS_CUS1002(mlist);
+                                MSList.Add(set_MObj(res.EV_ERROR, "ZSSWFX(" + res.EV_MSG + ")"));
+                                save_log(MSList, FWONO, "3");
+                            }
+                            catch (Exception e)
+                            {
+                                MSList.Add(set_MObj("E", "ZSSWFX(接口回调报错)"));
+                                save_log(MSList, FWONO, "3");
+                            }
+                        }
+                    }
+                }
+
+
+
+
             }
         }
         // 现场报关（口岸／属地）
@@ -1760,8 +1943,14 @@ namespace SceneOfCustoms.Common
             api.Timeout = 6000000;
             api.Credentials = new NetworkCredential("soapcall", "soapcall");
             sap.DT_CUS_CUS1002_REQITEM m = new sap.DT_CUS_CUS1002_REQITEM();//模型
-            string sql = "select *　from list_order where id ='" + id + "'";
-            DataTable dt = DBMgr.GetDataTable(sql);
+
+            DataTable dt;
+            string sql;
+            sap.DT_CUS_CUS1002_REQITEM[] mlist;
+            List<Msgobj> MSList;
+
+            sql = "select *　from list_order where id ='" + id + "'";
+            dt = DBMgr.GetDataTable(sql);
             string FWONO = "";
             string FOONO = "";
             string EVENT_DAT = "";
@@ -1780,10 +1969,10 @@ namespace SceneOfCustoms.Common
                     m.FWO_ID = FWONO;
                     m.FOO_ID = FOONO;
                     m.EVENT_DAT = EVENT_DAT;
-                    sap.DT_CUS_CUS1002_REQITEM[] mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+                    mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
                     mlist[0] = m;
 
-                    List<Msgobj> MSList = new List<Msgobj>();
+                    MSList = new List<Msgobj>();
                     sap.DT_CUS_CUS1002_RES res;
                     try
                     {
@@ -1798,6 +1987,53 @@ namespace SceneOfCustoms.Common
                     }
 
                 }
+                string CODE = dt.Rows[0]["CODE"] + "";
+                string ASSOCIATENO = dt.Rows[0]["ASSOCIATENO"] + "";
+                if (!string.IsNullOrEmpty(ASSOCIATENO))
+                {
+                    sql = "select *　from list_order where ASSOCIATENO ='" + ASSOCIATENO + "' and CODE !='" + CODE + "'";
+                    dt = DBMgr.GetDataTable(sql);
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (!string.IsNullOrEmpty(dt.Rows[0]["FOONO"] + ""))
+                        {
+                            FOONO = dt.Rows[0]["FOONO"] + "";
+                            FOONO = FOONO.Remove(0, 4);
+                            FWONO = dt.Rows[0]["FWONO"] + "";
+                            if (!string.IsNullOrEmpty(EVENT_DAT))
+                            {
+                                m.EVENT_DAT = EVENT_DAT;
+                            }
+                            else
+                            {
+                                EVENT_DAT = DateTime.Now.ToLocalTime().ToString("yyyyMMddHHmmss");
+                            }
+                            m.EVENT_CODE = "ZSXCBG";
+                            m.FWO_ID = FWONO;
+                            m.FOO_ID = FOONO;
+                            m.EVENT_DAT = EVENT_DAT;
+                            mlist = new sap.DT_CUS_CUS1002_REQITEM[1];
+                            mlist[0] = m;
+
+                            MSList = new List<Msgobj>();
+                            sap.DT_CUS_CUS1002_RES res;
+                            try
+                            {
+                                res = api.SI_CUS_CUS1002(mlist);
+                                MSList.Add(set_MObj(res.EV_ERROR, "ZSXCBG(" + res.EV_MSG + ")"));
+                                save_log(MSList, FWONO, "3");
+                            }
+                            catch (Exception e)
+                            {
+                                MSList.Add(set_MObj("E", "ZSXCBG(接口回调报错)"));
+                                save_log(MSList, FWONO, "3");
+                            }
+                        }
+                    }
+                }
+
+
+
             }
         }
         // 报检查验

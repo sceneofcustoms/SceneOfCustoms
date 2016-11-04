@@ -249,7 +249,7 @@ namespace SceneOfCustoms.Controllers
                     if (dt.Rows.Count > 0)
                     {
                         ViewData["id2"] = dt.Rows[0]["ID"] + "";//二单ID
-                        ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
+                        ViewData["BUSIUNITNAME2"] = dt.Rows[0]["BUSIUNITNAME"] + "";
                     }
                 }
 
