@@ -219,18 +219,19 @@ namespace SceneOfCustoms.Controllers
             return result;
         }
 
-
         public ActionResult Attachment_Edit()
         {
             string FWONO = Request["FWONO"];
             string FOONO = Request["FOONO"];
+            string ORDERCODE = Request["ORDERCODE"];
             var Path = Server.MapPath("../");
             ViewData["Path"] = Path;
-            if (!string.IsNullOrEmpty(FOONO) && !string.IsNullOrEmpty(FWONO))
+            if (!string.IsNullOrEmpty(FOONO) && !string.IsNullOrEmpty(FWONO) || !string.IsNullOrEmpty(ORDERCODE))
             {
                 ViewData["is_passed"] = "1";
                 ViewData["FWONO"] = FWONO;
                 ViewData["FOONO"] = FOONO;
+                ViewData["ORDERCODE"] = ORDERCODE;
             }
             else
             {
@@ -239,12 +240,22 @@ namespace SceneOfCustoms.Controllers
             return View();
         }
 
-
         public string load_file()
         {
             string FWONO = Request["FWONO"];
             string FOONO = Request["FOONO"];
-            string sql = "select * from LIST_ATTACHMENT where fwono='" + FWONO + "' and foono ='" + FOONO + "'";
+            string sql = "";
+            string ORDERCODE = Request["ORDERCODE"];
+            if (!string.IsNullOrEmpty(ORDERCODE))
+            {
+                sql = "select * from LIST_ATTACHMENT where ORDERCODE='" + ORDERCODE + "'";
+            }
+            else
+            {
+                sql = "select * from LIST_ATTACHMENT where fwono='" + FWONO + "' and foono ='" + FOONO + "'";
+            }
+
+
             DataTable dt = DBMgr.GetDataTable(sql);
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
@@ -260,19 +271,21 @@ namespace SceneOfCustoms.Controllers
             chunk = chunk ?? 0;
             string FWONO = Request.QueryString["FWONO"];
             string FOONO = Request.QueryString["FOONO"];
-            //回传TM 接口
-
-            using (var fs = new FileStream(Path.Combine(uploadPath, name), chunk == 0 ? FileMode.Create : FileMode.Append))
+            string ORDERCODE = Request.QueryString["ORDERCODE"];
+            string direc_upload = DateTime.Now.ToString("yyyy-MM-dd");
+            string activeDir = @"C:\fileserver\";
+            string newPath = Path.Combine(activeDir, direc_upload);
+            Directory.CreateDirectory(newPath);
+            using (var fs = new FileStream(Path.Combine(activeDir + direc_upload, name), chunk == 0 ? FileMode.Create : FileMode.Append))
             {
                 var buffer = new byte[fileUpload.InputStream.Length];
                 fileUpload.InputStream.Read(buffer, 0, buffer.Length);
                 fs.Write(buffer, 0, buffer.Length);
                 string username = CurrentUser();
-                string sql = @"insert into list_attachment(ID,FILEPATH,FILENAME,FILESIZE,FWONO,FOONO,CREATENAME,CREATETIME,STATUS) 
-                VALUES(LIST_ATTACHMENT_ID.Nextval,'/Upload/" + name + "','" + fileUpload.FileName + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','" + username + "',sysdate,1)";
+                string sql = @"insert into list_attachment(ID,FILEPATH,FILENAME,FILESIZE,FWONO,FOONO,ORDERCODE,CREATENAME,CREATETIME,STATUS) 
+                VALUES(LIST_ATTACHMENT_ID.Nextval,'/" + direc_upload + "/" + name + "','" + fileUpload.FileName + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','" + ORDERCODE + "','" + username + "',sysdate,1)";
                 DBMgr.ExecuteNonQuery(sql);
-                string status = IFS.ZSZLSJ_TM(FWONO, FOONO);
-
+                //string status = IFS.ZSZLSJ_TM(FWONO, FOONO);
             }
             return Content("chunk uploaded", "text/plain");
 
@@ -288,12 +301,15 @@ namespace SceneOfCustoms.Controllers
             string sql = "";
             DataTable dt;
             FileInfo file;
+            string path = "";
             for (int i = 0; i < arr.Length; i++)
             {
                 id = arr[i];
                 sql = "select * from list_attachment where id=" + id;
                 dt = DBMgr.GetDataTable(sql);
-                file = new FileInfo(Server.MapPath(dt.Rows[0]["FILEPATH"] + ""));//指定文件路径
+                path = "/C/fileserver" + dt.Rows[0]["FILEPATH"];
+                file = new FileInfo(Server.MapPath(path));
+                //file = new FileInfo(Server.MapPath(dt.Rows[0]["FILEPATH"] + ""));//指定文件路径
                 if (file.Exists)//判断文件是否存在
                 {
                     file.Attributes = FileAttributes.Normal;//将文件属性设置为普通,比方说只读文件设置为普通

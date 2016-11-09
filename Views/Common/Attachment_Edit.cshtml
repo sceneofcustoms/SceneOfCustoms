@@ -30,11 +30,12 @@
         Ext.onReady(function () {
             var FWONO = $("#FWONO").val();
             var FOONO = $("#FOONO").val();
+            var ORDERCODE = $("#ORDERCODE").val();
             file_store = Ext.create('Ext.data.JsonStore', {
                 fields: ['ID', 'FILENAME', 'FILEPATH', 'CREATETIME', 'SIZES', 'IETYPE'],
                 proxy: {
                     type: 'ajax',
-                    url: '/Common/load_file?FWONO=' + FWONO + '&FOONO=' + FOONO,
+                    url: '/Common/load_file?FWONO=' + FWONO + '&FOONO=' + FOONO + '&ORDERCODE=' + ORDERCODE,
                     reader: {
                         root: 'rows',
                         type: 'json'
@@ -83,18 +84,21 @@
         function upload_ini() {
             var FWONO = $("#FWONO").val();
             var FOONO = $("#FOONO").val();
+            var ORDERCODE = $("#ORDERCODE").val();
+            debugger;
             uploader = new plupload.Uploader({
                 runtimes: 'html5,flash,silverlight,html4',
                 browse_button: 'pickfiles', // you can pass an id...
-                url: '/Common/UploadFile?FWONO=' + FWONO + "&FOONO=" + FOONO,
+                url: '/Common/UploadFile?FWONO=' + FWONO + "&FOONO=" + FOONO + "&ORDERCODE=" + ORDERCODE,
                 flash_swf_url: '/js/upload/Moxie.swf',
                 silverlight_xap_url: '/js/upload/Moxie.xap',
                 unique_names: true,
                 filters: {
                     max_file_size: '500mb',
                     mime_types: [
-                        { title: "Image files", extensions: "*" },
-                        { title: "Zip files", extensions: "zip,rar" }
+                        //{ title: "Image files", extensions: "*" },
+                        //{ title: "Zip files", extensions: "zip,rar" }
+                    { title: "Pdf files", extensions: "Pdf" }
                     ]
                 }
             });
@@ -110,9 +114,6 @@
                 debugger;
                 if (file.message == "File size error.") {
                     Ext.MessageBox.alert("错误", "文件太大，无法上传！");
-                }
-                if (file.message == "HTTP Error.") {
-                    Ext.MessageBox.alert("错误", "回传SAP状态失败！");
                 }
             });
         }
@@ -171,7 +172,8 @@
                 }]
             });
             win.show();
-            document.getElementById('fileViewDiv').innerHTML = '<embed id="pdf" width="100%" height="100%" src="../../' + recs[0].get("FILEPATH") + '"></embed>';
+            debugger;
+            document.getElementById('fileViewDiv').innerHTML = '<embed id="pdf" width="100%" height="100%" src="/C/fileserver' + recs[0].get("FILEPATH") + '"></embed>';
         }
 
     </script>
@@ -184,11 +186,15 @@
         {
             <div class="input-group" style="width:100%;margin:10px 0px">
                 <span class="input-group-addon" style="width:120px">FWO订单号</span>
-                <input type="text" class="form-control" placeholder="twitterhandle" value="@ViewData["FWONO"]" id="FWONO" readonly="readonly">
+                <input type="text" class="form-control"  value="@ViewData["FWONO"]" id="FWONO" readonly="readonly">
             </div>
             <div class="input-group" style="width: 100%; margin: 10px 0px">
                 <span class="input-group-addon" style="width:120px">FOO指令服务号</span>
                 <input type="text" class="form-control" value="@ViewData["FOONO"]" id="FOONO" readonly="readonly">
+            </div>
+            <div class="input-group" style="width: 100%; margin: 10px 0px">
+                <span class="input-group-addon" style="width:120px">业务单号</span>
+                <input type="text" class="form-control" value="@ViewData["ORDERCODE"]" id="ORDERCODE" readonly="readonly">
             </div>
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-primary btn-sm" id="pickfiles"><i class="fa fa-upload"></i>&nbsp;上传文件</button>

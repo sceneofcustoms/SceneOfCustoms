@@ -1,13 +1,15 @@
-﻿@if (!string.IsNullOrEmpty(ViewData["id1"] + ""))
-{
+﻿
     <div class="easyui-tabs" id="many_form" style="height:auto">
-
+@if (!string.IsNullOrEmpty(ViewData["id1"] + ""))
+{
         <div title="转入">
             <form class="OrderFrom" method="post" id="OrderFrom1">
                 <input type="hidden" name="ID" value="@ViewData["id1"]" />
                 <input type="hidden" name="ASSOCIATENO" />
                 <input type="hidden" name="type" value="01" />
                 <input type="hidden" name="CODE" />
+                <input type="hidden" name="DECLARATIONCODE" />
+                <input type="hidden" name="ORDERCODE" />
                 <table class="scene">
                     <tr>
                         <td>
@@ -261,8 +263,8 @@
                     </tr>
                 </table>
             </form>
-
         </div>
+}
 
         @if (!string.IsNullOrEmpty(ViewData["id3"] + ""))
         {
@@ -272,6 +274,8 @@
                 <input type="hidden" name="ASSOCIATENO" />
                 <input type="hidden" name="type" value="01" />
                 <input type="hidden" name="CODE" />
+                <input type="hidden" name="DECLARATIONCODE" />
+                <input type="hidden" name="ORDERCODE" />
                 <table class="scene">
                     <tr>
                         <td>
@@ -532,13 +536,7 @@
         }
 
     </div>
-}
-else
-{
-    <h2>
-        参数异常
-    </h2>
-}
+
 
 
 <div style="text-align:center;padding:5px 0">

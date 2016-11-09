@@ -2,7 +2,9 @@
     // 查询条件  --单据号
     var search_code = [
         { code: 'FWONO', name: 'FWO订单号', selected: true },
-        { code: 'FOONO', name: 'FOO指令服务号' }
+        { code: 'FOONO', name: 'FOO指令服务号' },
+        { code: 'ORDERCODE', name: '业务单号' }
+
     ];
     // 查询条件  --状态
     var businessin_createname = [
@@ -14,9 +16,22 @@
             onDblClickRow: function (rowIndex, rowData) {
                 var host = window.location.host;
                 if (rowData) {
-                    window.open("http://" + host + "/Common/Attachment_Edit?FWONO=" + rowData.FWONO + "&FOONO=" + rowData.FOONO);
+                    var FWONO = "";
+                    var FOONO = "";
+                    var ORDERCODE = "";
+                    debugger;
+                    if (rowData.FWONO != "" && rowData.FWONO != null) {
+                        FWONO = rowData.FWONO;
+                    }
+                    if (rowData.FOONO != "" && rowData.FOONO != null) {
+                        FOONO = rowData.FOONO;
+                    }
+                    if (rowData.ORDERCODE != "" && rowData.ORDERCODE != null) {
+                        ORDERCODE = rowData.ORDERCODE;
+                    }
+                    window.open("http://" + host + "/Common/Attachment_Edit?FWONO=" + FWONO + "&FOONO=" + FWONO + "&ORDERCODE=" + ORDERCODE);
                 }
-            } 
+            }
         });
         $('#searchform #search_code').combobox({
             data: search_code,
@@ -46,8 +61,9 @@
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
                     <th data-options="field:'FWONO',width:200,sortable:true">FWO订单号</th>
                     <th data-options="field:'FOONO',width:200,sortable:true">FOO指令服务号</th>
-                    <th data-options="field:'FILENAME',width:440,sortable:true">文件名称</th>
-                    <th data-options="field:'CREATENAME',width:150,sortable:true">上传人</th>
+                    <th data-options="field:'ORDERCODE',width:150,sortable:true">业务单号</th>
+                    <th data-options="field:'FILENAME',width:390,sortable:true">文件名称</th>
+                    <th data-options="field:'CREATENAME',width:50,sortable:true">上传人</th>
                     <th data-options="field:'CREATETIME',width:140,sortable:true">上传时间</th>
                 </tr>
             </thead>

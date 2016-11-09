@@ -43,10 +43,13 @@
                data-options="queryParams:{BUSITYPE:'BLC'} ">
             <thead data-options="frozen:true">
                 <tr>
+
+
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
                     <th data-options="field:'BUSIUNITNAME',width:200,sortable:true">进口企业</th>
                     <th data-options="field:'BUSIUNITNAME',width:200,sortable:true">出口企业</th>
-                    <th data-options="field:'text',width:100">报关单号</th>
+                    <th data-options="field:'DECLARATIONCODE',width:150,sortable:true">报关单号</th>
+                    <th data-options="field:'DECLARATIONSTATUS',width:150,sortable:true">海关通关状态</th>
                     <th data-options="field:'text',width:100">出口报关单号</th>
                     <th data-options="field:'CONTRACTNO',width:100">发票合同号</th>
                     <th data-options="field:'DECLWAY',width:70,formatter:formatDECLWAY">申报方式</th>
@@ -71,6 +74,7 @@
                     <th data-options="field:'FOONO',width:190,sortable:true">FOO报关服务号</th>
                     <th data-options="field:'CODE',width:100,sortable:true">业务编号</th>
                     <th data-options="field:'CUSTOMDISTRICTCODE',width:100,sortable:true">关区代码</th>
+                    <th data-options="field: 'ASSOCIATENO',width:200">两单关联号</th>
                     <th data-options="field: 'CORRESPONDNO',width:200">四单关联号</th>
                 </tr>
             </thead>
