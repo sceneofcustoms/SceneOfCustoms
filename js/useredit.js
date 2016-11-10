@@ -112,19 +112,7 @@
             params: { userid: userid },
             success: function (response, option) {
                 var data = Ext.decode(response.responseText);
-                formp_user.getForm().setValues(data);
-                //if (data.result == true) {
-                //    Ext.MessageBox.alert('提示', '保存成功！', function () {
-                //        if (window.opener && window.opener.store_user) {
-                //            window.opener.store_user.load();
-                //        }
-                //        window.close();
-                //    });
-                //}
-                //else {
-                //    Ext.MessageBox.alert('提示', '保存失败，登录名不能重复！');
-                //}
-                //mask.hide();
+                formp_user.getForm().setValues(data); 
             }
         });
     }

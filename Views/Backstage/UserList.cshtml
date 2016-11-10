@@ -12,7 +12,7 @@
         var userid, store_user;
         Ext.onReady(function () {
             store_user = Ext.create('Ext.data.JsonStore', {
-                fields: ['ID', 'NAME', 'REALNAME', 'EMAIL', 'MOBILE', 'ENABLED', 'CREATETIME'],
+                fields: ['ID', 'NAME', 'REALNAME', 'EMAIL', 'MOBILE', 'ENABLED', 'CREATETIME','REMARK'],
                 pageSize: 20,
                 proxy: {
                     type: 'ajax',
@@ -33,6 +33,7 @@
 
             var gridpanel = Ext.create('Ext.grid.Panel', {
                 title: '用户管理',
+                id: 'grid_user',
                 renderTo: 'div_grid',
                 height: 550,
                 store: store_user,
@@ -67,6 +68,32 @@
                         success: function (response) {
                             if (response.responseText) {
                                 Ext.MessageBox.alert('提示', '初始化密码成功！');
+                            }
+                        }
+                    });
+                }
+            })
+        }
+        function deleteuser() {
+            var recs = Ext.getCmp('grid_user').getSelectionModel().getSelection();
+            if (recs.length == 0) {
+                Ext.MessageBox.alert('提示', '请选择要删除的记录！');
+                return;
+            }
+            Ext.MessageBox.confirm('提示', '确定要执行删除操作吗？', function (btn) {
+                if (btn == 'yes') {
+                    Ext.Ajax.request({
+                        url: '/Backstage/deleteuser',
+                        params: { userid: recs[0].get("ID") },
+                        success: function (response, option) {
+                            var json = Ext.decode(response.responseText);
+                            if (json.success == true) {
+                                Ext.MessageBox.alert('提示', '删除成功！', function () {
+                                    store_user.load();
+                                });
+                            }
+                            else {
+                                Ext.MessageBox.alert('提示', '删除失败！');
                             }
                         }
                     });

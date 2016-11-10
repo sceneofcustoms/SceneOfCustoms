@@ -70,5 +70,12 @@ namespace SceneOfCustoms.Controllers
             }
             return result > 0 ? "{success:true}" : "{success:false}";
         }
+        public string deleteuser()
+        {           
+            string userid = Request["userid"];
+            string sql = "delete FROM SYS_USER WHERE id='" + userid + "'";
+            int result = DBMgr.ExecuteNonQuery(sql);
+            return result > 0 ? "{success:true}" : "{success:false}";
+        }
     }
 }
