@@ -7,6 +7,7 @@ using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -16,11 +17,46 @@ namespace SceneOfCustoms.Controllers
     public class InterfaceController : Controller
     {
 
-        //测试接口  单证
+        //测试
         public ActionResult test()
         {
-            IFS.ZSDZGJ("");
+            string sql = "select * from list_attachment where ordercode ='AE161100931'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string activeDir = @"C:\fileserver\";
+            string Path = "";
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                Path = activeDir + dt.Rows[i]["FILEPATH"] + "";
+                byte[] asdasd = GetFileData(Path);
+            }
             return View();
+        }
+
+
+        public byte[] GetFileData(string fileUrl)
+        {
+            FileStream fs = new FileStream(fileUrl, FileMode.Open, FileAccess.Read);
+            try
+            {
+                byte[] buffur = new byte[fs.Length];
+                fs.Read(buffur, 0, (int)fs.Length);
+
+                return buffur;
+            }
+            catch (Exception ex)
+            {
+                //MessageBoxHelper.ShowPrompt(ex.Message);
+                return null;
+            }
+            finally
+            {
+                if (fs != null)
+                {
+
+                    //关闭资源
+                    fs.Close();
+                }
+            }
         }
 
         [HttpPost]

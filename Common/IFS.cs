@@ -19,10 +19,12 @@ namespace SceneOfCustoms.Common
             ServiceReference1.OrderEn DZOrder;
             List<ServiceReference1.OrderEn> DZOrderList = new List<ServiceReference1.OrderEn>();
             ServiceReference1.ContainerEn ContainerEn;
+            ServiceReference1.FileEn FileEn;
+            List<ServiceReference1.FileEn> FileEnList = new List<ServiceReference1.FileEn>();
             List<ServiceReference1.ContainerEn> ContainerEnList = new List<ServiceReference1.ContainerEn>();
             DataTable dt;
             DataTable dtCon;
-            string sql = "select * from list_order where ONLYCODE ='" + ONLYCODE + "'  ";
+            string sql = "select * from list_order where ONLYCODE ='" + ONLYCODE + "'";
             dt = DBMgr.GetDataTable(sql);
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -32,6 +34,7 @@ namespace SceneOfCustoms.Common
                 DZOrder.CUSTOMERCODE = "KSJSBGYXGS";
                 DZOrder.CUSTOMERNAME = "昆山吉时报关有限公司";
                 DZOrder.CUSNO = dt.Rows[i]["CODE"] + "";
+                DZOrder.SECONDLADINGBILLNO = dt.Rows[i]["LADINGBILLNO"] + "";
                 DZOrder.REPNO = "";
                 DZOrder.ENTRUSTTYPE = dt.Rows[i]["ENTRUSTTYPEID"] + "";
                 DZOrder.BUSITYPE = dt.Rows[i]["BUSITYPE"] + "";
@@ -101,7 +104,7 @@ namespace SceneOfCustoms.Common
                 }
                 DZOrder.SHIPNAME = dt.Rows[i]["SHIPNAME"] + "";
                 DZOrder.FILGHTNO = dt.Rows[i]["FILGHTNO"] + "";
-                DZOrder.Number = 1;
+                DZOrder.Number = Int32.Parse(dt.Rows[i]["SENDNUMBER"] + "");
                 DZOrder.PLATFORMCODE = "xinguanwu";
 
                 //DZOrder.ContainerList
@@ -113,14 +116,38 @@ namespace SceneOfCustoms.Common
                     ContainerEn.CDCARNAME = dtCon.Rows[i]["CDCARNAME"] + "";//沪BL1353
                     ContainerEn.CDCARNO = dtCon.Rows[i]["CDCARNO"] + "";//2200172079
                     ContainerEn.CONTAINERNO = dtCon.Rows[i]["CONTAINERNO"] + "";//TCLU5430888
+
+                    if (dtCon.Rows[i]["CONTAINERTYPE"].ToString().Length == 4)
+                    {
+
+                    }
                     ContainerEn.CONTAINERTYPE = dtCon.Rows[i]["CONTAINERTYPE"] + "";//40GP
                     ContainerEnList.Add(ContainerEn);
                 }
                 DZOrder.ContainerList = ContainerEnList.ToArray();
+
+                //文件
+                sql = "select * from list_attachment where ordercode='" + dt.Rows[i]["CODE"] + "'";
+                dtCon = DBMgr.GetDataTable(sql);
+                for (int j = 0; j < dtCon.Rows.Count; j++)
+                {
+                    FileEn = new ServiceReference1.FileEn();
+
+                    //FileEn.CDCARNAME = dtCon.Rows[i]["CDCARNAME"] + "";
+                    //ContainerEn.CDCARNO = dtCon.Rows[i]["CDCARNO"] + "";
+                    //ContainerEn.CONTAINERNO = dtCon.Rows[i]["CONTAINERNO"] + "";
+                    //ContainerEn.CONTAINERTYPE = dtCon.Rows[i]["CONTAINERTYPE"] + "";
+                    //ContainerEnList.Add(ContainerEn);
+                }
+                DZOrder.ContainerList = ContainerEnList.ToArray();
+
+
+
                 DZOrderList.Add(DZOrder);
             }
 
-            string DZ_res = danzheng.SendOrderData(DZOrderList.ToArray());
+            //string DZ_res = danzheng.SendOrderData(DZOrderList.ToArray());
+            string DZ_res="";
             Msgobj MO = new Msgobj();
             List<Msgobj> MSList = new List<Msgobj>();
             if (DZ_res == "success")
@@ -183,11 +210,12 @@ namespace SceneOfCustoms.Common
                 dt = DBMgr.GetDataTable(sql);
                 if (dt.Rows.Count > 0)
                 {
-                    SENDNUMBER = Int32.Parse(dt.Rows[0]["SENDNUMBER"] + "") + 1;
+                    //SENDNUMBER = Int32.Parse(dt.Rows[0]["SENDNUMBER"] + "") + 1;
                     sql = "delete from list_order where code='" + o[0].ORDERCODE + "'";
                     DBMgr.ExecuteNonQuery(sql);
                     sql = "delete from List_Declcontainertruck where ORDERCODE='" + o[0].ORDERCODE + "'";
                     DBMgr.ExecuteNonQuery(sql);
+
                 }
 
                 //关联号
@@ -294,7 +322,8 @@ namespace SceneOfCustoms.Common
 
                 //口岸
                 //特殊关系确认
-                if (o[0].SPECIALRELATIONSHIP == "")
+
+                if (string.IsNullOrEmpty(o[0].SPECIALRELATIONSHIP + ""))
                 {
                     o[0].SPECIALRELATIONSHIP = "0";
                 }
@@ -303,7 +332,8 @@ namespace SceneOfCustoms.Common
                     o[0].SPECIALRELATIONSHIP = "1";
                 }
                 //价格影响确认
-                if (o[0].PRICEIMPACT == "")
+
+                if (string.IsNullOrEmpty(o[0].PRICEIMPACT + ""))
                 {
                     o[0].PRICEIMPACT = "0";
                 }
@@ -312,8 +342,10 @@ namespace SceneOfCustoms.Common
                     o[0].PRICEIMPACT = "1";
                 }
                 //支付特许权使用费确认
-                if (o[0].PAYPOYALTIES == "")
+
+                if (string.IsNullOrEmpty(o[0].PAYPOYALTIES + ""))
                 {
+
                     o[0].PAYPOYALTIES = "0";
                 }
                 else
@@ -477,13 +509,17 @@ namespace SceneOfCustoms.Common
                 //转关预录入号
                 //二线合同专用发票号
                 //报关可执行
-                if (o[0].ALLOWDECLARE == "")
+                if (string.IsNullOrEmpty(o[0].ALLOWDECLARE + ""))
                 {
                     o[0].ALLOWDECLARE = "0";
+                    SENDNUMBER = 1;
+
                 }
                 else
                 {
                     o[0].ALLOWDECLARE = "1";
+                    SENDNUMBER = 2;
+
                 }
                 if (!string.IsNullOrEmpty(o[0].GOODSTYPEID + ""))
                 {
@@ -581,7 +617,6 @@ namespace SceneOfCustoms.Common
                         MsgobjList.Add(set_MObj("E", "委托方式有异常"));
                         return MsgobjList;
                     }
-
                 }
                 else
                 {
@@ -595,7 +630,7 @@ namespace SceneOfCustoms.Common
 
 
             //验证一组单子是否正常
-            List<List<OrderEn>> GroupOrder = GroupByFoo(ld);
+            List<List<OrderEn>> GroupOrder = GroupByConFoo(ld);
             foreach (List<OrderEn> ListOrder in GroupOrder)
             {
                 if (ListOrder.Count > 2)
@@ -663,21 +698,36 @@ namespace SceneOfCustoms.Common
                 {
                     if (BUSITYPE == "20")
                     {
+
+                        sql = "select id,ALLOWDECLARE from list_order where  code='" + ListOrder[0].ORDERCODE + "'";
+                        dt = DBMgr.GetDataTable(sql);
+                        if (dt.Rows.Count > 0)
+                        {
+                            if (dt.Rows[0]["ALLOWDECLARE"] + "" == "1")
+                            {
+                                MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")报关可执行，不可发送多次"));
+                                return MsgobjList;
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(ListOrder[0].ALLOWDECLARE + ""))
+                                {
+                                    MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")报关不可执行，不可发送多次"));
+                                    return MsgobjList;
+                                }
+                            }
+                        }
+
                         sql = "select * from list_statuslog where ordercode ='" + ListOrder[0].ORDERCODE + "' and statuscode >99";
                         dt = DBMgr.GetDataTable(sql);
                         if (dt.Rows.Count > 0)
                         {
-                            MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")单证已经提交报关单，不可发送两次"));
+                            MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")单证已经提交报关单，不可发送"));
                             return MsgobjList;
                         }
 
-                        sql = "select id from list_order where  code='" + ListOrder[0].ORDERCODE + "' and sendnumber>2 ";
-                        dt = DBMgr.GetDataTable(sql);
-                        if (dt.Rows.Count > 0)
-                        {
-                            MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")发送次数最多2次"));
-                            return MsgobjList;
-                        }
+
+
                     }
                     else
                     {
@@ -1057,7 +1107,7 @@ namespace SceneOfCustoms.Common
             return lloes;
         }
 
-        
+
         //整合订单 并且把报关的FOO放在第一个，报关单FOO为主数据
         public static List<List<OrderEn>> GroupByConFoo(List<OrderEn> oes)
         {
@@ -1199,8 +1249,6 @@ namespace SceneOfCustoms.Common
         }
 
 
-
-
         //获取委托类型
         public static string GetENTRUSTTYPEID(List<OrderEn> oes, string busitype)
         {
@@ -1272,8 +1320,6 @@ namespace SceneOfCustoms.Common
             string sql = @"INSERT INTO MSG (ID,FWONO,SOURCE,TEXT,STATUS,CREATETIME) VALUES (MSG_ID.Nextval,'" + FWONO + "','" + source + "','" + TEXT + "','" + STATUS + "',sysdate)";
             DBMgr.ExecuteNonQuery(sql);
         }
-
-
 
         public static void Callback_TM(string type, string id, string ASSOCIATENO)
         {
@@ -1392,7 +1438,6 @@ namespace SceneOfCustoms.Common
             }
 
         }
-
 
 
         // 报关异常
@@ -1635,7 +1680,7 @@ namespace SceneOfCustoms.Common
 
         }
 
-        
+
         //测试回传 sap 接口 关务接单
         public static void ZSGWJD_tm()
         {
@@ -1761,8 +1806,6 @@ namespace SceneOfCustoms.Common
             save_log(MSList, FWO, "3");
             return res.EV_ERROR;
         }
-
-
 
         // 海关查验时间
         public static void ZSHGXY(string id)
