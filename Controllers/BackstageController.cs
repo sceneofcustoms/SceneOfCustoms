@@ -54,7 +54,10 @@ namespace SceneOfCustoms.Controllers
             int result = 0;
             if (!string.IsNullOrEmpty(jo.Value<string>("ID")))
             {
-
+                sql = @"update Sys_User set REALNAME='{1}',STATUS='{2}',MOBILE='{3}',EMAIL='{4}',REMARK='{5}' where ID='{0}'";
+                sql = string.Format(sql, jo.Value<string>("ID"), jo.Value<string>("REALNAME"), jo.Value<string>("STATUS"),
+                      jo.Value<string>("MOBILE"), jo.Value<string>("EMAIL"), jo.Value<string>("REMARK"));
+                result = DBMgr.ExecuteNonQuery(sql);
             }
             else
             {

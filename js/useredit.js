@@ -1,4 +1,7 @@
 ﻿function user_win() {
+    var field_ID = Ext.create('Ext.form.field.Hidden', { 
+        name: 'ID'
+    });
     var field_NAME = Ext.create('Ext.form.field.Text', {
         name: 'NAME',
         allowBlank: false,
@@ -60,7 +63,7 @@
         { layout: 'column', height: 42, margin: '10 0 0 0', border: 0, items: [field_NAME, field_REALNAME] },
         { layout: 'column', height: 42, border: 0, items: [field_EMAIL, field_MOBILE] },
         { layout: 'column', height: 42, border: 0, items: [combo_ENABLED] },
-        field_REMARK
+        field_REMARK, field_ID
         ]
     });
     var win = Ext.create("Ext.window.Window", {
@@ -78,10 +81,10 @@
                     Ext.Ajax.request({
                         url: '/Backstage/saveuser',
                         params: { userid: userid, json: Ext.encode(formp_user.getForm().getValues()) },
-                        success: function (response, option) { 
+                        success: function (response, option) {
                             var data = Ext.decode(response.responseText);
                             if (data.success == true) {
-                                Ext.MessageBox.alert('提示', '保存成功！', function () {                                  
+                                Ext.MessageBox.alert('提示', '保存成功！', function () {
                                     store_user.load();
                                     win.close();
                                 });
