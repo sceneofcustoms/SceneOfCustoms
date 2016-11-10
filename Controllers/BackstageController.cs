@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using SceneOfCustoms.Common;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -71,9 +72,19 @@ namespace SceneOfCustoms.Controllers
             return result > 0 ? "{success:true}" : "{success:false}";
         }
         public string deleteuser()
-        {           
+        {
             string userid = Request["userid"];
             string sql = "delete FROM SYS_USER WHERE id='" + userid + "'";
+            int result = DBMgr.ExecuteNonQuery(sql);
+            return result > 0 ? "{success:true}" : "{success:false}";
+        }
+        public string inipassword()
+        {
+            string userid = Request["userid"];
+            string sql = "SELECT * FROM  SYS_USER  WHERE id='" + userid + "'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string psd = Extension.ToSHA1(dt.Rows[0]["NAME"] + "");
+            sql = "update SYS_USER set PASSWORD='" + psd + "' WHERE id='" + userid + "'";
             int result = DBMgr.ExecuteNonQuery(sql);
             return result > 0 ? "{success:true}" : "{success:false}";
         }
