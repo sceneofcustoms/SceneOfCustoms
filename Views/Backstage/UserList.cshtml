@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <link href="/js/Extjs42/resources/css/ext-all-gray.css" rel="stylesheet" type="text/css" />
+    <script src="/js/Extjs42/bootstrap.js" type="text/javascript"></script>
+    <link href="~/Content/bootstrap32/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Content/bootstrap32/js/bootstrap.min.js"></script>
+    <script src="/js/useredit.js"></script>
+    <script type="text/javascript">
+        var userid, store_user;
+        Ext.onReady(function () {
+            store_user = Ext.create('Ext.data.JsonStore', {
+                fields: ['ID', 'NAME', 'REALNAME', 'EMAIL', 'MOBILE', 'ENABLED', 'CREATETIME','REMARK'],
+                pageSize: 20,
+                proxy: {
+                    type: 'ajax',
+                    url: '/Backstage/loaduser',
+                    reader: {
+                        root: 'rows',
+                        type: 'json',
+                        totalProperty: 'total'
+                    }
+                },
+                autoLoad: true
+            })
+            var pgbar = Ext.create('Ext.toolbar.Paging', {
+                displayMsg: '显示 {0} - {1} 条,共计 {2} 条',
+                store: store_user,
+                displayInfo: true
+            })
+
+            var gridpanel = Ext.create('Ext.grid.Panel', {
+                title: '用户管理',
+                id: 'grid_user',
+                renderTo: 'div_grid',
+                height: 550,
+                store: store_user,
+                selModel: { selType: 'checkboxmodel' },
+                bbar: pgbar,
+                columns: [
+                    { xtype: 'rownumberer', width: 35 },
+                    { header: 'ID', dataIndex: 'ID', hidden: true },
+                    { header: '登录账户', dataIndex: 'NAME', width: 100 },
+                    { header: '名称', dataIndex: 'REALNAME', width: 170 },
+                    { header: '状态', dataIndex: 'ENABLED', width: 60 },
+                    { header: '创建时间', dataIndex: 'CREATETIME', width: 130 },
+                    { header: '邮箱', dataIndex: 'EMAIL', width: 160 },
+                    { header: '电话', dataIndex: 'MOBILE', width: 150 },
+                    { header: '所属客户', width: 100 },
+                    { header: '备注', dataIndex: 'REMARK', flex: 1 }
+                ],
+                listeners: {
+                    'itemdblclick': function (view, record, item, index, e) {
+                        userid = record.get("ID");
+                        user_win();
+                    }
+                }
+            })
+        });
+
+        function inipsd(id, name) {
+            Ext.MessageBox.confirm('提示', '初始化密码，确定要执行该操作吗？', function (btn) {
+                if (btn == 'yes') {
+                    Ext.Ajax.request({
+                        url: 'UserList.aspx?action=inipsd&id=' + id + "&name=" + name,
+                        success: function (response) {
+                            if (response.responseText) {
+                                Ext.MessageBox.alert('提示', '初始化密码成功！');
+                            }
+                        }
+                    });
+                }
+            })
+        }
+        function deleteuser() {
+            var recs = Ext.getCmp('grid_user').getSelectionModel().getSelection();
+            if (recs.length == 0) {
+                Ext.MessageBox.alert('提示', '请选择要删除的记录！');
+                return;
+            }
+            Ext.MessageBox.confirm('提示', '确定要执行删除操作吗？', function (btn) {
+                if (btn == 'yes') {
+                    Ext.Ajax.request({
+                        url: '/Backstage/deleteuser',
+                        params: { userid: recs[0].get("ID") },
+                        success: function (response, option) {
+                            var json = Ext.decode(response.responseText);
+                            if (json.success == true) {
+                                Ext.MessageBox.alert('提示', '删除成功！', function () {
+                                    store_user.load();
+                                });
+                            }
+                            else {
+                                Ext.MessageBox.alert('提示', '删除失败！');
+                            }
+                        }
+                    });
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <div class="btn-group" role="group">
+        <button type="button" onclick="user_win()" class="btn btn-primary btn-sm"><i class="fa fa-plus fa-fw"></i>&nbsp;添加</button>
+        <button type="button" onclick="deleteuser()" class="btn btn-primary btn-sm"><i class="fa fa-trash-o"></i>&nbsp;删除</button>
+    </div>
+    <div id="div_grid"></div>
+</body>
+</html>
