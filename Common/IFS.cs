@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -24,6 +25,7 @@ namespace SceneOfCustoms.Common
             List<ServiceReference1.ContainerEn> ContainerEnList = new List<ServiceReference1.ContainerEn>();
             DataTable dt;
             DataTable dtCon;
+            DataTable dtFile;
             string sql = "select * from list_order where ONLYCODE ='" + ONLYCODE + "'";
             dt = DBMgr.GetDataTable(sql);
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -107,47 +109,42 @@ namespace SceneOfCustoms.Common
                 DZOrder.Number = Int32.Parse(dt.Rows[i]["SENDNUMBER"] + "");
                 DZOrder.PLATFORMCODE = "xinguanwu";
 
-                //DZOrder.ContainerList
+                //集装箱
                 sql = "select * from list_Declcontainertruck where ordercode='" + dt.Rows[i]["CODE"] + "'";
                 dtCon = DBMgr.GetDataTable(sql);
                 for (int j = 0; j < dtCon.Rows.Count; j++)
                 {
                     ContainerEn = new ServiceReference1.ContainerEn();
-                    ContainerEn.CDCARNAME = dtCon.Rows[i]["CDCARNAME"] + "";//沪BL1353
-                    ContainerEn.CDCARNO = dtCon.Rows[i]["CDCARNO"] + "";//2200172079
-                    ContainerEn.CONTAINERNO = dtCon.Rows[i]["CONTAINERNO"] + "";//TCLU5430888
-
+                    ContainerEn.CDCARNAME = dtCon.Rows[j]["CDCARNAME"] + "";//沪BL1353
+                    ContainerEn.CDCARNO = dtCon.Rows[j]["CDCARNO"] + "";//2200172079
+                    ContainerEn.CONTAINERNO = dtCon.Rows[j]["CONTAINERNO"] + "";//TCLU5430888
                     if (dtCon.Rows[i]["CONTAINERTYPE"].ToString().Length == 4)
                     {
-
+                        ContainerEn.CONTAINERTYPE = dtCon.Rows[j]["CONTAINERTYPE"].ToString().Substring(dtCon.Rows[j]["CONTAINERTYPE"].ToString().Length - 2, 2);//hou GP
+                        ContainerEn.CONTAINERSIZE = dtCon.Rows[j]["CONTAINERTYPE"].ToString().Remove(dtCon.Rows[j]["CONTAINERTYPE"].ToString().Length - 2, 2);//qian   20
                     }
-                    ContainerEn.CONTAINERTYPE = dtCon.Rows[i]["CONTAINERTYPE"] + "";//40GP
                     ContainerEnList.Add(ContainerEn);
                 }
                 DZOrder.ContainerList = ContainerEnList.ToArray();
 
                 //文件
                 sql = "select * from list_attachment where ordercode='" + dt.Rows[i]["CODE"] + "'";
-                dtCon = DBMgr.GetDataTable(sql);
-                for (int j = 0; j < dtCon.Rows.Count; j++)
+                dtFile = DBMgr.GetDataTable(sql);
+                string activeDir = @"C:\fileserver\";
+                for (int j = 0; j < dtFile.Rows.Count; j++)
                 {
                     FileEn = new ServiceReference1.FileEn();
-
-                    //FileEn.CDCARNAME = dtCon.Rows[i]["CDCARNAME"] + "";
-                    //ContainerEn.CDCARNO = dtCon.Rows[i]["CDCARNO"] + "";
-                    //ContainerEn.CONTAINERNO = dtCon.Rows[i]["CONTAINERNO"] + "";
-                    //ContainerEn.CONTAINERTYPE = dtCon.Rows[i]["CONTAINERTYPE"] + "";
-                    //ContainerEnList.Add(ContainerEn);
+                    FileEn.FileContent = GetFileData(activeDir + dtFile.Rows[j]["FILEPATH"] + "");
+                    FileEn.FileFormat = ServiceReference1.FileFormatEnum.PDF;
+                    FileEnList.Add(FileEn);
                 }
-                DZOrder.ContainerList = ContainerEnList.ToArray();
-
+                DZOrder.Files = FileEnList.ToArray();
 
 
                 DZOrderList.Add(DZOrder);
             }
 
-            //string DZ_res = danzheng.SendOrderData(DZOrderList.ToArray());
-            string DZ_res="";
+            string DZ_res = danzheng.SendOrderData(DZOrderList.ToArray());
             Msgobj MO = new Msgobj();
             List<Msgobj> MSList = new List<Msgobj>();
             if (DZ_res == "success")
@@ -162,6 +159,33 @@ namespace SceneOfCustoms.Common
             }
             MSList.Add(MO);
             save_log(MSList, FWO + "", "2");
+        }
+
+        //转
+        public static byte[] GetFileData(string fileUrl)
+        {
+            FileStream fs = new FileStream(fileUrl, FileMode.Open, FileAccess.Read);
+            try
+            {
+                byte[] buffur = new byte[fs.Length];
+                fs.Read(buffur, 0, (int)fs.Length);
+
+                return buffur;
+            }
+            catch (Exception ex)
+            {
+                //MessageBoxHelper.ShowPrompt(ex.Message);
+                return new byte[0];
+            }
+            finally
+            {
+                if (fs != null)
+                {
+
+                    //关闭资源
+                    fs.Close();
+                }
+            }
         }
 
         //保存现场数据
@@ -403,8 +427,6 @@ namespace SceneOfCustoms.Common
                             REPUNITNAME = "";
                             o[0].REPUNITCODE = "";
                         }
-
-
 
                         if (!string.IsNullOrEmpty(o[1].INSPUNITNAME) && o[1].INSPUNITNAME.Length > 10)
                         {

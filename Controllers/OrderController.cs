@@ -684,6 +684,13 @@ namespace SceneOfCustoms.Controllers
 
         public string Edit_Order()
         {
+            string str = "abcd";
+
+
+            string str1 = str.Substring(str.Length - 2, 2);//hou
+            string str2 = str.Remove(str.Length - 2, 2);//qian
+
+
             string ID = Request.QueryString["ID"];
             string DECLARATIONCODE = Request.QueryString["DECLARATIONCODE"];//报关单号
             string sql = "select * from list_order  where  ID = " + ID;

@@ -70,8 +70,7 @@ namespace SceneOfCustoms.Controllers
             string ids = Request.Form["ids"];
             string sql = "select * from list_sapfoo where id in(" + ids + ") order by id desc";
             DataTable dt = DBMgr.GetDataTable(sql);
-
-
+            DataTable dtdecl;
             bd.SyncDataFromSapSoapClient xc = new bd.SyncDataFromSapSoapClient();
             bd.OrderEn lcorder = new bd.OrderEn();
             List<bd.OrderEn> list = new List<bd.OrderEn>();
@@ -131,18 +130,18 @@ namespace SceneOfCustoms.Controllers
                 lcorder.SPECIALRELATIONSHIP = dt.Rows[i]["SPECIALRELATIONSHIP"] + "";
 
                 List<bd.Declcontainertruck> dlist = new List<bd.Declcontainertruck>();
-                bd.Declcontainertruck d = new bd.Declcontainertruck();
-                d.CDCARNAME = "1";
-                d.CONTAINERNO = "2";
-                d.CONTAINERTYPE = "3";
 
-                dlist.Add(d);
-                bd.Declcontainertruck d1 = new bd.Declcontainertruck();
-                d1.CDCARNAME = "1";
-                d1.CONTAINERNO = "2";
-                d1.CONTAINERTYPE = "3";
-
-                dlist.Add(d1);
+                sql = "select * from list_declcontainertruck where ordercode='" + dt.Rows[i]["CODE"] + "" + "'";
+                dtdecl = DBMgr.GetDataTable(sql);
+                for (int j = 0; j < dtdecl.Rows.Count; j++)
+                {
+                    bd.Declcontainertruck d = new bd.Declcontainertruck();
+                    d.CDCARNAME = dtdecl.Rows[j]["CDCARNAME"] + "";
+                    d.CDCARNO = dtdecl.Rows[j]["CDCARNO"] + "";
+                    d.CONTAINERNO = dtdecl.Rows[j]["CONTAINERNO"] + "";
+                    d.CONTAINERTYPE = dtdecl.Rows[j]["CONTAINERTYPE"] + "";
+                    dlist.Add(d);
+                }
 
                 lcorder.Declcontainertruck = dlist.ToArray();
                 list.Add(lcorder);
