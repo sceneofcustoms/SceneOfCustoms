@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using SceneOfCustoms.Common;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,9 +14,16 @@ namespace SceneOfCustoms.Controllers
     public class BackstageController : Controller
     {
         int totalProperty = 0;
+        string sql = string.Empty;
+        DataTable dt = null;
         public ActionResult UserList()
         {
             ViewData["crumb"] = "后台管理-->用户管理";
+            return View();
+        }
+        public ActionResult ModuleList()
+        {
+            ViewData["crumb"] = "后台管理-->模块管理";
             return View();
         }
         public string loaduser()
@@ -24,7 +32,7 @@ namespace SceneOfCustoms.Controllers
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             string groupid = Request["groupid"];
             string where = "";
-            string sql = string.Empty;
+            sql = string.Empty;
             if (!string.IsNullOrEmpty(Request["NAME"]))
             {
                 where += " and NAME like '%" + Request["NAME"] + "%'";
@@ -43,7 +51,7 @@ namespace SceneOfCustoms.Controllers
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             string userid = Request["userid"];
-            string sql = "SELECT * FROM SYS_USER WHERE id='" + userid + "'";
+            sql = "SELECT * FROM SYS_USER WHERE id='" + userid + "'";
             string json = JsonConvert.SerializeObject(DBMgr.GetDataTable(sql), iso).Replace("[", "").Replace("]", "");
             return json;
         }
@@ -71,10 +79,98 @@ namespace SceneOfCustoms.Controllers
             return result > 0 ? "{success:true}" : "{success:false}";
         }
         public string deleteuser()
-        {           
+        {
             string userid = Request["userid"];
             string sql = "delete FROM SYS_USER WHERE id='" + userid + "'";
             int result = DBMgr.ExecuteNonQuery(sql);
+            return result > 0 ? "{success:true}" : "{success:false}";
+        }
+        public string inipassword()
+        {
+            string userid = Request["userid"];
+            string sql = "SELECT * FROM  SYS_USER  WHERE id='" + userid + "'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string psd = Extension.ToSHA1(dt.Rows[0]["NAME"] + "");
+            sql = "update SYS_USER set PASSWORD='" + psd + "' WHERE id='" + userid + "'";
+            int result = DBMgr.ExecuteNonQuery(sql);
+            return result > 0 ? "{success:true}" : "{success:false}";
+        }
+        public string loadmodule()
+        {
+            string sql = string.Empty;
+            string moduleid = Request["ID"];
+            if (string.IsNullOrEmpty(moduleid))
+            {
+                sql = @"select * from sys_module where  ParentId is null order by SortIndex";
+            }
+            else
+            {
+                sql = @"select * from sys_module where  ParentId ='" + moduleid + "' order by SortIndex";
+            }
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string result = "[";
+            int i = 0;
+            foreach (DataRow smEnt in dt.Rows)
+            {
+                if (i != dt.Rows.Count - 1)
+                {
+                    result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "'},";
+                }
+                else
+                {
+                    result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "'}";
+                }
+                i++;
+            }
+            result += "]";
+            return result;
+        }
+        public string insertmodule()
+        {
+            string json = Request["json"];
+            int result = 0;
+            JObject jo = (JObject)JsonConvert.DeserializeObject(json);
+            string newid = Guid.NewGuid().ToString();
+            sql = @"insert into sys_module (ID,NAME,ISLEAF,URL,PARENTID,SORTINDEX) 
+                          values ('" + newid + "','" + jo.Value<string>("NAME") + "','1','" + jo.Value<string>("URL") + "','" + jo.Value<string>("PARENTID") + "','" + jo.Value<string>("SORTINDEX") + "')";
+            result = DBMgr.ExecuteNonQuery(sql);
+            jo.Remove("ID");
+            jo.Add("ID", newid);
+            jo.Add("leaf", 1);
+            sql = "select * from sys_module where ID='" + jo.Value<string>("PARENTID") + "'";
+            dt = DBMgr.GetDataTable(sql);
+            if (dt.Rows.Count > 0)
+            {
+                if (dt.Rows[0]["ISLEAF"] + "" == "1")//如果父节点是叶子,需要改写父节点
+                {
+                    sql = "update sys_module set ISLEAF=NULL where ID='" + jo.Value<string>("PARENTID") + "'";
+                    result = DBMgr.ExecuteNonQuery(sql);
+                }
+            }
+            return result > 0 ? "{success:true,data:" + jo + "}" : "{success:false}";
+        }
+        public string modifymodule()
+        {
+            string json = Request["json"];
+            int result = 0;
+            JObject jo = (JObject)JsonConvert.DeserializeObject(json);
+            sql = @"update sys_module set NAME = '" + jo.Value<string>("NAME") + "' ,url = '" + jo.Value<string>("URL") + "',SORTINDEX = '" + jo.Value<string>("SORTINDEX") + "' where ID = '" + jo.Value<string>("ID") + "'";
+            result = DBMgr.ExecuteNonQuery(sql);
+            return result > 0 ? "{success:true,data:" + jo + "}" : "{success:false}";
+        }
+        public string deletemodule()
+        {
+            int result = 0;
+            JObject jo = (JObject)JsonConvert.DeserializeObject(Request["json"]);
+            sql = "delete from sys_module where ID='" + jo.Value<string>("ID") + "'";
+            result = DBMgr.ExecuteNonQuery(sql);
+            sql = "select * from sys_module where PARENTID='" + jo.Value<string>("PARENTID") + "'";
+            dt = DBMgr.GetDataTable(sql);
+            if (dt.Rows.Count == 0)
+            {
+                sql = "update sys_module set isleaf=1 where ID='" + jo.Value<string>("PARENTID") + "'";
+                result = DBMgr.ExecuteNonQuery(sql);
+            }
             return result > 0 ? "{success:true}" : "{success:false}";
         }
     }

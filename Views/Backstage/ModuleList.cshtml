@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <link href="/js/Extjs42/resources/css/ext-all-gray.css" rel="stylesheet" type="text/css" />
+    <script src="/js/Extjs42/bootstrap.js" type="text/javascript"></script> 
+    <script type="text/javascript">
+        var treepanel;
+        var nodeid = getQueryString("nodeid");
+        Ext.onReady(function () {
+            Ext.regModel("SysModule", { fields: ["ID", "NAME", "leaf", "URL", "PARENTID", "SORTINDEX"] });
+            var toolbar = Ext.create('Ext.toolbar.Toolbar', {
+                items: [
+                {
+                    text: '<span class="icon iconfont">&#xe60b;</span>&nbsp;添 加', handler: function () {
+                        var recs = Ext.getCmp('treepanel').getSelectionModel().getSelection();
+                        //可以选择父节点，也可以不选择父节点，如果不选择的话默认父节点就是根节点
+                        var parentNode;
+                        if (recs.length == 0) {
+                            parentNode = Ext.getCmp('treepanel').store.getRootNode();
+                        }
+                        else {
+                            parentNode = recs[0];
+                        }
+                        module_edit_win(parentNode, "create");
+                    }
+                }, '-',
+                {
+                    text: '<span class="icon iconfont">&#xe607;</span>&nbsp;修 改', handler: function () {
+                        var recs = treepanel.getSelectionModel().getSelection();
+                        if (recs.length == 0) {
+                            Ext.Msg.alert("提示", "请选择要修改的节点!");
+                            return;
+                        }
+                        module_edit_win(recs[0], "update");
+                    }
+                }, '-', {
+                    text: '<span class="icon iconfont">&#xe606;</span>&nbsp;删 除', handler: function () {
+                        var recs = treepanel.getSelectionModel().getSelection();
+                        if (recs.length == 0) {
+                            Ext.Msg.alert("提示", "请选择要删除的节点!");
+                            return;
+                        }
+                        if (!recs[0].data.leaf) {//删除某个节点后有可能父节点不存在
+                            Ext.Msg.alert("提示", "包含子节点的对象不允许删除!");
+                            return;
+                        }
+                        Ext.Ajax.request({
+                            url: 'ModuleList.aspx?action=delete',
+                            params: { json: Ext.encode(recs[0].data) },
+                            callback: function (option, success, response) {
+                                var result = Ext.decode(response.responseText);
+                                if (result.success) {
+                                    Ext.Msg.alert("提示", "删除成功!", function () {
+                                        var pnode = recs[0].parentNode;
+                                        pnode.removeChild(recs[0]);
+                                        if (!pnode.hasChildNodes()) {//删除某个节点后有可能父节点不存在
+                                            pnode.set("leaf", true);
+                                        }
+                                    });
+                                }
+                            }
+                        })
+                    }
+                }]
+            })
+            var treepanelstore = new Ext.data.TreeStore({
+                model: 'SysModule',
+                proxy: {
+                    type: 'ajax',
+                    url: '/Backstage/loadmodule',
+                    reader: 'json',
+                    extraParams: {
+                        ID: ''
+                    }
+                },
+                root: {
+                    expanded: true,
+                    text: '系统模块'
+                }
+            });
+            treepanel = Ext.create('Ext.tree.Panel', {
+                id: 'treepanel',
+                title: '模块管理',
+                useArrows: true,
+                animate: true,
+                selModel: { selType: 'checkboxmodel' },
+                //region: 'center',
+                renderTo: 'div_treepanel',
+                //  tbar: toolbar,
+                rootVisible: false,
+                store: treepanelstore,
+                columns: [
+                { dataIndex: 'ID', width: 120, hidden: true },
+                { dataIndex: 'leaf', width: 100, hidden: true },
+                { header: '模块名称', xtype: 'treecolumn', dataIndex: 'NAME', width: 300 },
+                { header: '链接地址', dataIndex: 'URL', flex: 1 },
+                { header: '显示顺序', dataIndex: 'SORTINDEX', width: 100, hidden: false },
+                { dataIndex: 'PARENTID', hidden: true }
+                ],
+                listeners: {
+                    beforeitemexpand: function (curnode, options) {
+                        var proxy = treepanel.store.getProxy();
+                        proxy.extraParams.ID = curnode.data.ID;
+                    }
+                }
+            });
+        });
+        function module_edit_win(parentNode, action) {
+            var formpanel_module = Ext.create('Ext.form.Panel', {
+                layout: 'anchor',
+                region: 'center',
+                defaults: { labelAlign: 'right', xtype: 'textfield', msgTarget: 'under', margin: '10' },
+                items: [
+                { name: 'NAME', anchor: '95%', fieldLabel: '模块名称', allowBlank: false, blankText: '模块名称不能为空', emptyText: '请输入模块名称' },
+                { name: 'URL', anchor: '95%', fieldLabel: '链接地址', allowBlank: true, emptyText: '请输入链接地址' },
+                { name: 'SORTINDEX', anchor: '95%', fieldLabel: '显示顺序', xtype: 'numberfield' },
+                { name: 'ID', xtype: 'hidden' },
+                { name: 'PARENTID', xtype: 'hidden', id: 'field_parentid' }
+                ],
+                buttons: [{
+                    text: '保 存', handler: function () {
+                        var baseForm = formpanel_module.getForm();
+                        if (baseForm.isValid()) {
+                            Ext.Ajax.request({
+                                url: action == "create" ? "/Backstage/insertmodule" : "/Backstage/modifymodule",
+                                params: { json: Ext.encode(baseForm.getValues()) },
+                                callback: function (option, success, response) {
+                                    var result = Ext.decode(response.responseText);
+                                    if (result.success) {
+                                        Ext.Msg.alert("提示", "保存成功!", function () {
+                                            if (action == "create") { //如果是新增 
+                                                if (parentNode.data.leaf) {//如果是叶子
+                                                    parentNode.set("leaf", false);
+                                                    parentNode.expand();
+                                                }
+                                                else {
+                                                    if (parentNode.isExpanded()) {//如果已经展开了
+                                                        var childNode = parentNode.createNode({ ID: result.data.ID, NAME: result.data.NAME, leaf: true, URL: result.data.URL, SORTINDEX: result.data.SORTINDEX});
+                                                        parentNode.appendChild(childNode);
+                                                    }
+                                                    else {//如果未展开
+                                                        parentNode.expand();
+                                                    }
+                                                }
+                                            }
+                                            else { //如果是修改
+                                                parentNode.set("NAME", result.data.NAME);
+                                                parentNode.set("URL", result.data.URL);
+                                                parentNode.set("SORTINDEX", result.data.SORTINDEX);
+                                            }
+                                            win_sysmodule.close();
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }],
+                buttonAlign: 'center'
+            })
+            var win_sysmodule = Ext.create("Ext.window.Window", {
+                title: '系统模块',
+                width: 700,
+                height: 570,
+                modal: true,
+                items: [formpanel_module],
+                layout: 'border',
+                buttonAlign: 'center'
+            });
+            win_sysmodule.show();
+            if (action == "update") {//如果是修改
+                formpanel_module.getForm().setValues(parentNode.data);
+            }
+            if (action == "create" && parentNode.data.ID) {
+                Ext.getCmp("field_parentid").setValue(parentNode.get('ID'));
+            }
+        }
+        function addmodule() {
+            var recs = Ext.getCmp('treepanel').getSelectionModel().getSelection();
+            //可以选择父节点，也可以不选择父节点，如果不选择的话默认父节点就是根节点
+            var parentNode;
+            if (recs.length == 0) {
+                parentNode = Ext.getCmp('treepanel').store.getRootNode();
+            }
+            else {
+                parentNode = recs[0];
+            }
+            module_edit_win(parentNode, "create");
+        }
+        function modifymodule() {
+            var recs = Ext.getCmp('treepanel').getSelectionModel().getSelection();
+            if (recs.length == 0) {
+                Ext.Msg.alert("提示", "请选择要修改的节点!");
+                return;
+            }
+            module_edit_win(recs[0], "update");
+        }
+        function deletemodule()
+        {
+            var recs = Ext.getCmp('treepanel').getSelectionModel().getSelection();
+            if (recs.length == 0) {
+                Ext.Msg.alert("提示", "请选择要删除的节点!");
+                return;
+            }
+            if (!recs[0].data.leaf) {//删除某个节点后有可能父节点不存在
+                Ext.Msg.alert("提示", "包含子节点的对象不允许删除!");
+                return;
+            }
+            Ext.Ajax.request({
+                url: '/Backstage/deletemodule',
+                params: { json: Ext.encode(recs[0].data) },
+                callback: function (option, success, response) {
+                    var result = Ext.decode(response.responseText);
+                    if (result.success) {
+                        Ext.Msg.alert("提示", "删除成功!", function () {
+                            var pnode = recs[0].parentNode;
+                            pnode.removeChild(recs[0]);
+                            if (!pnode.hasChildNodes()) {//删除某个节点后有可能父节点不存在
+                                pnode.set("leaf", true);
+                            }
+                        });
+                    }
+                }
+            })
+        }
+
+    </script>
+</head>
+<body>
+    <div class="btn-group" role="group">
+        <button type="button" onclick="addmodule()" class="btn btn-primary btn-sm"><i class="icon iconfont">&#xe60b;</i>&nbsp;添加</button>
+        <button type="button" onclick="modifymodule()" class="btn btn-primary btn-sm"><i class="icon iconfont">&#xe607;</i>&nbsp;修改</button>
+        <button type="button" onclick="deletemodule()" class="btn btn-primary btn-sm"><i class="icon iconfont">&#xe606;</i>&nbsp;删除</button>
+    </div>
+    <div id="div_treepanel"></div>
+</body>
+</html>
