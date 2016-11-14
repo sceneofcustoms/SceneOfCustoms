@@ -36,8 +36,8 @@ namespace SceneOfCustoms.Common
                 DZOrder.CUSTOMERCODE = "KSJSBGYXGS";
                 DZOrder.CUSTOMERNAME = "昆山吉时报关有限公司";
                 DZOrder.CUSNO = dt.Rows[i]["CODE"] + "";
-                DZOrder.SECONDLADINGBILLNO = dt.Rows[i]["LADINGBILLNO"] + "";
-                DZOrder.REPNO = "";
+                DZOrder.FIRSTLADINGBILLNO = dt.Rows[i]["FIRSTLADINGBILLNO"] + ""; //海关提单号
+                DZOrder.SECONDLADINGBILLNO = dt.Rows[i]["SECONDLADINGBILLNO"] + ""; //国检提单号
                 DZOrder.ENTRUSTTYPE = dt.Rows[i]["ENTRUSTTYPEID"] + "";
                 DZOrder.BUSITYPE = dt.Rows[i]["BUSITYPE"] + "";
                 DZOrder.REPWAYID = dt.Rows[i]["REPWAYID"] + "";
@@ -82,8 +82,6 @@ namespace SceneOfCustoms.Common
                 {
                     DZOrder.SPECIALRELATIONSHIP = Int32.Parse(dt.Rows[i]["SPECIALRELATIONSHIP"] + "");
                 }
-
-
                 DZOrder.CORRESPONDNO = dt.Rows[i]["CORRESPONDNO"] + "";
                 DZOrder.ASSOCIATENO = dt.Rows[i]["ASSOCIATENO"] + "";
                 if (!string.IsNullOrEmpty(dt.Rows[i]["SUBMITTIME"] + ""))
@@ -191,6 +189,9 @@ namespace SceneOfCustoms.Common
         //保存现场数据
         public static int XCOrderData(List<OrderEn> ld, string Nowtime)
         {
+
+            int res = 0;
+
             string ASSOCIATENO = "";
             string CORRESPONDNO = "";
             string ASS1 = "";
@@ -323,8 +324,12 @@ namespace SceneOfCustoms.Common
                     if (arr.Length > 0)
                     {
                         o[0].TRADEWAYCODES = arr[0];
+                    }
+                    if (arr.Length > 1)
+                    {
                         o[0].ENTRUSTREQUEST += TRADEWAYCODES;
                     }
+
                 }
 
 
@@ -494,7 +499,7 @@ namespace SceneOfCustoms.Common
                 //货物类型
                 //报关提单号
                 //是否提前报关
-                if (o[0].ISPREDECLARE == "")
+                if (string.IsNullOrEmpty(o[0].ISPREDECLARE + ""))
                 {
                     o[0].ISPREDECLARE = "0";
                 }
@@ -509,7 +514,7 @@ namespace SceneOfCustoms.Common
                 //载货清单号
                 //木质包装
                 //需重量确认标识
-                if (o[0].WEIGHTCHECK == "")
+                if (string.IsNullOrEmpty(o[0].WEIGHTCHECK + ""))
                 {
                     o[0].WEIGHTCHECK = "0";
                 }
@@ -518,7 +523,7 @@ namespace SceneOfCustoms.Common
                     o[0].WEIGHTCHECK = "1";
                 }
                 //重量确认标识
-                if (o[0].ISWEIGHTCHECK == "")
+                if (string.IsNullOrEmpty(o[0].ISWEIGHTCHECK + ""))
                 {
                     o[0].ISWEIGHTCHECK = "0";
                 }
@@ -530,19 +535,27 @@ namespace SceneOfCustoms.Common
                 //航次
                 //转关预录入号
                 //二线合同专用发票号
-                //报关可执行
+
+
+                //报关可执行 单证没有此字段 
                 if (string.IsNullOrEmpty(o[0].ALLOWDECLARE + ""))
                 {
                     o[0].ALLOWDECLARE = "0";
                     SENDNUMBER = 1;
-
                 }
                 else
                 {
                     o[0].ALLOWDECLARE = "1";
                     SENDNUMBER = 2;
-
                 }
+
+                //二程提单号 报关提单号  都为海关提单号  sap 设计不合理
+                if (string.IsNullOrEmpty(o[0].LADINGBILLNO + ""))
+                {
+                    o[0].SECONDLADINGBILLNO = o[0].LADINGBILLNO + "";
+                }
+
+                //sap 设计不合理
                 if (!string.IsNullOrEmpty(o[0].GOODSTYPEID + ""))
                 {
                     if (o[0].GOODSTYPEID + "" == "FCL（整箱装载）")
@@ -588,14 +601,14 @@ namespace SceneOfCustoms.Common
                     o[0].PRICEIMPACT, o[0].PAYPOYALTIES, REPUNITNAME, o[0].REPUNITCODE,
                     o[0].INSPUNITNAME, INSPUNITCODE, SUBMITUSERNAME, SUBMITTIME,
                     o[0].ARRIVEDNO, o[0].CHECKEDGOODSNUM, o[0].CHECKEDWEIGHT, o[0].BUSIUNITNAME,
-                    BUSIUNITCODE, o[0].GOODSTYPEID, o[0].LADINGBILLNO, o[0].ISPREDECLARE,
+                    BUSIUNITCODE, o[0].GOODSTYPEID, "", o[0].ISPREDECLARE,
                     o[0].ENTRUSTREQUEST, o[0].CONTRACTNO, o[0].FIRSTLADINGBILLNO, o[0].SECONDLADINGBILLNO,
                     o[0].MANIFEST, WOODPACKINGID, o[0].WEIGHTCHECK, o[0].ISWEIGHTCHECK,
                     o[0].SHIPNAME, o[0].FILGHTNO, o[0].TURNPRENO, o[0].INVOICENO,
                     o[0].ALLOWDECLARE, o[0].ORDERCODE, ASSOCIATENO, CORRESPONDNO,
                     WTFS, Nowtime, SENDNUMBER
                     );
-                DBMgr.ExecuteNonQuery(sql);
+                res = DBMgr.ExecuteNonQuery(sql);
                 //卡号 车号
                 foreach (Declcontainertruck d in o[0].Declcontainertruck)
                 {
@@ -606,7 +619,7 @@ namespace SceneOfCustoms.Common
 
             }
             //保存到单证
-            return 1;
+            return res;
         }
 
         //检查数据
@@ -1154,6 +1167,10 @@ namespace SceneOfCustoms.Common
                         new_oes.Add(oes[0]);
 
                         lloes.Add(new_oes);
+                    }
+                    else
+                    {
+                        lloes.Add(oes);
                     }
                 }
                 else

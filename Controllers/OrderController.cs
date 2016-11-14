@@ -684,13 +684,6 @@ namespace SceneOfCustoms.Controllers
 
         public string Edit_Order()
         {
-            string str = "abcd";
-
-
-            string str1 = str.Substring(str.Length - 2, 2);//hou
-            string str2 = str.Remove(str.Length - 2, 2);//qian
-
-
             string ID = Request.QueryString["ID"];
             string DECLARATIONCODE = Request.QueryString["DECLARATIONCODE"];//报关单号
             string sql = "select * from list_order  where  ID = " + ID;
@@ -828,6 +821,7 @@ namespace SceneOfCustoms.Controllers
             var info = JsonConvert.SerializeObject(OrderArray);                                 //将数组再转换为json格式
             return info;
         }
+
         [HttpGet]
         public string GetData()
         {
@@ -835,7 +829,7 @@ namespace SceneOfCustoms.Controllers
             int PageSize = Convert.ToInt32(Request.Params["rows"]);
             int Page = Convert.ToInt32(Request.Params["page"]);
             int total = 0;//DECLARATIONCODE
-            string sql = "select t.* from list_order  t where DECLARATIONCODE is not null ";
+            string sql = "select t.* from list_order  t where 1=1 ";
             //搜索查询 DLC 2016/10/14
             string data = Request["data"];
             if (data != null)
@@ -1266,10 +1260,22 @@ namespace SceneOfCustoms.Controllers
             string type = Request.Form["type"];
             string datetime = Request.Form["date"];
             string ASSOCIATENO = Request.Form["ASSOCIATENO"];
-
+            string INSPSTATUS = Request.Form["INSPSTATUS"];//报检
+            string DECLSTATUS = Request.Form["DECLSTATUS"];//报关
             JObject jo = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
-            string sql = "update list_order set ";
-            if (type != "")
+            string sql = "update list_order set  ";
+
+            if (!string.IsNullOrEmpty(INSPSTATUS))
+            {
+                sql += " INSPSTATUS='" + INSPSTATUS + "',";
+            }
+
+            if (!string.IsNullOrEmpty(DECLSTATUS))
+            {
+                sql += " DECLSTATUS='" + DECLSTATUS + "',";
+            }
+
+            if (!string.IsNullOrEmpty(type))
             {
                 string time = type + "TIME";
                 string userid = type + "USERID";
@@ -1278,7 +1284,6 @@ namespace SceneOfCustoms.Controllers
             }
             sql += " where ID =" + ID;
             int res = DBMgr.ExecuteNonQuery(sql);
-
             if (res == 1)
             {
                 IFS.Callback_TM(type, ID, ASSOCIATENO);

@@ -100,7 +100,7 @@
     width: 200px !important;
 }
 
-.scene .time_input {
+#OrderFrom1 .time_input, #OrderFrom2 .time_input {
     width: 200px !important;
 }
 

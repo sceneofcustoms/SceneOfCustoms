@@ -114,7 +114,7 @@
                 </td>
                 <td>
                     <label for="BAOJIANFANGXINGTIME"> 报检放行时间:</label>
-                    <input class="easyui-textbox time_input" datatype="BAOJIANFANGXING" id="BAOJIANFANGXINGTIME" name="BAOJIANFANGXINGTIME" editable="false" />
+                    <input class="easyui-textbox time_input INSPSTATUS" datatype="BAOJIANFANGXING" id="BAOJIANFANGXINGTIME" name="BAOJIANFANGXINGTIME" editable="false" />
                     @*<a href="javascript:void(0)" datatype="BAOJIANFANGXING" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>*@
                 </td>
                 <td>
@@ -125,17 +125,17 @@
 
             <tr>
                 <td>
-                    <label for="SHANDANKAISHITIME"> 删单时间:</label>
-                    <input class="easyui-textbox time_input" datatype="SHANDANKAISHI" id="SHANDANKAISHITIME" name="SHANDANKAISHITIME" editable="false" />
+                    <label for="BJSHANDANTIME"> 删单时间:</label>
+                    <input class="easyui-textbox time_input" datatype="BJSHANDAN" id="BJSHANDANTIME" name="BJSHANDANTIME" editable="false" />
                     @*<a href="javascript:void(0)" datatype="SHANDANKAISHI" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>*@
                 </td>
                 <td>
-                    <label for="SHANDANKAISHIUSERNAME">删单人:</label>
-                    <input class="easyui-textbox " type="text" id="SHANDANKAISHIUSERNAME" name="SHANDANKAISHIUSERNAME" disabled="disabled" />
+                    <label for="BJSHANDANUSERNAME">删单人:</label>
+                    <input class="easyui-textbox " type="text" id="BJSHANDANUSERNAME" name="BJSHANDANUSERNAME" disabled="disabled" />
                 </td>
                 <td>
-                    <label for="GAIDANKAISHITIME"> 改单时间:</label>
-                    <input class="easyui-textbox time_input" datatype="GAIDANKAISHI" id="GAIDANKAISHITIME" name="GAIDANKAISHITIME" editable="false" />
+                    <label for="BJGAIDANTIME"> 改单时间:</label>
+                    <input class="easyui-textbox time_input" datatype="BJGAIDAN" id="BJGAIDANTIME" name="BJGAIDANTIME" editable="false" />
                     @*<a href="javascript:void(0)" datatype="GAIDANKAISHI" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>*@
                 </td>
                 <td>
@@ -146,13 +146,13 @@
 
             <tr>
                 <td>
-                    <label for="CHAYANZHILINGXIAFATIME"> 查验时间:</label>
-                    <input class="easyui-textbox time_input INSPSTATUS" datatype="CHAYANZHILINGXIAFA" id="CHAYANZHILINGXIAFATIME" name="CHAYANZHILINGXIAFATIME" editable="false" />
+                    <label for="BJCHAYANTIME"> 查验时间:</label>
+                    <input class="easyui-textbox time_input INSPSTATUS" datatype="BJCHAYAN" id="BJCHAYANTIME" name="BJCHAYANTIME" editable="false" />
                     @*<a href="javascript:void(0)" datatype="CHAYANZHILINGXIAFA" class="easyui-linkbutton fillingData INSPSTATUS"><i class="icon-time"></i></a>*@
                 </td>
                 <td>
-                    <label for="CHAYANZHILINGXIAFAUSERNAME">查验人:</label>
-                    <input class="easyui-textbox " type="text" id="CHAYANZHILINGXIAFAUSERNAME" name="CHAYANZHILINGXIAFAUSERNAME" disabled="disabled" />
+                    <label for="BJCHAYANUSERNAME">查验人:</label>
+                    <input class="easyui-textbox " type="text" id="BJCHAYANUSERNAME" name="BJCHAYANUSERNAME" disabled="disabled" />
                 </td>
                 <td>
                     <label for="CHAYANFANGXINGTIME"> 查验放行时间:</label>
@@ -228,13 +228,6 @@
 
                 <td>
                     <label for="INSPSTATUS">报检状态:</label>
-                    @*<select class="easyui-combobox" name="INSPSTATUS">
-                            <option value="">请选择</option>
-                            <option value="报检">报检</option>
-                            <option value="木托">查验</option>
-                            <option value="熏蒸">熏蒸</option>
-                        </select>*@
-
                     <input class="easyui-textbox" name="INSPSTATUS" id="INSPSTATUS">
                 </td>
             </tr>
