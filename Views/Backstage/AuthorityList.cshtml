@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <link href="/js/Extjs42/resources/css/ext-all-gray.css" rel="stylesheet" type="text/css" />
+    <script src="/js/Extjs42/bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var gridUser, store_user, treeModelstore, gridStation, store_Station;
+        var userid;
+        Ext.onReady(function () {
+            Ext.regModel('User', { fields: ['ID', 'REALNAME', 'CREATETIME'] })
+            store_user = Ext.create('Ext.data.JsonStore', {
+                model: 'User',
+                proxy: {
+                    type: 'ajax',
+                    url: '/Backstage/loaduser',
+                    reader: {
+                        root: 'rows',
+                        type: 'json'
+                    }
+                },
+                autoLoad: true
+            })
+            var pgbar = Ext.create('Ext.toolbar.Paging', {
+                displayMsg: '显示 {0} - {1} 条,共计 {2} 条',
+                store: store_user,
+                displayInfo: true
+            })
+            gridUser = Ext.create('Ext.grid.Panel', {
+                renderTo: "div_west",
+                height: 550,
+                selModel: { selType: 'checkboxmodel' },
+                store: store_user,
+                bbar: pgbar,
+                columns: [
+                    { xtype: 'rownumberer', width: 35 },
+                    { header: 'ID', dataIndex: 'ID', hidden: true },
+                    { header: '姓名', dataIndex: 'REALNAME', width: 165 },
+                    { header: '创建时间', dataIndex: 'CREATETIME', flex: 1 }
+                ],
+                listeners: {
+                    itemclick: function (value, record, item, index, e, eOpts) {
+                        userid = record.get("ID");
+                        var proxys = treeModelstore.proxy;
+                        proxys.extraParams.userid = userid;
+                        treeModelstore.load();
+                    }
+                }
+            })
+
+            var myMask = new Ext.LoadMask(Ext.getBody(), { msg: "数据加载中，请稍等..." });
+
+            //系统模块
+            Ext.regModel("SysModule", { fields: ["ID", "NAME", "leaf", "URL", "PARENTID", "SORTINDEX"] });
+            // Ext.regModel("SysModelAuth", { fields: ["id", "name", "leaf", "url", "ParentID"] });
+            treeModelstore = new Ext.data.TreeStore({
+                model: 'SysModule',
+                extraParams: {
+                    ID: ''
+                },
+                proxy: {
+                    type: 'ajax',
+                    url: '/Backstage/loadmodulebyuser',
+                    reader: 'json'
+                },
+                root: {
+                    expanded: true,
+                    name: '模块管理' 
+                },
+                listeners: {
+                    beforeload: function () {
+                        myMask.show();
+                    },
+                    load: function (st, rds, opts) {
+                        if (myMask) { myMask.hide(); }
+                    }
+                },
+                autoLoad: false
+            });
+            var treepanel = Ext.create('Ext.tree.Panel', {
+                useArrows: true,
+                id:'treepanel',
+                animate: true,
+                rootVisible: false,
+                renderTo: "div_east",
+                store: treeModelstore,
+                height: 550,
+                columns: [
+                { dataIndex: 'ID', hidden: true },
+                { dataIndex: 'leaf', hidden: true },
+                { header: '模块名称', xtype: 'treecolumn', dataIndex: 'NAME', flex: 1 },
+                { header: 'PARENTID', dataIndex: 'PARENTID', hidden: true }
+                ],
+                listeners: {
+                    beforeitemexpand: function (curnode, options) {
+                        var proxy = treepanel.store.getProxy();
+                        proxy.extraParams.ID = curnode.data.ID;
+                        proxy.extraParams.userid = userid;
+                    },
+                    checkchange: function (node, checked) {
+                        setChildChecked(node, checked);
+                        setParentChecked(node, checked);
+                    }
+                }
+            }); 
+            //======================联动选择==========================
+            /*向上遍历父结点*/
+            var nodep = function (node) {
+                var bnode = true;
+                Ext.Array.each(node.childNodes, function (v) {
+                    if (!v.data.checked) {
+                        bnode = true;
+                        return;
+                    }
+                });
+                return bnode;
+            };
+            var parentnode = function (node) {
+                if (node.parentNode != null) {
+                    if (nodep(node.parentNode)) {
+                        node.parentNode.set('checked', true);
+                    } else {
+                        node.parentNode.set('checked', false);
+                    }
+                    parentnode(node.parentNode);
+                }
+            };
+            /*遍历子结点 选中 与取消选中操作*/
+            var chd = function (node, check) {
+                node.set('checked', check);
+                if (node.isNode) {
+                    node.eachChild(function (child) {
+                        chd(child, check);
+                    });
+                }
+            };  
+        });
+
+        //选择子节点
+        function setChildChecked(node, checked) {
+            node.expand();
+            node.set('checked', checked);
+            if (node.hasChildNodes()) {
+                node.eachChild(function (child) {
+                    setChildChecked(child, checked);
+                });
+            }
+        }
+
+        //选择父节点
+        function setParentChecked(node, checked) {
+            node.set({ checked: checked });
+            var parentNode = node.parentNode;
+            if (parentNode != null) {
+                var flag = false;
+                parentNode.eachChild(function (childnode) {
+                    if (childnode.get('checked')) {
+                        flag = true;
+                    }
+                });
+                if (checked == false) {
+                    if (!flag) {
+                        setParentChecked(parentNode, checked);
+                    }
+                } else {
+                    if (flag) {
+                        setParentChecked(parentNode, checked);
+                    }
+                }
+            }
+        }
+
+        function saveauthority() {
+            var moduleids = "";
+            var recs = Ext.getCmp('treepanel').getChecked();
+            for (var i = 0; i < recs.length; i++) {
+                moduleids += recs[i].data.ID + ',';
+            }
+            var mask = new Ext.LoadMask(Ext.getBody(), { msg: "数据保存中，请稍等..." });
+            mask.show();
+            Ext.Ajax.request({
+                url: '/Backstage/saveauthority',
+                params: { moduleids: moduleids, userid: userid },
+                success: function (option, success, response) {
+                    if (option.responseText == '{success:true}') {
+                        Ext.MessageBox.alert('提示', '保存成功！');
+                    }
+                    else {
+                        Ext.MessageBox.alert('提示', '保存失败！');
+                    }
+                    mask.hide();
+                }
+            })
+        }
+
+    </script>
+</head>
+<body>
+    <div class="btn-group" role="group">
+        <button type="button" onclick="saveauthority()" class="btn btn-primary btn-sm"><i class="icon iconfont">&#xe60c;</i>&nbsp;保存</button>
+    </div>
+    <div>
+        <div id="div_west" style="float:left;width:30%">
+        </div>
+        <div id="div_east" style="float:left;width:70%">
+        </div>
+    </div>
+</body>
+</html>
