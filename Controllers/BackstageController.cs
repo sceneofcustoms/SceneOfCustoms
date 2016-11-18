@@ -183,13 +183,14 @@ namespace SceneOfCustoms.Controllers
             string sql = string.Empty;
             string moduleid = Request["ID"];
             string userid = Request["userid"];
-            if (!string.IsNullOrEmpty(userid) && !string.IsNullOrEmpty(moduleid))
-            {
-                sql = @"select t.*,u.MODULEID from sys_module t left join (select * from sys_moduleuser where userid='{0}') u on t.ID=u.MODULEID
-                where  t.ParentId ='{1}' order by t.SortIndex";
-                sql = string.Format(sql, userid, moduleid);
-            }
-            if (!string.IsNullOrEmpty(userid) && string.IsNullOrEmpty(moduleid))
+            //            if (!string.IsNullOrEmpty(userid) && !string.IsNullOrEmpty(moduleid))
+            //            {
+            //                sql = @"select t.*,u.MODULEID from sys_module t left join (select * from sys_moduleuser where userid='{0}') u on t.ID=u.MODULEID
+            //                where  t.ParentId ='{1}' order by t.SortIndex";
+            //                sql = string.Format(sql, userid, moduleid);
+            //            }
+            //获取一级模块 && string.IsNullOrEmpty(moduleid)
+            if (!string.IsNullOrEmpty(userid))
             {
                 sql = @"select t.*,u.MODULEID from sys_module t  left join (select * from sys_moduleuser where userid='{0}') u on t.ID=u.MODULEID
                 where  t.ParentId is null order by t.SortIndex";
@@ -200,21 +201,46 @@ namespace SceneOfCustoms.Controllers
             {
                 DataTable dt = DBMgr.GetDataTable(sql);
                 int i = 0;
+                string children = string.Empty;
                 foreach (DataRow smEnt in dt.Rows)
                 {
+                    children = getchildren(smEnt["ID"].ToString(), userid);
                     if (i != dt.Rows.Count - 1)
                     {
-                        result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',checked:" + (string.IsNullOrEmpty(smEnt["MODULEID"] + "") ? "false" : "true") + "},";
+                        result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',checked:" + (string.IsNullOrEmpty(smEnt["MODULEID"] + "") ? "false" : "true") + ",children:" + children + "},";
                     }
                     else
                     {
-                        result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',checked:" + (string.IsNullOrEmpty(smEnt["MODULEID"] + "") ? "false" : "true") + "}";
+                        result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',checked:" + (string.IsNullOrEmpty(smEnt["MODULEID"] + "") ? "false" : "true") + ",children:" + children + "}";
                     }
                     i++;
                 }
             }
             result += "]";
             return result;
+        }
+        public string getchildren(string moduleid, string userid)
+        {
+            string children = "[";
+            sql = @"select t.*,u.MODULEID from sys_module t left join (select * from sys_moduleuser where userid='{0}') u on t.ID=u.MODULEID
+                where  t.ParentId ='{1}' order by t.SortIndex";
+            sql = string.Format(sql, userid, moduleid);
+            DataTable dt = DBMgr.GetDataTable(sql);
+            int i = 0;
+            foreach (DataRow smEnt in dt.Rows)
+            {
+                if (i != dt.Rows.Count - 1)
+                {
+                    children += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',checked:" + (string.IsNullOrEmpty(smEnt["MODULEID"] + "") ? "false" : "true") + ",children:[]},";
+                }
+                else
+                {
+                    children += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',checked:" + (string.IsNullOrEmpty(smEnt["MODULEID"] + "") ? "false" : "true") + ",children:[]}";
+                }
+                i++;
+            }
+            children += "]";
+            return children;
         }
         public string saveauthority()
         {
@@ -237,7 +263,7 @@ namespace SceneOfCustoms.Controllers
             catch (Exception ex)
             {
                 return "{success:false}";
-            } 
+            }
         }
     }
 }

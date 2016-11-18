@@ -43,8 +43,8 @@
                     itemclick: function (value, record, item, index, e, eOpts) {
                         userid = record.get("ID");
                         var proxys = treeModelstore.proxy;
-                        proxys.extraParams.userid = userid;
-                        treeModelstore.load();
+                        proxys.extraParams.userid = userid; 
+                        treeModelstore.load(); 
                     }
                 }
             })
@@ -53,7 +53,6 @@
 
             //系统模块
             Ext.regModel("SysModule", { fields: ["ID", "NAME", "leaf", "URL", "PARENTID", "SORTINDEX"] });
-            // Ext.regModel("SysModelAuth", { fields: ["id", "name", "leaf", "url", "ParentID"] });
             treeModelstore = new Ext.data.TreeStore({
                 model: 'SysModule',
                 extraParams: {
@@ -66,21 +65,12 @@
                 },
                 root: {
                     expanded: true,
-                    name: '模块管理' 
-                },
-                listeners: {
-                    beforeload: function () {
-                        myMask.show();
-                    },
-                    load: function (st, rds, opts) {
-                        if (myMask) { myMask.hide(); }
-                    }
-                },
-                autoLoad: false
+                    name: '模块管理'
+                } 
             });
             var treepanel = Ext.create('Ext.tree.Panel', {
                 useArrows: true,
-                id:'treepanel',
+                id: 'treepanel',
                 animate: true,
                 rootVisible: false,
                 renderTo: "div_east",
@@ -92,18 +82,13 @@
                 { header: '模块名称', xtype: 'treecolumn', dataIndex: 'NAME', flex: 1 },
                 { header: 'PARENTID', dataIndex: 'PARENTID', hidden: true }
                 ],
-                listeners: {
-                    beforeitemexpand: function (curnode, options) {
-                        var proxy = treepanel.store.getProxy();
-                        proxy.extraParams.ID = curnode.data.ID;
-                        proxy.extraParams.userid = userid;
-                    },
+                listeners: { 
                     checkchange: function (node, checked) {
                         setChildChecked(node, checked);
                         setParentChecked(node, checked);
                     }
                 }
-            }); 
+            });
             //======================联动选择==========================
             /*向上遍历父结点*/
             var nodep = function (node) {
@@ -134,7 +119,7 @@
                         chd(child, check);
                     });
                 }
-            };  
+            };
         });
 
         //选择子节点
