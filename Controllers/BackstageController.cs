@@ -119,11 +119,11 @@ namespace SceneOfCustoms.Controllers
             {
                 if (i != dt.Rows.Count - 1)
                 {
-                    result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "'},";
+                    result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',ICON:'" + smEnt["ICON"] + "'},";
                 }
                 else
                 {
-                    result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "'}";
+                    result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',ICON:'" + smEnt["ICON"] + "'}";
                 }
                 i++;
             }
@@ -136,8 +136,8 @@ namespace SceneOfCustoms.Controllers
             int result = 0;
             JObject jo = (JObject)JsonConvert.DeserializeObject(json);
             string newid = Guid.NewGuid().ToString();
-            sql = @"insert into sys_module (ID,NAME,ISLEAF,URL,PARENTID,SORTINDEX) 
-                          values ('" + newid + "','" + jo.Value<string>("NAME") + "','1','" + jo.Value<string>("URL") + "','" + jo.Value<string>("PARENTID") + "','" + jo.Value<string>("SORTINDEX") + "')";
+            sql = @"insert into sys_module (ID,NAME,ISLEAF,URL,PARENTID,SORTINDEX,ICON) 
+                          values ('" + newid + "','" + jo.Value<string>("NAME") + "','1','" + jo.Value<string>("URL") + "','" + jo.Value<string>("PARENTID") + "','" + jo.Value<string>("SORTINDEX") + "','" + jo.Value<string>("ICON") + "' )";
             result = DBMgr.ExecuteNonQuery(sql);
             jo.Remove("ID");
             jo.Add("ID", newid);
@@ -159,7 +159,7 @@ namespace SceneOfCustoms.Controllers
             string json = Request["json"];
             int result = 0;
             JObject jo = (JObject)JsonConvert.DeserializeObject(json);
-            sql = @"update sys_module set NAME = '" + jo.Value<string>("NAME") + "' ,url = '" + jo.Value<string>("URL") + "',SORTINDEX = '" + jo.Value<string>("SORTINDEX") + "' where ID = '" + jo.Value<string>("ID") + "'";
+            sql = @"update sys_module set NAME = '" + jo.Value<string>("NAME") + "' ,url = '" + jo.Value<string>("URL") + "',SORTINDEX = '" + jo.Value<string>("SORTINDEX") + "',ICON='" + jo.Value<string>("ICON") + "' where ID = '" + jo.Value<string>("ID") + "'";
             result = DBMgr.ExecuteNonQuery(sql);
             return result > 0 ? "{success:true,data:" + jo + "}" : "{success:false}";
         }

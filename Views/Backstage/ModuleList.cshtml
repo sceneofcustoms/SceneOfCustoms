@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width" />
     <title></title>
     <link href="/js/Extjs42/resources/css/ext-all-gray.css" rel="stylesheet" type="text/css" />
-    <script src="/js/Extjs42/bootstrap.js" type="text/javascript"></script> 
+    <script src="/js/Extjs42/bootstrap.js" type="text/javascript"></script>
     <style type="text/css">
         body {
             font-size: 14px !important;
@@ -15,7 +15,7 @@
         var treepanel;
         var nodeid = getQueryString("nodeid");
         Ext.onReady(function () {
-            Ext.regModel("SysModule", { fields: ["ID", "NAME", "leaf", "URL", "PARENTID", "SORTINDEX"] });
+            Ext.regModel("SysModule", { fields: ["ID", "NAME", "leaf", "URL", "PARENTID", "SORTINDEX","ICON"] });
             var toolbar = Ext.create('Ext.toolbar.Toolbar', {
                 items: [
                 {
@@ -102,6 +102,7 @@
                 { dataIndex: 'leaf', width: 100, hidden: true },
                 { header: '模块名称', xtype: 'treecolumn', dataIndex: 'NAME', width: 300 },
                 { header: '链接地址', dataIndex: 'URL', flex: 1 },
+                { header: '图标', dataIndex: 'ICON', width: 100 },
                 { header: '显示顺序', dataIndex: 'SORTINDEX', width: 100, hidden: false },
                 { dataIndex: 'PARENTID', hidden: true }
                 ],
@@ -121,6 +122,7 @@
                 items: [
                 { name: 'NAME', anchor: '95%', fieldLabel: '模块名称', allowBlank: false, blankText: '模块名称不能为空', emptyText: '请输入模块名称' },
                 { name: 'URL', anchor: '95%', fieldLabel: '链接地址', allowBlank: true, emptyText: '请输入链接地址' },
+                { name: 'ICON', anchor: '95%', fieldLabel: '图标' },
                 { name: 'SORTINDEX', anchor: '95%', fieldLabel: '显示顺序', xtype: 'numberfield' },
                 { name: 'ID', xtype: 'hidden' },
                 { name: 'PARENTID', xtype: 'hidden', id: 'field_parentid' }
@@ -136,14 +138,14 @@
                                     var result = Ext.decode(response.responseText);
                                     if (result.success) {
                                         Ext.Msg.alert("提示", "保存成功!", function () {
-                                            if (action == "create") { //如果是新增 
+                                            if (action == "create") { //如果是新增
                                                 if (parentNode.data.leaf) {//如果是叶子
                                                     parentNode.set("leaf", false);
                                                     parentNode.expand();
                                                 }
                                                 else {
                                                     if (parentNode.isExpanded()) {//如果已经展开了
-                                                        var childNode = parentNode.createNode({ ID: result.data.ID, NAME: result.data.NAME, leaf: true, URL: result.data.URL, SORTINDEX: result.data.SORTINDEX});
+                                                        var childNode = parentNode.createNode({ ID: result.data.ID, NAME: result.data.NAME, leaf: true, URL: result.data.URL, SORTINDEX: result.data.SORTINDEX });
                                                         parentNode.appendChild(childNode);
                                                     }
                                                     else {//如果未展开
@@ -203,8 +205,7 @@
             }
             module_edit_win(recs[0], "update");
         }
-        function deletemodule()
-        {
+        function deletemodule() {
             var recs = Ext.getCmp('treepanel').getSelectionModel().getSelection();
             if (recs.length == 0) {
                 Ext.Msg.alert("提示", "请选择要删除的节点!");

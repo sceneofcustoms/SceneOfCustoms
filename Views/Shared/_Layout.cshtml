@@ -21,21 +21,8 @@
     <link href="~/Content/iconfont/iconfont.css" rel="stylesheet" />
     @Scripts.Render("~/easyui/js")
     <script src="~/js/commondata.js"></script>
-    <script type="text/javascript">
-        //function closes() {
-        //    $("#Loading").fadeOut("normal", function () {
-        //        $(this).remove();
-        //    });
-        //}
-        //var pc;
-        //$.parser.onComplete = function () {
-        //    if (pc) clearTimeout(pc);
-        //    pc = setTimeout(closes, 1000);
-        //}
-    </script>
 </head>
 <body>
-    @*<div id='Loading' style="position:absolute;z-index:1000;top:0px;left:0px;width:100%;height:100%;background:#DDDDDB url('style/images/bodybg.jpg');text-align:center;padding-top: 20%;"><h1><font color="#15428B">加载中···</font></h1></div>*@
     <div class="container">
         <div style="margin:10px 0px">
             <img src="~/Images/fld_logo.png" />
@@ -47,72 +34,50 @@
         </div>
         <div style="height: 36px; background-color: #CFDEFF;width:100%">
             <ul class="sf-menu" id="na_menu" style="font-size:14px">
-                <li>
-                    <a href="/Home/Index">首页</a>
-                </li>
-                @*@Html.Action("Header", "Common")/Common/ImportOrder?busitype=11*@
-                <li>
-                    <a href="javascript:void(0)">报关操作</a>
-                    <ul>
-                        @*<li><a href="/Declare/AirIn_List"><i class="iconfont">&#xe616;</i> 空运进口</a></li>
-                            <li><a href="/Declare/AirOut_List"><i class="iconfont">&#xe616;</i> 空运出口</a></li>
-                            <li><a href="/Declare/LandIn_List"><i class="iconfont">&#xe618;</i> 陆运进口</a></li>
-                            <li><a href="/Declare/LandOut_List"><i class="iconfont">&#xe618;</i> 陆运出口</a></li>
-                            <li><a href="/Declare/SeaIn_List"><i class="iconfont">&#xe617;</i> 海运进口</a></li>
-                            <li><a href="/Declare/SeaOut_List"><i class="iconfont">&#xe617;</i> 海运出口</a></li>
-                            <li><a href="/Declare/DomesticKnot_List"><i class="iconfont">&#xe60e;</i> 国内结转</a></li>
-                            <li><a href="/Declare/OverlayBonded_List"><i class="iconfont">&#xe619;</i> 叠加保税</a></li>
-                            <li><a href="/Declare/SpecialSupervision_List"><i class="iconfont">&#xe61a;</i> 特殊监管</a></li>*@
-                        <li><a href="/Declare/OnelineIn_List"><i class="iconfont">&#xe61a;</i> 一线进口</a></li>
-                        <li><a href="/Declare/OnelineOut_List"><i class="iconfont">&#xe61a;</i> 一线出口</a></li>
-                        <li><a href="/Declare/DomesticBlc_List"><i class="iconfont">&#xe61a;</i> 结转BLC</a></li>
-                        <li><a href="/Declare/SpecialSupervision_List"><i class="iconfont">&#xe61a;</i> 特殊监管</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0)">报检操作</a>
-                    <ul>
-                        @*<li><a href="/Inspect/AirIn_List"><i class="iconfont">&#xe616;</i> 空运进口</a></li>
-                            <li><a href="/Inspect/AirOut_List"><i class="iconfont">&#xe616;</i> 空运出口</a></li>
-                            <li><a href="/Inspect/LandIn_List"><i class="iconfont">&#xe618;</i> 陆运进口</a></li>
-                            <li><a href="/Inspect/LandOut_List"><i class="iconfont">&#xe618;</i> 陆运出口</a></li>
-                            <li><a href="/Inspect/SeaIn_List"><i class="iconfont">&#xe617;</i> 海运进口</a></li>
-                            <li><a href="/Inspect/SeaOut_List"><i class="iconfont">&#xe617;</i> 海运出口</a></li>*@
-                        <li><a href="/Inspect/DomesticKnot_List"><i class="iconfont">&#xe60e;</i> 国内业务</a></li>
-                        <li><a href="/Inspect/OnelineIn_List"><i class="iconfont">&#xe60e;</i> 一线进口</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0)">场站查询</a>
-                    <ul>
-                        <li><a href="/Stationquery/Carcardquery"><i class="iconfont">&#xe60e;</i> 车卡查询</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0)">异常管理</a>
-                    <ul>
-                        <li><a href="/Abnormalmodule/Abnormallog"><i class="iconfont">&#xe60e;</i>异常登记</a></li>
-                    </ul>
-                </li>
+                @Html.Action("Header", "Common")
                 @*<li>
-                        <a href="javascript:void(0)">退单管理</a>
+                        <a href="/Home/Index">首页</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">报关操作</a>
                         <ul>
-                            <li><a href="/Retreatorder/BackOrder_List">退单管理</a></li>
-                            <li><a href="/Retreatorder/SignOrder_List">签收操作</a></li>
+                            <li><a href="/Declare/OnelineIn_List"><i class="iconfont">&#xe61a;</i> 一线进口</a></li>
+                            <li><a href="/Declare/OnelineOut_List"><i class="iconfont">&#xe61a;</i> 一线出口</a></li>
+                            <li><a href="/Declare/DomesticBlc_List"><i class="iconfont">&#xe61a;</i> 结转BLC</a></li>
+                            <li><a href="/Declare/SpecialSupervision_List"><i class="iconfont">&#xe61a;</i> 特殊监管</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">报检操作</a>
+                        <ul>
+                            <li><a href="/Inspect/DomesticKnot_List"><i class="iconfont">&#xe60e;</i> 国内业务</a></li>
+                            <li><a href="/Inspect/OnelineIn_List"><i class="iconfont">&#xe60e;</i> 一线进口</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">场站查询</a>
+                        <ul>
+                            <li><a href="/Stationquery/Carcardquery"><i class="iconfont">&#xe60e;</i> 车卡查询</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">异常管理</a>
+                        <ul>
+                            <li><a href="/Abnormalmodule/Abnormallog"><i class="iconfont">&#xe60e;</i>异常登记</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">后台管理</a>
+                        <ul>
+                            <li><a href="/Backstage/UserList">用户管理</a></li>
+                            <li><a href="/Backstage/ModuleList">模块管理</a></li>
+                            <li><a href="/Backstage/AuthorityList">权限管理</a></li>
+                            <li><a href="/Common/SyncFoo_List">同步日志</a></li>
+                            <li><a href="/Common/SyncMsg_List">同步状态</a></li>
+                            <li><a href="/Common/BackMsg_List">返回状态</a></li>
+                            <li><a href="/Common/Attachment_List">随附文件</a></li>
                         </ul>
                     </li>*@
-                <li>
-                    <a href="javascript:void(0)">后台管理</a>
-                    <ul>
-                        <li><a href="/Backstage/UserList">用户管理</a></li>
-                        <li><a href="/Backstage/ModuleList">模块管理</a></li>
-                        <li><a href="/Backstage/AuthorityList">权限管理</a></li>
-                        <li><a href="/Common/SyncFoo_List">同步日志</a></li>
-                        <li><a href="/Common/SyncMsg_List">同步状态</a></li>
-                        <li><a href="/Common/BackMsg_List">返回状态</a></li>
-                        <li><a href="/Common/Attachment_List">随附文件</a></li>
-                    </ul>
-                </li>
             </ul>
         </div>
         <div style="text-align:right;height:30px;line-height:30px;">
