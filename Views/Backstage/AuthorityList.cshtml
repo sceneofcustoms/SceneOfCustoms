@@ -71,7 +71,7 @@
                 root: {
                     expanded: true,
                     name: '模块管理'
-                }
+                } 
             });
             var treepanel = Ext.create('Ext.tree.Panel', {
                 useArrows: true,
@@ -87,7 +87,7 @@
                 { header: '模块名称', xtype: 'treecolumn', dataIndex: 'NAME', flex: 1 },
                 { header: 'PARENTID', dataIndex: 'PARENTID', hidden: true }
                 ],
-                listeners: {
+                listeners: { 
                     checkchange: function (node, checked) {
                         setChildChecked(node, checked);
                         setParentChecked(node, checked);
@@ -198,3 +198,4 @@
     </div>
 </body>
 </html>
+
