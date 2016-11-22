@@ -12,8 +12,6 @@
                 pageList: [10,20, 40, 60, 80, 100, 300],
                 pagination: true,">
         <thead>
-            <input type="hidden" name="CODE" value="@ViewData["CODE"]" />
-            <input type="hidden" name="ID" value="@ViewData["ID"]" />
             <tr>
                 <th data-options="field: 'ck', checkbox: true"></th>
                 <th data-options="field:'DECLARATIONCODE',sortable:true,width:100,align:'center'">报关单号</th>
@@ -34,6 +32,11 @@
     $('#Bgdinfo').edatagrid({
         queryParams: { data: CODE }
     });
+
+    var host = window.location.host;
+    var ID = $("input[name='ID']").val();
+    var page = $("input[name='page']").val();
+
     function formatISPRINT(value) {
         if (value == 0) {
             return "否";
@@ -43,15 +46,11 @@
     }
     function formatter(value, row, index) {
         var DECLARATIONCODE = row.DECLARATIONCODE;
-        var s = '<a href="javascript:void(0)" onclick="view(' + DECLARATIONCODE + ')">查看</a> ';
+        var url = "http://" + host + page + "?ID=" + ID + "&DECLARATIONCODE=" + DECLARATIONCODE;
+        var s = '<a href="' + url + '">查看</a> ';
         return s;
     }
-    function view(DECLARATIONCODE) {
-        var host = window.location.host;
-        var ID = $("input[name='ID']").val();
-        var page = $("input[name='page']").val();
-        window.location.href = "http://" + host + page + "?ID=" + ID + "&DECLARATIONCODE=" + DECLARATIONCODE;
-    }
+
     $(document).on("change", "#Bgd input", function () {
         $("#Bgdinfo").edatagrid('saveRow');
     });

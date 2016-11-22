@@ -686,7 +686,9 @@ namespace SceneOfCustoms.Controllers
         {
             string ID = Request.QueryString["ID"];
             string DECLARATIONCODE = Request.QueryString["DECLARATIONCODE"];//报关单号
-            string sql = "select * from list_order  where  ID = " + ID;
+            string INSPECTIONCODE = Request.QueryString["INSPECTIONCODE"];//报检单号
+            string TYPE = Request.QueryString["TYPE"];// 判断是报关  还是报检
+            string sql = "select *  from list_order  where  ID = " + ID;
             DataTable dt = DBMgr.GetDataTable(sql);
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
@@ -694,76 +696,144 @@ namespace SceneOfCustoms.Controllers
             result = result.Substring(1, result.Length - 1);
             result = result.Substring(0, result.Length - 1);
             JObject OrderArray = JsonConvert.DeserializeObject<JObject>(result);                //json转换为数组
-            string CODE = OrderArray.Value<string>("CODE");                               //取数组的一个值
-            if (string.IsNullOrEmpty(DECLARATIONCODE))
+            string CODE = OrderArray.Value<string>("CODE");                             //取数组的一个值
+
+
+            if (TYPE == "01")
             {
-                sql = "select ORDERCODE,DECLARATIONCODE from LIST_DECLARATION where id=(select min(ID) from LIST_DECLARATION where ORDERCODE='" + CODE + "')";
+                if (string.IsNullOrEmpty(DECLARATIONCODE))
+                {
+                    sql = "select * from LIST_DECLARATION where  ORDERCODE='" + CODE + "'  order by id asc";
+                }
+                else
+                {
+                    sql = "select * from LIST_DECLARATION where  DECLARATIONCODE='" + DECLARATIONCODE + "'";
+                }
                 dt = DBMgr.GetDataTable(sql);
                 if (dt.Rows.Count > 0)
                 {
                     DECLARATIONCODE = dt.Rows[0]["DECLARATIONCODE"] + "";
                     OrderArray["DECLARATIONCODE"] = DECLARATIONCODE;
                     OrderArray["ORDERCODE"] = OrderArray.Value<string>("CODE");
+
+                    OrderArray["IFSHANDAN"] = dt.Rows[0]["IFSHANDAN"] + "";
+                    OrderArray["SHANDANTOTAL"] = dt.Rows[0]["SHANDANTOTAL"] + "";
+                    OrderArray["SHANDANDESC"] = dt.Rows[0]["SHANDANDESC"] + "";
+                    OrderArray["IFGAIDAN"] = dt.Rows[0]["IFGAIDAN"] + "";
+                    OrderArray["GAIDANTOTAL"] = dt.Rows[0]["GAIDANTOTAL"] + "";
+                    OrderArray["GAIDANDESC"] = dt.Rows[0]["GAIDANDESC"] + "";
+
+
+                    OrderArray["IFLIHUO"] = dt.Rows[0]["IFLIHUO"] + "";
+                    OrderArray["LIHUOTOTAL"] = dt.Rows[0]["LIHUOTOTAL"] + "";
+
+
+
+                    OrderArray["IFYIJIAO"] = dt.Rows[0]["IFYIJIAO"] + "";
+                    OrderArray["IFCHAYAN"] = dt.Rows[0]["IFCHAYAN"] + "";
+                    OrderArray["CHAYANTOTAL"] = dt.Rows[0]["CHAYANTOTAL"] + "";
+                    OrderArray["CHAYANDESC"] = dt.Rows[0]["CHAYANDESC"] + "";
+                    OrderArray["IFTIAODANG"] = dt.Rows[0]["IFTIAODANG"] + "";
+                    OrderArray["TIAODANGTOTAL"] = dt.Rows[0]["TIAODANGTOTAL"] + "";
+                    OrderArray["IFKOUHUO"] = dt.Rows[0]["IFKOUHUO"] + "";
+                    if (!string.IsNullOrEmpty(dt.Rows[0]["CHAYANZHILINGXIAFATIME"] + ""))
+                    {
+                        OrderArray["CHAYANZHILINGXIAFATIME"] = Convert.ToDateTime(dt.Rows[0]["CHAYANZHILINGXIAFATIME"]).ToString("yyyy-MM-dd HH:mm:ss");
+                    }
+                    if (!string.IsNullOrEmpty(dt.Rows[0]["KOUHUOTIME"] + ""))
+                    {
+                        OrderArray["KOUHUOTIME"] = Convert.ToDateTime(dt.Rows[0]["KOUHUOTIME"]).ToString("yyyy-MM-dd HH:mm:ss");
+                    }
+
                 }
-            }
-            else
-            {
-                OrderArray["DECLARATIONCODE"] = DECLARATIONCODE;
-                OrderArray["ORDERCODE"] = OrderArray.Value<string>("CODE");
-            }
-            sql = "select * from LIST_DECLARATIONXC where DECLARATIONCODE='" + DECLARATIONCODE + "'";
-            dt = DBMgr.GetDataTable(sql);
-            if (dt.Rows.Count > 0)
-            {
-                OrderArray["IFYIJIAO"] = dt.Rows[0]["IFYIJIAO"] + "";
-                OrderArray["LIHUOSIGN"] = dt.Rows[0]["LIHUOSIGN"] + "";
-                OrderArray["IFSHANDAN"] = dt.Rows[0]["IFSHANDAN"] + "";
-                OrderArray["SHANDANTOTAL"] = dt.Rows[0]["SHANDANTOTAL"] + "";
-                OrderArray["SHANDANDESC"] = dt.Rows[0]["SHANDANDESC"] + "";
-                OrderArray["IFGAIDAN"] = dt.Rows[0]["IFGAIDAN"] + "";
-                OrderArray["GAIDANTOTAL"] = dt.Rows[0]["GAIDANTOTAL"] + "";
-                OrderArray["GAIDANDESC"] = dt.Rows[0]["GAIDANDESC"] + "";
-                OrderArray["IFCHAYAN"] = dt.Rows[0]["IFCHAYAN"] + "";
-                OrderArray["CHAYANTIMES"] = dt.Rows[0]["CHAYANTIMES"] + "";
-                OrderArray["CHAYANREMARK"] = dt.Rows[0]["CHAYANREMARK"] + "";
-                if (!string.IsNullOrEmpty(dt.Rows[0]["CHAYANZHILINGXIAFATIME"] + ""))
+                else
                 {
-                    OrderArray["CHAYANZHILINGXIAFATIME"] = Convert.ToDateTime(dt.Rows[0]["CHAYANZHILINGXIAFATIME"]).ToString("yyyy-MM-dd HH:mm:ss");
+
+                    OrderArray["DECLARATIONCODE"] = "";
+                    OrderArray["ORDERCODE"] = OrderArray.Value<string>("CODE");
+
+                    OrderArray["IFSHANDAN"] = "";
+                    OrderArray["SHANDANTOTAL"] = "";
+                    OrderArray["SHANDANDESC"] = "";
+
+                    OrderArray["IFGAIDAN"] = "";
+                    OrderArray["GAIDANTOTAL"] = "";
+                    OrderArray["GAIDANDESC"] = "";
+
+                    OrderArray["IFYIJIAO"] = "";
+                    OrderArray["IFCHAYAN"] = "";
+                    OrderArray["CHAYANTOTAL"] = "";
+                    OrderArray["CHAYANDESC"] = "";
+
+                    OrderArray["IFLIHUO"] = "";
+                    OrderArray["LIHUOTOTAL"] = "";
+
+                    OrderArray["IFTIAODANG"] = "";
+                    OrderArray["TIAODANGTOTAL"] = "";
+                    OrderArray["IFKOUHUO"] = "";
+
+                    OrderArray["CHAYANZHILINGXIAFATIME"] = "";
+                    OrderArray["KOUHUOTIME"] = "";
                 }
-
-                OrderArray["IFTIAODANG"] = dt.Rows[0]["IFTIAODANG"] + "";
-                OrderArray["TIAODANGTIMES"] = dt.Rows[0]["TIAODANGTIMES"] + "";
-                OrderArray["KOUHUOSIGN"] = dt.Rows[0]["KOUHUOSIGN"] + "";
-                if (!string.IsNullOrEmpty(dt.Rows[0]["KOUHUOTIME"] + ""))
-                {
-                    OrderArray["KOUHUOTIME"] = Convert.ToDateTime(dt.Rows[0]["KOUHUOTIME"]).ToString("yyyy-MM-dd HH:mm:ss");
-                }
-
-
-                OrderArray["IFXUNZHENG"] = dt.Rows[0]["IFXUNZHENG"] + "";
-                OrderArray["XUNZHENGDESC"] = dt.Rows[0]["XUNZHENGDESC"] + "";
             }
-            else
+            else if (TYPE == "02")
             {
-                OrderArray["IFYIJIAO"] = "";
-                OrderArray["LIHUOSIGN"] = "";
-                OrderArray["IFSHANDAN"] = "";
-                OrderArray["SHANDANTOTAL"] = "";
-                OrderArray["SHANDANDESC"] = "";
-                OrderArray["IFGAIDAN"] = "";
-                OrderArray["GAIDANTOTAL"] = "";
-                OrderArray["GAIDANDESC"] = "";
-                OrderArray["IFCHAYAN"] = "";
-                OrderArray["CHAYANTIMES"] = "";
-                OrderArray["CHAYANREMARK"] = "";
-                OrderArray["CHAYANZHILINGXIAFATIME"] = "";
-                OrderArray["IFTIAODANG"] = "";
-                OrderArray["TIAODANGTIMES"] = "";
-                OrderArray["KOUHUOSIGN"] = "";
-                OrderArray["KOUHUOTIME"] = "";
-                OrderArray["IFXUNZHENG"] = "";
-                OrderArray["XUNZHENGDESC"] = "";
+                if (string.IsNullOrEmpty(INSPECTIONCODE))
+                {
+                    sql = "select * from LIST_INSPECTION where  ORDERCODE='" + CODE + "' order by id asc";
+                }
+                else
+                {
+                    sql = "select * from LIST_INSPECTION where  INSPECTIONCODE='" + INSPECTIONCODE + "'";
+                }
+                dt = DBMgr.GetDataTable(sql);
+                if (dt.Rows.Count > 0)
+                {
+                    INSPECTIONCODE = dt.Rows[0]["INSPECTIONCODE"] + "";
+                    OrderArray["INSPECTIONCODE"] = INSPECTIONCODE;
+                    OrderArray["ORDERCODE"] = OrderArray.Value<string>("CODE");
+
+                    OrderArray["IFSHANDAN"] = dt.Rows[0]["IFSHANDAN"] + "";
+                    OrderArray["SHANDANTOTAL"] = dt.Rows[0]["SHANDANTOTAL"] + "";
+                    OrderArray["SHANDANDESC"] = dt.Rows[0]["SHANDANDESC"] + "";
+
+                    OrderArray["IFGAIDAN"] = dt.Rows[0]["IFGAIDAN"] + "";
+                    OrderArray["GAIDANTOTAL"] = dt.Rows[0]["GAIDANTOTAL"] + "";
+                    OrderArray["GAIDANDESC"] = dt.Rows[0]["GAIDANDESC"] + "";
+
+                    OrderArray["IFXUNZHENG"] = dt.Rows[0]["IFXUNZHENG"] + "";
+                    OrderArray["XUNZHENGDESC"] = dt.Rows[0]["XUNZHENGDESC"] + "";
+
+
+                    OrderArray["IFCHAYAN"] = dt.Rows[0]["IFCHAYAN"] + "";
+                    OrderArray["CHAYANTOTAL"] = dt.Rows[0]["CHAYANTOTAL"] + "";
+                    OrderArray["CHAYANDESC"] = dt.Rows[0]["CHAYANDESC"] + "";
+
+                }
+                else
+                {
+                    OrderArray["INSPECTIONCODE"] = "";
+                    OrderArray["ORDERCODE"] = OrderArray.Value<string>("CODE");
+
+                    OrderArray["IFSHANDAN"] = "";
+                    OrderArray["SHANDANTOTAL"] = "";
+                    OrderArray["SHANDANDESC"] = "";
+
+                    OrderArray["IFGAIDAN"] = "";
+                    OrderArray["GAIDANTOTAL"] = "";
+                    OrderArray["GAIDANDESC"] = "";
+
+                    OrderArray["IFXUNZHENG"] = "";
+                    OrderArray["XUNZHENGDESC"] = "";
+
+                    OrderArray["IFCHAYAN"] = "";
+                    OrderArray["CHAYANTOTAL"] = "";
+                    OrderArray["CHAYANDESC"] = "";
+                }
             }
+
+
+
 
             string DECLWAY = OrderArray.Value<string>("DECLWAY");                               //取数组的一个值
             switch (DECLWAY)
@@ -985,7 +1055,6 @@ namespace SceneOfCustoms.Controllers
         public ActionResult SaveData(FormCollection form)
         {
             string ID = Request.Form["ID"];
-            string DECLARATIONCODE = Request.Form["DECLARATIONCODE"];
             string sql = "update list_order set ";
             if (Request.Params.AllKeys.Contains("REPUNITCODE"))
             {
@@ -1019,10 +1088,10 @@ namespace SceneOfCustoms.Controllers
             //}
 
 
-            if (Request.Params.AllKeys.Contains("LIHUOTIMES"))
-            {
-                sql += "  LIHUOTIMES =  '" + Request.Form["LIHUOTIMES"] + "',";
-            }
+            //if (Request.Params.AllKeys.Contains("LIHUOTIMES"))
+            //{
+            //    sql += "  LIHUOTIMES =  '" + Request.Form["LIHUOTIMES"] + "',";
+            //}
 
 
             //if (Request.Params.AllKeys.Contains("TIAODANGTIMES"))
@@ -1159,15 +1228,19 @@ namespace SceneOfCustoms.Controllers
             if (DBMgr.ExecuteNonQuery(sql) == 1)
             {
                 string FORMINFO = Request.Form.ToString();
-                UpdateXcinfo(DECLARATIONCODE, FORMINFO);
                 string type = Request.Form["type"];
+                string CODE = Request.Form["CODE"];
+                string DECLARATIONCODE = Request.Form["DECLARATIONCODE"];
+                string INSPECTIONCODE = Request.Form["INSPECTIONCODE"];
                 if (type == "02")
                 {
-                    //IFS.ZSBJ_ABNO(ID);
+                    UpdateXcInspection(INSPECTIONCODE, FORMINFO);
+                    IFS.ZSBJ_ABNO(CODE);
                 }
                 else
                 {
-                    //IFS.ZSBG_ABNO(ID);
+                    UpdateXcDeclaration(DECLARATIONCODE, FORMINFO);
+                    IFS.ZSBG_ABNO(CODE);
                 }
 
                 return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
@@ -1181,76 +1254,127 @@ namespace SceneOfCustoms.Controllers
 
 
 
-        //同步报关单现场表里的数据 DLC 2016-11-3
-        public static void UpdateXcinfo(string DECLARATIONCODE, string FORMINFO)
+        public static void UpdateXcInspection(string INSPECTIONCODE, string FORMINFO)
         {
             System.Collections.Specialized.NameValueCollection Request = System.Web.HttpUtility.ParseQueryString(FORMINFO);
-            string sql = "select ID from LIST_DECLARATIONXC where DECLARATIONCODE= '" + DECLARATIONCODE + "'";
-            DataTable dt = DBMgr.GetDataTable(sql);
-            if (dt.Rows.Count > 0)
-            {
-                sql = "update LIST_DECLARATIONXC set ";
-                sql += "  IFYIJIAO =  '" + Request["IFYIJIAO"] + "',";
-                sql += "  LIHUOSIGN =  '" + Request["LIHUOSIGN"] + "',";
-                sql += "  IFSHANDAN =  '" + Request["IFSHANDAN"] + "',";
-                if (Request.AllKeys.Contains("SHANDANTOTAL"))
-                {
-                    sql += "  SHANDANTOTAL =  '" + Request["SHANDANTOTAL"] + "',";
-                }
-                if (Request.AllKeys.Contains("SHANDANDESC"))
-                {
-                    sql += "  SHANDANDESC =  '" + Request["SHANDANDESC"] + "',";
-                }
-                sql += "  IFGAIDAN =  '" + Request["IFGAIDAN"] + "',";
-                if (Request.AllKeys.Contains("GAIDANTOTAL"))
-                {
-                    sql += "  GAIDANTOTAL =  '" + Request["GAIDANTOTAL"] + "',";
-                }
-                if (Request.AllKeys.Contains("GAIDANDESC"))
-                {
-                    sql += "  GAIDANDESC =  '" + Request["GAIDANDESC"] + "',";
-                }
-                sql += "  IFCHAYAN =  '" + Request["IFCHAYAN"] + "',";
-                if (Request.AllKeys.Contains("CHAYANTIMES"))
-                {
-                    sql += "  CHAYANTIMES =  '" + Request["CHAYANTIMES"] + "',";
-                }
 
-                if (Request.AllKeys.Contains("CHAYANREMARK"))
-                {
-                    sql += "  CHAYANREMARK =  '" + Request["CHAYANREMARK"] + "',";
-                }
-                if (Request.AllKeys.Contains("CHAYANZHILINGXIAFATIME"))
-                {
-                    sql += "  CHAYANZHILINGXIAFATIME =  to_date('" + Request["CHAYANZHILINGXIAFATIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
-                }
-                sql += "  IFTIAODANG =  '" + Request["IFTIAODANG"] + "',";
-                if (Request.AllKeys.Contains("TIAODANGTIMES"))
-                {
-                    sql += "  TIAODANGTIMES =  '" + Request["TIAODANGTIMES"] + "',";
-                }
-                sql += "  KOUHUOSIGN =  '" + Request["KOUHUOSIGN"] + "',";
-                if (Request.AllKeys.Contains("KOUHUOTIME"))
-                {
-                    sql += "  KOUHUOTIME =  to_date('" + Request["KOUHUOTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
-                }
-                if (Request.AllKeys.Contains("IFXUNZHENG"))
-                {
-                    sql += "  IFXUNZHENG =  '" + Request["IFXUNZHENG"] + "',";
-                }
-                if (Request.AllKeys.Contains("XUNZHENGDESC"))
-                {
-                    sql += "  XUNZHENGDESC =  '" + Request["XUNZHENGDESC"] + "',";
-                }
-                sql = sql.Substring(0, sql.Length - 1);
-                sql += " where DECLARATIONCODE =" + DECLARATIONCODE;
-                DBMgr.ExecuteNonQuery(sql);
-            }
-            else
+            string sql = "update LIST_INSPECTION set";
+
+
+
+            sql += "  IFSHANDAN =  '" + Request["IFSHANDAN"] + "',";
+            if (Request.AllKeys.Contains("SHANDANTOTAL"))
             {
-                sql = @"insert into LIST_DECLARATIONXC(ID,CODE,ORDERCODE,DECLARATIONCODE,IFYIJIAO,LIHUOSIGN,IFSHANDAN,SHANDANTOTAL,SHANDANDESC,IFGAIDAN,GAIDANTOTAL,GAIDANDESC,IFCHAYAN,CHAYANTIMES,CHAYANREMARK,CHAYANZHILINGXIAFATIME,IFTIAODANG,TIAODANGTIMES,KOUHUOSIGN,KOUHUOTIME,IFXUNZHENG,XUNZHENGDESC,DECLARATIONID,CREATETIME) VALUES(LIST_DECLARATIONXC_ID.Nextval,'','" + Request["ORDERCODE"] + "','" + Request["DECLARATIONCODE"] + "','" + Request["IFYIJIAO"] + "','" + Request["LIHUOSIGN"] + "','" + Request["IFSHANDAN"] + "','" + Request["SHANDANTOTAL"] + "','" + Request["SHANDANDESC"] + "','" + Request["IFGAIDAN"] + "','" + Request["GAIDANTOTAL"] + "','" + Request["GAIDANDESC"] + "','" + Request["IFCHAYAN"] + "','" + Request["CHAYANTIMES"] + "','" + Request["CHAYANREMARK"] + "',to_date('" + Request["CHAYANZHILINGXIAFATIME"] + "','yyyy-mm-dd hh24:mi:ss'),'" + Request["IFTIAODANG"] + "','" + Request["TIAODANGTIMES"] + "','" + Request["KOUHUOSIGN"] + "',to_date('" + Request["KOUHUOTIME"] + "','yyyy-mm-dd hh24:mi:ss'),'" + Request["IFXUNZHENG"] + "','" + Request["XUNZHENGDESC"] + "','',sysdate)";
-                DBMgr.ExecuteNonQuery(sql);
+                sql += "  SHANDANTOTAL =  '" + Request["SHANDANTOTAL"] + "',";
             }
+            if (Request.AllKeys.Contains("SHANDANDESC"))
+            {
+                sql += "  SHANDANDESC =  '" + Request["SHANDANDESC"] + "',";
+            }
+
+            sql += "  IFGAIDAN =  '" + Request["IFGAIDAN"] + "',";
+            if (Request.AllKeys.Contains("GAIDANTOTAL"))
+            {
+                sql += "  GAIDANTOTAL =  '" + Request["GAIDANTOTAL"] + "',";
+            }
+            if (Request.AllKeys.Contains("GAIDANDESC"))
+            {
+                sql += "  GAIDANDESC =  '" + Request["GAIDANDESC"] + "',";
+            }
+
+
+            sql += "  IFCHAYAN =  '" + Request["IFCHAYAN"] + "',";
+            if (Request.AllKeys.Contains("CHAYANTOTAL"))
+            {
+                sql += "  CHAYANTOTAL =  '" + Request["CHAYANTOTAL"] + "',";
+            }
+            if (Request.AllKeys.Contains("CHAYANDESC"))
+            {
+                sql += "  CHAYANDESC =  '" + Request["CHAYANDESC"] + "',";
+            }
+
+            sql += "  IFXUNZHENG =  '" + Request["IFXUNZHENG"] + "',";
+            if (Request.AllKeys.Contains("XUNZHENGDESC"))
+            {
+                sql += "  XUNZHENGDESC =  '" + Request["XUNZHENGDESC"] + "',";
+            }
+
+
+            sql = sql.Substring(0, sql.Length - 1);
+            sql += " where INSPECTIONCODE =" + INSPECTIONCODE;
+            DBMgr.ExecuteNonQuery(sql);
+        }
+
+
+
+        //同步报关单现场表里的数据 DLC 2016-11-3
+        public static void UpdateXcDeclaration(string DECLARATIONCODE, string FORMINFO)
+        {
+            System.Collections.Specialized.NameValueCollection Request = System.Web.HttpUtility.ParseQueryString(FORMINFO);
+
+            string sql = "update LIST_DECLARATION set";
+
+
+
+            sql += "  IFSHANDAN =  '" + Request["IFSHANDAN"] + "',";
+            if (Request.AllKeys.Contains("SHANDANTOTAL"))
+            {
+                sql += "  SHANDANTOTAL =  '" + Request["SHANDANTOTAL"] + "',";
+            }
+            if (Request.AllKeys.Contains("SHANDANDESC"))
+            {
+                sql += "  SHANDANDESC =  '" + Request["SHANDANDESC"] + "',";
+            }
+            sql += "  IFGAIDAN =  '" + Request["IFGAIDAN"] + "',";
+            if (Request.AllKeys.Contains("GAIDANTOTAL"))
+            {
+                sql += "  GAIDANTOTAL =  '" + Request["GAIDANTOTAL"] + "',";
+            }
+            if (Request.AllKeys.Contains("GAIDANDESC"))
+            {
+                sql += "  GAIDANDESC =  '" + Request["GAIDANDESC"] + "',";
+            }
+            sql += "  IFYIJIAO =  '" + Request["IFYIJIAO"] + "',";
+            sql += "  IFLIHUO =  '" + Request["IFLIHUO"] + "',";
+            if (Request.AllKeys.Contains("LIHUOTOTAL"))
+            {
+                sql += "  LIHUOTOTAL =  '" + Request["LIHUOTOTAL"] + "',";
+            }
+
+
+            if (Request.AllKeys.Contains("LIHUODESC"))
+            {
+                sql += "  LIHUODESC =  '" + Request["LIHUODESC"] + "',";
+            }
+
+            sql += "  IFCHAYAN =  '" + Request["IFCHAYAN"] + "',";
+            if (Request.AllKeys.Contains("CHAYANTOTAL"))
+            {
+                sql += "  CHAYANTOTAL =  '" + Request["CHAYANTOTAL"] + "',";
+            }
+            if (Request.AllKeys.Contains("CHAYANDESC"))
+            {
+                sql += "  CHAYANDESC =  '" + Request["CHAYANDESC"] + "',";
+            }
+
+            if (Request.AllKeys.Contains("CHAYANZHILINGXIAFATIME"))
+            {
+                sql += "  CHAYANZHILINGXIAFATIME =  to_date('" + Request["CHAYANZHILINGXIAFATIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+            }
+            sql += "  IFTIAODANG =  '" + Request["IFTIAODANG"] + "',";
+
+            if (Request.AllKeys.Contains("TIAODANGTOTAL"))
+            {
+                sql += "  TIAODANGTOTAL =  '" + Request["TIAODANGTOTAL"] + "',";
+            }
+            sql += "  IFKOUHUO =  '" + Request["IFKOUHUO"] + "',";
+            if (Request.AllKeys.Contains("KOUHUOTIME"))
+            {
+                sql += "  KOUHUOTIME =  to_date('" + Request["KOUHUOTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+            }
+            sql = sql.Substring(0, sql.Length - 1);
+            sql += " where DECLARATIONCODE =" + DECLARATIONCODE;
+            DBMgr.ExecuteNonQuery(sql);
         }
 
         [HttpPost]
@@ -1436,7 +1560,7 @@ namespace SceneOfCustoms.Controllers
             int PageSize = Convert.ToInt32(Request.Params["rows"]);
             int Page = Convert.ToInt32(Request.Params["page"]);
             int total = 0;
-            string sql = "select * from LIST_DECLCONTAINERTRUCK where ORDERCODE='" + CODE + "'";
+            string sql = "select * from LIST_DECLCONTAINERTRUCK where ORDERCODE='" + CODE + "' ";
             string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
             string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
             sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
@@ -1460,7 +1584,7 @@ namespace SceneOfCustoms.Controllers
             int PageSize = Convert.ToInt32(Request.Params["rows"]);
             int Page = Convert.ToInt32(Request.Params["page"]);
             int total = 0;
-            string sql = "select * from list_declaration where ORDERCODE='" + CODE + "'";
+            string sql = "select * from list_declaration where ORDERCODE='" + CODE + "' and ISDEL='0'";
             string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
             string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
             sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
@@ -1471,6 +1595,27 @@ namespace SceneOfCustoms.Controllers
             result = "{\"total\":" + total + ",\"rows\":" + result + "}";
             return result;
         }
+
+
+
+        public string LoadBjdList()
+        {
+            string CODE = Request["data"];
+            int PageSize = Convert.ToInt32(Request.Params["rows"]);
+            int Page = Convert.ToInt32(Request.Params["page"]);
+            int total = 0;
+            string sql = "select * from LIST_INSPECTION where ORDERCODE='" + CODE + "' and ISDEL='0' ";
+            string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
+            string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
+            sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
+            DataTable dt = DBMgr.GetDataTable(sql);
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string result = JsonConvert.SerializeObject(dt, iso);
+            result = "{\"total\":" + total + ",\"rows\":" + result + "}";
+            return result;
+        }
+
 
         //报关单信息更新保存
         public ActionResult SaveBgdinfo()

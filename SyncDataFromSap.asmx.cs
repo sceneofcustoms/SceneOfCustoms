@@ -114,21 +114,46 @@ namespace SceneOfCustoms
 
             if (ld.Count > 0)
             {
-                MSList = IFS.CheckData(ld);
-
-                if (MSList.Count <= 0)
+                //发单证
+                if (true)
                 {
-                    int Order_Res = IFS.XCOrderData(ld, Nowtime);
-                    if (Order_Res == 1)
+                    MSList = IFS.CheckData(ld);
+                    if (MSList.Count <= 0)
                     {
-                        MSList.Add(IFS.set_MObj("S", "保存成功"));
-                        IFS.SaveDZOrder(ld[0].CODE,Nowtime);
-                    }
-                    else
-                    {
-                        MSList.Add(IFS.set_MObj("E", "保存失败"));
+                        int Order_Res = IFS.XCOrderData(ld, Nowtime);
+                        if (Order_Res == 1)
+                        {
+                            MSList.Add(IFS.set_MObj("S", "保存成功"));
+                            IFS.SaveDZOrder(ld[0].CODE, Nowtime);
+                        }
+                        else
+                        {
+                            MSList.Add(IFS.set_MObj("E", "保存失败"));
+                        }
                     }
                 }
+                else
+                {
+                    //发物贸通
+
+                    MSList = IFS.CheckWumaoData(ld);
+                    if (MSList.Count <= 0)
+                    {
+                        int Order_Res = 1;
+                        //int Order_Res = IFS.XCWumaoData(ld, Nowtime);
+                        if (Order_Res == 1)
+                        {
+                            MSList.Add(IFS.set_MObj("S", "保存成功"));
+                            //IFS.SaveDZOrder(ld[0].CODE, Nowtime);
+                        }
+                        else
+                        {
+                            MSList.Add(IFS.set_MObj("E", "保存失败"));
+                        }
+                    }
+
+                }
+
 
             }
             else

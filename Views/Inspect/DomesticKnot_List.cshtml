@@ -11,16 +11,14 @@
     ];
     //2 查询条件  --单据号
     var search_code = [
-        {
-            code: 'FWONO', name: 'FWO订单号', selected: true
-        },
+        { code: 'CODE', name: '业务编号', selected: true },
+        { code: 'FWONO', name: 'FWO订单号', },
         { code: 'FOONOBJ', name: 'FO号' },
         { code: 'TOTALNO', name: '总单号' },
         { code: 'DIVIDENO', name: '分单号' },
         { code: 'text', name: '万达号' },
         { code: 'MANIFEST', name: '载货清单号' },
-        { code: 'text', name: '报检单号' },
-        { code: 'CODE', name: '业务编号' },
+        { code: 'INSPECTIONCODE', name: '报检单号' },
         { code: 'FIRSTLADINGBILLNO', name: '一程提运单号' },
         { code: 'SECONDLADINGBILLNO', name: '二程提运单号' },
         { code: 'CLEARANCENO', name: '通关单号' },
@@ -50,7 +48,7 @@
         });
         loadListGrid('Inspect/DomesticKnot_Edit');
     })
-</script> 
+</script>
 <div class="ibox-content">
     <div class="table-responsive">
         <table id="datagrid" class="easyui-datagrid" title="国内结转" style="height:auto;min-height:500px;max-height:800px"
@@ -58,12 +56,14 @@
             <thead data-options="frozen:true">
                 <tr>
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
-                    <th data-options="field:'BUSIUNITNAME',width:200,sortable:true,">进口企业</th>
-                    <th data-options="field:'BUSIUNITNAME',width:200,sortable:true,">出口企业</th>
-                    <th data-options="field:'DECLARATIONCODE',width:100,sortable:true,">报检单号</th>
+                    <th data-options="field:'CODE',width:120,sortable:true,">业务单号</th>
+                    <th data-options="field:'BUSIUNITNAME',width:150,sortable:true,">进口企业</th>
+                    <th data-options="field:'BUSIUNITNAME',width:150,sortable:true,">出口企业</th>
+                    <th data-options="field:'INSPECTIONCODE',width:100,sortable:true,">报检单号</th>
+                    <th data-options="field:'INSPECTIONSTATUS',width:100,sortable:true">国检状态</th>
                     <th data-options="field:'CLEARANCENO',width:100,sortable:true">通关单号</th>
                     <th data-options="field:'INSPSTATUS',width:100,sortable:true">报检状态</th>
-                    <th data-options="field:'DECLSTATUS',width:100,sortable:true">报关状态</th>
+                    @*<th data-options="field:'DECLSTATUS',width:100,sortable:true">报关状态</th>*@
                     <th data-options="field:'BUSITYPE',width:100,formatter:formatBUSITYPE">业务类型</th>
                 </tr>
             </thead>
@@ -71,8 +71,6 @@
                 <tr>
                     <th data-options="field:'GOODSNUM',width:100,sortable:true">总件数</th>
                     <th data-options="field:'GOODSWEIGHT',width:100,sortable:true">总重量</th>
-                    @*<th data-options="field:'TOTALNO',width:100,sortable:true">总单号</th>
-                    <th data-options="field:'DIVIDENO',width:100,sortable:true">分单号</th>*@
                     <th data-options="field:'CONTRACTNO',width:100,sortable:true">合同/发票号</th>
                     <th data-options="field:'text',width:100,sortable:true">通关单标志</th>
                     <th data-options="field:'text',width:100,sortable:true">通关单张数</th>
@@ -84,6 +82,7 @@
                     <th data-options="field:'FOONOBJ',width:180,sortable:true">FOO报检服务号</th>
                     <th data-options="field:'ASSOCIATENO',width:180,sortable:true">两单关联号</th>
                     <th data-options="field:'CORRESPONDNO',width:180,sortable:true">四单关联号</th>
+                    <th data-options="field: 'BUSINAME',width:200">业务类型</th>
                 </tr>
             </thead>
         </table>
@@ -159,5 +158,5 @@
         </div>
     </div>
 </div>
- 
+
 

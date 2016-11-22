@@ -622,8 +622,10 @@ function submitForm() {
 //加载单个form
 function Edit() {
     var ID = getQueryString('ID');
+    var type = $("input[name=type]").val();
     var DECLARATIONCODE = getQueryString('DECLARATIONCODE') ? getQueryString('DECLARATIONCODE') : "";
-    $('#OrderFrom').form('load', '/Order/Edit_Order?ID=' + ID + "&DECLARATIONCODE=" + DECLARATIONCODE);
+    var INSPECTIONCODE = getQueryString('INSPECTIONCODE') ? getQueryString('INSPECTIONCODE') : "";
+    $('#OrderFrom').form('load', '/Order/Edit_Order?ID=' + ID + "&DECLARATIONCODE=" + DECLARATIONCODE + "&type=" + type + "&INSPECTIONCODE=" + INSPECTIONCODE);
 }
 
 
@@ -678,8 +680,8 @@ function JizhuangxiangInfo() {
 function TongguandanInfo() {
     $('#mainWin').dialog({
         title: '通关单信息',
-        width: 800,
-        height: 400,
+        width: 1000,
+        height: 600,
         modal: true,
         href: '/Order/TongguandanInfo'
     });
@@ -703,7 +705,10 @@ function manyEditForm() {
                 }
             }
         });
-        $(formid).form('load', '/Order/Edit_Order?ID=' + id);
+        var type = $("input[name=type]").val();
+        var DECLARATIONCODE = getQueryString('DECLARATIONCODE') ? getQueryString('DECLARATIONCODE') : "";
+        var INSPECTIONCODE = getQueryString('INSPECTIONCODE') ? getQueryString('INSPECTIONCODE') : "";
+        $(formid).form('load', '/Order/Edit_Order?ID=' + id + "&DECLARATIONCODE=" + DECLARATIONCODE + "&type=" + type + "&INSPECTIONCODE=" + INSPECTIONCODE);
     });
 }
 
@@ -719,19 +724,28 @@ function loadListGrid(page) {
         pageList: [20, 40, 60, 80, 100, 300],
         pagination: true,
         onDblClickCell: function (index, field, value) {
-            debugger;
-            if (page != "") {
-                var row = $('#datagrid').datagrid('getData').rows[index];
+            var row = $('#datagrid').datagrid('getData').rows[index];
+            var is_open = false;
+            if (page.indexOf("eclare") > 0) {
+                if (row.DECLARATIONCODE != undefined && row.DECLARATIONCODE != null) {
+                    var is_open = true;
+                }
+            } else {
+                if (row.INSPECTIONCODE != undefined && row.INSPECTIONCODE != null) {
+                    var is_open = true;
+                }
+            }
+            if (page != "" && is_open) {
                 if (page == "Declare/DomesticBlc_Edit") {
-                    if (row.CORRESPONDNO != "") {
+                    if (row.BUSINAME.indexOf("叠加保税") > 0) {
                         page = "Declare/OverlayBonded_Edit";
                     }
+
                 }
                 if (row.ID != "") {
                     window.location.href = "/" + page + "?ID=" + row.ID;
                 }
             }
-
         }
     });
 }

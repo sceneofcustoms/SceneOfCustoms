@@ -26,6 +26,11 @@ namespace SceneOfCustoms.Controllers
             ViewData["crumb"] = "后台管理-->模块管理";
             return View();
         }
+        public ActionResult AuthorityList()
+        {
+            ViewData["crumb"] = "后台管理-->权限管理";
+            return View();
+        }
         public string loaduser()
         {
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
@@ -114,11 +119,11 @@ namespace SceneOfCustoms.Controllers
             {
                 if (i != dt.Rows.Count - 1)
                 {
-                    result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "'},";
+                    result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',ICON:'" + smEnt["ICON"] + "'},";
                 }
                 else
                 {
-                    result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "'}";
+                    result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',ICON:'" + smEnt["ICON"] + "'}";
                 }
                 i++;
             }
@@ -131,8 +136,8 @@ namespace SceneOfCustoms.Controllers
             int result = 0;
             JObject jo = (JObject)JsonConvert.DeserializeObject(json);
             string newid = Guid.NewGuid().ToString();
-            sql = @"insert into sys_module (ID,NAME,ISLEAF,URL,PARENTID,SORTINDEX) 
-                          values ('" + newid + "','" + jo.Value<string>("NAME") + "','1','" + jo.Value<string>("URL") + "','" + jo.Value<string>("PARENTID") + "','" + jo.Value<string>("SORTINDEX") + "')";
+            sql = @"insert into sys_module (ID,NAME,ISLEAF,URL,PARENTID,SORTINDEX,ICON) 
+                          values ('" + newid + "','" + jo.Value<string>("NAME") + "','1','" + jo.Value<string>("URL") + "','" + jo.Value<string>("PARENTID") + "','" + jo.Value<string>("SORTINDEX") + "','" + jo.Value<string>("ICON") + "' )";
             result = DBMgr.ExecuteNonQuery(sql);
             jo.Remove("ID");
             jo.Add("ID", newid);
@@ -154,7 +159,7 @@ namespace SceneOfCustoms.Controllers
             string json = Request["json"];
             int result = 0;
             JObject jo = (JObject)JsonConvert.DeserializeObject(json);
-            sql = @"update sys_module set NAME = '" + jo.Value<string>("NAME") + "' ,url = '" + jo.Value<string>("URL") + "',SORTINDEX = '" + jo.Value<string>("SORTINDEX") + "' where ID = '" + jo.Value<string>("ID") + "'";
+            sql = @"update sys_module set NAME = '" + jo.Value<string>("NAME") + "' ,url = '" + jo.Value<string>("URL") + "',SORTINDEX = '" + jo.Value<string>("SORTINDEX") + "',ICON='" + jo.Value<string>("ICON") + "' where ID = '" + jo.Value<string>("ID") + "'";
             result = DBMgr.ExecuteNonQuery(sql);
             return result > 0 ? "{success:true,data:" + jo + "}" : "{success:false}";
         }
@@ -172,6 +177,93 @@ namespace SceneOfCustoms.Controllers
                 result = DBMgr.ExecuteNonQuery(sql);
             }
             return result > 0 ? "{success:true}" : "{success:false}";
+        }
+        public string loadmodulebyuser()
+        {
+            string sql = string.Empty;
+            string moduleid = Request["ID"];
+            string userid = Request["userid"];
+            //            if (!string.IsNullOrEmpty(userid) && !string.IsNullOrEmpty(moduleid))
+            //            {
+            //                sql = @"select t.*,u.MODULEID from sys_module t left join (select * from sys_moduleuser where userid='{0}') u on t.ID=u.MODULEID
+            //                where  t.ParentId ='{1}' order by t.SortIndex";
+            //                sql = string.Format(sql, userid, moduleid);
+            //            }
+            //获取一级模块 && string.IsNullOrEmpty(moduleid)
+            if (!string.IsNullOrEmpty(userid))
+            {
+                sql = @"select t.*,u.MODULEID from sys_module t  left join (select * from sys_moduleuser where userid='{0}') u on t.ID=u.MODULEID
+                where  t.ParentId is null order by t.SortIndex";
+                sql = string.Format(sql, userid);
+            }
+            string result = "[";
+            if (!string.IsNullOrEmpty(sql))
+            {
+                DataTable dt = DBMgr.GetDataTable(sql);
+                int i = 0;
+                string children = string.Empty;
+                foreach (DataRow smEnt in dt.Rows)
+                {
+                    children = getchildren(smEnt["ID"].ToString(), userid);
+                    if (i != dt.Rows.Count - 1)
+                    {
+                        result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',checked:" + (string.IsNullOrEmpty(smEnt["MODULEID"] + "") ? "false" : "true") + ",children:" + children + "},";
+                    }
+                    else
+                    {
+                        result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',checked:" + (string.IsNullOrEmpty(smEnt["MODULEID"] + "") ? "false" : "true") + ",children:" + children + "}";
+                    }
+                    i++;
+                }
+            }
+            result += "]";
+            return result;
+        }
+        public string getchildren(string moduleid, string userid)
+        {
+            string children = "[";
+            sql = @"select t.*,u.MODULEID from sys_module t left join (select * from sys_moduleuser where userid='{0}') u on t.ID=u.MODULEID
+                where  t.ParentId ='{1}' order by t.SortIndex";
+            sql = string.Format(sql, userid, moduleid);
+            DataTable dt = DBMgr.GetDataTable(sql);
+            int i = 0;
+            foreach (DataRow smEnt in dt.Rows)
+            {
+                if (i != dt.Rows.Count - 1)
+                {
+                    children += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',checked:" + (string.IsNullOrEmpty(smEnt["MODULEID"] + "") ? "false" : "true") + ",children:[]},";
+                }
+                else
+                {
+                    children += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',checked:" + (string.IsNullOrEmpty(smEnt["MODULEID"] + "") ? "false" : "true") + ",children:[]}";
+                }
+                i++;
+            }
+            children += "]";
+            return children;
+        }
+        public string saveauthority()
+        {
+            string userid = Request["userid"];
+            string moduleids = Request["moduleids"];
+            try
+            {
+                sql = @"DELETE FROM SYS_MODULEUSER WHERE USERID = '{0}'";
+                sql = string.Format(sql, userid);
+                DBMgr.ExecuteNonQuery(sql);
+                string[] ids = moduleids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string moduleid in ids)
+                {
+                    sql = @"insert into sys_moduleuser (USERID,MODULEID) values ('{0}','{1}')";
+                    sql = string.Format(sql, userid, moduleid);
+                    DBMgr.ExecuteNonQuery(sql);
+                }
+                return "{success:true}";
+            }
+            catch (Exception ex)
+            {
+                return "{success:false}";
+            }
         }
     }
 }

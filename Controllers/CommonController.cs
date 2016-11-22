@@ -42,6 +42,11 @@ namespace SceneOfCustoms.Controllers
             ViewData["crumb"] = "后台管理-->返回状态";
             return View();
         }
+
+
+
+
+
         public string LoadAttachmentList()
         {
             int PageSize = Convert.ToInt32(Request.Params["rows"]);
@@ -197,11 +202,11 @@ namespace SceneOfCustoms.Controllers
                 }
                 if (jo.Value<string>("starttime") != "" && jo.Value<string>("starttime") != null)
                 {
-                    sql += " AND STATUSTIME >= to_date('" + jo.Value<string>("starttime") + "','yyyy-MM-dd')";
+                    sql += " AND CREATETIME >= to_date('" + jo.Value<string>("starttime") + "','yyyy-MM-dd')";
                 }
                 if (jo.Value<string>("stoptime") != "" && jo.Value<string>("stoptime") != null)
                 {
-                    sql += " AND STATUSTIME <= to_date('" + jo.Value<string>("stoptime") + "','yyyy-MM-dd')";
+                    sql += " AND CREATETIME <= to_date('" + jo.Value<string>("stoptime") + "','yyyy-MM-dd')";
                 }
                 if (jo.Value<string>("businessin_type") != null && jo.Value<string>("businessin_type") != "")
                 {
@@ -449,6 +454,57 @@ namespace SceneOfCustoms.Controllers
 
                 DBMgr.ExecuteNonQuery(sql);
             }
+        }
+
+
+        //根据登录用户获取对应权限 展示菜单
+        public string Header()
+        {
+            JObject json_user = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
+            string sql = @"select ID,NAME,PARENTID,URL,SORTINDEX,IsLeaf,ICON from sys_module t 
+            where t.parentid is null and t.ID IN (select MODULEID FROM sys_moduleuser where userid='{0}') order by sortindex";
+            sql = string.Format(sql, json_user.GetValue("ID"));
+            DataTable dt1 = DBMgr.GetDataTable(sql);
+            string result = "";
+            for (int i = 0; i < dt1.Rows.Count; i++)
+            {
+                string icon = string.IsNullOrEmpty(dt1.Rows[i]["ICON"] + "") ? "" : "<i class=\"iconfont\">&#" + dt1.Rows[i]["ICON"] + "</i>";
+                if (string.IsNullOrEmpty(dt1.Rows[i]["URL"] + ""))
+                {
+                    result += "<li><a  href=\"javascript:void(0)\">" + icon + dt1.Rows[i]["NAME"] + "</a>";
+                }
+                else
+                {
+                    result += "<li><a  href=\"" + dt1.Rows[i]["URL"] + "\">" + icon + dt1.Rows[i]["NAME"] + "</a>";
+                }
+                sql = @"select ID,NAME,PARENTID,URL,SORTINDEX,IsLeaf,ICON from sys_module t where t.parentid='{0}'
+                and t.ID IN (select MODULEID FROM sys_moduleuser where userid='{1}') order by sortindex";
+                sql = string.Format(sql, dt1.Rows[i]["ID"], json_user.GetValue("ID"));
+                DataTable dt2 = DBMgr.GetDataTable(sql);
+                if (dt2.Rows.Count > 0)
+                {
+                    result += "<ul>";
+                    for (int j = 0; j < dt2.Rows.Count; j++)
+                    {
+                        string icon2 = string.IsNullOrEmpty(dt2.Rows[j]["ICON"] + "") ? "" : "<i class=\"iconfont\">&#" + dt2.Rows[j]["ICON"] + "</i>";
+                        if (string.IsNullOrEmpty(dt2.Rows[j]["URL"] + ""))
+                        {
+                            result += "<li><a href=\"javascript:void(0)\">" + icon2 + dt2.Rows[j]["NAME"] + "</a>";
+                        }
+                        else
+                        {
+                            result += "<li><a href=\"" + dt2.Rows[j]["URL"] + "\">" + icon2 + dt2.Rows[j]["NAME"] + "</a>";
+                        }
+                        result += "</li>";
+                    }
+                    result += "</ul></li>";
+                }
+                else
+                {
+                    result += "</li>";
+                }
+            }
+            return result;
         }
     }
 }

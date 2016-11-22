@@ -1,0 +1,111 @@
+﻿@{
+    Layout = null;
+}
+<style type="text/css">
+    .window .window-body {
+        border-width: 0px;
+    }
+    #OrderFrom table tr td label {
+        width:105px;
+    }
+</style>
+<script>
+    $(function () {
+        debugger;
+        var ID ='@ViewData["ID"]';
+        if(ID !=""){
+            $('#OrderFrom').form('load', '/Wumao/LoadDataMatching_Edit?ID=' + ID);
+        }
+    })
+</script>
+<form id="OrderFrom" method="post">
+    <input class="hidden" type="text" name="ID" />
+    <div class="easyui-panel" style="margin-bottom:15px" title="登记项"
+         data-options="collapsible:true">
+        <table class="scene">
+            <tr>
+                <td>
+                    <label for="BUSINAME">业务类型:</label>
+                    <input class="easyui-textbox" type="text" name="BUSINAME" />
+                </td>
+                <td>
+                    <label for="GOODS_NATURE_ID">料件性质:</label>
+                    <input class="easyui-textbox"  type="text" name="GOODS_NATURE_ID" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="I_E_FALG_TYPE">进出口标志代码:</label>
+                    <input class="easyui-textbox" type="text" name="I_E_FALG_TYPE" />
+                </td>
+                <td>
+                    <label for="BIZ_TYPE_ID">作业单类型代码:</label>
+                    <input class="easyui-textbox" type="text" name="BIZ_TYPE_ID" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="TRAFFICTYPE">进出境运输方式:</label>
+                    <input class="easyui-textbox" type="text" name="TRAFFICTYPE" />
+                </td>
+                <td>
+                    <label for="BILL_TYPE">单证类型代码:</label>
+                    <input class="easyui-textbox" type="text" name="BILL_TYPE" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="APPCIQTYPE">报关单类型:</label>
+                    <input class="easyui-textbox" type="text" name="APPCIQTYPE" />
+                </td>
+                <td>
+                    <label for="OUT_TRAF_MODE">区外运输方式:</label>
+                    <input class="easyui-textbox" type="text" name="OUT_TRAF_MODE" />
+                </td>
+            </tr>
+
+
+        </table>
+    </div>
+
+    <div style="text-align:center;padding:5px 0">
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="submitForms()">
+            <i class="fa fa-floppy-o"></i> 保存
+        </a>
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="closeWin()">
+            <i class="icon-reply"></i> 返回
+        </a>
+    </div>
+</form>
+<script>
+    function closeWin() {
+        $('#mainWin').dialog('close');
+    }
+    //20160929 SYY add
+    function submitForms() {
+        $('#OrderFrom').form('submit', {
+            url: "/Wumao/SaveDataMatching",
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                debugger;
+                var data = eval('(' + data + ')');  // change the JSON string to javascript object
+                if (data.Success) {
+                    //$.messager.alert('成功', '保存成功');
+                    $('#mainWin').dialog('close');
+                    $('#Wumao_datagrid').datagrid('reload');
+                } else {
+                    $.messager.alert('失败', '保存失败');
+                }
+            }
+        });
+    }
+</script>

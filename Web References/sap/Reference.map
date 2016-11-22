@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Results>
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://sapqpi01.feili.com:50200/dir/wsdl?p=sa/b7425a855b2b3db2aed60ee43ce7ffc1" filename="SI_CUS_CUS1002.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://pij.feili.com:50200/dir/wsdl?p=sa/b7425a855b2b3db2aed60ee43ce7ffc1" filename="SI_CUS_CUS1002.wsdl" />
   </Results>
 </DiscoveryClientResultsFile>

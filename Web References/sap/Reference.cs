@@ -504,6 +504,8 @@ namespace SceneOfCustoms.sap {
         
         private string zBGDHField;
         
+        private string zZGYLHField;
+        
         private string zMYFSField;
         
         private string zBGDZSField;
@@ -516,6 +518,17 @@ namespace SceneOfCustoms.sap {
             }
             set {
                 this.zBGDHField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string ZZGYLH {
+            get {
+                return this.zZGYLHField;
+            }
+            set {
+                this.zZGYLHField = value;
             }
         }
         

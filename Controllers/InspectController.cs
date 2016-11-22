@@ -121,7 +121,7 @@ namespace SceneOfCustoms.Controllers
                 string CODE = ASSOCIATENO.Replace("GL", "");
 
 
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE ='41'";
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE ='40'";
                 dt = DBMgr.GetDataTable(sql);
                 if (dt.Rows.Count > 0)
                 {
@@ -129,7 +129,7 @@ namespace SceneOfCustoms.Controllers
                     ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
                 }
 
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where CODE='" + CODE + "' and BUSITYPE ='40'";
+                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE ='41'";
                 dt = DBMgr.GetDataTable(sql);
                 if (dt.Rows.Count > 0)
                 {

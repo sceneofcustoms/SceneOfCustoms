@@ -3,7 +3,7 @@
          data-options="collapsible:true">
         <input type="hidden" name="ID" />
         <input type="hidden" name="type" value="01" />
-        <input type="hidden" name="DECLARATIONCODE" />
+        <input type="hidden" name="page" value="/Declare/OnelineOut_Edit" />
         <input type="hidden" name="ORDERCODE" />
         <table>
             <tr>
@@ -17,7 +17,7 @@
                 </td>
                 <td>
                     <label for="CODE">业务编号:</label>
-                    <input class="easyui-textbox" type="text" name="CODE" disabled="disabled" />
+                    <input class="easyui-textbox" type="text" name="CODE" readonly="readonly" />
                 </td>
                 <td>
                     <label for="TURNPRENO"> 转关预录号:</label>
@@ -57,6 +57,10 @@
                 <td>
                     <label for="ARRIVEDNO">运抵编号:</label>
                     <input class="easyui-textbox" type="text" name="ARRIVEDNO" disabled="disabled" />
+                </td>
+                <td>
+                    <label for="DECLARATIONCODE">报关单号:</label>
+                    <input class="easyui-textbox" type="text" name="DECLARATIONCODE" readonly="readonly" />
                 </td>
             </tr>
         </table>
@@ -252,13 +256,13 @@
                     <input class="" id="IFCHAYAN" type="checkbox" name="IFCHAYAN" value="1" />
                 </td>
                 <td>
-                    <label for="CHAYANTIMES">查验次数:</label>
-                    <input class="easyui-numberspinner" name="CHAYANTIMES"
+                    <label for="CHAYANTOTAL">查验次数:</label>
+                    <input class="easyui-numberspinner" name="CHAYANTOTAL"
                            data-options="min:0">
                 </td>
                 <td>
-                    <label for="CHAYANREMARK">查验备注:</label>
-                    <input class="easyui-textbox" type="text" name="CHAYANREMARK" />
+                    <label for="CHAYANDESC">查验备注:</label>
+                    <input class="easyui-textbox" type="text" name="CHAYANDESC" />
                 </td>
                 <td>
                     <label for="CHAYANZHILINGXIAFATIME" style="width:100px;">查验指令下发时间:</label>
@@ -271,13 +275,13 @@
                     <input class="" id="IFTIAODANG" type="checkbox" name="IFTIAODANG" value="1" />
                 </td>
                 <td>
-                    <label for="TIAODANGTIMES">调档次数:</label>
-                    <input class="easyui-numberspinner" name="TIAODANGTIMES"
+                    <label for="TIAODANGTOTAL">调档次数:</label>
+                    <input class="easyui-numberspinner" name="TIAODANGTOTAL"
                            data-options="min:0">
                 </td>
                 <td style="text-align:left">
-                    <label for="KOUHUOSIGN">扣货标识:</label>
-                    <input class="" id="KOUHUOSIGN" type="checkbox" name="KOUHUOSIGN" value="1" />
+                    <label for="IFKOUHUO">扣货标识:</label>
+                    <input class="" id="IFKOUHUO" type="checkbox" name="IFKOUHUO" value="1" />
                 </td>
                 @*<td>
                         <label for="KOUHUOTIME" style="width:100px;">扣货时间:</label>

@@ -4,11 +4,10 @@
          data-options="collapsible:true">
         <input type="hidden" name="ID" />
         <input type="hidden" name="type" value="02" />
-
+        <input type="hidden" name="page" value="/Inspect/OnelineIn_Edit" />
         <input type="hidden" name="DECLARATIONCODE" />
         <input type="hidden" name="ORDERCODE" />
         <table>
-
             <tr>
                 <td>
                     <label for="FWONO">FWO订单号:</label>
@@ -64,8 +63,14 @@
             <tr>
                 <td>
                     <label for="CODE">业务编号:</label>
-                    <input class="easyui-textbox" type="text" name="CODE" disabled="disabled" />
+                    <input class="easyui-textbox" type="text" name="CODE" readonly="readonly" />
                 </td>
+
+                <td>
+                    <label for="INSPECTIONCODE">报检单号:</label>
+                    <input class="easyui-textbox" type="text" name="INSPECTIONCODE" readonly="readonly" />
+                </td>
+
                 <td>
                     <label for="">收货人:</label>
                     <input class="easyui-textbox" type="text" name="SFGOODSUNIT" disabled="disabled" />
@@ -193,12 +198,12 @@
                 </td>
                 <td>
                     <label for="">查验次数:</label>
-                    <input class="easyui-numberspinner" name="CHAYANTIMES"
+                    <input class="easyui-numberspinner" name="CHAYANTOTAL"
                            data-options="min:0">
                 </td>
                 <td>
                     <label for="">查验备注:</label>
-                    <input class="easyui-textbox" type="text" name="CHAYANREMARK" />
+                    <input class="easyui-textbox" type="text" name="CHAYANDESC" />
                 </td>
                 <td>
                     <label>查验类别:</label>

@@ -11,9 +11,7 @@ namespace SceneOfCustoms.Models
 
         public string BUSITYPE { get; set; }
         public string CODE { get; set; }
-
         public string FOONO { get; set; }
-
         public string TOTALNO { get; set; }
         public string DIVIDENO { get; set; }
         public string GOODSNUM { get; set; }
@@ -59,15 +57,11 @@ namespace SceneOfCustoms.Models
         public string ISWEIGHTCHECK { get; set; }
         public string SHIPNAME { get; set; }
         public string FILGHTNO { get; set; }
-
         public string INSPUNITNAME { get; set; }
-
         public string TURNPRENO { get; set; }
         public string INVOICENO { get; set; }
-
         //public string DECLCARNO { get; set; }
         //public string SFGOODSUNIT { get; set; }
-
 
         public string FGOODSUNIT { get; set; }
         public string SGOODSUNIT { get; set; }
@@ -76,6 +70,25 @@ namespace SceneOfCustoms.Models
         public string DOCSERVICECODE { get; set; }
         public string DOCSERVICENAME { get; set; }
 
+
+
+
+
+
+        public string ASSOCIATENO { get; set; }
+        public string CORRESPONDNO { get; set; }
+        public string WTFS { get; set; }
+        public string BUSINAME { get; set; }
+        public string FGOODSUNITCODE { get; set; }
+        public string SGOODSUNITCODE { get; set; }
+        public string REPUNITNAME { get; set; }
+        public string INSPUNITCODE { get; set; }
+        public string FOONOBJ { get; set; }
+        public string SUBMITUSERNAME { get; set; }
+        public string SUBMITTIME { get; set; }
+        public string BUSIUNITCODE { get; set; }
+        public string SENDNUMBER { get; set; }
+        public string NOWTIME { get; set; }
 
     }
 }

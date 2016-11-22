@@ -10,7 +10,7 @@
       <xsd:complexType name="DT_CUS_CUS1002_REQ">
         <xsd:annotation>
           <xsd:documentation xml:lang="EN">与新报关报检系统集成</xsd:documentation>
-          <xsd:appinfo source="http://sap.com/xi/VersionID">dda52a9c90e511e6ac79000001b9531a</xsd:appinfo>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">c5e2fb4da64a11e69b1a000001b9531a</xsd:appinfo>
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element maxOccurs="unbounded" name="ITEM">
@@ -54,6 +54,12 @@
                         <xsd:annotation>
                           <xsd:appinfo source="http://sap.com/xi/TextID">0dd5a0fc80b611e6c30c00e04c6807b6</xsd:appinfo>
                           <xsd:documentation>报关/报检单号/转关预录号/通关单号</xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:element>
+                      <xsd:element minOccurs="0" name="ZZGYLH" type="xsd:string">
+                        <xsd:annotation>
+                          <xsd:appinfo source="http://sap.com/xi/TextID">ad5ace42a64a11e68c6200ff80c15505</xsd:appinfo>
+                          <xsd:documentation>转关预录号、通关单号</xsd:documentation>
                         </xsd:annotation>
                       </xsd:element>
                       <xsd:element minOccurs="0" name="ZMYFS" type="xsd:string">
@@ -259,10 +265,10 @@
   </wsdl:binding>
   <wsdl:service name="SI_CUS_CUS1002Service">
     <wsdl:port name="HTTP_Port" binding="p1:SI_CUS_CUS1002Binding">
-      <address location="http://sapqpi01.feili.com:50200/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_CUS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CUS_CUS1002&amp;interfaceNamespace=URN%3ACUS1002" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <address location="http://pij.feili.com:50200/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_CUS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CUS_CUS1002&amp;interfaceNamespace=URN%3ACUS1002" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
     </wsdl:port>
     <wsdl:port name="HTTPS_Port" binding="p1:SI_CUS_CUS1002Binding">
-      <address location="https://sapqpi01.feili.com:50201/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_CUS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CUS_CUS1002&amp;interfaceNamespace=URN%3ACUS1002" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <address location="https://pij.feili.com:50201/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_CUS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CUS_CUS1002&amp;interfaceNamespace=URN%3ACUS1002" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

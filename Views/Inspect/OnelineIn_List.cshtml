@@ -11,17 +11,15 @@
     ];
 
     //2 查询条件  --单据号
-    var search_code = [ 
-        { 
-            code: 'FWONO', name: 'FWO订单号', selected: true
-        },
+    var search_code = [
+        { code: 'CODE', name: '业务编号', selected: true },
+        { code: 'FWONO', name: 'FWO订单号' },
         { code: 'FOONOBJ', name: 'FO号' },
         { code: 'DIVIDENO', name: '分单号' },
         { code: 'TOTALNO', name: '总单号' },
         { code: 'text', name: '万达号' },
         { code: 'MANIFEST', name: '载货清单号' },
-        { code: 'text', name: '报检单号' },
-        { code: 'CODE', name: '业务编号' },
+        { code: 'INSPECTIONCODE', name: '报检单号' },
         { code: 'FIRSTLADINGBILLNO', name: '一程提运单号' },
         { code: 'SECONDLADINGBILLNO', name: '二程提运单号' },
         { code: 'CLEARANCENO', name: '通关单号' },
@@ -48,15 +46,16 @@
             <thead data-options="frozen:true">
                 <tr>
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
+                    <th data-options="field:'CODE',width:120,sortable:true,">业务单号</th>
                     <th data-options="field:'BUSIUNITNAME',width:200,sortable:true,">收货人</th>
                     <th data-options="field:'CLEARANCENO',width:100">通关单号</th>
-                    <th data-options="field:'DECLARATIONCODE',width:150,sortable:true">报检单号</th>
+                    <th data-options="field:'INSPECTIONCODE',width:150,sortable:true">报检单号</th>
+                    <th data-options="field:'INSPECTIONSTATUS',width:150,sortable:true">国检状态</th>
                     <th data-options="field:'INSPSTATUS',width:100,sortable:true">报检状态</th>
-                    <th data-options="field:'DECLSTATUS',width:100,sortable:true">报关状态</th>
                     <th data-options="field:'BUSITYPE',width:100,formatter:formatBUSITYPE">业务类型</th>
                 </tr>
             </thead>
-            <thead> 
+            <thead>
                 <tr>
                     <th data-options="field:'GOODSNUM',width:100,sortable:true">总件数</th>
                     <th data-options="field:'GOODSWEIGHT',width:100,sortable:true">总重量</th>
@@ -79,7 +78,6 @@
                     <th data-options="field:'GAIDANKAISHITIME',width:100,sortable:true">改单时间</th>
                     <th data-options="field:'FWONO',width:200,sortable:true">FWO号</th>
                     <th data-options="field:'FOONOBJ',width:200">FOO报检服务号</th>
-                    <th data-options="field:'CODE',width:100,sortable:true">业务编号</th>
                 </tr>
             </thead>
         </table>

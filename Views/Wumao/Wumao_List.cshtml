@@ -1,0 +1,177 @@
+﻿<script type="text/javascript">
+    // 查询条件  --单据号
+    var search_code = [
+        { code: 'CODE', name: '订单号',selected:true }
+    ];
+    // 查询条件  --业务类型
+    var customs_busitype = [
+        { name: '飞力达FWO-空运出口'},
+        { name: '飞力达FWO-空运出口-外包服务(备用)' },
+        { name: '飞力达FWO-空运出口-服务无运输(ZCA)' },
+        { name: '飞力达FWO-空运进口' },
+        { name: '飞力达FWO-空运进口-外包服务(备用)' },
+        { name: '飞力达FWO-空运进口-服务无运输(ZCA)' },
+        { name: '飞力达FWO-叠加保税' },
+        { name: '飞力达FWO-空运出口配套' },
+        { name: '飞力达FWO-国内结转' },
+        { name: '飞力达FWO-国内空运(备用)' },
+        { name: '飞力达FWO-陆运-服务无运输(ZCD)' },
+        { name: '飞力达FWO-陆运出口' },
+        { name: '飞力达FWO-陆运运输' },
+        { name: '飞力达FWO-陆运进口' },
+        { name: '飞力达FWO-公铁联运(集装箱)' },
+        { name: '飞力达FWO-公铁联运(零担)' },
+        { name: '飞力达FWO-海运出口-整箱' },
+        { name: '飞力达FWO-海运出口-拼箱' },
+        { name: '飞力达FWO-海运出口-外包服务(备用)' },
+        { name: '飞力达FWO-海运出口-服务无运输(ZCB)' },
+        { name: '飞力达FWO-海运进口-整箱' },
+        { name: '飞力达FWO-海运进口-拼箱' },
+        { name: '飞力达FWO-海运进口-直通分拨-直通整箱' },
+        { name: '飞力达FWO-海运进口-直通分拨-分拨拼箱' },
+        { name: '飞力达FWO-海运进口-直通分拨-直通拼箱(备用)' },
+        { name: '飞力达FWO-海运进口-外包服务(备用)' },
+        { name: '飞力达FWO-海运进口-服务无运输(ZCB)' },
+        { name: '飞力达FWO-特殊监管' },
+    ];
+    $(function () {
+        $('#searchform #search_code').combobox({
+            data: search_code,
+            valueField: 'code',
+            textField: 'name'
+        });
+        $('#searchform #customs_busitype').combobox({
+            data: customs_busitype,
+            valueField: 'name',
+            textField: 'name'
+        });
+        $('#customs_busitype').next('span').css('width', '300px');
+        $('#customs_busitype').next('span').children('.textbox-text').css('width', '300px');
+        var width = '';
+        $("#customs_busitype").next('span').click(function () {
+            $('.panel-body-noheader').each(function () {
+                width = $(this).css('width');
+                if (width == '300px') {
+                    $(this).css('height', '300px');
+                    $(this).css('overflow-x', 'hidden');
+                    $(this).css('overflow-y', 'auto');
+                }
+            });
+        });
+
+    })
+</script>
+<div class="ibox-content">
+    <div class="table-responsive">
+        <table id="datagrid" class="easyui-datagrid" title="同步日志" style="height:auto;min-height:500px;max-height:800px"
+               data-options="url: '/Wumao/LoadWumao_List',
+                            rownumbers: true,
+                            dataType: 'json',
+                            method: 'get',
+                            toolbar: '#tb',
+                            pageSize: 20,
+                            pageList: [20, 40, 60, 80, 100, 300],
+                            pagination: true,">
+            <thead>
+                <tr>
+                    <th data-options="field: 'ID',width:80,checkbox:true"></th>
+                    <th data-options="field:'ORDERCODE',width:150">业务编号</th>
+                    <th data-options="field:'BUSINAME',width:150">业务类型</th>
+                    <th data-options="field:'GOODS_NATURE_ID',width:150">料件性质</th>
+                    <th data-options="field:'PROVIDER_NAME',width:150">货物名称</th>
+                    <th data-options="field:'D_DATE',width:150">申报日期</th>
+                    <th data-options="field:'TRANSPORT_CODE',width:150">货代经办企业代码</th>
+                    <th data-options="field:'TRANSPORT_NAME',width:150">货代经办企业名称</th>
+                    <th data-options="field:'APPCOMPANY',width:150">申报单位代码</th>
+                    <th data-options="field:'APPCOMPANY_NAME',width:150">申报单位名称</th>
+                    <th data-options="field:'APPCIQID',width:150">海关编号</th>
+                    <th data-options="field:'I_E_FALG_TYPE',width:150">进出口标志代码</th>
+                    <th data-options="field:'BIZ_TYPE_ID',width:150">作业单类型代码</th>
+                    <th data-options="field:'BIZ_TYPE_NAME',width:150">作业单类型名称</th>
+                    <th data-options="field:'TRADE_CODE',width:150">经营单位代码</th>
+                    <th data-options="field:'TRADE_NAME',width:150">经营单位名称</th>
+                    <th data-options="field:'CONSIGNEE_CODE',width:150">收发货单位代码</th>
+                    <th data-options="field:'CONSIGNEE_NAME',width:150">收发货单位名称</th>
+                    <th data-options="field:'TRADE_CODE_IN',width:150">区内企业代码</th>
+                    <th data-options="field:'TRADE_NAME_IN',width:150">区内企业名称</th>
+                    <th data-options="field:'PACK_NO',width:150">件数</th>
+                    <th data-options="field:'GROSS_WT',width:150">总毛重</th>
+                    <th data-options="field:'NET_WT',width:150">总净重</th>
+                    <th data-options="field:'TRAFFICTYPE',width:150">进出境运输方式</th>
+                    <th data-options="field:'BILL_TYPE',width:150">单证类型代码</th>
+                    <th data-options="field:'ENTRY_ID_OUT',width:150">区外海关编号</th>
+                    <th data-options="field:'APPCIQTYPE',width:150">报关单类型</th>
+                    <th data-options="field:'WRAP_TYPE_ID',width:150">包装种类</th>
+                    <th data-options="field:'MAINCODE',width:150">总单号</th>
+                    <th data-options="field:'SUBCODE',width:150">分单号</th>
+                    <th data-options="field:'MANUAL_NO',width:150">备案号</th>
+                    <th data-options="field:'OUT_CODE',width:150">收发货人</th>
+                    <th data-options="field:'TRANSFER_NO',width:150">转关单号</th>
+                    <th data-options="field:'GOODS_TYPE_LY',width:150">转关方式</th>
+                    <th data-options="field:'ISHDZ',width:150">是否华东转</th>
+                    <th data-options="field:'TRADETYPE',width:150">监管方式</th>
+                    <th data-options="field:'OUT_GOODS_TYPE_LY',width:150">区外转关方式</th>
+                    <th data-options="field:'COLUMN1LY_BIZ_TYPE_ID',width:150">陆运业务类型代码</th>
+                    <th data-options="field:'GOODS_TYPE_ID',width:150">陆运货物类别代码</th>
+                    <th data-options="field:'LYTYPE_ID',width:150">陆运ID</th>
+                    <th data-options="field:'AREA_CODE',width:150">卸货地代码</th>
+                    <th data-options="field:'MEANSOFTRANSPORTNAME',width:150">运输工具名称</th>
+                    <th data-options="field:'MEANSOFTRANSPORTID',width:150">运输工具航次</th>
+                    <th data-options="field:'REMARK',width:150">备注</th>
+                    <th data-options="field:'FULL_NO_ZD',width:150">关联总单作业单号</th>
+                    <th data-options="field:'OUT_TRAF_MODE',width:150">区外运输方式</th>
+                    <th data-options="field:'IS_BLR',width:150">是否补录入标记</th>
+                    <th data-options="field:'SEND_USER',width:150">发送人</th>
+                    <th data-options="field:'SEND_TIME',width:150">发送时间</th>
+                </tr>
+            </thead>
+        </table>
+        <div id="tb">
+            <div class="tb_search">
+                <form id="searchform" method="post">
+                    <input type="hidden" name="BUSITYPE" value="SyncFoo" />
+                    <table>
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value placeholderclass" type="text" name="ordercode_value" placeholder="单据号" />
+                            </td>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>业务类型</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox value dlc" editable="false" id="customs_busitype" style="width:130px" panelheight="auto" name="customs_busitype"></select>
+                            </td>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>发送时间</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value  placeholderclass" editable="false" name="startdate" placeholder="开始时间">
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value  placeholderclass" editable="false" name="stopdate" placeholder="结束时间">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="tb_but">
+                <div class="but_left">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" id="syncdata_wumao"><i class="fa fa-exchange" aria-hidden="true"></i> 同 步</a>
+                    @*<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="export_form()"><i class="fa fa-share-square-o" aria-hidden="true"></i> 导出</a>*@
+                </div>
+                <div class="but_right">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="fa fa-retweet" aria-hidden="true"></i> 重置</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end ibox-content -->
+</div>

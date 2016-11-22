@@ -5,11 +5,8 @@
         <form class="OrderFrom" method="post" id="OrderFrom1">
             <input type="hidden" name="ID" value="@ViewData["id1"]" />
             <input type="hidden" name="type" value="02" />
-            <input type="hidden" name="CODE" />
-
             <input type="hidden" name="ASSOCIATENO" />
-
-            <input type="hidden" name="DECLARATIONCODE" />
+            <input type="hidden" name="page" value="/Inspect/DomesticKnot_Edit" />
             <input type="hidden" name="ORDERCODE" />
             <table class="scene">
 
@@ -56,6 +53,17 @@
                     <td>
                         <label>总重量:</label>
                         <input class="easyui-textbox" type="text" name="GOODSWEIGHT" disabled="disabled" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>业务单号:</label>
+                        <input class="easyui-textbox" type="text" name="CODE" readonly="readonly"/>
+                    </td>
+                    <td>
+                        <label>报检单号:</label>
+                        <input class="easyui-textbox" type="text" name="INSPECTIONCODE" readonly="readonly" />
                     </td>
                 </tr>
 
