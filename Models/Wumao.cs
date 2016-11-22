@@ -59,6 +59,9 @@ namespace SceneOfCustoms.Models
 
         public string ONLYCODE { get; set; }
         public string WTFS { get; set; }
+        public string FWONO { get; set; }
+        public string FOONO { get; set; }
+
         
 
     }
