@@ -32,7 +32,7 @@
             var FOONO = $("#FOONO").val();
             var ORDERCODE = $("#ORDERCODE").val();
             file_store = Ext.create('Ext.data.JsonStore', {
-                fields: ['ID', 'FILENAME', 'FILEPATH', 'CREATETIME', 'SIZES', 'IETYPE'],
+                fields: ['ID', 'FILENAME', 'FILEPATH', 'CREATETIME', 'FILESIZE','CREATENAME','ORDERCODE'],
                 proxy: {
                     type: 'ajax',
                     url: '/Common/load_file?FWONO=' + FWONO + '&FOONO=' + FOONO + '&ORDERCODE=' + ORDERCODE,
@@ -41,24 +41,14 @@
                         type: 'json'
                     }
                 },
-                autoLoad: true,
-                listeners: {
-                    datachanged: function (sf_1, eOpts) {
-                        //if (file_store.data.length > 0 && Ext.getCmp('field_STATUS').getValue() == 1) {
-                        //    Ext.getCmp('field_STATUS').setValue(10);
-                        //}
-                        //if (file_store.data.length == 0 && Ext.getCmp('field_STATUS').getValue() == 10) {
-                        //    Ext.getCmp('field_STATUS').setValue(1);
-                        //}
-                    }
-                }
+                autoLoad: true 
             })
             var tmp = new Ext.XTemplate(
                  '<tpl for=".">',
                 '<div class="panel panel-default thumb-wrap fl" style="margin-top:5px;margin-left:5px;width:240px">',
                 '<div class="panel-heading" style="padding-left:5px;padding-right:5px">{[values.FILENAME.substr(0,23)]}<div style="float:right"><span class="glyphicon glyphicon-paperclip"></span></div></div>',
                 '<div class="panel-body" style="padding-left:5px;">{FILETYPENAME}|',
-                '<tpl>{[values.SIZES/1024 > 1024?Math.round(values.SIZES/(1024*1024))+"M":Math.round(values.SIZES/1024)+"K"]}</tpl>',
+                '<tpl>{[values.FILESIZE/1024 > 1024?Math.round(values.FILESIZE/(1024*1024))+"M":Math.round(values.FILESIZE/1024)+"K"]}</tpl>',
                 //'|{[values.UPLOADTIME.substr(0,values.UPLOADTIME.indexOf("T"))]}</div></div>',
                 '|{[values.CREATETIME]}</div></div>',
                 '</tpl>'
@@ -84,8 +74,7 @@
         function upload_ini() {
             var FWONO = $("#FWONO").val();
             var FOONO = $("#FOONO").val();
-            var ORDERCODE = $("#ORDERCODE").val();
-            debugger;
+            var ORDERCODE = $("#ORDERCODE").val(); 
             uploader = new plupload.Uploader({
                 runtimes: 'html5,flash,silverlight,html4',
                 browse_button: 'pickfiles', // you can pass an id...
@@ -110,8 +99,7 @@
                 file_store.load();
 
             });
-            uploader.bind('Error', function (up, file) {
-                debugger;
+            uploader.bind('Error', function (up, file) { 
                 if (file.message == "File size error.") {
                     Ext.MessageBox.alert("错误", "文件太大，无法上传！");
                 }
@@ -171,8 +159,7 @@
                     html: "<div id='fileViewDiv' style='height: 100%;width: 100%;'></div>"
                 }]
             });
-            win.show();
-            debugger;
+            win.show(); 
             document.getElementById('fileViewDiv').innerHTML = '<embed id="pdf" width="100%" height="100%" src="/C/fileserver' + recs[0].get("FILEPATH") + '"></embed>';
         }
 
