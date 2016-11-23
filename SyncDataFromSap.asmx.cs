@@ -124,7 +124,7 @@ namespace SceneOfCustoms
                         if (Order_Res == 1)
                         {
                             MSList.Add(IFS.set_MObj("S", "保存成功"));
-                            IFS.SaveDZOrder(ld[0].CODE, Nowtime);
+                            //IFS.SaveDZOrder(ld[0].CODE, Nowtime);
                         }
                         else
                         {
@@ -142,7 +142,7 @@ namespace SceneOfCustoms
                         if (Order_Res == 1)
                         {
                             MSList.Add(IFS.set_MObj("S", "保存成功"));
-                            //IFS.SaveDZOrder(ld[0].CODE, Nowtime);
+                            IFS.SaveDZOrder(ld[0].CODE, Nowtime);
                         }
                         else
                         {

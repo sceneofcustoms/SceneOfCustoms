@@ -7,7 +7,8 @@
         { code: 'CHAYANFANGXINGTIME', name: '查验放行日期' },
         { code: 'XUNZHENGTIME', name: '熏蒸日期' },
         { code: 'SHANDANKAISHITIME', name: '删单日期' },
-        { code: 'GAIDANKAISHITIME', name: '改单日期' }
+        { code: 'GAIDANKAISHITIME', name: '改单日期' },
+        { code: 'CREATETIME', name: 'TM下发日期' }
     ];
     //2 查询条件  --单据号
     var search_code = [
@@ -56,7 +57,8 @@
             <thead data-options="frozen:true">
                 <tr>
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
-                    <th data-options="field:'CODE',width:120,sortable:true,">业务单号</th>
+                    <th data-options="field:'CODE',width:100,sortable:true,">业务单号</th>
+                    <th data-options="field:'CREATETIME',width:130,sortable:true,">TM下发时间</th>
                     <th data-options="field:'BUSIUNITNAME',width:150,sortable:true,">进口企业</th>
                     <th data-options="field:'BUSIUNITNAME',width:150,sortable:true,">出口企业</th>
                     <th data-options="field:'INSPECTIONCODE',width:100,sortable:true,">报检单号</th>

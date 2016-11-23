@@ -186,8 +186,8 @@ namespace SceneOfCustoms.Controllers
                 node.InnerText = dt.Rows[0]["OUT_GOODS_TYPE_LY"] + "";
 
 
-                //node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/LY_BIZ_TYPE_ID");
-                //node.InnerText = dt.Rows[0]["LY_BIZ_TYPE_ID"] + "";
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/LY_BIZ_TYPE_ID");
+                node.InnerText = dt.Rows[0]["LY_BIZ_TYPE_ID"] + "";
 
                 node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/GOODS_TYPE_ID");
                 node.InnerText = dt.Rows[0]["GOODS_TYPE_ID"] + "";
@@ -296,13 +296,14 @@ namespace SceneOfCustoms.Controllers
                 sql += " BILL_TYPE = '" + Request.Form["BILL_TYPE"] + "',";
                 sql += " APPCIQTYPE = '" + Request.Form["APPCIQTYPE"] + "',";
                 sql += " OUT_TRAF_MODE = '" + Request.Form["OUT_TRAF_MODE"] + "',";
+                sql += " BUSICODE = '" + Request.Form["BUSICODE"] + "',";
                 sql = sql.Substring(0, sql.Length - 1);
                 sql += " where ID =" + ID;
             }
             else
             {
                 sql = "INSERT INTO LIST_WUMAODADAMATCHING ";
-                sql += " ( ID,BUSINAME,GOODS_NATURE_ID , I_E_FALG_TYPE , BIZ_TYPE_ID ,  TRAFFICTYPE , BILL_TYPE , APPCIQTYPE , OUT_TRAF_MODE )";
+                sql += " ( ID,BUSINAME,GOODS_NATURE_ID , I_E_FALG_TYPE , BIZ_TYPE_ID ,  TRAFFICTYPE , BILL_TYPE , APPCIQTYPE , BUSICODE,OUT_TRAF_MODE )";
                 sql += " VALUES ( LIST_WUMAODADAMATCHING_ID.Nextval, '" + Request.Form["BUSINAME"]
                     + "','" + Request.Form["GOODS_NATURE_ID"]
                     + "','" + Request.Form["I_E_FALG_TYPE"]
@@ -310,6 +311,7 @@ namespace SceneOfCustoms.Controllers
                     + "','" + Request.Form["TRAFFICTYPE"]
                     + "','" + Request.Form["BILL_TYPE"]
                     + "','" + Request.Form["APPCIQTYPE"]
+                    + "','" + Request.Form["BUSICODE"]
                     + "','" + Request.Form["OUT_TRAF_MODE"]
                     + "')";
             }

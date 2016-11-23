@@ -90,5 +90,9 @@ namespace SceneOfCustoms.Models
         public string SENDNUMBER { get; set; }
         public string NOWTIME { get; set; }
 
+        public string XCBUSINAME { get; set; }
+
+        
+
     }
 }

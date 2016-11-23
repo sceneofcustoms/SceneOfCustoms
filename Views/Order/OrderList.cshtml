@@ -1,0 +1,166 @@
+﻿<script type="text/javascript">
+    //1 查询条件 --日期
+    var search_condition_date = [
+        { code: 'CREATETIME', name: '上游下发日期', selected: true },
+        { code: 'SENDTIME', name: '发送下游日期' }
+    ];
+    //2 查询条件  --单据号
+    var search_code = [
+        { code: 'CODE', name: '业务单号', selected: true },
+        { code: 'FWONO', name: 'FWO订单号' },
+        { code: 'FOONO', name: '报关FOO' },
+        { code: 'FOONOBJ', name: '报检FOO' }
+    ];
+
+    var search_entrustttypeid = [
+        { code: '01', name: '报关' },
+        { code: '02', name: '报检' },
+        { code: '03', name: '报关又报检' }
+    ];
+
+    var SEARCH_XCBUSINAME = [
+        { code: '空进', name: '空进' },
+        { code: '空出', name: '空出' },
+        { code: '海进', name: '海进' },
+        { code: '海出', name: '海出' },
+        { code: '陆进', name: '陆进' },
+        { code: '陆出', name: '陆出' },
+        { code: '特殊监管', name: '特殊监管' },
+        { code: '叠加保税', name: '叠加保税' },
+        { code: '国内', name: '国内' }
+    ];
+
+    $(function () {
+        debugger;
+        loadListGrid('');
+
+
+        $('#searchform #search_condition_date').combobox({
+            data: search_condition_date,
+            valueField: 'code',
+            textField: 'name'
+        });
+
+
+        $('#searchform #search_code').combobox({
+            data: search_code,
+            valueField: 'code',
+            textField: 'name'
+        });
+
+
+        $('#searchform #ENTRUSTTYPEID').combobox({
+            data: search_entrustttypeid,
+            valueField: 'code',
+            textField: 'name'
+        });
+
+
+        $('#searchform #XCBUSINAME').combobox({
+            data: SEARCH_XCBUSINAME,
+            valueField: 'code',
+            textField: 'name'
+        });
+
+    })
+</script>
+<div class="ibox-content">
+    <div class="table-responsive">
+        <table id="datagrid" class="easyui-datagrid" title="订单列表" style="height:auto;min-height:500px;max-height:800px"
+               data-options="queryParams:{} ">
+            <thead data-options="frozen:true">
+                <tr>
+                    <th data-options="field: 'ID',width:80,checkbox:true"></th>
+                    <th data-options="field:'CODE',width:100">业务单号</th>
+                    <th data-options="field:'XCBUSINAME',width:100">业务类型</th>
+                    <th data-options="field:'CREATETIME',width:130,sortable:true,">上游下发日期</th>
+                    <th data-options="field:'IFZEND',width:100">是否发送到下游</th>
+                    <th data-options="field:'SENDTIME',width:130,sortable:true,">发送下游日期</th>
+                    <th data-options="field:'FILERELATE',width:100">是否关联文件</th>
+                    <th data-options="field:'FWONO',width:160">FWO号</th>
+                    <th data-options="field:'FOONO',width:180">报关FOO</th>
+                    <th data-options="field:'FOONOBJ',width:180">报检FOO</th>
+                </tr>
+            </thead>
+        </table>
+        <div id="tb">
+            <div class="tb_search">
+                <form id="searchform" method="post">
+                    <table>
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value placeholderclass" type="text" name="ordercode_value" placeholder="单据号" />
+                            </td>
+
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>业务类型</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" editable="false" id="XCBUSINAME" panelheight="auto" name="XCBUSINAME"></select>
+                            </td>
+
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>委托类型</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" editable="false" id="ENTRUSTTYPEID" panelheight="auto" name="ENTRUSTTYPEID"></select>
+                            </td>
+
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value placeholderclass" editable="false" name="startdate" placeholder="开始时间">
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value placeholderclass" editable="false" name="stopdate" placeholder="结束时间">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>是否关联文件</option>
+                                </select>
+                            </td>
+                            <td>
+
+                                <select class="easyui-combobox combobox_width value is_check" editable="false" panelheight="auto" name="FILERELATE"></select>
+                            </td>
+
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>是否发送下游</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" editable="false" panelheight="auto" name="IFZEND"></select>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="tb_but">
+                <div class="but_left">
+                    @*<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="refresh_form()"><i class="icon-refresh"></i> 批量更新</a>
+                        <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="export_form()"><i class="fa fa-share-square-o" aria-hidden="true"></i> 导出</a>*@
+                </div>
+                <div class="but_right">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="search_form()"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="fa fa-retweet" aria-hidden="true"></i> 重置</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end ibox-content -->
+</div>

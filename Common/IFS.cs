@@ -13,6 +13,10 @@ namespace SceneOfCustoms.Common
 {
     public class IFS
     {
+
+        public static string XCBUSINAME;
+
+
         //推送到单证的数据
         public static void SaveDZOrder(string FWO, string ONLYCODE)
         {
@@ -53,12 +57,10 @@ namespace SceneOfCustoms.Common
                 {
                     DZOrder.GOODSGW = Decimal.Parse(dt.Rows[i]["GOODSWEIGHT"] + "");
                 }
-
                 if (!string.IsNullOrEmpty(dt.Rows[i]["CHECKEDWEIGHT"] + ""))
                 {
                     DZOrder.GOODSNW = Decimal.Parse(dt.Rows[i]["CHECKEDWEIGHT"] + "");
                 }
-
                 DZOrder.PACKKINDNAME = dt.Rows[i]["PACKKIND"] + "";
                 DZOrder.GOODSTYPEID = dt.Rows[i]["GOODSTYPEID"] + "";
                 //贸易方式
@@ -270,6 +272,9 @@ namespace SceneOfCustoms.Common
 
                 //业务类型代码
                 o[0].BUSITYPE = JudgeBusiType(o[0].BUSITYPE, o[0].ENTRUSTTYPEID);
+
+                o[0].XCBUSINAME = IFS.XCBUSINAME;
+
                 //委托类型代码 01,02,03。分别表示报关、报检、报关报检
                 o[0].ENTRUSTTYPEID = GetENTRUSTTYPEID(o, o[0].BUSITYPE);
 
@@ -281,17 +286,15 @@ namespace SceneOfCustoms.Common
                 //件数
                 //毛重
                 //发货单位 
-                string FGOODSUNITCODE = "";
                 if (!string.IsNullOrEmpty(o[0].FGOODSUNIT) && o[0].FGOODSUNIT.Length > 10)
                 {
-                    FGOODSUNITCODE = o[0].FGOODSUNIT.Substring(o[0].FGOODSUNIT.Length - 10, 10);
+                    o[0].FGOODSUNITCODE = o[0].FGOODSUNIT.Substring(o[0].FGOODSUNIT.Length - 10, 10);
                     o[0].FGOODSUNIT = o[0].FGOODSUNIT.Remove(o[0].FGOODSUNIT.Length - 10, 10);
                 }
                 //收货单位 
-                string SGOODSUNITCODE = "";
                 if (!string.IsNullOrEmpty(o[0].SGOODSUNIT) && o[0].SGOODSUNIT.Length > 10)
                 {
-                    SGOODSUNITCODE = o[0].SGOODSUNIT.Substring(o[0].SGOODSUNIT.Length - 10, 10);
+                    o[0].SGOODSUNITCODE = o[0].SGOODSUNIT.Substring(o[0].SGOODSUNIT.Length - 10, 10);
                     o[0].SGOODSUNIT = o[0].SGOODSUNIT.Remove(o[0].SGOODSUNIT.Length - 10, 10);
                 }
                 //货物包装
@@ -734,8 +737,8 @@ namespace SceneOfCustoms.Common
     wm.D_DATE, wm.TRANSPORT_CODE, wm.TRANSPORT_NAME, wm.APPCOMPANY,
     wm.APPCOMPANY_NAME, wm.TRADE_CODE, wm.TRADE_NAME, wm.CONSIGNEE_CODE,
     wm.CONSIGNEE_NAME, wm.TRADE_CODE_IN, wm.TRADE_NAME_IN, wm.PACK_NO,
-    wm.GROSS_WT, wm.NET_WT, wm.GOODS_TYPE_LY,  wm.WRAP_TYPE_ID,
-    wm.MAINCODE, wm.SUBCODE, wm.TRANSFER_NO,wm.ONLYCODE,
+    wm.GROSS_WT, wm.NET_WT, wm.GOODS_TYPE_LY, wm.WRAP_TYPE_ID,
+    wm.MAINCODE, wm.SUBCODE, wm.TRANSFER_NO, wm.ONLYCODE,
     wm.WTFS, wm.GOODS_NATURE_ID
     );
             }
@@ -776,6 +779,8 @@ namespace SceneOfCustoms.Common
             int res = 0;
             string sql = "select id from list_order where  code='" + o.ORDERCODE + "'";
             DataTable dt = DBMgr.GetDataTable(sql);
+
+
             //            if (dt.Rows.Count > 0)
             //            {
             //                sql = "delete from List_Declcontainertruck where ORDERCODE='" + o.ORDERCODE + "'";
@@ -792,7 +797,7 @@ namespace SceneOfCustoms.Common
             //                      CONTRACTNO='{32}',FIRSTLADINGBILLNO='{33}',SECONDLADINGBILLNO='{34}',MANIFEST='{35}', 
             //                      WOODPACKINGID='{36}',WEIGHTCHECK='{37}',ISWEIGHTCHECK='{38}',SHIPNAME='{39}',  
             //                      FILGHTNO='{40}',TURNPRENO='{41}',INVOICENO='{42}',ALLOWDECLARE='{43}', 
-            //                      SENDNUMBER='{44}' 
+            //                      SENDNUMBER='{44}',XCBUSINAME='{45}'
             //                      where code='" + o.ORDERCODE + "'";
 
             //                sql = string.Format(sql,
@@ -807,7 +812,7 @@ namespace SceneOfCustoms.Common
             //    o.CONTRACTNO, o.FIRSTLADINGBILLNO, o.SECONDLADINGBILLNO, o.MANIFEST,
             //    o.WOODPACKINGID, o.WEIGHTCHECK, o.ISWEIGHTCHECK, o.SHIPNAME,
             //    o.FILGHTNO, o.TURNPRENO, o.INVOICENO, o.ALLOWDECLARE,
-            //    o.SENDNUMBER
+            //    o.SENDNUMBER,o.XCBUSINAME
             //    );
             //            }
             //            else
@@ -828,13 +833,14 @@ namespace SceneOfCustoms.Common
                    MANIFEST,WOODPACKINGID,WEIGHTCHECK,ISWEIGHTCHECK,
                    SHIPNAME,FILGHTNO,TURNPRENO,INVOICENO,
                    ALLOWDECLARE,CODE,ASSOCIATENO,CORRESPONDNO,
-                   WTFS,ONLYCODE,SENDNUMBER,BUSINAME
+                   WTFS,ONLYCODE,SENDNUMBER,BUSINAME,
+                   XCBUSINAME
                   ) VALUES(
                    LIST_ORDER_ID.Nextval,sysdate,'SAP',
                    '{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}',
                    '{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}',to_date('{28}','yyyy-mm-dd hh24:mi:ss'),'{29}','{30}','{31}','{32}',
                    '{33}','{34}','{35}','{36}','{37}','{38}','{39}','{40}','{41}','{42}','{43}','{44}','{45}','{46}','{47}',
-                   '{48}','{49}','{50}','{51}','{52}','{53}','{54}','{55}','{56}'
+                   '{48}','{49}','{50}','{51}','{52}','{53}','{54}','{55}','{56}','{57}'
                   )";
             sql = string.Format(sql,
                 o.BUSITYPE, o.CODE, o.FOONO, o.FOONOBJ,
@@ -851,7 +857,8 @@ namespace SceneOfCustoms.Common
                 o.MANIFEST, o.WOODPACKINGID, o.WEIGHTCHECK, o.ISWEIGHTCHECK,
                 o.SHIPNAME, o.FILGHTNO, o.TURNPRENO, o.INVOICENO,
                 o.ALLOWDECLARE, o.ORDERCODE, o.ASSOCIATENO, o.CORRESPONDNO,
-                o.WTFS, o.NOWTIME, o.SENDNUMBER, o.BUSINAME
+                o.WTFS, o.NOWTIME, o.SENDNUMBER, o.BUSINAME,
+                o.XCBUSINAME
                 );
             //}
             res = DBMgr.ExecuteNonQuery(sql);
@@ -1488,26 +1495,32 @@ namespace SceneOfCustoms.Common
             if (busitype.IndexOf("空运进口") >= 0)
             {
                 busitypeid = "11";
+                IFS.XCBUSINAME = "空进";
             }
             if (busitype.IndexOf("空运出口") >= 0)
             {
                 busitypeid = "10";
+                IFS.XCBUSINAME = "空出";
             }
             if (busitype.IndexOf("海运进口") >= 0)
             {
                 busitypeid = "21";
+                IFS.XCBUSINAME = "海进";
             }
             if (busitype.IndexOf("海运出口") >= 0)
             {
                 busitypeid = "20";
+                IFS.XCBUSINAME = "海出";
             }
             if (busitype.IndexOf("陆运进口") >= 0)
             {
                 busitypeid = "31";
+                IFS.XCBUSINAME = "陆进";
             }
             if (busitype.IndexOf("陆运出口") >= 0)
             {
                 busitypeid = "30";
+                IFS.XCBUSINAME = "陆出";
             }
 
             if (busitype.IndexOf("特殊监管") >= 0)
@@ -1520,6 +1533,7 @@ namespace SceneOfCustoms.Common
                 {
                     busitypeid = "50";
                 }
+                IFS.XCBUSINAME = "特殊监管";
             }
 
 
@@ -1535,6 +1549,17 @@ namespace SceneOfCustoms.Common
                 {
                     busitypeid = "40";
                 }
+
+
+                if (busitype.IndexOf("叠加保税") >= 0)
+                {
+                    IFS.XCBUSINAME = "叠加保税";
+                }
+                else
+                {
+                    IFS.XCBUSINAME = "国内";
+                }
+
             }
 
             return busitypeid;

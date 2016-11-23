@@ -640,6 +640,20 @@ namespace SceneOfCustoms.Controllers
             workbook.Save(path);
         }
         //申报关区 进口口岸 
+
+
+
+
+
+        public ActionResult OrderList()
+        {
+            ViewData["crumb"] = "订单管理-->订单列表";
+            return View();
+        }
+
+
+
+
         public string Get_SBGQ()
         {
             IDatabase db = SeRedis.redis.GetDatabase();
@@ -945,6 +959,29 @@ namespace SceneOfCustoms.Controllers
                         sql += " AND BUSITYPE='50' or BUSITYPE='51'";
                         break;
                 }
+
+
+                if (jo.Value<string>("ENTRUSTTYPEID") != null && jo.Value<string>("ENTRUSTTYPEID") != "")
+                {
+                    sql += " AND ENTRUSTTYPEID = '" + jo.Value<string>("ENTRUSTTYPEID") + "' ";
+                }
+
+                if (jo.Value<string>("IFZEND") != null && jo.Value<string>("IFZEND") != "")
+                {
+                    sql += " AND IFZEND = '" + jo.Value<string>("IFZEND") + "' ";
+                }
+
+                if (jo.Value<string>("FILERELATE") != null && jo.Value<string>("FILERELATE") != "")
+                {
+                    sql += " AND FILERELATE = '" + jo.Value<string>("FILERELATE") + "' ";
+                }
+
+
+                if (jo.Value<string>("XCBUSINAME") != null && jo.Value<string>("XCBUSINAME") != "")
+                {
+                    sql += " AND XCBUSINAME = '" + jo.Value<string>("XCBUSINAME") + "' ";
+                }
+
                 if (jo.Value<string>("service_model") != null && jo.Value<string>("service_model") != "")
                 {
                     sql += " AND WTFS = '" + jo.Value<string>("service_model") + "' ";
@@ -972,11 +1009,13 @@ namespace SceneOfCustoms.Controllers
                 }
                 if (jo.Value<string>("startdate") != "")
                 {
-                    sql += " AND " + jo.Value<string>("orderdate") + " >= to_date('" + jo.Value<string>("startdate") + "','yyyy-MM-dd')";
+                    string startdate = jo.Value<string>("startdate") + " 00:00:00";
+                    sql += " AND " + jo.Value<string>("orderdate") + " >= to_date('" + startdate + "','yyyy-mm-dd hh24:mi:ss')";
                 }
                 if (jo.Value<string>("stopdate") != "")
                 {
-                    sql += " AND " + jo.Value<string>("orderdate") + " <= to_date('" + jo.Value<string>("stopdate") + "','yyyy-MM-dd')";
+                    string stopdate = jo.Value<string>("stopdate") + " 23:59:59";
+                    sql += " AND " + jo.Value<string>("orderdate") + " <= to_date('" + stopdate + "','yyyy-mm-dd hh24:mi:ss')";
                 }
                 if (jo.Value<string>("CUSTOMDISTRICTCODE") != null && jo.Value<string>("CUSTOMDISTRICTCODE") != "")
                 {

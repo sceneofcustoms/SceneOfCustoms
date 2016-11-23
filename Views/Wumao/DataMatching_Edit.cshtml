@@ -20,8 +20,7 @@
 </script>
 <form id="OrderFrom" method="post">
     <input class="hidden" type="text" name="ID" />
-    <div class="easyui-panel" style="margin-bottom:15px" title="登记项"
-         data-options="collapsible:true">
+
         <table class="scene">
             <tr>
                 <td>
@@ -67,9 +66,13 @@
                 </td>
             </tr>
 
-
+            <tr>
+                <td>
+                    <label for="BUSICODE">业务类型代码:</label>
+                    <input class="easyui-textbox" type="text" name="BUSICODE" />
+                </td>
+            </tr>
         </table>
-    </div>
 
     <div style="text-align:center;padding:5px 0">
         <a class="btn btn-primary" href="javascript:void(0)" onclick="submitForms()">

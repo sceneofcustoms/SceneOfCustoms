@@ -13,7 +13,8 @@
         { code: 'DANZHENGFANGXINGTIME', name: '单证放行日期' },
         { code: 'SHIWUFANGXINGTIME', name: '实物放行日期' },
         { code: 'XIAOBAOTIME', name: '销保时间' },
-        { code: 'SHIWUJIAFENGTIME', name: '实物加封时间' }
+        { code: 'SHIWUJIAFENGTIME', name: '实物加封时间' },
+        { code: 'CREATETIME', name: 'TM下发日期' }
     ];
     //2 查询条件  --单据号
     var search_code = [
@@ -47,7 +48,8 @@
             <thead data-options="frozen:true">
                 <tr>
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
-                    <th data-options="field:'CODE',width:120,sortable:true,">业务单号</th>
+                    <th data-options="field:'CODE',width:100,sortable:true,">业务单号</th>
+                    <th data-options="field:'CREATETIME',width:130,sortable:true,">TM下发时间</th>
                     <th data-options="field:'SFGOODSUNIT',width:200,sortable:true,">发货人</th>
                     <th data-options="field:'DECLARATIONCODE',width:150,sortable:true">报关单号</th>
                     <th data-options="field:'DECLARATIONSTATUS',width:150,sortable:true">海关通关状态</th>
