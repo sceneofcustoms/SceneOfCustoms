@@ -115,15 +115,25 @@ namespace SceneOfCustoms.Controllers
             DataTable dt = DBMgr.GetDataTable(sql);
             string result = "[";
             int i = 0;
+
             foreach (DataRow smEnt in dt.Rows)
             {
-                if (i != dt.Rows.Count - 1)
+                string children = string.Empty;
+                if (smEnt["ISLEAF"] + "" == "1")
                 {
-                    result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',ICON:'" + smEnt["ICON"] + "'},";
+                    result += "{children:[],";
                 }
                 else
                 {
-                    result += "{ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',ICON:'" + smEnt["ICON"] + "'}";
+                    result += "{";
+                }
+                if (i != dt.Rows.Count - 1)
+                {
+                    result += "ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',ICON:'" + smEnt["ICON"] + "'},";
+                }
+                else
+                {
+                    result += "ID:'" + smEnt["ID"] + "',NAME:'" + smEnt["NAME"] + "',SORTINDEX:'" + smEnt["SORTINDEX"] + "',PARENTID:'" + smEnt["PARENTID"] + "',leaf:'" + smEnt["ISLEAF"] + "',URL:'" + smEnt["URL"] + "',ICON:'" + smEnt["ICON"] + "'}";
                 }
                 i++;
             }
@@ -182,14 +192,7 @@ namespace SceneOfCustoms.Controllers
         {
             string sql = string.Empty;
             string moduleid = Request["ID"];
-            string userid = Request["userid"];
-            //            if (!string.IsNullOrEmpty(userid) && !string.IsNullOrEmpty(moduleid))
-            //            {
-            //                sql = @"select t.*,u.MODULEID from sys_module t left join (select * from sys_moduleuser where userid='{0}') u on t.ID=u.MODULEID
-            //                where  t.ParentId ='{1}' order by t.SortIndex";
-            //                sql = string.Format(sql, userid, moduleid);
-            //            }
-            //获取一级模块 && string.IsNullOrEmpty(moduleid)
+            string userid = Request["userid"]; 
             if (!string.IsNullOrEmpty(userid))
             {
                 sql = @"select t.*,u.MODULEID from sys_module t  left join (select * from sys_moduleuser where userid='{0}') u on t.ID=u.MODULEID
