@@ -653,6 +653,9 @@ namespace SceneOfCustoms.Common
 
             wm.BUSINAME = ld[0].BUSITYPE;
             wm.ORDERCODE = ld[0].ORDERCODE;
+            wm.FWONO = ld[0].CODE;
+            wm.FOONO = ld[0].FOONO;
+
             wm.ONLYCODE = Nowtime;
             wm.WTFS = ld[0].ENTRUSTTYPEID;
 
@@ -705,13 +708,14 @@ namespace SceneOfCustoms.Common
             wm.WRAP_TYPE_ID = "提单";
             wm.MAINCODE = ld[0].TOTALNO;
             wm.SUBCODE = ld[0].DIVIDENO;
+            res = EditWumao(wm);
             return res;
         }
         public static int EditWumao(Wumao wm)
         {
-            string sql = "select id from LIST_WUMAODADAMATCHING where ORDERCODE='" + wm.ORDERCODE + "'";
+            string sql = "select id from LIST_WUMAO where ORDERCODE='" + wm.ORDERCODE + "'";
             DataTable dt = DBMgr.GetDataTable(sql);
-            int res = 0;
+            int res = 1;
             if (dt.Rows.Count > 0)
             {
                 sql = @"update LIST_WUMAO set 
@@ -721,8 +725,8 @@ namespace SceneOfCustoms.Common
                                       APPCOMPANY_NAME='{12}',TRADE_CODE ='{13}',TRADE_NAME='{14}',CONSIGNEE_CODE='{15}',  
                                       CONSIGNEE_NAME='{16}',TRADE_CODE_IN='{17}',TRADE_NAME_IN='{18}',PACK_NO='{19}', 
                                       GROSS_WT='{20}',NET_WT='{21}',GOODS_TYPE_LY='{22}',WRAP_TYPE_ID='{23}',
-                                      MAINCODE='{24}',SUBCODE='{25}',TRANSFER_NO='{26}',ONLYCODE='{28}'
-                                      ,WTFS='{29}'
+                                      MAINCODE='{24}',SUBCODE='{25}',TRANSFER_NO='{26}',ONLYCODE='{27}'
+                                      ,WTFS='{28}',GOODS_NATURE_ID='{29}'
                                       where ORDERCODE='" + wm.ORDERCODE + "'";
                 sql = string.Format(sql,
     wm.I_E_FALG_TYPE, wm.BIZ_TYPE_ID, wm.TRAFFICTYPE, wm.BILL_TYPE,
@@ -731,8 +735,8 @@ namespace SceneOfCustoms.Common
     wm.APPCOMPANY_NAME, wm.TRADE_CODE, wm.TRADE_NAME, wm.CONSIGNEE_CODE,
     wm.CONSIGNEE_NAME, wm.TRADE_CODE_IN, wm.TRADE_NAME_IN, wm.PACK_NO,
     wm.GROSS_WT, wm.NET_WT, wm.GOODS_TYPE_LY,  wm.WRAP_TYPE_ID,
-    wm.MAINCODE, wm.SUBCODE, wm.TRANSFER_NO,wm.ONLYCODE, 
-    wm.WTFS
+    wm.MAINCODE, wm.SUBCODE, wm.TRANSFER_NO,wm.ONLYCODE,
+    wm.WTFS, wm.GOODS_NATURE_ID
     );
             }
             else
@@ -745,10 +749,11 @@ namespace SceneOfCustoms.Common
                                       CONSIGNEE_NAME,TRADE_CODE_IN,TRADE_NAME_IN,PACK_NO,
                                       GROSS_WT,NET_WT,GOODS_TYPE_LY,WRAP_TYPE_ID,
                                       MAINCODE,SUBCODE,TRANSFER_NO,ONLYCODE,
-                                      WTFS,ORDERCODE
+                                      WTFS,ORDERCODE,FWONO,FOONO,
+                                      GOODS_NATURE_ID
                                        )VALUES(LIST_ORDER_ID.Nextval,
                    '{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}',to_date('{8}','yyyy-mm-dd'),'{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}',
-                   '{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}','{28}','{29}','{30}'
+                   '{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}','{28}','{29}','{30}','{31}','{32}'
                   )";
                 sql = string.Format(sql,
     wm.I_E_FALG_TYPE, wm.BIZ_TYPE_ID, wm.TRAFFICTYPE, wm.BILL_TYPE,
@@ -758,9 +763,11 @@ namespace SceneOfCustoms.Common
     wm.CONSIGNEE_NAME, wm.TRADE_CODE_IN, wm.TRADE_NAME_IN, wm.PACK_NO,
     wm.GROSS_WT, wm.NET_WT, wm.GOODS_TYPE_LY, wm.WRAP_TYPE_ID,
     wm.MAINCODE, wm.SUBCODE, wm.TRANSFER_NO, wm.ONLYCODE,
-    wm.WTFS, wm.ORDERCODE
+    wm.WTFS, wm.ORDERCODE, wm.FWONO, wm.FOONO,
+    wm.GOODS_NATURE_ID
     );
             }
+            res = DBMgr.ExecuteNonQuery(sql);
             return res;
         }
 
@@ -913,13 +920,13 @@ namespace SceneOfCustoms.Common
                     string ENTRUSTTYPE = GetENTRUSTTYPEID(ListOrder, BUSITYPE);
                     if (BUSITYPE == "40" || BUSITYPE == "41")
                     {
-                        MsgobjList.Add(set_MObj("E", "二线不需要发物贸通"));
+                        MsgobjList.Add(set_MObj("E", "二线不需要从新关务发物贸通"));
                         return MsgobjList;
                     }
 
                     if (BUSITYPE == "31" || BUSITYPE == "30")
                     {
-                        MsgobjList.Add(set_MObj("E", "陆运需求为定，不可发物贸通！"));
+                        MsgobjList.Add(set_MObj("E", "陆运需求未定，不可发物贸通！"));
                         return MsgobjList;
                     }
                 }
@@ -927,6 +934,7 @@ namespace SceneOfCustoms.Common
                 if (ListOrder.Count > 1)
                 {
                     MsgobjList.Add(set_MObj("E", "指令条数超出！"));
+                    return MsgobjList;
                 }
 
 
@@ -989,7 +997,7 @@ namespace SceneOfCustoms.Common
                 }
                 else
                 {
-                    string SGOODSUNITCODE = o.SGOODSUNIT.Substring(o.BUSIUNITNAME.Length - 10, 10);
+                    string SGOODSUNITCODE = o.SGOODSUNIT.Substring(o.SGOODSUNIT.Length - 10, 10);
                     if (!Regex.IsMatch(SGOODSUNITCODE, @"^[+-]?\d*[.]?\d*$"))
                     {
                         MsgobjList.Add(set_MObj("E", "收货单位不合格" + o.FOONO));
@@ -1024,14 +1032,6 @@ namespace SceneOfCustoms.Common
                     }
                 }
 
-
-
-
-                if (string.IsNullOrEmpty(o.ORDERCODE))
-                {
-                    MsgobjList.Add(set_MObj("E", "业务单号不可为空" + o.FOONO));
-                }
-
                 if (string.IsNullOrEmpty(o.ORDERCODE))
                 {
                     MsgobjList.Add(set_MObj("E", "业务单号不可为空" + o.FOONO));
@@ -1040,19 +1040,19 @@ namespace SceneOfCustoms.Common
 
                 if (string.IsNullOrEmpty(o.CHECKEDGOODSNUM))
                 {
-                    MsgobjList.Add(set_MObj("E", "件数" + o.FOONO));
+                    MsgobjList.Add(set_MObj("E", "件数不可为空" + o.FOONO));
                 }
 
 
                 if (string.IsNullOrEmpty(o.CHECKEDWEIGHT))
                 {
-                    MsgobjList.Add(set_MObj("E", "实际毛重" + o.FOONO));
+                    MsgobjList.Add(set_MObj("E", "实际毛重不可为空" + o.FOONO));
                 }
 
 
                 if (string.IsNullOrEmpty(o.GOODSWEIGHT))
                 {
-                    MsgobjList.Add(set_MObj("E", "毛重" + o.FOONO));
+                    MsgobjList.Add(set_MObj("E", "毛重不可为空" + o.FOONO));
                 }
 
             }

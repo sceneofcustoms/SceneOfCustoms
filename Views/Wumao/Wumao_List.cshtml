@@ -59,11 +59,30 @@
             });
         });
 
+
+        $("#syncdata_wumao").click(function () {
+            var row = $('#datagrid').datagrid('getSelected');
+            if (row == null) {
+                $.messager.alert("提示", "请选择数据！");
+                return;
+            }
+            debugger;
+            var ORDERCODE = row.ORDERCODE;
+            $.ajax({
+                url: '/Wumao/SyncData',                          // 跳转到 action
+                data: { "ORDERCODE": ORDERCODE },
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                },
+            });
+        });
+
     })
 </script>
 <div class="ibox-content">
     <div class="table-responsive">
-        <table id="datagrid" class="easyui-datagrid" title="同步日志" style="height:auto;min-height:500px;max-height:800px"
+        <table id="datagrid" class="easyui-datagrid" title="同步" style="height:auto;min-height:500px;max-height:800px"
                data-options="url: '/Wumao/LoadWumao_List',
                             rownumbers: true,
                             dataType: 'json',
@@ -163,7 +182,7 @@
             </div>
             <div class="tb_but">
                 <div class="but_left">
-                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" id="syncdata_wumao"><i class="fa fa-exchange" aria-hidden="true"></i> 同 步</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" id="syncdata_wumao"><i class="fa fa-exchange" aria-hidden="true"></i> 同步到物贸通</a>
                     @*<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="export_form()"><i class="fa fa-share-square-o" aria-hidden="true"></i> 导出</a>*@
                 </div>
                 <div class="but_right">
