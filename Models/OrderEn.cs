@@ -69,6 +69,8 @@ namespace SceneOfCustoms.Models
         public string ORDERCODE { get; set; }
         public string DOCSERVICECODE { get; set; }
         public string DOCSERVICENAME { get; set; }
+        public string SENDURL { get; set; }
+
 
 
 
@@ -88,11 +90,10 @@ namespace SceneOfCustoms.Models
         public string SUBMITTIME { get; set; }
         public string BUSIUNITCODE { get; set; }
         public string SENDNUMBER { get; set; }
-        public string NOWTIME { get; set; }
-
+        public string ONLYCODE { get; set; }
         public string XCBUSINAME { get; set; }
-
-        
+        public string UPDATETIME { get; set; }
+        public string IFSEND { get; set; }
 
     }
 }

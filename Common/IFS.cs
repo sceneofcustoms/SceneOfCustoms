@@ -147,18 +147,20 @@ namespace SceneOfCustoms.Common
                     FileEnList.Add(FileEn);
                 }
                 DZOrder.Files = FileEnList.ToArray();
-
-
                 DZOrderList.Add(DZOrder);
             }
 
             string DZ_res = danzheng.SendOrderData(DZOrderList.ToArray());
             Msgobj MO = new Msgobj();
             List<Msgobj> MSList = new List<Msgobj>();
+
             if (DZ_res == "success")
             {
+                string NewTime = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
                 MO.MSG_TYPE = "S";
                 MO.MSG_TXT = "下发成功";
+                sql = @"update list_order set IFSEND='1',SENDTIME =to_date('" + NewTime + "','yyyy-mm-dd hh24:mi:ss') where  ONLYCODE ='" + ONLYCODE + "'";
+                DBMgr.ExecuteNonQuery(sql);
             }
             else
             {
@@ -169,7 +171,6 @@ namespace SceneOfCustoms.Common
             save_log(MSList, FWO + "", "2");
         }
 
-        //转
         public static byte[] GetFileData(string fileUrl)
         {
             FileStream fs = new FileStream(fileUrl, FileMode.Open, FileAccess.Read);
@@ -197,7 +198,7 @@ namespace SceneOfCustoms.Common
         }
 
         //保存发送单证数据
-        public static int XCOrderData(List<OrderEn> ld, string Nowtime)
+        public static int XCOrderData(List<OrderEn> ld, string ONLYCODE)
         {
             int res = 0;
             string ASSOCIATENO = "";
@@ -231,23 +232,14 @@ namespace SceneOfCustoms.Common
 
             DataTable dt;
             string sql = "";
-            DateTime dtime = DateTime.Now;
+
+            string NewTime = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
+
             foreach (List<OrderEn> o in GroupOrder)
             {
-                o[0].NOWTIME = Nowtime;
-
-                sql = "select id,sendnumber from list_order where  code='" + o[0].ORDERCODE + "'";
-                dt = DBMgr.GetDataTable(sql);
-                if (dt.Rows.Count > 0)
-                {
-                    //SENDNUMBER = Int32.Parse(dt.Rows[0]["SENDNUMBER"] + "") + 1;
-                    sql = "delete from list_order where code='" + o[0].ORDERCODE + "'";
-                    DBMgr.ExecuteNonQuery(sql);
-                    sql = "delete from List_Declcontainertruck where ORDERCODE='" + o[0].ORDERCODE + "'";
-                    DBMgr.ExecuteNonQuery(sql);
-                }
-
-
+                o[0].ONLYCODE = ONLYCODE;
+                o[0].CREATETIME = NewTime;
+                o[0].UPDATETIME = NewTime;
                 //关联号
                 if (GroupOrder.Count > 2)
                 {
@@ -272,6 +264,21 @@ namespace SceneOfCustoms.Common
 
                 //业务类型代码
                 o[0].BUSITYPE = JudgeBusiType(o[0].BUSITYPE, o[0].ENTRUSTTYPEID);
+
+                //发送下游状态
+                o[0].IFSEND = "0";
+                if (o[0].BUSITYPE == "20")
+                {
+                    sql = "select id,IFSEND from list_order where  code='" + o[0].ORDERCODE + "'";
+                    dt = DBMgr.GetDataTable(sql);
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (dt.Rows[0]["BUSITYPE"] + "" == "1" || dt.Rows[0]["BUSITYPE"] + "" == "2")
+                        {
+                            o[0].IFSEND = "2";
+                        }
+                    }
+                }
 
                 o[0].XCBUSINAME = IFS.XCBUSINAME;
 
@@ -342,7 +349,6 @@ namespace SceneOfCustoms.Common
                     {
                         o[0].ENTRUSTREQUEST += TRADEWAYCODES;
                     }
-
                 }
 
 
@@ -579,7 +585,7 @@ namespace SceneOfCustoms.Common
         }
 
         //转成物贸通的数据
-        public static int XCWumaoData(List<OrderEn> ld, string Nowtime)
+        public static int XCWumaoData(List<OrderEn> ld, string ONLYCODE)
         {
             Wumao wm = new Wumao();
             int res = 0;
@@ -659,7 +665,7 @@ namespace SceneOfCustoms.Common
             wm.FWONO = ld[0].CODE;
             wm.FOONO = ld[0].FOONO;
 
-            wm.ONLYCODE = Nowtime;
+            wm.ONLYCODE = ONLYCODE;
             wm.WTFS = ld[0].ENTRUSTTYPEID;
 
             wm.PROVIDER_NAME = "电子零件";
@@ -781,44 +787,44 @@ namespace SceneOfCustoms.Common
             DataTable dt = DBMgr.GetDataTable(sql);
 
 
-            //            if (dt.Rows.Count > 0)
-            //            {
-            //                sql = "delete from List_Declcontainertruck where ORDERCODE='" + o.ORDERCODE + "'";
-            //                DBMgr.ExecuteNonQuery(sql);
-            //                sql = @"update List_Order set 
-            //                      TOTALNO='{0}',DIVIDENO='{1}',GOODSNUM='{2}',GOODSWEIGHT='{3}',  
-            //                      FGOODSUNIT='{4}',FGOODSUNITCODE='{5}',SGOODSUNIT='{6}',SGOODSUNITCODE='{7}',  
-            //                      PACKKIND='{8}',REPWAYID='{9}',DECLWAY='{10}',TRADEWAYCODES='{11}',  
-            //                      CUSNO='{12}',CUSTOMDISTRICTCODE='{13}',PORTCODE='{14}',SPECIALRELATIONSHIP='{15}',  
-            //                      PRICEIMPACT='{16}',PAYPOYALTIES='{17}',REPUNITNAME='{18}',REPUNITCODE='{19}',  
-            //                      INSPUNITNAME='{20}',INSPUNITCODE='{21}',SUBMITUSERNAME='{22}',SUBMITTIME=to_date('{23}','yyyy-mm-dd hh24:mi:ss'),  
-            //                      ARRIVEDNO='{24}',CHECKEDGOODSNUM='{25}',CHECKEDWEIGHT='{26}',BUSIUNITNAME='{27}',  
-            //                      BUSIUNITCODE='{28}',GOODSTYPEID='{29}',ISPREDECLARE='{30}',ENTRUSTREQUEST='{31}',  
-            //                      CONTRACTNO='{32}',FIRSTLADINGBILLNO='{33}',SECONDLADINGBILLNO='{34}',MANIFEST='{35}', 
-            //                      WOODPACKINGID='{36}',WEIGHTCHECK='{37}',ISWEIGHTCHECK='{38}',SHIPNAME='{39}',  
-            //                      FILGHTNO='{40}',TURNPRENO='{41}',INVOICENO='{42}',ALLOWDECLARE='{43}', 
-            //                      SENDNUMBER='{44}',XCBUSINAME='{45}'
-            //                      where code='" + o.ORDERCODE + "'";
-
-            //                sql = string.Format(sql,
-            //    o.TOTALNO, o.DIVIDENO, o.GOODSNUM, o.GOODSWEIGHT,
-            //    o.FGOODSUNIT, o.FGOODSUNITCODE, o.SGOODSUNIT, o.SGOODSUNITCODE,
-            //    o.PACKKIND, o.REPWAYID, o.DECLWAY, o.TRADEWAYCODES,
-            //    o.CUSNO, o.CUSTOMDISTRICTCODE, o.PORTCODE, o.SPECIALRELATIONSHIP,
-            //    o.PRICEIMPACT, o.PAYPOYALTIES, o.REPUNITNAME, o.REPUNITCODE,
-            //    o.INSPUNITNAME, o.INSPUNITCODE, o.SUBMITUSERNAME, o.SUBMITTIME,
-            //    o.ARRIVEDNO, o.CHECKEDGOODSNUM, o.CHECKEDWEIGHT, o.BUSIUNITNAME,
-            //    o.BUSIUNITCODE, o.GOODSTYPEID, o.ISPREDECLARE, o.ENTRUSTREQUEST,
-            //    o.CONTRACTNO, o.FIRSTLADINGBILLNO, o.SECONDLADINGBILLNO, o.MANIFEST,
-            //    o.WOODPACKINGID, o.WEIGHTCHECK, o.ISWEIGHTCHECK, o.SHIPNAME,
-            //    o.FILGHTNO, o.TURNPRENO, o.INVOICENO, o.ALLOWDECLARE,
-            //    o.SENDNUMBER,o.XCBUSINAME
-            //    );
-            //            }
-            //            else
-            //            {
-            sql = @"insert into List_Order(
-                   ID,CREATETIME,URL,
+            if (dt.Rows.Count > 0)
+            {
+                sql = "delete from List_Declcontainertruck where ORDERCODE='" + o.ORDERCODE + "'";
+                DBMgr.ExecuteNonQuery(sql);
+                sql = @"update List_Order set 
+                                  TOTALNO='{0}',DIVIDENO='{1}',GOODSNUM='{2}',GOODSWEIGHT='{3}',  
+                                  FGOODSUNIT='{4}',FGOODSUNITCODE='{5}',SGOODSUNIT='{6}',SGOODSUNITCODE='{7}',  
+                                  PACKKIND='{8}',REPWAYID='{9}',DECLWAY='{10}',TRADEWAYCODES='{11}',  
+                                  CUSNO='{12}',CUSTOMDISTRICTCODE='{13}',PORTCODE='{14}',SPECIALRELATIONSHIP='{15}',  
+                                  PRICEIMPACT='{16}',PAYPOYALTIES='{17}',REPUNITNAME='{18}',REPUNITCODE='{19}',  
+                                  INSPUNITNAME='{20}',INSPUNITCODE='{21}',SUBMITUSERNAME='{22}',SUBMITTIME=to_date('{23}','yyyy-mm-dd hh24:mi:ss'),  
+                                  ARRIVEDNO='{24}',CHECKEDGOODSNUM='{25}',CHECKEDWEIGHT='{26}',BUSIUNITNAME='{27}',  
+                                  BUSIUNITCODE='{28}',GOODSTYPEID='{29}',ISPREDECLARE='{30}',ENTRUSTREQUEST='{31}',  
+                                  CONTRACTNO='{32}',FIRSTLADINGBILLNO='{33}',SECONDLADINGBILLNO='{34}',MANIFEST='{35}', 
+                                  WOODPACKINGID='{36}',WEIGHTCHECK='{37}',ISWEIGHTCHECK='{38}',SHIPNAME='{39}',  
+                                  FILGHTNO='{40}',TURNPRENO='{41}',INVOICENO='{42}',ALLOWDECLARE='{43}', 
+                                  SENDNUMBER='{44}',XCBUSINAME='{45}',UPDATETIME=to_date('{46}','yyyy-mm-dd hh24:mi:ss'),
+                                  IFSEND='{47}'
+                                  where code='" + o.ORDERCODE + "'";
+                sql = string.Format(sql,
+    o.TOTALNO, o.DIVIDENO, o.GOODSNUM, o.GOODSWEIGHT,
+    o.FGOODSUNIT, o.FGOODSUNITCODE, o.SGOODSUNIT, o.SGOODSUNITCODE,
+    o.PACKKIND, o.REPWAYID, o.DECLWAY, o.TRADEWAYCODES,
+    o.CUSNO, o.CUSTOMDISTRICTCODE, o.PORTCODE, o.SPECIALRELATIONSHIP,
+    o.PRICEIMPACT, o.PAYPOYALTIES, o.REPUNITNAME, o.REPUNITCODE,
+    o.INSPUNITNAME, o.INSPUNITCODE, o.SUBMITUSERNAME, o.SUBMITTIME,
+    o.ARRIVEDNO, o.CHECKEDGOODSNUM, o.CHECKEDWEIGHT, o.BUSIUNITNAME,
+    o.BUSIUNITCODE, o.GOODSTYPEID, o.ISPREDECLARE, o.ENTRUSTREQUEST,
+    o.CONTRACTNO, o.FIRSTLADINGBILLNO, o.SECONDLADINGBILLNO, o.MANIFEST,
+    o.WOODPACKINGID, o.WEIGHTCHECK, o.ISWEIGHTCHECK, o.SHIPNAME,
+    o.FILGHTNO, o.TURNPRENO, o.INVOICENO, o.ALLOWDECLARE,
+    o.SENDNUMBER, o.XCBUSINAME, o.UPDATETIME, o.IFSEND
+    );
+            }
+            else
+            {
+                sql = @"insert into List_Order(
+                   ID,URL,
                    BUSITYPE,FWONO,FOONO,FOONOBJ,
                    ENTRUSTTYPEID,
                    TOTALNO,DIVIDENO,GOODSNUM,GOODSWEIGHT,
@@ -834,33 +840,34 @@ namespace SceneOfCustoms.Common
                    SHIPNAME,FILGHTNO,TURNPRENO,INVOICENO,
                    ALLOWDECLARE,CODE,ASSOCIATENO,CORRESPONDNO,
                    WTFS,ONLYCODE,SENDNUMBER,BUSINAME,
-                   XCBUSINAME
+                   XCBUSINAME,UPDATETIME,CREATETIME
                   ) VALUES(
-                   LIST_ORDER_ID.Nextval,sysdate,'SAP',
+                   LIST_ORDER_ID.Nextval,'SAP',
                    '{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}',
                    '{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}',to_date('{28}','yyyy-mm-dd hh24:mi:ss'),'{29}','{30}','{31}','{32}',
                    '{33}','{34}','{35}','{36}','{37}','{38}','{39}','{40}','{41}','{42}','{43}','{44}','{45}','{46}','{47}',
-                   '{48}','{49}','{50}','{51}','{52}','{53}','{54}','{55}','{56}','{57}'
+                   '{48}','{49}','{50}','{51}','{52}','{53}','{54}','{55}','{56}','{57}',to_date('{58}','yyyy-mm-dd hh24:mi:ss'),
+                   to_date('{59}','yyyy-mm-dd hh24:mi:ss')
                   )";
-            sql = string.Format(sql,
-                o.BUSITYPE, o.CODE, o.FOONO, o.FOONOBJ,
-                o.ENTRUSTTYPEID,
-                o.TOTALNO, o.DIVIDENO, o.GOODSNUM, o.GOODSWEIGHT,
-                o.FGOODSUNIT, o.FGOODSUNITCODE, o.SGOODSUNIT, o.SGOODSUNITCODE,
-                o.PACKKIND, o.REPWAYID, o.DECLWAY, o.TRADEWAYCODES,
-                o.CUSNO, o.CUSTOMDISTRICTCODE, o.PORTCODE, o.SPECIALRELATIONSHIP,
-                o.PRICEIMPACT, o.PAYPOYALTIES, o.REPUNITNAME, o.REPUNITCODE,
-                o.INSPUNITNAME, o.INSPUNITCODE, o.SUBMITUSERNAME, o.SUBMITTIME,
-                o.ARRIVEDNO, o.CHECKEDGOODSNUM, o.CHECKEDWEIGHT, o.BUSIUNITNAME,
-                o.BUSIUNITCODE, o.GOODSTYPEID, "", o.ISPREDECLARE,
-                o.ENTRUSTREQUEST, o.CONTRACTNO, o.FIRSTLADINGBILLNO, o.SECONDLADINGBILLNO,
-                o.MANIFEST, o.WOODPACKINGID, o.WEIGHTCHECK, o.ISWEIGHTCHECK,
-                o.SHIPNAME, o.FILGHTNO, o.TURNPRENO, o.INVOICENO,
-                o.ALLOWDECLARE, o.ORDERCODE, o.ASSOCIATENO, o.CORRESPONDNO,
-                o.WTFS, o.NOWTIME, o.SENDNUMBER, o.BUSINAME,
-                o.XCBUSINAME
-                );
-            //}
+                sql = string.Format(sql,
+                    o.BUSITYPE, o.CODE, o.FOONO, o.FOONOBJ,
+                    o.ENTRUSTTYPEID,
+                    o.TOTALNO, o.DIVIDENO, o.GOODSNUM, o.GOODSWEIGHT,
+                    o.FGOODSUNIT, o.FGOODSUNITCODE, o.SGOODSUNIT, o.SGOODSUNITCODE,
+                    o.PACKKIND, o.REPWAYID, o.DECLWAY, o.TRADEWAYCODES,
+                    o.CUSNO, o.CUSTOMDISTRICTCODE, o.PORTCODE, o.SPECIALRELATIONSHIP,
+                    o.PRICEIMPACT, o.PAYPOYALTIES, o.REPUNITNAME, o.REPUNITCODE,
+                    o.INSPUNITNAME, o.INSPUNITCODE, o.SUBMITUSERNAME, o.SUBMITTIME,
+                    o.ARRIVEDNO, o.CHECKEDGOODSNUM, o.CHECKEDWEIGHT, o.BUSIUNITNAME,
+                    o.BUSIUNITCODE, o.GOODSTYPEID, "", o.ISPREDECLARE,
+                    o.ENTRUSTREQUEST, o.CONTRACTNO, o.FIRSTLADINGBILLNO, o.SECONDLADINGBILLNO,
+                    o.MANIFEST, o.WOODPACKINGID, o.WEIGHTCHECK, o.ISWEIGHTCHECK,
+                    o.SHIPNAME, o.FILGHTNO, o.TURNPRENO, o.INVOICENO,
+                    o.ALLOWDECLARE, o.ORDERCODE, o.ASSOCIATENO, o.CORRESPONDNO,
+                    o.WTFS, o.ONLYCODE, o.SENDNUMBER, o.BUSINAME,
+                    o.XCBUSINAME, o.UPDATETIME, o.CREATETIME
+                    );
+            }
             res = DBMgr.ExecuteNonQuery(sql);
             //卡号 车号
             foreach (Declcontainertruck d in o.Declcontainertruck)
@@ -992,7 +999,7 @@ namespace SceneOfCustoms.Common
                 else
                 {
                     string BUSIUNITCODE = o.BUSIUNITNAME.Substring(o.BUSIUNITNAME.Length - 10, 10);
-                    if (!Regex.IsMatch(BUSIUNITCODE, @"^[+-]?\d*[.]?\d*$"))
+                    if (!Regex.IsMatch(BUSIUNITCODE, @"^[A-Za-z0-9]+$"))
                     {
                         MsgobjList.Add(set_MObj("E", "经营单位不合格" + o.FOONO));
                     }
@@ -1005,7 +1012,7 @@ namespace SceneOfCustoms.Common
                 else
                 {
                     string SGOODSUNITCODE = o.SGOODSUNIT.Substring(o.SGOODSUNIT.Length - 10, 10);
-                    if (!Regex.IsMatch(SGOODSUNITCODE, @"^[+-]?\d*[.]?\d*$"))
+                    if (!Regex.IsMatch(SGOODSUNITCODE, @"^[A-Za-z0-9]+$"))
                     {
                         MsgobjList.Add(set_MObj("E", "收货单位不合格" + o.FOONO));
                     }
@@ -1019,7 +1026,7 @@ namespace SceneOfCustoms.Common
                 else
                 {
                     string FGOODSUNITCODE = o.FGOODSUNIT.Substring(o.FGOODSUNIT.Length - 10, 10);
-                    if (!Regex.IsMatch(FGOODSUNITCODE, @"^[+-]?\d*[.]?\d*$"))
+                    if (!Regex.IsMatch(FGOODSUNITCODE, @"^[A-Za-z0-9]+$"))
                     {
                         MsgobjList.Add(set_MObj("E", "发货单位不合格" + o.FOONO));
                     }
@@ -1033,7 +1040,7 @@ namespace SceneOfCustoms.Common
                 else
                 {
                     string REPUNITCODE = o.REPUNITCODE.Substring(o.REPUNITCODE.Length - 10, 10);
-                    if (!Regex.IsMatch(REPUNITCODE, @"^[+-]?\d*[.]?\d*$"))
+                    if (!Regex.IsMatch(REPUNITCODE, @"^[A-Za-z0-9]+$"))
                     {
                         MsgobjList.Add(set_MObj("E", "报关申报单位不合格" + o.FOONO));
                     }
@@ -1174,52 +1181,105 @@ namespace SceneOfCustoms.Common
                     return MsgobjList;
                 }
 
-
-
                 string BUSITYPE = JudgeBusiType(ListOrder[0].BUSITYPE, ListOrder[0].ENTRUSTTYPEID);
+
+                //if (!string.IsNullOrEmpty(BUSITYPE) && BUSITYPE != "0")
+                //{
+                //    if (BUSITYPE == "20")
+                //    {
+
+                //        sql = "select id,ALLOWDECLARE from list_order where  code='" + ListOrder[0].ORDERCODE + "'";
+                //        dt = DBMgr.GetDataTable(sql);
+                //        if (dt.Rows.Count > 0)
+                //        {
+                //            if (dt.Rows[0]["ALLOWDECLARE"] + "" == "1")
+                //            {
+                //                MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")报关可执行，不可发送多次"));
+                //                return MsgobjList;
+                //            }
+                //            else
+                //            {
+                //                if (string.IsNullOrEmpty(ListOrder[0].ALLOWDECLARE + ""))
+                //                {
+                //                    MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")报关不可执行，不可发送多次"));
+                //                    return MsgobjList;
+                //                }
+                //            }
+                //        }
+
+                //        sql = "select * from list_statuslog where ordercode ='" + ListOrder[0].ORDERCODE + "' and statuscode >'99'";
+                //        dt = DBMgr.GetDataTable(sql);
+                //        if (dt.Rows.Count > 0)
+                //        {
+                //            MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")单证已经提交报关单，不可发送"));
+                //            return MsgobjList;
+                //        }
+                //    }
+                //    else
+                //    {
+                //        sql = "select id from list_order where  code='" + ListOrder[0].ORDERCODE + "'";
+                //        dt = DBMgr.GetDataTable(sql);
+                //        if (dt.Rows.Count > 0)
+                //        {
+                //            MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")数据不可重复发送"));
+                //            return MsgobjList;
+                //        }
+                //    }
+                //}
+
+
+
                 if (!string.IsNullOrEmpty(BUSITYPE) && BUSITYPE != "0")
                 {
-                    if (BUSITYPE == "20")
-                    {
 
-                        sql = "select id,ALLOWDECLARE from list_order where  code='" + ListOrder[0].ORDERCODE + "'";
+                    if (BUSITYPE == "40" || BUSITYPE == "41")
+                    {
+                        sql = @"select ONLYCODE from  list_order where ONLYCODE =(select ONLYCODE from list_order where  code='" + ListOrder[0].ORDERCODE + "')";
                         dt = DBMgr.GetDataTable(sql);
                         if (dt.Rows.Count > 0)
                         {
-                            if (dt.Rows[0]["ALLOWDECLARE"] + "" == "1")
+                            if (dt.Rows.Count != GroupOrder.Count)
                             {
-                                MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")报关可执行，不可发送多次"));
+                                MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")跟原始的不匹配！"));
                                 return MsgobjList;
                             }
                             else
                             {
-                                if (string.IsNullOrEmpty(ListOrder[0].ALLOWDECLARE + ""))
+                                sql = @"select id from  list_order where ONLYCODE = '" + dt.Rows[0]["ONLYCODE"] + "' and code = '" + ListOrder[0].ORDERCODE + "' and WTFS = '" + ListOrder[0].ENTRUSTTYPEID + "'";
+                                dt = DBMgr.GetDataTable(sql);
+                                if (dt.Rows.Count < 1)
                                 {
-                                    MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")报关不可执行，不可发送多次"));
+                                    MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")跟原始的主数据不匹配！"));
                                     return MsgobjList;
                                 }
                             }
                         }
+                    }
 
-                        sql = "select * from list_statuslog where ordercode ='" + ListOrder[0].ORDERCODE + "' and statuscode >'99'";
-                        dt = DBMgr.GetDataTable(sql);
-                        if (dt.Rows.Count > 0)
-                        {
-                            MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")单证已经提交报关单，不可发送"));
-                            return MsgobjList;
-                        }
-                    }
-                    else
+
+
+                    if (BUSITYPE != "20")
                     {
-                        sql = "select id from list_order where  code='" + ListOrder[0].ORDERCODE + "'";
-                        dt = DBMgr.GetDataTable(sql);
-                        if (dt.Rows.Count > 0)
-                        {
-                            MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")数据不可重复发送"));
-                            return MsgobjList;
-                        }
+                        sql = "select id,ONLYCODE from list_order where  code='" + ListOrder[0].ORDERCODE + "' and IFSEND='1'";
+
                     }
+                    else if (BUSITYPE == "20")
+                    {
+                        sql = "select id,ONLYCODE from list_order where  code='" + ListOrder[0].ORDERCODE + "' and IFSEND='1',SENDNUMBER='2'";
+                    }
+
+                    dt = DBMgr.GetDataTable(sql);
+                    if (dt.Rows.Count > 0)
+                    {
+                        MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")已经发送下游，不可在发！"));
+                        return MsgobjList;
+                    }
+
+
+
                 }
+
+
 
 
                 //string BUSITYPE = JudgeBusiType(ListOrder[0].BUSITYPE, ListOrder[0].ENTRUSTTYPEID);
@@ -1280,182 +1340,6 @@ namespace SceneOfCustoms.Common
                     MsgobjList.Add(set_MObj("E", "凭证类型无法匹配" + o.FOONO));
                 }
 
-
-                ////报关申报单位
-                //if (o.FOONO.Substring(0, 4) == "SOBG" && string.IsNullOrEmpty(o.REPUNITCODE))
-                //{
-                //    MsgobjList.Add(set_MObj("E", "报关申报单位不可为空" + o.FOONO));
-                //}
-
-                ////报检申报单位
-                //if (o.FOONO.Substring(0, 4) == "SOBJ" && string.IsNullOrEmpty(o.INSPUNITNAME))
-                //{
-                //    MsgobjList.Add(set_MObj("E", "报检申报单位不可为空" + o.FOONO));
-                //}
-
-
-
-                //if (string.IsNullOrEmpty(o.REPWAYID))
-                //{
-                //    MsgobjList.Add(set_MObj("E", "申报方式不可为空" + o.FOONO));
-                //}
-                //else
-                //{
-
-                //    sql = "select CODE,NAME from SYS_REPWAY where Enabled=1 and  NAME = '" + o.REPWAYID + "'";
-                //    dt = DB_BaseData.GetDataTable(sql);
-                //    if (dt.Rows.Count <= 0)
-                //    {
-                //        MsgobjList.Add(set_MObj("E", "申报方式(" + o.REPWAYID + ")无法匹配" + o.FOONO));
-                //    }
-                //}
-
-                //if (string.IsNullOrEmpty(o.CUSTOMDISTRICTCODE))
-                //{
-                //    MsgobjList.Add(set_MObj("E", "申报关区不可为空" + o.FOONO));
-                //}
-                //else
-                //{
-                //    sql = "select CODE,NAME from BASE_CUSTOMDISTRICT  where ENABLED=1  and NAME='" + o.CUSTOMDISTRICTCODE + "' ORDER BY CODE";
-
-                //    dt = DB_BaseData.GetDataTable(sql);
-                //    if (dt.Rows.Count <= 0)
-                //    {
-                //        MsgobjList.Add(set_MObj("E", "申报关区(" + o.CUSTOMDISTRICTCODE + ")无法匹配" + o.FOONO));
-                //    }
-
-                //}
-
-                ////  REPUNITCODE  INSPUNITCODE
-
-                //if (string.IsNullOrEmpty(o.DECLWAY))
-                //{
-                //    MsgobjList.Add(set_MObj("E", "报关方式不可为空" + o.FOONO));
-                //}
-                //else
-                //{
-                //    sql = "select CODE,NAME from SYS_DECLWAY where enabled=1 and NAME ='" + o.DECLWAY + "'";
-                //    dt = DB_BaseData.GetDataTable(sql);
-                //    if (dt.Rows.Count <= 0)
-                //    {
-                //        MsgobjList.Add(set_MObj("E", "报关方式(" + o.DECLWAY + ")无法匹配" + o.FOONO));
-                //    }
-                //}
-
-                //if (string.IsNullOrEmpty(o.PORTCODE))
-                //{
-                //    MsgobjList.Add(set_MObj("E", "口岸关区不可为空" + o.FOONO));
-                //}
-                //else
-                //{
-                //    sql = "select CODE,NAME from BASE_CUSTOMDISTRICT  where ENABLED=1 and NAME ='" + o.PORTCODE + "'";
-                //    dt = DB_BaseData.GetDataTable(sql);
-                //    if (dt.Rows.Count <= 0)
-                //    {
-                //        MsgobjList.Add(set_MObj("E", "口岸关区(" + o.PORTCODE + ")无法匹配" + o.FOONO));
-                //    }
-                //}
-
-                //if (string.IsNullOrEmpty(o.BUSIUNITNAME))
-                //{
-                //    MsgobjList.Add(set_MObj("E", "经营单位不可为空" + o.FOONO));
-                //}
-                //else
-                //{
-                //    string name = o.BUSIUNITNAME.Remove(o.BUSIUNITNAME.Length - 10, 10);
-                //    sql = "SELECT CODE,NAME FROM BASE_COMPANY where CODE is not null and enabled=1 and NAME ='" + name + "'";
-                //    dt = DB_BaseData.GetDataTable(sql);
-                //    if (dt.Rows.Count <= 0)
-                //    {
-                //        MsgobjList.Add(set_MObj("E", "经营单位(" + o.BUSIUNITNAME + ")无法匹配" + o.FOONO));
-                //    }
-                //}
-
-
-                //if (string.IsNullOrEmpty(o.GOODSWEIGHT))
-                //{
-                //    MsgobjList.Add(set_MObj("E", "毛重不可为空" + o.FOONO));
-                //}
-
-
-                //if (string.IsNullOrEmpty(o.GOODSNUM))
-                //{
-                //    MsgobjList.Add(set_MObj("E", "件数不可为空" + o.FOONO));
-                //}
-
-
-                //if (string.IsNullOrEmpty(o.TRADEWAYCODES))
-                //{
-                //    MsgobjList.Add(set_MObj("E", "贸易方式不可为空" + o.FOONO));
-                //}
-                //else
-                //{
-                //    //o.TRADEWAYCODES = o.TRADEWAYCODES.Substring(0, o.TRADEWAYCODES.Length - 1);
-                //    string[] arr = o.TRADEWAYCODES.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-                //    for (int i = 0; i < arr.Length; i++)
-                //    {
-                //        if (arr[i] == "暂时进出口")
-                //        {
-                //            arr[i] = "暂时进出货物";
-                //        }
-
-                //        //贸易方式 
-                //        sql = @"select ID,CODE,NAME from BASE_DECLTRADEWAY WHERE enabled=1 and NAME ='" + arr[i] + "'";
-                //        dt = DB_BaseData.GetDataTable(sql);
-                //        if (dt.Rows.Count <= 0)
-                //        {
-                //            MsgobjList.Add(set_MObj("E", "贸易方式(" + arr[i] + ")无法匹配" + o.FOONO));
-                //        }
-                //    }
-
-                //}
-
-
-                ////空运进口
-                //if (BUSITYPE == "11")
-                //{
-                //    if (string.IsNullOrEmpty(o.DIVIDENO))
-                //    {
-                //        MsgobjList.Add(set_MObj("E", "分单号不可为空" + o.FOONO));
-                //    }
-
-                //    if (string.IsNullOrEmpty(o.WOODPACKINGID))
-                //    {
-                //        MsgobjList.Add(set_MObj("E", "木质包装不可为空" + o.FOONO));
-                //    }
-
-                //}
-
-
-                ////海
-                //if (BUSITYPE == "21" || BUSITYPE == "22")
-                //{
-                //    if (string.IsNullOrEmpty(o.SHIPNAME))
-                //    {
-                //        MsgobjList.Add(set_MObj("E", "船名不可为空" + o.FOONO));
-                //    }
-
-                //    if (string.IsNullOrEmpty(o.FILGHTNO))
-                //    {
-                //        MsgobjList.Add(set_MObj("E", "航次不可为空" + o.FOONO));
-                //    }
-
-                //    if (string.IsNullOrEmpty(o.GOODSTYPEID))
-                //    {
-                //        MsgobjList.Add(set_MObj("E", "货物类型不可为空" + o.FOONO));
-                //    }
-                //}
-
-
-                ////陆
-                //if (BUSITYPE == "30" || BUSITYPE == "31")
-                //{
-                //    if (string.IsNullOrEmpty(o.WOODPACKINGID))
-                //    {
-                //        MsgobjList.Add(set_MObj("E", "木质包装不可为空" + o.FOONO));
-                //    }
-                //}
-
                 //二次调整
                 if (string.IsNullOrEmpty(o.BUSIUNITNAME) || o.BUSIUNITNAME.Length < 11)
                 {
@@ -1464,7 +1348,7 @@ namespace SceneOfCustoms.Common
                 else
                 {
                     string BUSIUNITCODE = o.BUSIUNITNAME.Substring(o.BUSIUNITNAME.Length - 10, 10);
-                    if (!Regex.IsMatch(BUSIUNITCODE, @"^[+-]?\d*[.]?\d*$"))
+                    if (!Regex.IsMatch(BUSIUNITCODE, @"^[A-Za-z0-9]+$"))
                     {
                         MsgobjList.Add(set_MObj("E", "经营单位不合格" + o.FOONO));
                     }

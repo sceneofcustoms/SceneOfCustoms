@@ -232,23 +232,24 @@ namespace SceneOfCustoms.Controllers
             //msg.Body = xmlDoc.ToString();
             //msg.Formatter = new System.Messaging.XmlMessageFormatter(new Type[] { typeof(string) });
 
-            MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.206.245\\Private$\\DataCenter_SZ");
-            Message msg = new Message();
+            //MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.206.245\\Private$\\DataCenter_SZ");
+            //Message msg = new Message();
             ////ZYDFL_S_系统名称_十个0_十个0_企业内部编号_GUID.xml
             string guid = Guid.NewGuid().ToString();
             string Label = "ZYDFL_S_FL_0000000000_0000000000_" + dt.Rows[0]["ORDERCODE"] + "_" + guid + ".xml";
 
-            using (FileStream fstream = new FileStream(path, FileMode.Open))
-            {
-                msg.BodyStream = fstream;
-                msg.Label = Label;
-                mq.Send(msg, MessageQueueTransactionType.Single);
-            }
+            //using (FileStream fstream = new FileStream(path, FileMode.Open))
+            //{
+            //    msg.BodyStream = fstream;
+            //    msg.Label = Label;
+            //    mq.Send(msg, MessageQueueTransactionType.Single);
+            //}
 
 
+            //TCP:221.224.206.245\Private$\DataCenter_SZ
 
             //System.Messaging.MessageQueueTransaction mqt = new MessageQueueTransaction();
-            //MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:lakers-pc\\private$\\test");
+            //MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.206.245\\Private$\\DataCenter_SZ");
             //System.Messaging.Message msg = new System.Messaging.Message();
             //msg.Formatter = new System.Messaging.XmlMessageFormatter(new Type[] { typeof(XmlDocument) });
             //msg.Label = Label;
