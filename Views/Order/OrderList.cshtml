@@ -7,6 +7,7 @@
     //2 查询条件  --单据号
     var search_code = [
         { code: 'CODE', name: '业务单号', selected: true },
+        { code: 'ONLYCODE', name: '唯一号' },
         { code: 'FWONO', name: 'FWO订单号' },
         { code: 'FOONO', name: '报关FOO' },
         { code: 'FOONOBJ', name: '报检FOO' }
@@ -68,13 +69,16 @@
     <div class="table-responsive">
         <table id="datagrid" class="easyui-datagrid" title="订单列表" style="height:auto;min-height:500px;max-height:800px"
                data-options="queryParams:{} ">
-            <thead data-options="frozen:true">
+            <thead >
                 <tr>
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
+                    <th data-options="field:'ONLYCODE',width:130">唯一号</th>
                     <th data-options="field:'CODE',width:100">业务单号</th>
                     <th data-options="field:'XCBUSINAME',width:100">业务类型</th>
                     <th data-options="field:'CREATETIME',width:130,sortable:true,">上游下发日期</th>
-                    <th data-options="field:'IFZEND',width:100">是否发送到下游</th>
+                    <th data-options="field:'UPDATETIME',width:130,sortable:true,">上游修改数据日期</th>
+                    <th data-options="field:'SUBMITUSERNAME',width:80">下发人</th>
+                    <th data-options="field:'IFSEND',width:100">是否发送到下游</th>
                     <th data-options="field:'SENDTIME',width:130,sortable:true,">发送下游日期</th>
                     <th data-options="field:'FILERELATE',width:100">是否关联文件</th>
                     <th data-options="field:'FWONO',width:160">FWO号</th>
@@ -144,7 +148,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox combobox_width value is_check" editable="false" panelheight="auto" name="IFZEND"></select>
+                                <select class="easyui-combobox combobox_width value is_check" editable="false" panelheight="auto" name="IFSEND"></select>
                             </td>
                         </tr>
                     </table>

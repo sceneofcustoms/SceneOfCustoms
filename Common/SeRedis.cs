@@ -12,7 +12,7 @@ namespace SceneOfCustoms.Common
     public static class SeRedis
     {
 
-        private static string constr = ConfigurationManager.AppSettings["RedisServer"];
+        private static string constr = ConfigurationManager.AppSettings["REDIS"];
 
         private static Lazy<ConnectionMultiplexer> lazyConnection = new Lazy<ConnectionMultiplexer>(() =>
         {

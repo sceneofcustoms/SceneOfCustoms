@@ -6,6 +6,7 @@ using SceneOfCustoms.Models;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -20,15 +21,39 @@ namespace SceneOfCustoms.Controllers
         //测试
         public ActionResult test()
         {
-            string sql = "select * from list_attachment where ordercode ='AE161100931'";
+            string sql = "select * from list_attachment where ordercode ='GJI161101494'";
             DataTable dt = DBMgr.GetDataTable(sql);
-            string activeDir = @"C:\fileserver\";
-            string Path = "";
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                Path = activeDir + dt.Rows[i]["FILEPATH"] + "";
-                byte[] asdasd = GetFileData(Path);
-            }
+
+
+            //string UserName = ConfigurationManager.AppSettings["FTPUserName"];
+            //string Password = ConfigurationManager.AppSettings["FTPPassword"];
+            //System.Uri Uri = new Uri("ftp://" + ConfigurationManager.AppSettings["FTPServer"] + ":" + ConfigurationManager.AppSettings["FTPPortNO"]);
+
+            //FtpHelper ftp = new FtpHelper(Uri, UserName, Password);
+            //if (dt.Rows.Count > 0)
+            //{
+            //    if (ftp.FileExist(dt.Rows[0]["FILEPATH"] + ""))
+            //    {
+            //        string localpath = @"d:\ftptest\" + dt.Rows[0]["FILENAME"];
+            //        ftp.DownloadFile(dt.Rows[0]["FILEPATH"] + "", localpath);
+            //        FileInfo fi = new FileInfo(localpath);
+            //        string new_name = Guid.NewGuid().ToString();
+            //        fi.MoveTo(@"d:\ftptest\" + new_name + ".pdf");
+            //        ftp.UploadFile(@"d:\ftptest\" + new_name + ".pdf", "/2016-11-24/" + new_name + ".pdf");
+            //    }
+            //}
+
+
+            string test = "/2016-11-19/61a39279-8d14-47f4-8dc0-7b4e33e44632.pdf";
+            string tSt = test.Substring(0,11);
+
+            //string activeDir = @"C:\fileserver\";
+            //string Path = "";
+            //for (int i = 0; i < dt.Rows.Count; i++)
+            //{
+            //    Path = activeDir + dt.Rows[i]["FILEPATH"] + "";
+            //    byte[] asdasd = GetFileData(Path);
+            //}
             return View();
         }
 

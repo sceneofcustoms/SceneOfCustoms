@@ -70,10 +70,10 @@ namespace SceneOfCustoms.Models
         public string DOCSERVICECODE { get; set; }
         public string DOCSERVICENAME { get; set; }
         public string SENDURL { get; set; }
-
-
-
-
+        public string TONGGUANFSCODE { get; set; }
+        public string TONGGUANFSNAME { get; set; }
+        public string CGGROUPCODE { get; set; }
+        public string CGGROUPNAME { get; set; }
 
 
 

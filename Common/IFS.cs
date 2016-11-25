@@ -1,4 +1,5 @@
 ﻿using SceneOfCustoms.Models;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,6 +17,7 @@ namespace SceneOfCustoms.Common
 
         public static string XCBUSINAME;
 
+        public static string IFINSERT = "0";
 
         //推送到单证的数据
         public static void SaveDZOrder(string FWO, string ONLYCODE)
@@ -206,6 +208,7 @@ namespace SceneOfCustoms.Common
             string ASS1 = "";
             string ASS2 = "";
             List<List<OrderEn>> GroupOrder = GroupByConFoo(ld);
+
             //关联号 如果4单 2单和4单关联号一样，下面在去判断 2单关联号
             foreach (List<OrderEn> ListOrder in GroupOrder)
             {
@@ -273,7 +276,7 @@ namespace SceneOfCustoms.Common
                     dt = DBMgr.GetDataTable(sql);
                     if (dt.Rows.Count > 0)
                     {
-                        if (dt.Rows[0]["BUSITYPE"] + "" == "1" || dt.Rows[0]["BUSITYPE"] + "" == "2")
+                        if (dt.Rows[0]["IFSEND"] + "" == "1" || dt.Rows[0]["IFSEND"] + "" == "2")
                         {
                             o[0].IFSEND = "2";
                         }
@@ -576,9 +579,15 @@ namespace SceneOfCustoms.Common
                         o[0].GOODSTYPEID = "2"; //散货
                     }
                 }
-
                 res = EditOrder(o[0]);
+            }
 
+
+            if (IFS.IFINSERT == "1")
+            {
+                IDatabase db = SeRedis.redis.GetDatabase();
+                string json = "{\"ONLYCODE\":" + GroupOrder[0][0].ONLYCODE + "}";
+                db.ListRightPush("XGW_CheckFile", json);
             }
             //保存到单证
             return res;
@@ -786,7 +795,6 @@ namespace SceneOfCustoms.Common
             string sql = "select id from list_order where  code='" + o.ORDERCODE + "'";
             DataTable dt = DBMgr.GetDataTable(sql);
 
-
             if (dt.Rows.Count > 0)
             {
                 sql = "delete from List_Declcontainertruck where ORDERCODE='" + o.ORDERCODE + "'";
@@ -804,7 +812,8 @@ namespace SceneOfCustoms.Common
                                   WOODPACKINGID='{36}',WEIGHTCHECK='{37}',ISWEIGHTCHECK='{38}',SHIPNAME='{39}',  
                                   FILGHTNO='{40}',TURNPRENO='{41}',INVOICENO='{42}',ALLOWDECLARE='{43}', 
                                   SENDNUMBER='{44}',XCBUSINAME='{45}',UPDATETIME=to_date('{46}','yyyy-mm-dd hh24:mi:ss'),
-                                  IFSEND='{47}'
+                                  IFSEND='{47}',SENDURL='{48}',TONGGUANFSNAME='{49}',TONGGUANFSCODE='{50}',
+                                  CGGROUPCODE='{51}',CGGROUPNAME='{52}'
                                   where code='" + o.ORDERCODE + "'";
                 sql = string.Format(sql,
     o.TOTALNO, o.DIVIDENO, o.GOODSNUM, o.GOODSWEIGHT,
@@ -818,7 +827,9 @@ namespace SceneOfCustoms.Common
     o.CONTRACTNO, o.FIRSTLADINGBILLNO, o.SECONDLADINGBILLNO, o.MANIFEST,
     o.WOODPACKINGID, o.WEIGHTCHECK, o.ISWEIGHTCHECK, o.SHIPNAME,
     o.FILGHTNO, o.TURNPRENO, o.INVOICENO, o.ALLOWDECLARE,
-    o.SENDNUMBER, o.XCBUSINAME, o.UPDATETIME, o.IFSEND
+    o.SENDNUMBER, o.XCBUSINAME, o.UPDATETIME, o.IFSEND,
+    o.SENDURL, o.TONGGUANFSNAME, o.TONGGUANFSCODE, o.CGGROUPCODE,
+    o.CGGROUPNAME
     );
             }
             else
@@ -840,14 +851,15 @@ namespace SceneOfCustoms.Common
                    SHIPNAME,FILGHTNO,TURNPRENO,INVOICENO,
                    ALLOWDECLARE,CODE,ASSOCIATENO,CORRESPONDNO,
                    WTFS,ONLYCODE,SENDNUMBER,BUSINAME,
-                   XCBUSINAME,UPDATETIME,CREATETIME
+                   XCBUSINAME,UPDATETIME,CREATETIME,SENDURL,
+                   TONGGUANFSNAME,TONGGUANFSCODE
                   ) VALUES(
                    LIST_ORDER_ID.Nextval,'SAP',
                    '{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}',
                    '{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}',to_date('{28}','yyyy-mm-dd hh24:mi:ss'),'{29}','{30}','{31}','{32}',
                    '{33}','{34}','{35}','{36}','{37}','{38}','{39}','{40}','{41}','{42}','{43}','{44}','{45}','{46}','{47}',
                    '{48}','{49}','{50}','{51}','{52}','{53}','{54}','{55}','{56}','{57}',to_date('{58}','yyyy-mm-dd hh24:mi:ss'),
-                   to_date('{59}','yyyy-mm-dd hh24:mi:ss')
+                   to_date('{59}','yyyy-mm-dd hh24:mi:ss'),'{60}','{61}','{62}'
                   )";
                 sql = string.Format(sql,
                     o.BUSITYPE, o.CODE, o.FOONO, o.FOONOBJ,
@@ -865,8 +877,11 @@ namespace SceneOfCustoms.Common
                     o.SHIPNAME, o.FILGHTNO, o.TURNPRENO, o.INVOICENO,
                     o.ALLOWDECLARE, o.ORDERCODE, o.ASSOCIATENO, o.CORRESPONDNO,
                     o.WTFS, o.ONLYCODE, o.SENDNUMBER, o.BUSINAME,
-                    o.XCBUSINAME, o.UPDATETIME, o.CREATETIME
+                    o.XCBUSINAME, o.UPDATETIME, o.CREATETIME, o.SENDURL,
+                    o.TONGGUANFSNAME, o.TONGGUANFSCODE
                     );
+                IFS.IFINSERT = "1";
+
             }
             res = DBMgr.ExecuteNonQuery(sql);
             //卡号 车号
@@ -1261,19 +1276,38 @@ namespace SceneOfCustoms.Common
                     if (BUSITYPE != "20")
                     {
                         sql = "select id,ONLYCODE from list_order where  code='" + ListOrder[0].ORDERCODE + "' and IFSEND='1'";
+                        dt = DBMgr.GetDataTable(sql);
+                        if (dt.Rows.Count > 0)
+                        {
+                            MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")已经发送下游，不可在发！"));
+                            return MsgobjList;
+                        }
 
                     }
                     else if (BUSITYPE == "20")
                     {
-                        sql = "select id,ONLYCODE from list_order where  code='" + ListOrder[0].ORDERCODE + "' and IFSEND='1',SENDNUMBER='2'";
+                        sql = "select id,ONLYCODE from list_order where  code='" + ListOrder[0].ORDERCODE + "' and IFSEND='1' and SENDNUMBER='1'";
+                        dt = DBMgr.GetDataTable(sql);
+                        if (dt.Rows.Count > 0)
+                        {
+                            if (string.IsNullOrEmpty(ListOrder[0].ALLOWDECLARE))
+                            {
+                                MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")以发送一次给下游，在发必须报关可执行！"));
+                                return MsgobjList;
+                            }
+                        }
+
+                        sql = "select id,ONLYCODE from list_order where  code='" + ListOrder[0].ORDERCODE + "' and IFSEND='1' and SENDNUMBER='2'";
+                        dt = DBMgr.GetDataTable(sql);
+                        if (dt.Rows.Count > 0)
+                        {
+                            MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")已经下游2次了，不可在发！"));
+                            return MsgobjList;
+                        }
+
                     }
 
-                    dt = DBMgr.GetDataTable(sql);
-                    if (dt.Rows.Count > 0)
-                    {
-                        MsgobjList.Add(set_MObj("E", "(" + ListOrder[0].FOONO + ")已经发送下游，不可在发！"));
-                        return MsgobjList;
-                    }
+
 
 
 

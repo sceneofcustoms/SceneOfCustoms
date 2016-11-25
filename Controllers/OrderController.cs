@@ -966,9 +966,9 @@ namespace SceneOfCustoms.Controllers
                     sql += " AND ENTRUSTTYPEID = '" + jo.Value<string>("ENTRUSTTYPEID") + "' ";
                 }
 
-                if (jo.Value<string>("IFZEND") != null && jo.Value<string>("IFZEND") != "")
+                if (jo.Value<string>("IFSEND") != null && jo.Value<string>("IFSEND") != "")
                 {
-                    sql += " AND IFZEND = '" + jo.Value<string>("IFZEND") + "' ";
+                    sql += " AND IFSEND = '" + jo.Value<string>("IFSEND") + "' ";
                 }
 
                 if (jo.Value<string>("FILERELATE") != null && jo.Value<string>("FILERELATE") != "")
