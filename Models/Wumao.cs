@@ -56,13 +56,13 @@ namespace SceneOfCustoms.Models
         public string SEND_USER { get; set; }
         public string SEND_TIME { get; set; }
         public string BUSINAME { get; set; }
-
         public string ONLYCODE { get; set; }
         public string WTFS { get; set; }
         public string FWONO { get; set; }
         public string FOONO { get; set; }
+        public string TONGGUANFSCODE { get; set; }
+        public string TONGGUANFSNAME { get; set; }
 
-        
 
     }
 }
