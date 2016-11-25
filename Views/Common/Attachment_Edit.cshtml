@@ -71,7 +71,7 @@
             uploader = new plupload.Uploader({
                 runtimes: 'html5,flash,silverlight,html4',
                 browse_button: 'pickfiles', // you can pass an id...
-                url: '/Common/UploadFile?FWONO=' + Ext.get('FWONO') + "&FOONO=" + Ext.get('FOONO') + "&ORDERCODE=" + Ext.get('ORDERCODE'),
+                url: '/Common/UploadFile?FWONO=' + Ext.get('FWONO').getValue() + "&FOONO=" + Ext.get('FOONO').getValue() + "&ORDERCODE=" + Ext.get('ORDERCODE').getValue(),
                 flash_swf_url: '/js/upload/Moxie.swf',
                 silverlight_xap_url: '/js/upload/Moxie.xap',
                 unique_names: true,
