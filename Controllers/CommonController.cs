@@ -5,6 +5,7 @@ using SceneOfCustoms.Common;
 using SceneOfCustoms.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -281,6 +282,11 @@ namespace SceneOfCustoms.Controllers
                 string sql = @"insert into list_attachment(ID,FILEPATH,FILENAME,FILESIZE,FWONO,FOONO,ORDERCODE,CREATENAME,CREATETIME,STATUS) 
                 VALUES(LIST_ATTACHMENT_ID.Nextval,'/" + direc_upload + "/" + name + "','" + name + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','" + ORDERCODE + "','" + username + "',sysdate,1)";
                 DBMgr.ExecuteNonQuery(sql);
+                if (!string.IsNullOrEmpty(ORDERCODE))
+                {
+                    sql = "update list_order set filerelate='1' where code='" + ORDERCODE + "'";
+                    DBMgr.ExecuteNonQuery(sql);
+                }
             }
             return Content("chunk uploaded", "text/plain");
 
@@ -291,29 +297,34 @@ namespace SceneOfCustoms.Controllers
         public string delete_file()
         {
             string ids = Request["ids"];
-            string[] arr = ids.Split(',');
-            string id = "";
+            string[] arr = ids.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             string sql = "";
             DataTable dt;
-            FileInfo file;
-            string path = "";
-            for (int i = 0; i < arr.Length; i++)
+            string UserName = ConfigurationManager.AppSettings["FTPUserName"];
+            string Password = ConfigurationManager.AppSettings["FTPPassword"];
+            System.Uri Uri = new Uri("ftp://" + ConfigurationManager.AppSettings["FTPServer"] + ":" + ConfigurationManager.AppSettings["FTPPortNO"]);
+            FtpHelper ftp = new FtpHelper(Uri, UserName, Password);
+            try
             {
-                id = arr[i];
-                sql = "select * from list_attachment where id=" + id;
-                dt = DBMgr.GetDataTable(sql);
-                path = "/C/fileserver" + dt.Rows[0]["FILEPATH"];
-                file = new FileInfo(Server.MapPath(path));
-                //file = new FileInfo(Server.MapPath(dt.Rows[0]["FILEPATH"] + ""));//指定文件路径
-                if (file.Exists)//判断文件是否存在
+                foreach (string str in arr)
                 {
-                    file.Attributes = FileAttributes.Normal;//将文件属性设置为普通,比方说只读文件设置为普通
-                    file.Delete();//删除文件
-                    sql = "delete from list_attachment where id=" + id;
+                    sql = "select * from list_attachment where id='" + str + "'";
+                    dt = DBMgr.GetDataTable(sql);
+                    sql = "delete from list_attachment where id='" + str + "'";
                     DBMgr.ExecuteNonQuery(sql);
+                    ftp.DeleteFile(dt.Rows[0]["FILEPATH"] + ""); 
+                    if (dt.Rows.Count == 1)
+                    {
+                        sql = "update list_order set filerelate='0' where code='" + dt.Rows[0]["ORDERCODE"] + "'";
+                        DBMgr.ExecuteNonQuery(sql);
+                    }
                 }
+                return "{success:true}";
             }
-            return "1";
+            catch
+            {
+                return "{success:false}";
+            }
         }
         public string CurrentUser()
         {
