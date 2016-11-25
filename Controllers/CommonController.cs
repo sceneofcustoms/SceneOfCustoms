@@ -279,7 +279,7 @@ namespace SceneOfCustoms.Controllers
                 string username = CurrentUser();
                 username = string.IsNullOrEmpty(username) ? "SAP" : username;//如果是从本系统进入直接取登录账号,如果是外部调用直接标记SAP
                 string sql = @"insert into list_attachment(ID,FILEPATH,FILENAME,FILESIZE,FWONO,FOONO,ORDERCODE,CREATENAME,CREATETIME,STATUS) 
-                VALUES(LIST_ATTACHMENT_ID.Nextval,'/" + direc_upload + "/" + name + "','" + fileUpload.FileName + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','" + ORDERCODE + "','" + username + "',sysdate,1)";
+                VALUES(LIST_ATTACHMENT_ID.Nextval,'/" + direc_upload + "/" + name + "','" + name + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','" + ORDERCODE + "','" + username + "',sysdate,1)";
                 DBMgr.ExecuteNonQuery(sql);
             }
             return Content("chunk uploaded", "text/plain");
