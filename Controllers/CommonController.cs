@@ -224,8 +224,6 @@ namespace SceneOfCustoms.Controllers
             string FWONO = Request["FWONO"];
             string FOONO = Request["FOONO"];
             string ORDERCODE = Request["ORDERCODE"];
-            var Path = Server.MapPath("../");
-            ViewData["Path"] = Path;
             if (!string.IsNullOrEmpty(FOONO) && !string.IsNullOrEmpty(FWONO) || !string.IsNullOrEmpty(ORDERCODE))
             {
                 ViewData["is_passed"] = "1";
@@ -267,25 +265,22 @@ namespace SceneOfCustoms.Controllers
         public ActionResult UploadFile(int? chunk, string name)
         {
             var fileUpload = Request.Files[0];
-            var uploadPath = Server.MapPath("/Upload/");
+            // var uploadPath = Server.MapPath("/Upload/");
             chunk = chunk ?? 0;
             string FWONO = Request.QueryString["FWONO"];
             string FOONO = Request.QueryString["FOONO"];
             string ORDERCODE = Request.QueryString["ORDERCODE"];
             string direc_upload = DateTime.Now.ToString("yyyy-MM-dd");
-            string activeDir = @"C:\fileserver\";
-            string newPath = Path.Combine(activeDir, direc_upload);
-            Directory.CreateDirectory(newPath);
-            using (var fs = new FileStream(Path.Combine(activeDir + direc_upload, name), chunk == 0 ? FileMode.Create : FileMode.Append))
+            using (var fs = new FileStream(Path.Combine(@"D:\ftpserver\", name), chunk == 0 ? FileMode.Create : FileMode.Append))
             {
                 var buffer = new byte[fileUpload.InputStream.Length];
                 fileUpload.InputStream.Read(buffer, 0, buffer.Length);
                 fs.Write(buffer, 0, buffer.Length);
                 string username = CurrentUser();
+                username = string.IsNullOrEmpty(username) ? "SAP" : username;//如果是从本系统进入直接取登录账号,如果是外部调用直接标记SAP
                 string sql = @"insert into list_attachment(ID,FILEPATH,FILENAME,FILESIZE,FWONO,FOONO,ORDERCODE,CREATENAME,CREATETIME,STATUS) 
                 VALUES(LIST_ATTACHMENT_ID.Nextval,'/" + direc_upload + "/" + name + "','" + fileUpload.FileName + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','" + ORDERCODE + "','" + username + "',sysdate,1)";
                 DBMgr.ExecuteNonQuery(sql);
-                //string status = IFS.ZSZLSJ_TM(FWONO, FOONO);
             }
             return Content("chunk uploaded", "text/plain");
 
@@ -323,17 +318,16 @@ namespace SceneOfCustoms.Controllers
         public string CurrentUser()
         {
             JObject json_user = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
-
             if (json_user == null)
             {
-                return "游客";
+                return "";
             }
             else
             {
                 return json_user.GetValue("REALNAME") + "";
             }
-        }    
-      
+        }
+
         public void ImportOrder()
         {
             string sql = "select t.*, t.rowid from list_order t where t.busitype='10' ";

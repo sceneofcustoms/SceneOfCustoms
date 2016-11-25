@@ -73,7 +73,7 @@
         function upload_ini() {
             var FWONO = $("#FWONO").val();
             var FOONO = $("#FOONO").val();
-            var ORDERCODE = $("#ORDERCODE").val(); 
+            var ORDERCODE = $("#ORDERCODE").val();          
             uploader = new plupload.Uploader({
                 runtimes: 'html5,flash,silverlight,html4',
                 browse_button: 'pickfiles', // you can pass an id...
@@ -86,7 +86,7 @@
                     mime_types: [
                         //{ title: "Image files", extensions: "*" },
                         //{ title: "Zip files", extensions: "zip,rar" }
-                    { title: "Pdf files", extensions: "Pdf" }
+                    { title: "Pdf files", extensions: "pdf" }
                     ]
                 }
             });
