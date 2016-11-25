@@ -263,8 +263,7 @@ namespace SceneOfCustoms.Controllers
         //文件上传
         public ActionResult UploadFile(int? chunk, string name)
         {
-            var fileUpload = Request.Files[0];
-            // var uploadPath = Server.MapPath("/Upload/");
+            var fileUpload = Request.Files[0]; 
             chunk = chunk ?? 0;
             string FWONO = Request.QueryString["FWONO"];
             string FOONO = Request.QueryString["FOONO"];
@@ -275,10 +274,18 @@ namespace SceneOfCustoms.Controllers
                 var buffer = new byte[fileUpload.InputStream.Length];
                 fileUpload.InputStream.Read(buffer, 0, buffer.Length);
                 fs.Write(buffer, 0, buffer.Length);
-                string username = CurrentUser();
-                username = string.IsNullOrEmpty(username) ? "SAP" : username;//如果是从本系统进入直接取登录账号,如果是外部调用直接标记SAP
-                string sql = @"insert into list_attachment(ID,FILEPATH,FILENAME,FILESIZE,FWONO,FOONO,ORDERCODE,CREATENAME,CREATETIME,STATUS) 
-                VALUES(LIST_ATTACHMENT_ID.Nextval,'/" + direc_upload + "/" + name + "','" + name + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','" + ORDERCODE + "','" + username + "',sysdate,1)";
+                string createuserid=string.Empty;
+                if (!string.IsNullOrEmpty(HttpContext.User.Identity.Name))
+                {
+                    JObject json_user = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
+                    createuserid = json_user.Value<string>("ID");
+                }
+                else//如果是从本系统进入直接取登录账号,如果是外部调用直接标记SAP
+                {
+                    createuserid = "62";
+                }                
+                string sql = @"insert into list_attachment(ID,FILEPATH,FILENAME,FILESIZE,FWONO,FOONO,ORDERCODE,CREATEUSERID,CREATETIME,STATUS) 
+                VALUES(LIST_ATTACHMENT_ID.Nextval,'/" + direc_upload + "/" + name + "','" + name + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','" + ORDERCODE + "','" + createuserid + "',sysdate,1)";
                 DBMgr.ExecuteNonQuery(sql);
                 if (!string.IsNullOrEmpty(ORDERCODE))
                 {
