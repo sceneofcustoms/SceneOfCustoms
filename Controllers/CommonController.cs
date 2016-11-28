@@ -269,7 +269,7 @@ namespace SceneOfCustoms.Controllers
             string FOONO = Request.QueryString["FOONO"];
             string ORDERCODE = Request.QueryString["ORDERCODE"];
             string direc_upload = DateTime.Now.ToString("yyyy-MM-dd");
-            using (var fs = new FileStream(Path.Combine(@"D:\ftpserver\", name), chunk == 0 ? FileMode.Create : FileMode.Append))
+            using (var fs = new FileStream(Path.Combine(ConfigurationManager.AppSettings["UploadLocation"], name), chunk == 0 ? FileMode.Create : FileMode.Append))
             {
                 var buffer = new byte[fileUpload.InputStream.Length];
                 fileUpload.InputStream.Read(buffer, 0, buffer.Length);
