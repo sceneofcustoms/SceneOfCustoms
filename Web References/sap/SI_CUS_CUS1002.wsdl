@@ -265,10 +265,10 @@
   </wsdl:binding>
   <wsdl:service name="SI_CUS_CUS1002Service">
     <wsdl:port name="HTTP_Port" binding="p1:SI_CUS_CUS1002Binding">
-      <address location="http://pij.feili.com:50200/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_CUS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CUS_CUS1002&amp;interfaceNamespace=URN%3ACUS1002" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <address location="http://sapqpi01.feili.com:50200/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_CUS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CUS_CUS1002&amp;interfaceNamespace=URN%3ACUS1002" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
     </wsdl:port>
     <wsdl:port name="HTTPS_Port" binding="p1:SI_CUS_CUS1002Binding">
-      <address location="https://pij.feili.com:50201/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_CUS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CUS_CUS1002&amp;interfaceNamespace=URN%3ACUS1002" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <address location="https://sapqpi01.feili.com:50201/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_CUS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CUS_CUS1002&amp;interfaceNamespace=URN%3ACUS1002" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

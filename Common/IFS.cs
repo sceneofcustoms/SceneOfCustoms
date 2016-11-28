@@ -650,11 +650,11 @@ namespace SceneOfCustoms.Common
                 {
                     if (ld[0].ENTRUSTTYPEID == "进口企业")
                     {
-                        wm.I_E_FALG_TYPE = "进口";
+                        wm.I_E_FALG_TYPE = "I";
                     }
                     else if (ld[0].ENTRUSTTYPEID == "出口企业")
                     {
-                        wm.I_E_FALG_TYPE = "进口";
+                        wm.I_E_FALG_TYPE = "E";
                     }
                 }
                 else
@@ -667,6 +667,8 @@ namespace SceneOfCustoms.Common
                 wm.APPCIQTYPE = dt.Rows[0]["APPCIQTYPE"] + "";
                 wm.OUT_TRAF_MODE = dt.Rows[0]["OUT_TRAF_MODE"] + "";
             }
+
+            wm.TRADETYPE = "0110"; //监管方式
 
 
             wm.BUSINAME = ld[0].BUSITYPE;
@@ -720,10 +722,14 @@ namespace SceneOfCustoms.Common
             wm.GROSS_WT = ld[0].GOODSWEIGHT;
             wm.NET_WT = ld[0].CHECKEDWEIGHT;
             wm.TRANSFER_NO = ld[0].TURNPRENO;
-            wm.GOODS_TYPE_LY = "直转";
-            wm.BILL_TYPE = "1";
-            //包装种类
-            wm.WRAP_TYPE_ID = "提单";
+
+            wm.GOODS_TYPE_LY = "11";//提前报关
+
+            //wm.GOODS_TYPE_LY = "22";//直转
+
+            wm.BILL_TYPE = "1";//0空1报关单2转关单
+
+            wm.WRAP_TYPE_ID = "1"; //包装种类
             wm.MAINCODE = ld[0].TOTALNO;
             wm.SUBCODE = ld[0].DIVIDENO;
             wm.TONGGUANFSCODE = ld[0].TONGGUANFSCODE;
@@ -770,7 +776,7 @@ namespace SceneOfCustoms.Common
                                       GROSS_WT,NET_WT,GOODS_TYPE_LY,WRAP_TYPE_ID,
                                       MAINCODE,SUBCODE,TRANSFER_NO,ONLYCODE,
                                       WTFS,ORDERCODE,FWONO,FOONO,
-                                      GOODS_NATURE_ID,wm.TONGGUANFSCODE, wm.TONGGUANFSNAME
+                                      GOODS_NATURE_ID,TONGGUANFSCODE,TONGGUANFSNAME
                                        )VALUES(LIST_ORDER_ID.Nextval,
                    '{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}',to_date('{8}','yyyy-mm-dd'),'{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}',
                    '{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}','{28}','{29}','{30}','{31}','{32}','{33}','{34}'

@@ -18,11 +18,264 @@ namespace SceneOfCustoms.Controllers
     public class InterfaceController : Controller
     {
 
+
+        //public static void SaveDZOrder(string FWO, string ONLYCODE)
+        //{
+        //    ServiceReference1.CustomerServiceSoapClient danzheng = new ServiceReference1.CustomerServiceSoapClient();
+        //    ServiceReference1.OrderEn DZOrder;
+        //    List<ServiceReference1.OrderEn> DZOrderList = new List<ServiceReference1.OrderEn>();
+        //    ServiceReference1.ContainerEn ContainerEn;
+        //    ServiceReference1.FileEn FileEn;
+        //    List<ServiceReference1.FileEn> FileEnList = new List<ServiceReference1.FileEn>();
+        //    List<ServiceReference1.ContainerEn> ContainerEnList = new List<ServiceReference1.ContainerEn>();
+        //    DataTable dt;
+        //    DataTable dtCon;
+        //    DataTable dtFile;
+        //    string sql = "select * from list_order where ONLYCODE ='" + ONLYCODE + "'";
+        //    dt = DBMgr.GetDataTable(sql);
+        //    for (int i = 0; i < dt.Rows.Count; i++)
+        //    {
+        //        DZOrder = new ServiceReference1.OrderEn();
+        //        DZOrder.DOCSERVICECODE = "GWYKS";
+        //        DZOrder.DOCSERVICENAME = "关务云昆山";
+        //        DZOrder.CUSTOMERCODE = "KSJSBGYXGS";
+        //        DZOrder.CUSTOMERNAME = "昆山吉时报关有限公司";
+        //        DZOrder.CUSNO = dt.Rows[i]["CODE"] + "";
+        //        DZOrder.FIRSTLADINGBILLNO = dt.Rows[i]["FIRSTLADINGBILLNO"] + ""; //海关提单号
+        //        DZOrder.SECONDLADINGBILLNO = dt.Rows[i]["SECONDLADINGBILLNO"] + ""; //国检提单号
+        //        DZOrder.ENTRUSTTYPE = dt.Rows[i]["ENTRUSTTYPEID"] + "";
+        //        DZOrder.BUSITYPE = dt.Rows[i]["BUSITYPE"] + "";
+        //        DZOrder.REPWAYID = dt.Rows[i]["REPWAYID"] + "";
+        //        DZOrder.CUSTOMAREACODE = dt.Rows[i]["CUSTOMDISTRICTCODE"] + "";
+        //        DZOrder.DECLWAY = dt.Rows[i]["DECLWAY"] + "";
+        //        DZOrder.BUSIUNITCODE = dt.Rows[i]["BUSIUNITCODE"] + "";
+        //        DZOrder.BUSIUNITNAME = dt.Rows[i]["BUSIUNITNAME"] + "";
+        //        if (!string.IsNullOrEmpty(dt.Rows[i]["GOODSNUM"] + ""))
+        //        {
+        //            DZOrder.GOODSNUM = Decimal.Parse(dt.Rows[i]["GOODSNUM"] + "");
+        //        }
+        //        if (!string.IsNullOrEmpty(dt.Rows[i]["GOODSWEIGHT"] + ""))
+        //        {
+        //            DZOrder.GOODSGW = Decimal.Parse(dt.Rows[i]["GOODSWEIGHT"] + "");
+        //        }
+        //        if (!string.IsNullOrEmpty(dt.Rows[i]["CHECKEDWEIGHT"] + ""))
+        //        {
+        //            DZOrder.GOODSNW = Decimal.Parse(dt.Rows[i]["CHECKEDWEIGHT"] + "");
+        //        }
+        //        DZOrder.PACKKINDNAME = dt.Rows[i]["PACKKIND"] + "";
+        //        DZOrder.GOODSTYPEID = dt.Rows[i]["GOODSTYPEID"] + "";
+        //        //贸易方式
+        //        //DZOrder.TRADEWAYCODE = dt.Rows[i]["TRADEWAYCODES"] + "";
+        //        DZOrder.ORDERREQUEST = dt.Rows[i]["ENTRUSTREQUEST"] + "";
+        //        DZOrder.REPUNITCODE = dt.Rows[i]["REPUNITCODE"] + "";
+        //        DZOrder.REPUNITNAME = dt.Rows[i]["REPUNITNAME"] + "";
+        //        DZOrder.INSPREPCODE = dt.Rows[i]["INSPUNITCODE"] + "";
+        //        DZOrder.INSPREPNAME = dt.Rows[i]["INSPUNITNAME"] + "";
+        //        DZOrder.TOTALNO = dt.Rows[i]["TOTALNO"] + "";
+        //        DZOrder.DIVIDENO = dt.Rows[i]["DIVIDENO"] + "";
+        //        DZOrder.TURNPRENO = dt.Rows[i]["TURNPRENO"] + "";
+        //        DZOrder.PORTNAME = dt.Rows[i]["PORTCODE"] + "";
+
+
+        //        //DZOrder.PORTNAME = dt.Rows[i]["PORTCODE"] + "";
+        //        DZOrder.TRADEWAYNAME = dt.Rows[i]["TRADEWAYCODES"] + "";
+
+        //        if (!string.IsNullOrEmpty(dt.Rows[i]["PAYPOYALTIES"] + ""))
+        //        {
+        //            DZOrder.PAYPOYALTIES = Int32.Parse(dt.Rows[i]["PAYPOYALTIES"] + "");
+        //        }
+
+        //        if (!string.IsNullOrEmpty(dt.Rows[i]["PRICEIMPACT"] + ""))
+        //        {
+        //            DZOrder.PRICEIMPACT = Int32.Parse(dt.Rows[i]["PRICEIMPACT"] + "");
+        //        }
+        //        if (!string.IsNullOrEmpty(dt.Rows[i]["SPECIALRELATIONSHIP"] + ""))
+        //        {
+        //            DZOrder.SPECIALRELATIONSHIP = Int32.Parse(dt.Rows[i]["SPECIALRELATIONSHIP"] + "");
+        //        }
+        //        DZOrder.CORRESPONDNO = dt.Rows[i]["CORRESPONDNO"] + "";
+        //        DZOrder.ASSOCIATENO = dt.Rows[i]["ASSOCIATENO"] + "";
+        //        if (!string.IsNullOrEmpty(dt.Rows[i]["SUBMITTIME"] + ""))
+        //        {
+        //            DZOrder.SUBMITTIME = Convert.ToDateTime(dt.Rows[i]["SUBMITTIME"]);
+        //        }
+        //        DZOrder.SUBMITUSERNAME = dt.Rows[i]["SUBMITUSERNAME"] + "";
+
+        //        DZOrder.ARRIVEDNO = dt.Rows[i]["ARRIVEDNO"] + "";
+        //        DZOrder.MANIFEST = dt.Rows[i]["MANIFEST"] + "";
+
+        //        DZOrder.WOODPACKINGID = dt.Rows[i]["WOODPACKINGID"] + "";
+        //        if (!string.IsNullOrEmpty(dt.Rows[i]["WEIGHTCHECK"] + ""))
+        //        {
+        //            DZOrder.WEIGHTCHECK = Int32.Parse(dt.Rows[i]["WEIGHTCHECK"] + "");
+        //        }
+        //        if (!string.IsNullOrEmpty(dt.Rows[i]["ISWEIGHTCHECK"] + ""))
+        //        {
+        //            DZOrder.ISWEIGHTCHECK = Int32.Parse(dt.Rows[i]["ISWEIGHTCHECK"] + "");
+        //        }
+        //        DZOrder.SHIPNAME = dt.Rows[i]["SHIPNAME"] + "";
+        //        DZOrder.FILGHTNO = dt.Rows[i]["FILGHTNO"] + "";
+        //        DZOrder.Number = Int32.Parse(dt.Rows[i]["SENDNUMBER"] + "");
+        //        DZOrder.PLATFORMCODE = "xinguanwu";
+
+        //        //集装箱
+        //        sql = "select * from list_Declcontainertruck where ordercode='" + dt.Rows[i]["CODE"] + "'";
+        //        dtCon = DBMgr.GetDataTable(sql);
+        //        for (int j = 0; j < dtCon.Rows.Count; j++)
+        //        {
+        //            ContainerEn = new ServiceReference1.ContainerEn();
+        //            ContainerEn.CDCARNAME = dtCon.Rows[j]["CDCARNAME"] + "";//沪BL1353
+        //            ContainerEn.CDCARNO = dtCon.Rows[j]["CDCARNO"] + "";//2200172079
+        //            ContainerEn.CONTAINERNO = dtCon.Rows[j]["CONTAINERNO"] + "";//TCLU5430888
+        //            if (dtCon.Rows[i]["CONTAINERTYPE"].ToString().Length == 4)
+        //            {
+        //                ContainerEn.CONTAINERTYPE = dtCon.Rows[j]["CONTAINERTYPE"].ToString().Substring(dtCon.Rows[j]["CONTAINERTYPE"].ToString().Length - 2, 2);//hou GP
+        //                ContainerEn.CONTAINERSIZE = dtCon.Rows[j]["CONTAINERTYPE"].ToString().Remove(dtCon.Rows[j]["CONTAINERTYPE"].ToString().Length - 2, 2);//qian   20
+        //            }
+        //            ContainerEnList.Add(ContainerEn);
+        //        }
+        //        DZOrder.ContainerList = ContainerEnList.ToArray();
+
+        //        //文件
+        //        sql = "select * from list_attachment where ordercode='" + dt.Rows[i]["CODE"] + "'";
+        //        dtFile = DBMgr.GetDataTable(sql);
+        //        string activeDir = @"C:\fileserver\";
+        //        for (int j = 0; j < dtFile.Rows.Count; j++)
+        //        {
+        //            FileEn = new ServiceReference1.FileEn();
+        //            FileEn.FileContent = GetFileData(activeDir + dtFile.Rows[j]["FILEPATH"] + "");
+        //            FileEn.FileFormat = ServiceReference1.FileFormatEnum.PDF;
+        //            FileEnList.Add(FileEn);
+        //        }
+        //        DZOrder.Files = FileEnList.ToArray();
+        //        DZOrderList.Add(DZOrder);
+        //    }
+
+        //    string DZ_res = danzheng.SendOrderData(DZOrderList.ToArray());
+        //    Msgobj MO = new Msgobj();
+        //    List<Msgobj> MSList = new List<Msgobj>();
+
+        //    if (DZ_res == "success")
+        //    {
+        //        string NewTime = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
+        //        MO.MSG_TYPE = "S";
+        //        MO.MSG_TXT = "下发成功";
+        //        sql = @"update list_order set IFSEND='1',SENDTIME =to_date('" + NewTime + "','yyyy-mm-dd hh24:mi:ss') where  ONLYCODE ='" + ONLYCODE + "'";
+        //        DBMgr.ExecuteNonQuery(sql);
+        //    }
+        //    else
+        //    {
+        //        MO.MSG_TYPE = "E";
+        //        MO.MSG_TXT = DZ_res;
+        //    }
+        //    MSList.Add(MO);
+        //    save_log(MSList, FWO + "", "2");
+        //}
+
         //测试
         public ActionResult test()
         {
-            string sql = "select * from list_attachment where ordercode ='GJI161101494'";
-            DataTable dt = DBMgr.GetDataTable(sql);
+
+
+
+
+                ServiceReference1.CustomerServiceSoapClient danzheng = new ServiceReference1.CustomerServiceSoapClient();
+                ServiceReference1.OrderEn DZOrder;
+                List<ServiceReference1.OrderEn> DZOrderList = new List<ServiceReference1.OrderEn>();
+                ServiceReference1.ContainerEn ContainerEn;
+                ServiceReference1.FileEn FileEn;
+                List<ServiceReference1.FileEn> FileEnList = new List<ServiceReference1.FileEn>();
+                List<ServiceReference1.ContainerEn> ContainerEnList = new List<ServiceReference1.ContainerEn>();
+                DataTable dt;
+                DataTable dtCon;
+                DataTable dtFile;
+                    DZOrder = new ServiceReference1.OrderEn();
+                    DZOrder.DOCSERVICECODE = "GWYKS";
+                    DZOrder.DOCSERVICENAME = "关务云昆山";
+                    DZOrder.CUSTOMERCODE = "KSJSBGYXGS";
+                    DZOrder.CUSTOMERNAME = "昆山吉时报关有限公司";
+                    DZOrder.CUSNO = "xinguanwu1";
+                    DZOrder.FIRSTLADINGBILLNO = "xinguanwu";
+                    DZOrder.SECONDLADINGBILLNO = "xinguanwu";
+                    DZOrder.ENTRUSTTYPE = "xinguanwu";
+                    DZOrder.BUSITYPE = "xinguanwu";
+                    DZOrder.REPWAYID = "xinguanwu";
+                    DZOrder.CUSTOMAREACODE = "xinguanwu";
+                    DZOrder.DECLWAY = "xinguanwu";
+                    DZOrder.BUSIUNITCODE = "xinguanwu";
+                    DZOrder.BUSIUNITNAME = "xinguanwu";
+
+                    DZOrder.PACKKINDNAME = "xinguanwu";
+                    DZOrder.GOODSTYPEID = "xinguanwu";
+                    //贸易方式
+                    //DZOrder.TRADEWAYCODE = dt.Rows[i]["TRADEWAYCODES"] + "";
+                    DZOrder.ORDERREQUEST = "xinguanwu";
+                    DZOrder.REPUNITCODE = "xinguanwu";
+                    DZOrder.REPUNITNAME = "xinguanwu";
+                    DZOrder.INSPREPCODE = "xinguanwu";
+                    DZOrder.INSPREPNAME = "xinguanwu";
+                    DZOrder.TOTALNO = "xinguanwu";
+                    DZOrder.DIVIDENO = "xinguanwu";
+                    DZOrder.TURNPRENO = "xinguanwu";
+                    DZOrder.PORTNAME = "xinguanwu";
+
+
+                    //DZOrder.PORTNAME = dt.Rows[i]["PORTCODE"] + "";
+                    DZOrder.TRADEWAYNAME = "xinguanwu";
+
+
+
+                    DZOrder.SUBMITUSERNAME = "xinguanwu";
+
+                    DZOrder.ARRIVEDNO = "xinguanwu";
+                    DZOrder.MANIFEST = "xinguanwu";
+
+                    DZOrder.WOODPACKINGID = "xinguanwu";
+         
+                    DZOrder.SHIPNAME = "xinguanwu";
+                    DZOrder.FILGHTNO = "xinguanwu";
+                    DZOrder.Number = 2;
+                    DZOrder.PLATFORMCODE = "xinguanwu";
+
+                    //集装箱
+                    //sql = "select * from list_Declcontainertruck where ordercode='" + dt.Rows[i]["CODE"] + "'";
+                    //dtCon = DBMgr.GetDataTable(sql);
+                    //for (int j = 0; j < dtCon.Rows.Count; j++)
+                    //{
+                    //    ContainerEn = new ServiceReference1.ContainerEn();
+                    //    ContainerEn.CDCARNAME = dtCon.Rows[j]["CDCARNAME"] + "";//沪BL1353
+                    //    ContainerEn.CDCARNO = dtCon.Rows[j]["CDCARNO"] + "";//2200172079
+                    //    ContainerEn.CONTAINERNO = dtCon.Rows[j]["CONTAINERNO"] + "";//TCLU5430888
+                    //    if (dtCon.Rows[i]["CONTAINERTYPE"].ToString().Length == 4)
+                    //    {
+                    //        ContainerEn.CONTAINERTYPE = dtCon.Rows[j]["CONTAINERTYPE"].ToString().Substring(dtCon.Rows[j]["CONTAINERTYPE"].ToString().Length - 2, 2);//hou GP
+                    //        ContainerEn.CONTAINERSIZE = dtCon.Rows[j]["CONTAINERTYPE"].ToString().Remove(dtCon.Rows[j]["CONTAINERTYPE"].ToString().Length - 2, 2);//qian   20
+                    //    }
+                    //    ContainerEnList.Add(ContainerEn);
+                    //DZOrder.ContainerList = ContainerEnList.ToArray();
+
+                    //文件
+                    //sql = "select * from list_attachment where ordercode='" + dt.Rows[i]["CODE"] + "'";
+                    //dtFile = DBMgr.GetDataTable(sql);
+                    //string activeDir = @"C:\fileserver\";
+                    //for (int j = 0; j < dtFile.Rows.Count; j++)
+                    //{
+                    string activeDir = @"C:\fileserver\";
+                    FileEn = new ServiceReference1.FileEn();
+                    FileEn.FileContent = GetFileData(activeDir + "/2016-11-26/60c4a1b7-89cf-4108-abaa-795884b3a5a6.pdf");
+                    FileEn.FileFormat = ServiceReference1.FileFormatEnum.PDF;
+                    FileEnList.Add(FileEn);
+                    //}
+                    DZOrder.Files = FileEnList.ToArray();
+
+                    DZOrderList.Add(DZOrder);
+            //    }
+
+                string DZ_res = danzheng.SendOrderData(DZOrderList.ToArray());
+
+
+
+ 
 
 
             //string UserName = ConfigurationManager.AppSettings["FTPUserName"];
@@ -44,8 +297,8 @@ namespace SceneOfCustoms.Controllers
             //}
 
 
-            string test = "/2016-11-19/61a39279-8d14-47f4-8dc0-7b4e33e44632.pdf";
-            string tSt = test.Substring(0,11);
+            //string test = "/2016-11-19/61a39279-8d14-47f4-8dc0-7b4e33e44632.pdf";
+            //string tSt = test.Substring(0,11);
 
             //string activeDir = @"C:\fileserver\";
             //string Path = "";
@@ -56,9 +309,7 @@ namespace SceneOfCustoms.Controllers
             //}
             return View();
         }
-
-
-        public byte[] GetFileData(string fileUrl)
+        public static byte[] GetFileData(string fileUrl)
         {
             FileStream fs = new FileStream(fileUrl, FileMode.Open, FileAccess.Read);
             try
@@ -71,7 +322,7 @@ namespace SceneOfCustoms.Controllers
             catch (Exception ex)
             {
                 //MessageBoxHelper.ShowPrompt(ex.Message);
-                return null;
+                return new byte[0];
             }
             finally
             {
@@ -83,6 +334,32 @@ namespace SceneOfCustoms.Controllers
                 }
             }
         }
+
+        //public byte[] GetFileData(string fileUrl)
+        //{
+        //    FileStream fs = new FileStream(fileUrl, FileMode.Open, FileAccess.Read);
+        //    try
+        //    {
+        //        byte[] buffur = new byte[fs.Length];
+        //        fs.Read(buffur, 0, (int)fs.Length);
+
+        //        return buffur;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //MessageBoxHelper.ShowPrompt(ex.Message);
+        //        return null;
+        //    }
+        //    finally
+        //    {
+        //        if (fs != null)
+        //        {
+
+        //            //关闭资源
+        //            fs.Close();
+        //        }
+        //    }
+        //}
 
         [HttpPost]
         //测试tm过来数据
@@ -106,6 +383,13 @@ namespace SceneOfCustoms.Controllers
                 lcorder = new bd.OrderEn();
                 lcorder.BUSITYPE = dt.Rows[i]["BUSITYPE"] + "";
                 lcorder.CODE = dt.Rows[i]["FWONO"] + "";
+
+                lcorder.SENDURL = dt.Rows[i]["SENDURL"] + "";
+                lcorder.TONGGUANFSCODE = dt.Rows[i]["TONGGUANFSCODE"] + "";
+                lcorder.TONGGUANFSNAME = dt.Rows[i]["TONGGUANFSNAME"] + "";
+                lcorder.CGGROUPCODE = dt.Rows[i]["CGGROUPCODE"] + "";
+                lcorder.CGGROUPNAME = dt.Rows[i]["CGGROUPNAME"] + "";
+
                 lcorder.FOONO = dt.Rows[i]["FOONO"] + "";
                 lcorder.ORDERCODE = dt.Rows[i]["CODE"] + "";
                 lcorder.TOTALNO = dt.Rows[i]["TOTALNO"] + "";

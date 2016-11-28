@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="SceneOfCustoms_sap_SI_CUS_CUS1002Service" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://pij.feili.com:50200/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_CUS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CUS_CUS1002&amp;interfaceNamespace=URN%3ACUS1002</Value>
+      <Value Profile="(Default)">http://sapqpi01.feili.com:50200/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_CUS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CUS_CUS1002&amp;interfaceNamespace=URN%3ACUS1002</Value>
     </Setting>
   </Settings>
 </SettingsFile>

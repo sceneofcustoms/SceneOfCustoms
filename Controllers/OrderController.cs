@@ -1026,6 +1026,30 @@ namespace SceneOfCustoms.Controllers
                     sql += " AND DECLWAY = '" + jo.Value<string>("declaration_type") + "' ";
                 }
 
+                if (jo.Value<string>("DECLARATIONCODE") != null && jo.Value<string>("DECLARATIONCODE") != "")
+                {
+                    if (jo.Value<string>("DECLARATIONCODE") == "1")
+                    {
+                        sql += " AND DECLARATIONCODE  is not null ";
+                    }
+                    if (jo.Value<string>("DECLARATIONCODE") == "0")
+                    {
+                        sql += " AND DECLARATIONCODE  is  null ";
+                    }
+                }
+
+
+                if (jo.Value<string>("INSPECTIONCODE") != null && jo.Value<string>("INSPECTIONCODE") != "")
+                {
+                    if (jo.Value<string>("INSPECTIONCODE") == "1")
+                    {
+                        sql += " AND INSPECTIONCODE  is not null ";
+                    }
+                    if (jo.Value<string>("INSPECTIONCODE") == "0")
+                    {
+                        sql += " AND INSPECTIONCODE  is  null ";
+                    }
+                }
 
                 if (jo.Value<string>("LAWCONDITION") == "1")
                 {

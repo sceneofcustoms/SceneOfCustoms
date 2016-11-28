@@ -82,8 +82,13 @@ namespace SceneOfCustoms.Controllers
                 node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/PROVIDER_NAME");
                 node.InnerText = dt.Rows[0]["PROVIDER_NAME"] + "";
 
+                //if(){
+
+                //DateTime.ParseExact(o[0].CREATETIME, "yyyyMMddHHmmss.fffffff", System.Globalization.CultureInfo.CurrentCulture).ToString("yyyy-MM-dd HH:mm:ss")
+                //}
                 node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/D_DATE");
-                node.InnerText = dt.Rows[0]["D_DATE"] + "";
+                //node.InnerText = dt.Rows[0]["D_DATE"] + "";
+                node.InnerText = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd");
 
                 node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/I_E_FALG_TYPE");
                 node.InnerText = dt.Rows[0]["I_E_FALG_TYPE"] + "";
@@ -232,18 +237,18 @@ namespace SceneOfCustoms.Controllers
             //msg.Body = xmlDoc.ToString();
             //msg.Formatter = new System.Messaging.XmlMessageFormatter(new Type[] { typeof(string) });
 
-            //MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.206.245\\Private$\\DataCenter_SZ");
-            //Message msg = new Message();
+            MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.206.245\\Private$\\DataCenter_SZ");
+            Message msg = new Message();
             ////ZYDFL_S_系统名称_十个0_十个0_企业内部编号_GUID.xml
             string guid = Guid.NewGuid().ToString();
             string Label = "ZYDFL_S_FL_0000000000_0000000000_" + dt.Rows[0]["ORDERCODE"] + "_" + guid + ".xml";
 
-            //using (FileStream fstream = new FileStream(path, FileMode.Open))
-            //{
-            //    msg.BodyStream = fstream;
-            //    msg.Label = Label;
-            //    mq.Send(msg, MessageQueueTransactionType.Single);
-            //}
+            using (FileStream fstream = new FileStream(path, FileMode.Open))
+            {
+                msg.BodyStream = fstream;
+                msg.Label = Label;
+                mq.Send(msg, MessageQueueTransactionType.Single);
+            }
 
 
             //TCP:221.224.206.245\Private$\DataCenter_SZ

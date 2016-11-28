@@ -114,9 +114,12 @@ namespace SceneOfCustoms
 
             if (ld.Count > 0)
             {
-                //发单证
-                if (true)
+
+
+
+                if (ld[0].SENDURL == "1")
                 {
+                    //发单证
                     MSList = IFS.CheckData(ld);
                     if (MSList.Count <= 0)
                     {
@@ -132,7 +135,7 @@ namespace SceneOfCustoms
                         }
                     }
                 }
-                else
+                else if (ld[0].SENDURL == "2")
                 {
                     //发物贸通
                     MSList = IFS.CheckWumaoData(ld);
@@ -149,7 +152,6 @@ namespace SceneOfCustoms
                             MSList.Add(IFS.set_MObj("E", "保存失败"));
                         }
                     }
-
                 }
 
 

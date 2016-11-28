@@ -75,6 +75,8 @@
                     <th data-options="field:'ONLYCODE',width:130">唯一号</th>
                     <th data-options="field:'CODE',width:100">业务单号</th>
                     <th data-options="field:'XCBUSINAME',width:100">业务类型</th>
+                    <th data-options="field:'DECLARATIONCODE',width:150">报关单号</th>
+                    <th data-options="field:'INSPECTIONCODE',width:150">报检单号</th>
                     <th data-options="field:'CREATETIME',width:130,sortable:true,">上游下发日期</th>
                     <th data-options="field:'UPDATETIME',width:130,sortable:true,">上游修改数据日期</th>
                     <th data-options="field:'SUBMITUSERNAME',width:80">下发人</th>
@@ -141,7 +143,6 @@
                                 <select class="easyui-combobox combobox_width value is_check" editable="false" panelheight="auto" name="FILERELATE"></select>
                             </td>
 
-
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
                                     <option>是否发送下游</option>
@@ -149,6 +150,24 @@
                             </td>
                             <td>
                                 <select class="easyui-combobox combobox_width value is_check" editable="false" panelheight="auto" name="IFSEND"></select>
+                            </td>
+
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>报关单号回传</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" editable="false" panelheight="auto" name="DECLARATIONCODE"></select>
+                            </td>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>国检单号回传</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" editable="false" panelheight="auto" name="INSPECTIONCODE"></select>
                             </td>
                         </tr>
                     </table>
