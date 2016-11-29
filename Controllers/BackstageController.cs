@@ -47,7 +47,9 @@ namespace SceneOfCustoms.Controllers
                 where += " and REALNAME like '%" + Request["REALNAME"] + "%'";
             }
             sql = "SELECT * FROM SYS_USER WHERE 1=1 " + where;
-            sql = Extension.GetPageSql(sql, "CREATETIME", "desc", ref totalProperty, Convert.ToInt32(Request["start"]), Convert.ToInt32(Request["limit"]));
+            int start = Convert.ToInt32(Request["start"]);
+            int end = start + Convert.ToInt32(Request["limit"]);
+            sql = Extension.GetPageSql(sql, "CREATETIME", "desc", ref totalProperty, start, end);
             string json = JsonConvert.SerializeObject(DBMgr.GetDataTable(sql), iso);
             return "{rows:" + json + ",total:" + totalProperty + "}";
         }
@@ -192,7 +194,7 @@ namespace SceneOfCustoms.Controllers
         {
             string sql = string.Empty;
             string moduleid = Request["ID"];
-            string userid = Request["userid"]; 
+            string userid = Request["userid"];
             if (!string.IsNullOrEmpty(userid))
             {
                 sql = @"select t.*,u.MODULEID from sys_module t  left join (select * from sys_moduleuser where userid='{0}') u on t.ID=u.MODULEID
