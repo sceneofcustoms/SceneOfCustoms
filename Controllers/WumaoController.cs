@@ -41,7 +41,11 @@ namespace SceneOfCustoms.Controllers
         }
 
 
-
+        public ActionResult List_WuMaoBack()
+        {
+            ViewData["crumb"] = "物贸通返回";
+            return View();
+        }
 
 
         public string LoadDataMatching_Edit()
@@ -340,6 +344,46 @@ namespace SceneOfCustoms.Controllers
             int Page = Convert.ToInt32(Request.Params["page"]);
             int total = 0;
             string sql = "select * from list_wumao where 1=1";
+            string data = Request["data"];
+            if (data != null)
+            {
+                JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
+                if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
+                {
+                    sql += " AND " + jo.Value<string>("ordercode") + " ='" + jo.Value<string>("ordercode_value") + "'";
+                }
+                if (jo.Value<string>("businessin_createname") != null && jo.Value<string>("businessin_createname") != "")
+                {
+                    sql += " AND CREATENAME = '" + jo.Value<string>("businessin_createname") + "' ";
+                }
+                if (jo.Value<string>("starttime") != "" && jo.Value<string>("starttime") != null)
+                {
+                    sql += " AND CREATETIME >= to_date('" + jo.Value<string>("starttime") + "','yyyy-MM-dd')";
+                }
+                if (jo.Value<string>("stoptime") != "" && jo.Value<string>("stoptime") != null)
+                {
+                    sql += " AND CREATETIME <= to_date('" + jo.Value<string>("stoptime") + "','yyyy-MM-dd')";
+                }
+            }
+            string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
+            string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
+            sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
+            DataTable dt = DBMgr.GetDataTable(sql);
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string result = JsonConvert.SerializeObject(dt, iso);
+            result = "{\"total\":" + total + ",\"rows\":" + result + "}";
+            return result;
+        }
+
+
+
+        public string Load_WuMaoBack()
+        {
+            int PageSize = Convert.ToInt32(Request.Params["rows"]);
+            int Page = Convert.ToInt32(Request.Params["page"]);
+            int total = 0;
+            string sql = "select * from LIST_WUMAO_BACK where 1=1";
             string data = Request["data"];
             if (data != null)
             {

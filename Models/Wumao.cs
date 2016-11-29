@@ -43,7 +43,7 @@ namespace SceneOfCustoms.Models
         public string ISHDZ { get; set; }
         public string TRADETYPE { get; set; }
         public string OUT_GOODS_TYPE_LY { get; set; }
-        public string COLUMN1LY_BIZ_TYPE_ID { get; set; }
+        public string LY_BIZ_TYPE_ID { get; set; }
         public string GOODS_TYPE_ID { get; set; }
         public string LYTYPE_ID { get; set; }
         public string AREA_CODE { get; set; }

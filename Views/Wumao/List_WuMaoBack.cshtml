@@ -60,30 +60,13 @@
         });
 
 
-        $("#syncdata_wumao").click(function () {
-            var row = $('#datagrid').datagrid('getSelected');
-            if (row == null) {
-                $.messager.alert("提示", "请选择数据！");
-                return;
-            }
-            debugger;
-            var ORDERCODE = row.ORDERCODE;
-            $.ajax({
-                url: '/Wumao/SyncData',                          // 跳转到 action
-                data: { "ORDERCODE": ORDERCODE },
-                type: 'post',
-                dataType: 'json',
-                success: function (data) {
-                },
-            });
-        });
 
     })
 </script>
 <div class="ibox-content">
     <div class="table-responsive">
         <table id="datagrid" class="easyui-datagrid" title="同步" style="height:auto;min-height:500px;max-height:800px"
-               data-options="url: '/Wumao/LoadWumao_List',
+               data-options="url: '/Wumao/Load_WuMaoBack',
                             rownumbers: true,
                             dataType: 'json',
                             method: 'get',
@@ -95,60 +78,26 @@
                 <tr>
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
                     <th data-options="field:'ORDERCODE',width:150">业务编号</th>
-                    <th data-options="field:'BUSINAME',width:150">业务类型</th>
-                    <th data-options="field:'GOODS_NATURE_ID',width:150">料件性质</th>
-                    <th data-options="field:'PROVIDER_NAME',width:150">货物名称</th>
-                    <th data-options="field:'D_DATE',width:150">申报日期</th>
-                    <th data-options="field:'TRANSPORT_CODE',width:150">货代经办企业代码</th>
-                    <th data-options="field:'TRANSPORT_NAME',width:150">货代经办企业名称</th>
-                    <th data-options="field:'APPCOMPANY',width:150">申报单位代码</th>
-                    <th data-options="field:'APPCOMPANY_NAME',width:150">申报单位名称</th>
-                    <th data-options="field:'APPCIQID',width:150">海关编号</th>
-                    <th data-options="field:'I_E_FALG_TYPE',width:150">进出口标志代码</th>
-                    <th data-options="field:'BIZ_TYPE_ID',width:150">作业单类型代码</th>
-                    <th data-options="field:'BIZ_TYPE_NAME',width:150">作业单类型名称</th>
-                    <th data-options="field:'TRADE_CODE',width:150">经营单位代码</th>
+                    <th data-options="field:'OUT_ID',width:150">预制单号</th>
+                    <th data-options="field:'PASS_NO',width:150">核放单号</th>
+                    <th data-options="field:'ARRIVE_NO',width:150">运抵编号</th>
+                    <th data-options="field:'KK_NO',width:150">卡口放行单编号</th>
+                    <th data-options="field:'CUSTOMS_CODE',width:150">关区代码</th>
+                    <th data-options="field:'TRADE_CODE',width:150">经营单位十位编码</th>
                     <th data-options="field:'TRADE_NAME',width:150">经营单位名称</th>
-                    <th data-options="field:'CONSIGNEE_CODE',width:150">收发货单位代码</th>
-                    <th data-options="field:'CONSIGNEE_NAME',width:150">收发货单位名称</th>
-                    <th data-options="field:'TRADE_CODE_IN',width:150">区内企业代码</th>
-                    <th data-options="field:'TRADE_NAME_IN',width:150">区内企业名称</th>
-                    <th data-options="field:'PACK_NO',width:150">件数</th>
-                    <th data-options="field:'GROSS_WT',width:150">总毛重</th>
-                    <th data-options="field:'NET_WT',width:150">总净重</th>
-                    <th data-options="field:'TRAFFICTYPE',width:150">进出境运输方式</th>
-                    <th data-options="field:'BILL_TYPE',width:150">单证类型代码</th>
-                    <th data-options="field:'ENTRY_ID_OUT',width:150">区外海关编号</th>
-                    <th data-options="field:'APPCIQTYPE',width:150">报关单类型</th>
-                    <th data-options="field:'WRAP_TYPE_ID',width:150">包装种类</th>
-                    <th data-options="field:'MAINCODE',width:150">总单号</th>
-                    <th data-options="field:'SUBCODE',width:150">分单号</th>
-                    <th data-options="field:'MANUAL_NO',width:150">备案号</th>
-                    <th data-options="field:'OUT_CODE',width:150">收发货人</th>
-                    <th data-options="field:'TRANSFER_NO',width:150">转关单号</th>
-                    <th data-options="field:'GOODS_TYPE_LY',width:150">转关方式</th>
-                    <th data-options="field:'ISHDZ',width:150">是否华东转</th>
-                    <th data-options="field:'TRADETYPE',width:150">监管方式</th>
-                    <th data-options="field:'OUT_GOODS_TYPE_LY',width:150">区外转关方式</th>
-                    <th data-options="field:'LY_BIZ_TYPE_ID',width:150">陆运业务类型代码</th>
-                    <th data-options="field:'GOODS_TYPE_ID',width:150">陆运货物类别代码</th>
-                    <th data-options="field:'LYTYPE_ID',width:150">陆运ID</th>
-                    <th data-options="field:'AREA_CODE',width:150">卸货地代码</th>
-                    <th data-options="field:'MEANSOFTRANSPORTNAME',width:150">运输工具名称</th>
-                    <th data-options="field:'MEANSOFTRANSPORTID',width:150">运输工具航次</th>
+                    <th data-options="field:'AGENT_CODE',width:150">申报单位十位编码</th>
+                    <th data-options="field:'AGENT_NAME',width:150">申报单位名称</th>
+                    <th data-options="field:'MESSAGETYPE',width:150">报文类型</th>
+                    <th data-options="field:'CODE',width:150">代码</th>
+                    <th data-options="field:'NAME',width:150">名称</th>
                     <th data-options="field:'REMARK',width:150">备注</th>
-                    <th data-options="field:'FULL_NO_ZD',width:150">关联总单作业单号</th>
-                    <th data-options="field:'OUT_TRAF_MODE',width:150">区外运输方式</th>
-                    <th data-options="field:'IS_BLR',width:150">是否补录入标记</th>
-                    <th data-options="field:'SEND_USER',width:150">发送人</th>
-                    <th data-options="field:'SEND_TIME',width:150">发送时间</th>
+                    <th data-options="field:'INPUT_TIME',width:150">时间</th>
                 </tr>
             </thead>
         </table>
         <div id="tb">
             <div class="tb_search">
                 <form id="searchform" method="post">
-                    <input type="hidden" name="BUSITYPE" value="SyncFoo" />
                     <table>
                         <tr>
                             <td class="search_margin">
@@ -182,7 +131,7 @@
             </div>
             <div class="tb_but">
                 <div class="but_left">
-                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" id="syncdata_wumao"><i class="fa fa-exchange" aria-hidden="true"></i> 同步到物贸通</a>
+                    @*<a class="btn btn-primary btn-xs" href="javascript:void(0)" id="syncdata_wumao"><i class="fa fa-exchange" aria-hidden="true"></i> 同步到物贸通</a>*@
                     @*<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="export_form()"><i class="fa fa-share-square-o" aria-hidden="true"></i> 导出</a>*@
                 </div>
                 <div class="but_right">

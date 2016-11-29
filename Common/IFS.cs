@@ -730,6 +730,20 @@ namespace SceneOfCustoms.Common
             wm.BILL_TYPE = "1";//0空1报关单2转关单
 
             wm.WRAP_TYPE_ID = "1"; //包装种类
+
+            wm.LYTYPE_ID = "41"; //陆运ID
+            wm.GOODS_TYPE_ID = "45"; //货物类型
+            wm.LY_BIZ_TYPE_ID = "04";//业务类型
+
+            //海关编号
+            sql = "select DECLARATIONCODE　from LIST_DECLARATION where  ORDERCODE='" + ld[0].ORDERCODE + "' and isdel !='1'";
+            dt = DBMgr.GetDataTable(sql);
+            if (dt.Rows.Count > 0)
+            {
+                wm.APPCIQID = dt.Rows[0]["DECLARATIONCODE"] + "";
+            }
+
+
             wm.MAINCODE = ld[0].TOTALNO;
             wm.SUBCODE = ld[0].DIVIDENO;
             wm.TONGGUANFSCODE = ld[0].TONGGUANFSCODE;
@@ -752,7 +766,8 @@ namespace SceneOfCustoms.Common
                                       CONSIGNEE_NAME='{16}',TRADE_CODE_IN='{17}',TRADE_NAME_IN='{18}',PACK_NO='{19}', 
                                       GROSS_WT='{20}',NET_WT='{21}',GOODS_TYPE_LY='{22}',WRAP_TYPE_ID='{23}',
                                       MAINCODE='{24}',SUBCODE='{25}',TRANSFER_NO='{26}',ONLYCODE='{27}'
-                                      ,WTFS='{28}',GOODS_NATURE_ID='{29}',TONGGUANFSCODE='{30}',TONGGUANFSNAME='{31}'
+                                      ,WTFS='{28}',GOODS_NATURE_ID='{29}',TONGGUANFSCODE='{30}',TONGGUANFSNAME='{31}',
+                                      LYTYPE_ID='{32}',GOODS_TYPE_ID='{33}',LY_BIZ_TYPE_ID='{34}',APPCIQID='{35}'
                                       where ORDERCODE='" + wm.ORDERCODE + "'";
                 sql = string.Format(sql,
     wm.I_E_FALG_TYPE, wm.BIZ_TYPE_ID, wm.TRAFFICTYPE, wm.BILL_TYPE,
@@ -762,7 +777,8 @@ namespace SceneOfCustoms.Common
     wm.CONSIGNEE_NAME, wm.TRADE_CODE_IN, wm.TRADE_NAME_IN, wm.PACK_NO,
     wm.GROSS_WT, wm.NET_WT, wm.GOODS_TYPE_LY, wm.WRAP_TYPE_ID,
     wm.MAINCODE, wm.SUBCODE, wm.TRANSFER_NO, wm.ONLYCODE,
-    wm.WTFS, wm.GOODS_NATURE_ID, wm.TONGGUANFSCODE, wm.TONGGUANFSNAME
+    wm.WTFS, wm.GOODS_NATURE_ID, wm.TONGGUANFSCODE, wm.TONGGUANFSNAME,
+    wm.LYTYPE_ID, wm.GOODS_TYPE_ID, wm.LY_BIZ_TYPE_ID, wm.APPCIQID
     );
             }
             else
@@ -776,10 +792,12 @@ namespace SceneOfCustoms.Common
                                       GROSS_WT,NET_WT,GOODS_TYPE_LY,WRAP_TYPE_ID,
                                       MAINCODE,SUBCODE,TRANSFER_NO,ONLYCODE,
                                       WTFS,ORDERCODE,FWONO,FOONO,
-                                      GOODS_NATURE_ID,TONGGUANFSCODE,TONGGUANFSNAME
+                                      GOODS_NATURE_ID,TONGGUANFSCODE,TONGGUANFSNAME,
+                                      LYTYPE_ID, GOODS_TYPE_ID, LY_BIZ_TYPE_ID, APPCIQID
                                        )VALUES(LIST_ORDER_ID.Nextval,
                    '{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}',to_date('{8}','yyyy-mm-dd'),'{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}',
-                   '{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}','{28}','{29}','{30}','{31}','{32}','{33}','{34}'
+                   '{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}','{28}','{29}','{30}','{31}','{32}','{33}','{34}',
+                   '{35}','{36}','{37}','{38}'
                   )";
                 sql = string.Format(sql,
     wm.I_E_FALG_TYPE, wm.BIZ_TYPE_ID, wm.TRAFFICTYPE, wm.BILL_TYPE,
@@ -790,7 +808,8 @@ namespace SceneOfCustoms.Common
     wm.GROSS_WT, wm.NET_WT, wm.GOODS_TYPE_LY, wm.WRAP_TYPE_ID,
     wm.MAINCODE, wm.SUBCODE, wm.TRANSFER_NO, wm.ONLYCODE,
     wm.WTFS, wm.ORDERCODE, wm.FWONO, wm.FOONO,
-    wm.GOODS_NATURE_ID, wm.TONGGUANFSCODE, wm.TONGGUANFSNAME
+    wm.GOODS_NATURE_ID, wm.TONGGUANFSCODE, wm.TONGGUANFSNAME,
+    wm.LYTYPE_ID, wm.GOODS_TYPE_ID, wm.LY_BIZ_TYPE_ID, wm.APPCIQID
     );
             }
             res = DBMgr.ExecuteNonQuery(sql);
