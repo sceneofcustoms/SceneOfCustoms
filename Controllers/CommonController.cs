@@ -106,6 +106,11 @@ namespace SceneOfCustoms.Controllers
                 {
                     sql += " AND BUSITYPE = '" + jo.Value<string>("customs_busitype") + "' ";
                 }
+                if (jo.Value<string>("sendurl") != null && jo.Value<string>("sendurl") != "")
+                {
+                    sql += " AND sendurl = '" + jo.Value<string>("sendurl") + "' ";
+                }
+
                 if (jo.Value<string>("startdate") != "" && jo.Value<string>("startdate") != null)
                 {
                     sql += " AND TIME >= to_date('" + jo.Value<string>("startdate") + "','yyyy-MM-dd')";

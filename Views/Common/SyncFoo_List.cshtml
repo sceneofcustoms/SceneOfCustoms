@@ -39,6 +39,12 @@
         { name: '飞力达FWO-海运进口-服务无运输(ZCB)' },
         { name: '飞力达FWO-特殊监管' },
     ];
+
+    sendurl = [
+        { code: '1', name: '制单' },
+        { code: '2', name: '物贸通' }
+    ];
+
     $(function () {
         $('#searchform #search_code').combobox({
             data: search_code,
@@ -50,6 +56,14 @@
             valueField: 'name',
             textField: 'name'
         });
+
+
+        $('#searchform #sendurl').combobox({
+            data: sendurl,
+            valueField: 'code',
+            textField: 'name'
+        });
+
         $('#customs_busitype').next('span').css('width', '300px');
         $('#customs_busitype').next('span').children('.textbox-text').css('width', '300px');
         var width = '';
@@ -150,7 +164,6 @@
                     <th data-options="field:'ISPREDECLARE',width:80,sortable:true">是否提前报关</th>
                     <th data-options="field:'INVOICENO',width:100,sortable:true">二线合同专用发票号</th>
                     <th data-options="field:'ISCHECKEDWEIGHT',width:100,sortable:true">重量确认标志</th>
-
                     <th data-options="field:'TONGGUANFSCODE',width:100,sortable:true">通关方式CODE</th>
                     <th data-options="field:'TONGGUANFSNAME',width:80,sortable:true">通关方式NAME</th>
                     <th data-options="field:'CGGROUPCODE',width:100,sortable:true">采购组织CODE</th>
@@ -191,6 +204,21 @@
                                 <input class="easyui-datebox value  placeholderclass" editable="false" name="stopdate" placeholder="结束时间">
                             </td>
                         </tr>
+
+                        <tr>
+   
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>指令去向</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox value " editable="false" style="width:130px" panelheight="auto" id="sendurl" name="sendurl">
+                                </select>
+                            </td>
+
+                        </tr>
+
                     </table>
                 </form>
             </div>

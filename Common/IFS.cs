@@ -76,7 +76,7 @@ namespace SceneOfCustoms.Common
                 DZOrder.DIVIDENO = dt.Rows[i]["DIVIDENO"] + "";
                 DZOrder.TURNPRENO = dt.Rows[i]["TURNPRENO"] + "";
                 DZOrder.PORTNAME = dt.Rows[i]["PORTCODE"] + "";
-
+                DZOrder.CONTRACTNO = dt.Rows[i]["CONTRACTNO"] + "";
 
                 //DZOrder.PORTNAME = dt.Rows[i]["PORTCODE"] + "";
                 DZOrder.TRADEWAYNAME = dt.Rows[i]["TRADEWAYCODES"] + "";
@@ -1077,7 +1077,7 @@ namespace SceneOfCustoms.Common
 
                 if (string.IsNullOrEmpty(o.CHECKEDGOODSNUM))
                 {
-                    MsgobjList.Add(set_MObj("E", "件数不可为空" + o.FOONO));
+                    MsgobjList.Add(set_MObj("E", "实际件数不可为空" + o.FOONO));
                 }
 
 
@@ -1090,6 +1090,11 @@ namespace SceneOfCustoms.Common
                 if (string.IsNullOrEmpty(o.GOODSWEIGHT))
                 {
                     MsgobjList.Add(set_MObj("E", "毛重不可为空" + o.FOONO));
+                }
+
+                if (string.IsNullOrEmpty(o.TONGGUANFSCODE) || string.IsNullOrEmpty(o.TONGGUANFSNAME))
+                {
+                    MsgobjList.Add(set_MObj("E", "通关方式不可为空" + o.FOONO));
                 }
 
             }
