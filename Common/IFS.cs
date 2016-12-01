@@ -6,9 +6,11 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Messaging;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Xml;
 
 namespace SceneOfCustoms.Common
 {
@@ -18,6 +20,211 @@ namespace SceneOfCustoms.Common
         public static string XCBUSINAME;
 
         public static string IFINSERT = "0";
+
+
+        public static void SendWuMao(string ORDERCODE, string ONLYCODE)
+        {
+            string sql = "SELECT * FROM LIST_WUMAO WHERE ORDERCODE = '" + ORDERCODE + "'";
+            DataTable dt = DBMgr.GetDataTable(sql);
+            XmlDocument xmlDoc = new XmlDocument();
+            //string path = Server.MapPath("/tem/tem.xml");
+            string path = @"D:/AppFile/FeiliCustoms/Webroot/tem/tem.xml";
+            xmlDoc.Load(path);
+            XmlElement node;
+            if (dt.Rows.Count > 0)
+            {
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/GATEPASS_NO");
+                node.InnerText = dt.Rows[0]["GATEPASS_NO"] + "";
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/CORP_NO");
+                node.InnerText = dt.Rows[0]["ORDERCODE"] + "";
+
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/GOODS_NATURE_ID");
+                node.InnerText = dt.Rows[0]["GOODS_NATURE_ID"] + "";
+
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/PROVIDER_NAME");
+                node.InnerText = dt.Rows[0]["PROVIDER_NAME"] + "";
+
+                //if(){
+
+                //DateTime.ParseExact(o[0].CREATETIME, "yyyyMMddHHmmss.fffffff", System.Globalization.CultureInfo.CurrentCulture).ToString("yyyy-MM-dd HH:mm:ss")
+                //}
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/D_DATE");
+                //node.InnerText = dt.Rows[0]["D_DATE"] + "";
+                node.InnerText = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd");
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/I_E_FALG_TYPE");
+                node.InnerText = dt.Rows[0]["I_E_FALG_TYPE"] + "";
+
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/TRANSPORT_CODE");
+                node.InnerText = dt.Rows[0]["TRANSPORT_CODE"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/TRANSPORT_NAME");
+                node.InnerText = dt.Rows[0]["TRANSPORT_NAME"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/APPCOMPANY");
+                node.InnerText = dt.Rows[0]["APPCOMPANY"] + "";
+
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/APPCOMPANY_NAME");
+                node.InnerText = dt.Rows[0]["APPCOMPANY_NAME"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/APPCIQID");
+                node.InnerText = dt.Rows[0]["APPCIQID"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/BIZ_TYPE_ID");
+                node.InnerText = dt.Rows[0]["BIZ_TYPE_ID"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/BIZ_TYPE_NAME");
+                node.InnerText = dt.Rows[0]["BIZ_TYPE_NAME"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/TRADE_CODE");
+                node.InnerText = dt.Rows[0]["TRADE_CODE"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/TRADE_NAME");
+                node.InnerText = dt.Rows[0]["TRADE_NAME"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/CONSIGNEE_CODE");
+                node.InnerText = dt.Rows[0]["CONSIGNEE_CODE"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/CONSIGNEE_NAME");
+                node.InnerText = dt.Rows[0]["CONSIGNEE_NAME"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/TRADE_CODE_IN");
+                node.InnerText = dt.Rows[0]["TRADE_CODE_IN"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/TRADE_NAME_IN");
+                node.InnerText = dt.Rows[0]["TRADE_NAME_IN"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/PACK_NO");
+                node.InnerText = dt.Rows[0]["PACK_NO"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/GROSS_WT");
+                node.InnerText = dt.Rows[0]["GROSS_WT"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/NET_WT");
+                node.InnerText = dt.Rows[0]["NET_WT"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/TRAFFICTYPE");
+                node.InnerText = dt.Rows[0]["TRAFFICTYPE"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/BILL_TYPE");
+                node.InnerText = dt.Rows[0]["BILL_TYPE"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/ENTRY_ID_OUT");
+                node.InnerText = dt.Rows[0]["ENTRY_ID_OUT"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/APPCIQTYPE");
+                node.InnerText = dt.Rows[0]["APPCIQTYPE"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/WRAP_TYPE_ID");
+                node.InnerText = dt.Rows[0]["WRAP_TYPE_ID"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/MAINCODE");
+                node.InnerText = dt.Rows[0]["MAINCODE"] + "";
+
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/SUBCODE");
+                node.InnerText = dt.Rows[0]["SUBCODE"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/MANUAL_NO");
+                node.InnerText = dt.Rows[0]["MANUAL_NO"] + "";
+
+
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/OUT_CODE");
+                node.InnerText = dt.Rows[0]["OUT_CODE"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/TRANSFER_NO");
+                node.InnerText = dt.Rows[0]["TRANSFER_NO"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/GOODS_TYPE_LY");
+                node.InnerText = dt.Rows[0]["GOODS_TYPE_LY"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/ISHDZ");
+                node.InnerText = dt.Rows[0]["ISHDZ"] + "";
+
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/TRADETYPE");
+                node.InnerText = dt.Rows[0]["TRADETYPE"] + "";
+
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/OUT_GOODS_TYPE_LY");
+                node.InnerText = dt.Rows[0]["OUT_GOODS_TYPE_LY"] + "";
+
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/LY_BIZ_TYPE_ID");
+                node.InnerText = dt.Rows[0]["LY_BIZ_TYPE_ID"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/GOODS_TYPE_ID");
+                node.InnerText = dt.Rows[0]["GOODS_TYPE_ID"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/LYTYPE_ID");
+                node.InnerText = dt.Rows[0]["LYTYPE_ID"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/AREA_CODE");
+                node.InnerText = dt.Rows[0]["AREA_CODE"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/MEANSOFTRANSPORTNAME");
+                node.InnerText = dt.Rows[0]["MEANSOFTRANSPORTNAME"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/MEANSOFTRANSPORTID");
+                node.InnerText = dt.Rows[0]["MEANSOFTRANSPORTID"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/REMARK");
+                node.InnerText = dt.Rows[0]["REMARK"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/FULL_NO_ZD");
+                node.InnerText = dt.Rows[0]["FULL_NO_ZD"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/OUT_TRAF_MODE");
+                node.InnerText = dt.Rows[0]["OUT_TRAF_MODE"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/IS_BLR");
+                node.InnerText = dt.Rows[0]["IS_BLR"] + "";
+
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/SEND_USER");
+                node.InnerText = dt.Rows[0]["SEND_USER"] + "";
+
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/SEND_TIME");
+                node.InnerText = dt.Rows[0]["SEND_TIME"] + "";
+            }
+
+            xmlDoc.Save(path);
+
+            //MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.206.253\\Private$\\etf");
+            //Message msg = new Message();
+            //msg.Body = xmlDoc.ToString();
+            //msg.Formatter = new System.Messaging.XmlMessageFormatter(new Type[] { typeof(string) });
+
+            //MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.206.245\\Private$\\DataCenter_SZ");
+
+            MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:58.210.121.35\\Private$\\DataCenter_KS");
+
+            Message msg = new Message();
+            ////ZYDFL_S_系统名称_十个0_十个0_企业内部编号_GUID.xml old
+
+            //作业单 ZYDFL_S_FL_申报单位十位编码_十个0_企业内部编号_GUID.xml new
+
+            string guid = Guid.NewGuid().ToString();
+            string Label = "ZYDFL_S_FL_" + dt.Rows[0]["APPCOMPANY"] + "_0000000000_" + dt.Rows[0]["ORDERCODE"] + "_" + guid + ".xml";
+
+            using (FileStream fstream = new FileStream(path, FileMode.Open))
+            {
+                msg.BodyStream = fstream;
+                msg.Label = Label;
+                mq.Send(msg, MessageQueueTransactionType.Single);
+                sql = "update LIST_WUMAO set STATUS='1' where ordercode='" + ORDERCODE + "'";
+                DBMgr.ExecuteNonQuery(sql);
+            }
+
+        }
+
+
 
         //推送到单证的数据
         public static void SaveDZOrder(string FWO, string ONLYCODE)
@@ -212,25 +419,43 @@ namespace SceneOfCustoms.Common
             //关联号 如果4单 2单和4单关联号一样，下面在去判断 2单关联号
             foreach (List<OrderEn> ListOrder in GroupOrder)
             {
-                if (GroupOrder.Count > 2)
+
+                if (ListOrder[0].BUSITYPE.IndexOf("叠加保税") >= 0)
                 {
-                    if (ListOrder[0].ENTRUSTTYPEID == "出口企业")
+                    if (GroupOrder.Count >= 2)
                     {
-                        CORRESPONDNO = "GF" + ListOrder[0].ORDERCODE;
+                        if (ListOrder[0].ENTRUSTTYPEID == "HUB 仓进")
+                        {
+                            CORRESPONDNO = "GF" + ListOrder[0].ORDERCODE;
+                            ASS2 = "GL" + ListOrder[0].ORDERCODE;//2单关联号
+                        }
+                        if (ListOrder[0].ENTRUSTTYPEID == "HUB 仓出")
+                        {
+                            ASS1 = "GL" + ListOrder[0].ORDERCODE;//2单关联号
+                        }
+                    }
+                    else
+                    {
+                        if (ListOrder[0].ENTRUSTTYPEID == "HUB 仓出" || ListOrder[0].ENTRUSTTYPEID == "HUB 仓进")
+                        {
+                            ASSOCIATENO = "GL" + ListOrder[0].ORDERCODE;
+                        }
+                    }
+                }
+
+                if (ListOrder[0].BUSITYPE.IndexOf("国内") >= 0)
+                {
+                    if (ListOrder[0].ENTRUSTTYPEID == "进口企业")
+                    {
                         ASS1 = "GL" + ListOrder[0].ORDERCODE;//2单关联号
                     }
-                    if (ListOrder[0].ENTRUSTTYPEID == "HUB 仓出")
-                    {
-                        ASS2 = "GL" + ListOrder[0].ORDERCODE;//2单关联号
-                    }
                 }
-                else
-                {
-                    if (ListOrder[0].ENTRUSTTYPEID == "出口企业")
-                    {
-                        ASSOCIATENO = "GL" + ListOrder[0].ORDERCODE;
-                    }
-                }
+
+
+
+
+
+
             }
 
             DataTable dt;
@@ -244,18 +469,29 @@ namespace SceneOfCustoms.Common
                 o[0].CREATETIME = NewTime;
                 o[0].UPDATETIME = NewTime;
                 //关联号
-                if (GroupOrder.Count > 2)
+
+                if (GroupOrder.Count >= 2)
                 {
-                    if (o[0].ENTRUSTTYPEID == "HUB 仓出" || o[0].ENTRUSTTYPEID == "进口企业")
-                    {
-                        ASSOCIATENO = ASS2;
-                    }
-                    else
+
+                    if (o[0].BUSITYPE.IndexOf("国内") >= 0)
                     {
                         ASSOCIATENO = ASS1;
                     }
-                }
 
+
+                    if (o[0].BUSITYPE.IndexOf("叠加保税") >= 0)
+                    {
+                        if (o[0].ENTRUSTTYPEID == "HUB 仓进" || o[0].ENTRUSTTYPEID == "出口企业")
+                        {
+                            ASSOCIATENO = ASS2;
+                        }
+                        else
+                        {
+                            ASSOCIATENO = ASS1;
+                        }
+                    }
+
+                }
                 //两单关联号，四单关联号
                 o[0].ASSOCIATENO = ASSOCIATENO;
                 o[0].CORRESPONDNO = CORRESPONDNO;
@@ -562,10 +798,16 @@ namespace SceneOfCustoms.Common
                 }
 
                 //二程提单号 报关提单号  都为海关提单号  sap 设计不合理
-                if (string.IsNullOrEmpty(o[0].LADINGBILLNO + ""))
+
+
+                if (o[0].BUSITYPE == "21" || o[0].BUSITYPE == "20")
                 {
-                    o[0].SECONDLADINGBILLNO = o[0].LADINGBILLNO + "";
+                    if (!string.IsNullOrEmpty(o[0].LADINGBILLNO + ""))
+                    {
+                        o[0].SECONDLADINGBILLNO = o[0].LADINGBILLNO + "";
+                    }
                 }
+
 
                 //sap 设计不合理
                 if (!string.IsNullOrEmpty(o[0].GOODSTYPEID + ""))
@@ -727,7 +969,7 @@ namespace SceneOfCustoms.Common
 
             //wm.GOODS_TYPE_LY = "22";//直转
 
-            wm.BILL_TYPE = "1";//0空1报关单2转关单
+            //wm.BILL_TYPE = "1";//0空1报关单2转关单
 
             wm.WRAP_TYPE_ID = "1"; //包装种类
 
@@ -1114,6 +1356,14 @@ namespace SceneOfCustoms.Common
                 if (string.IsNullOrEmpty(o.TONGGUANFSCODE) || string.IsNullOrEmpty(o.TONGGUANFSNAME))
                 {
                     MsgobjList.Add(set_MObj("E", "通关方式不可为空" + o.FOONO));
+                }
+                else
+                {
+                    if (o.TONGGUANFSNAME != "转关" && o.TONGGUANFSNAME != "一体化")
+                    {
+
+                    }
+
                 }
 
             }
@@ -1764,6 +2014,8 @@ namespace SceneOfCustoms.Common
             {
                 source = "新关务->SAP";
             }
+
+
 
             string STATUS;
             if (MSList[0].MSG_TYPE == "E")

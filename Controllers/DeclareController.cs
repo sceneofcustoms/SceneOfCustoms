@@ -16,6 +16,9 @@ namespace SceneOfCustoms.Controllers
         //一线进口列表
         public ActionResult OnelineIn_List()
         {
+//            string sql = @"insert into LIST_DECLARATION(id,ordercode,DECLARATIONCODE,ISDEL)
+//values(list_declaration_id.nextval,'AE161103273','123456712345671234','0')";
+//            DBMgr.ExecuteNonQuery(sql);
             ViewData["crumb"] = "报关操作-->一线进口";
             return View();
         }

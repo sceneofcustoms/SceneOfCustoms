@@ -103,7 +103,7 @@ namespace SceneOfCustoms
             //db.ListRightPush("SyncDataFromSap", ld.ToString());
             Msgobj MO = new Msgobj();
             List<Msgobj> MSList = new List<Msgobj>();
-            string Nowtime = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            string Nowtime = Guid.NewGuid().ToString();
             int SaveSap_Res = SavaSapFoo(ld, Nowtime);
             if (SaveSap_Res == 0)
             {
@@ -114,8 +114,6 @@ namespace SceneOfCustoms
 
             if (ld.Count > 0)
             {
-
-
 
                 if (ld[0].SENDURL == "1")
                 {
@@ -145,7 +143,7 @@ namespace SceneOfCustoms
                         if (Order_Res == 1)
                         {
                             MSList.Add(IFS.set_MObj("S", "保存成功"));
-                            //IFS.SaveDZOrder(ld[0].CODE, Nowtime);
+                            //IFS.SendWuMao(ld[0].ORDERCODE + "", Nowtime);
                         }
                         else
                         {

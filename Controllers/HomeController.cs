@@ -12,6 +12,7 @@ namespace SceneOfCustoms.Controllers
         public ActionResult Index()
         {
             ViewData["crumb"] = "关务系统>>首页";
+
             return View();
         }
     }

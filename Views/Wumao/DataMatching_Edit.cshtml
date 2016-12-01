@@ -9,18 +9,8 @@
         width:105px;
     }
 </style>
-<script>
-    $(function () {
-        debugger;
-        var ID ='@ViewData["ID"]';
-        if(ID !=""){
-            $('#OrderFrom').form('load', '/Wumao/LoadDataMatching_Edit?ID=' + ID);
-        }
-    })
-</script>
 <form id="OrderFrom" method="post">
     <input class="hidden" type="text" name="ID" />
-
         <table class="scene">
             <tr>
                 <td>
@@ -84,10 +74,19 @@
     </div>
 </form>
 <script>
+
+    $(function () {
+        debugger;
+        var ID = '@ViewData["ID"]';
+        if (ID != "") {
+            debugger;
+            $('#OrderFrom').form('load', '/Wumao/LoadDataMatching_Edit?ID=' + ID);
+        }
+    })
+
     function closeWin() {
         $('#mainWin').dialog('close');
     }
-    //20160929 SYY add
     function submitForms() {
         $('#OrderFrom').form('submit', {
             url: "/Wumao/SaveDataMatching",

@@ -61,6 +61,88 @@ namespace SceneOfCustoms.Controllers
             return result;
         }
 
+        public string SyncData1()
+        {
+            string ORDERCODE = "SI161100014";
+
+            string sql = " select * from LIST_WUMAO where ordercode ='" + ORDERCODE + "'";// and  APPCIQID is null
+            DataTable dt = DBMgr.GetDataTable(sql);
+            string sql1 = " select * from LIST_DECLARATION where ordercode ='" + ORDERCODE + "' and  ISDEL !='1'";
+            DataTable dt1 = DBMgr.GetDataTable(sql1);
+
+            if (dt.Rows.Count > 0 && dt1.Rows.Count > 0)
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                //string path = @"D:/net/WINFORM/JiShi_WinForm/tem/tem.xml";
+                string path = Server.MapPath("/tem/tem1.xml");
+                xmlDoc.Load(path);
+                XmlElement node;
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("ENTRY_RESULT/EportNo");
+                node.InnerText = dt1.Rows[0]["ORDERCODE"] + "";
+
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("ENTRY_RESULT/ENTRYNO");
+                node.InnerText = dt1.Rows[0]["DECLARATIONCODE"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("ENTRY_RESULT/NoticeDate");
+                //node.InnerText = dt.Rows[0]["D_DATE"] + "";
+                node.InnerText = DateTime.Now.ToLocalTime().ToString("yyyyMMddTHHmmss");
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("ENTRY_RESULT/Channel");
+                node.InnerText = "011";//007
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("ENTRY_RESULT/EportLocationCode");
+                node.InnerText = "2358";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("ENTRY_RESULT/ImportExportDate");
+                node.InnerText = "T00000000";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("ENTRY_RESULT/Packages");
+                node.InnerText = "3";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("ENTRY_RESULT/NetWeight");
+                node.InnerText = "87.5340";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("ENTRY_RESULT/GrossWeight");
+                node.InnerText = "132.90";
+
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("ENTRY_RESULT/CorporationName");
+                node.InnerText = dt.Rows[0]["APPCOMPANY"] + "";
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("ENTRY_RESULT/CorporationCustomsCode");
+                node.InnerText = dt.Rows[0]["TRADE_CODE"] + "";
+
+
+                node = (XmlElement)xmlDoc.SelectSingleNode("ENTRY_RESULT/ResultInformation");
+                node.InnerText = "海关H2000入库";//申报成功
+
+                xmlDoc.Save(path);
+                //MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.206.245\\Private$\\DataCenter_SZ");
+                MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:58.210.121.35\\Private$\\DataCenter_KS");
+                System.Messaging.Message msg = new System.Messaging.Message();
+                ////ZYDFL_S_系统名称_十个0_十个0_企业内部编号_GUID.xml
+                string guid = Guid.NewGuid().ToString();
+                string time = DateTime.Now.ToLocalTime().ToString("yyyyMMddHHmmssfff");
+                //string Label = "QP_R_FL_" + dt.Rows[0]["TRADE_CODE"] + "_" + dt.Rows[0]["APPCOMPANY"] + "_" + dt.Rows[0]["ORDERCODE"] + "_" + time + "_" + guid + ".xml";
+                //APPCOMPANY TRADE_CODE
+                string Label = "QP_R_FL_" + dt.Rows[0]["APPCOMPANY"] + "_0000000000_" + dt.Rows[0]["ORDERCODE"] + "_" + time + "_" + guid + ".xml";
+
+                if (!string.IsNullOrEmpty(dt1.Rows[0]["DECLARATIONCODE"] + ""))
+                {
+                    using (FileStream fstream = new FileStream(path, FileMode.Open))
+                    {
+                        msg.BodyStream = fstream;
+                        msg.Label = Label;
+                        mq.Send(msg, MessageQueueTransactionType.Single);
+                    }
+                    sql = " update LIST_WUMAO set APPCIQID='" + dt1.Rows[0]["DECLARATIONCODE"] + "' where  ordercode ='" + dt1.Rows[0]["ORDERCODE"] + "' ";
+                    DBMgr.ExecuteNonQuery(sql);
+                }
+            }
+            return "1";
+        }
 
         public string SyncData()
         {
@@ -241,32 +323,26 @@ namespace SceneOfCustoms.Controllers
             //msg.Body = xmlDoc.ToString();
             //msg.Formatter = new System.Messaging.XmlMessageFormatter(new Type[] { typeof(string) });
 
-            MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.206.245\\Private$\\DataCenter_SZ");
+            //MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.206.245\\Private$\\DataCenter_SZ");
+
+            MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:58.210.121.35\\Private$\\DataCenter_KS");
+
             Message msg = new Message();
-            ////ZYDFL_S_系统名称_十个0_十个0_企业内部编号_GUID.xml
+            ////ZYDFL_S_系统名称_十个0_十个0_企业内部编号_GUID.xml old
+
+            //作业单 ZYDFL_S_FL_申报单位十位编码_十个0_企业内部编号_GUID.xml new
+
             string guid = Guid.NewGuid().ToString();
-            string Label = "ZYDFL_S_FL_0000000000_0000000000_" + dt.Rows[0]["ORDERCODE"] + "_" + guid + ".xml";
+            string Label = "ZYDFL_S_FL_" + dt.Rows[0]["APPCOMPANY"] + "_0000000000_" + dt.Rows[0]["ORDERCODE"] + "_" + guid + ".xml";
 
             using (FileStream fstream = new FileStream(path, FileMode.Open))
             {
                 msg.BodyStream = fstream;
                 msg.Label = Label;
                 mq.Send(msg, MessageQueueTransactionType.Single);
+                sql = "update LIST_WUMAO set STATUS='1' where ordercode='" + ORDERCODE + "'";
+                DBMgr.ExecuteNonQuery(sql);
             }
-
-
-            //TCP:221.224.206.245\Private$\DataCenter_SZ
-
-            //System.Messaging.MessageQueueTransaction mqt = new MessageQueueTransaction();
-            //MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.206.245\\Private$\\DataCenter_SZ");
-            //System.Messaging.Message msg = new System.Messaging.Message();
-            //msg.Formatter = new System.Messaging.XmlMessageFormatter(new Type[] { typeof(XmlDocument) });
-            //msg.Label = Label;
-            //msg.Body = xmlDoc;
-            //mqt.Begin();
-            //mq.Send(msg, mqt);
-            //mq.Close();
-            //mqt.Commit();
 
             return "1";
         }
