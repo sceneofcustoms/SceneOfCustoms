@@ -965,17 +965,70 @@ namespace SceneOfCustoms.Common
             wm.NET_WT = ld[0].CHECKEDWEIGHT;
             wm.TRANSFER_NO = ld[0].TURNPRENO;
 
-            wm.GOODS_TYPE_LY = "11";//提前报关
+            //转关方式
+            //空进  海出 
+            if (BUSITYPE == "10" || BUSITYPE == "20")
+            {
+                if (ld[0].TONGGUANFSNAME == "转关")
+                {
+                    wm.GOODS_TYPE_LY = "11";//提前报关
+                }
+            }
 
-            //wm.GOODS_TYPE_LY = "22";//直转
+            if (BUSITYPE == "11")
+            {
+                if (ld[0].TONGGUANFSNAME == "转关")
+                {
+                    wm.GOODS_TYPE_LY = "22";//直转
+                }
+            }
 
-            //wm.BILL_TYPE = "1";//0空1报关单2转关单
+            if (BUSITYPE == "21")
+            {
+                if (ld[0].TONGGUANFSNAME == "转关")
+                {
+                    wm.GOODS_TYPE_LY = "12";//提前/直转
+                }
+                if (ld[0].TONGGUANFSNAME == "直通")
+                {
+                    wm.GOODS_TYPE_LY = "33";//中转
+                }
+            }
+            //转关方式end
+            wm.WRAP_TYPE_ID = Packing(ld[0].PACKKIND + ""); //包装种类
 
-            wm.WRAP_TYPE_ID = "1"; //包装种类
 
-            wm.LYTYPE_ID = "41"; //陆运ID
+
+
+
+
+
+            //陆运货物类型 陆运业务类型 陆运ID
+            if (BUSITYPE == "21")
+            {
+                // 海运进口
+                if (ld[0].TONGGUANFSNAME == "转关" || ld[0].TONGGUANFSNAME == "直通")
+                {
+                    wm.GOODS_TYPE_ID = "01";
+                    wm.LY_BIZ_TYPE_ID = "03";
+                    wm.LYTYPE_ID = "1";
+                }
+                if (ld[0].TONGGUANFSNAME == "一体化" && ld[0].PORTCODE == "太仓海关")
+                {
+                    wm.GOODS_TYPE_ID = "44";
+                    wm.LY_BIZ_TYPE_ID = "03";
+                    wm.LYTYPE_ID = "42";
+                }
+
+
+            }
+
+
+
             wm.GOODS_TYPE_ID = "45"; //货物类型
             wm.LY_BIZ_TYPE_ID = "04";//业务类型
+            wm.LYTYPE_ID = "41"; //陆运ID
+
 
             //海关编号
             sql = "select DECLARATIONCODE　from LIST_DECLARATION where  ORDERCODE='" + ld[0].ORDERCODE + "' and isdel !='1'";
@@ -993,6 +1046,36 @@ namespace SceneOfCustoms.Common
             res = EditWumao(wm);
             return res;
         }
+
+
+        public static string Packing(string WOODPACKINGID)
+        {
+
+            string ID = "";
+
+            if (WOODPACKINGID == "木箱")
+            {
+                ID = "1";
+            }
+            if (WOODPACKINGID == "纸箱")
+            {
+                ID = "2";
+            }
+            else if (WOODPACKINGID == "托盘")
+            {
+                ID = "5";
+            }
+            else
+            {
+                ID = "7";
+            }
+
+
+            return ID;
+        }
+
+
+
         public static int EditWumao(Wumao wm)
         {
             string sql = "select id from LIST_WUMAO where ORDERCODE='" + wm.ORDERCODE + "'";
@@ -1359,13 +1442,11 @@ namespace SceneOfCustoms.Common
                 }
                 else
                 {
-                    if (o.TONGGUANFSNAME != "转关" && o.TONGGUANFSNAME != "一体化")
+                    if (o.TONGGUANFSNAME != "转关" && o.TONGGUANFSNAME != "一体化" && o.TONGGUANFSNAME != "直转")
                     {
-
+                        MsgobjList.Add(set_MObj("E", "通关方式不可匹配" + o.FOONO));
                     }
-
                 }
-
             }
 
 
