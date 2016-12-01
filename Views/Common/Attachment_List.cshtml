@@ -28,7 +28,7 @@
                     if (rowData.ORDERCODE != "" && rowData.ORDERCODE != null) {
                         ORDERCODE = rowData.ORDERCODE;
                     }
-                    window.open("http://" + host + "/Common/Attachment_Edit?FWONO=" + FWONO + "&FOONO=" + FWONO + "&ORDERCODE=" + ORDERCODE);
+                    window.open("http://" + host + "/Common/Attachment_Edit?FWONO=" + FWONO + "&FOONO=" + FWONO + "&ORDERCODE=" + ORDERCODE+"&ID="+rowData.ID);
                 }
             }
         });

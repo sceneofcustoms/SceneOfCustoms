@@ -230,17 +230,18 @@ namespace SceneOfCustoms.Controllers
             string FWONO = Request["FWONO"];
             string FOONO = Request["FOONO"];
             string ORDERCODE = Request["ORDERCODE"];
-            if (!string.IsNullOrEmpty(FOONO) && !string.IsNullOrEmpty(FWONO) || !string.IsNullOrEmpty(ORDERCODE))
-            {
-                ViewData["is_passed"] = "1";
-                ViewData["FWONO"] = FWONO;
-                ViewData["FOONO"] = FOONO;
-                ViewData["ORDERCODE"] = ORDERCODE;
-            }
-            else
-            {
-                ViewData["is_passed"] = "0";
-            }
+            //if (!string.IsNullOrEmpty(FOONO) && !string.IsNullOrEmpty(FWONO) || !string.IsNullOrEmpty(ORDERCODE))
+            //{
+            ViewData["is_passed"] = "1";
+            ViewData["FWONO"] = FWONO;
+            ViewData["FOONO"] = FOONO;
+            ViewData["ORDERCODE"] = ORDERCODE;
+            ViewData["ID"] = Request["ID"];
+            //}
+            //else
+            //{
+            //    ViewData["is_passed"] = "0";
+            //}
             return View();
         }
 
@@ -248,16 +249,12 @@ namespace SceneOfCustoms.Controllers
         {
             string FWONO = Request["FWONO"];
             string FOONO = Request["FOONO"];
+            string id = Request["id"];
             string sql = "";
             string ORDERCODE = Request["ORDERCODE"];
-            if (!string.IsNullOrEmpty(ORDERCODE))
-            {
-                sql = "select * from LIST_ATTACHMENT where ORDERCODE='" + ORDERCODE + "'";
-            }
-            else
-            {
-                sql = "select * from LIST_ATTACHMENT where fwono='" + FWONO + "' and foono ='" + FOONO + "'";
-            }
+            sql = "select * from LIST_ATTACHMENT where (ORDERCODE='" + ORDERCODE + "') or (fwono='" + FWONO + "' and foono ='" + FOONO + "') or (id='" + id + "')";
+            //sql = "select * from LIST_ATTACHMENT where fwono='" + FWONO + "' and foono ='" + FOONO + "'";
+            // }
             DataTable dt = DBMgr.GetDataTable(sql);
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
@@ -268,7 +265,7 @@ namespace SceneOfCustoms.Controllers
         //文件上传
         public ActionResult UploadFile(int? chunk, string name)
         {
-            var fileUpload = Request.Files[0]; 
+            var fileUpload = Request.Files[0];
             chunk = chunk ?? 0;
             string FWONO = Request.QueryString["FWONO"];
             string FOONO = Request.QueryString["FOONO"];
@@ -279,7 +276,7 @@ namespace SceneOfCustoms.Controllers
                 var buffer = new byte[fileUpload.InputStream.Length];
                 fileUpload.InputStream.Read(buffer, 0, buffer.Length);
                 fs.Write(buffer, 0, buffer.Length);
-                string createuserid=string.Empty;
+                string createuserid = string.Empty;
                 if (!string.IsNullOrEmpty(HttpContext.User.Identity.Name))
                 {
                     JObject json_user = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
@@ -288,7 +285,7 @@ namespace SceneOfCustoms.Controllers
                 else//如果是从本系统进入直接取登录账号,如果是外部调用直接标记SAP
                 {
                     createuserid = "62";
-                }                
+                }
                 string sql = @"insert into list_attachment(ID,FILEPATH,FILENAME,FILESIZE,FWONO,FOONO,ORDERCODE,CREATEUSERID,CREATETIME,STATUS) 
                 VALUES(LIST_ATTACHMENT_ID.Nextval,'/" + direc_upload + "/" + name + "','" + name + "'," + fileUpload.ContentLength + ",'" + FWONO + "','" + FOONO + "','" + ORDERCODE + "','" + createuserid + "',sysdate,1)";
                 DBMgr.ExecuteNonQuery(sql);
@@ -301,7 +298,21 @@ namespace SceneOfCustoms.Controllers
             return Content("chunk uploaded", "text/plain");
 
         }
-
+       [HttpPost]
+        public string update_file()
+        {
+            string id = Request["id"];
+            string ordercode = Request["ordercode"];
+            int result = 0;
+            if (!string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(ordercode))
+            {
+                string sql = "update list_attachment set ordercode='" + ordercode.Trim() + "' where id='" + id + "'";
+                result = DBMgr.ExecuteNonQuery(sql);
+                sql = "update list_order set filerelate='1' where code='" + ordercode + "'";
+                result = DBMgr.ExecuteNonQuery(sql);
+            }
+            return result > 0 ? "{success:true}" : "{success:false}";
+        }
         [HttpPost]
         //移除文件
         public string delete_file()
@@ -322,7 +333,7 @@ namespace SceneOfCustoms.Controllers
                     dt = DBMgr.GetDataTable(sql);
                     sql = "delete from list_attachment where id='" + str + "'";
                     DBMgr.ExecuteNonQuery(sql);
-                    ftp.DeleteFile(dt.Rows[0]["FILEPATH"] + ""); 
+                    ftp.DeleteFile(dt.Rows[0]["FILEPATH"] + "");
                     if (dt.Rows.Count == 1)
                     {
                         sql = "update list_order set filerelate='0' where code='" + dt.Rows[0]["ORDERCODE"] + "'";
