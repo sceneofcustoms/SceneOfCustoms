@@ -229,19 +229,12 @@ namespace SceneOfCustoms.Controllers
         {
             string FWONO = Request["FWONO"];
             string FOONO = Request["FOONO"];
-            string ORDERCODE = Request["ORDERCODE"];
-            //if (!string.IsNullOrEmpty(FOONO) && !string.IsNullOrEmpty(FWONO) || !string.IsNullOrEmpty(ORDERCODE))
-            //{
+            string ORDERCODE = Request["ORDERCODE"]; 
             ViewData["is_passed"] = "1";
             ViewData["FWONO"] = FWONO;
             ViewData["FOONO"] = FOONO;
             ViewData["ORDERCODE"] = ORDERCODE;
-            ViewData["ID"] = Request["ID"];
-            //}
-            //else
-            //{
-            //    ViewData["is_passed"] = "0";
-            //}
+            ViewData["ID"] = Request["ID"]; 
             return View();
         }
 
@@ -253,8 +246,6 @@ namespace SceneOfCustoms.Controllers
             string sql = "";
             string ORDERCODE = Request["ORDERCODE"];
             sql = "select * from LIST_ATTACHMENT where (ORDERCODE='" + ORDERCODE + "') or (fwono='" + FWONO + "' and foono ='" + FOONO + "') or (id='" + id + "')";
-            //sql = "select * from LIST_ATTACHMENT where fwono='" + FWONO + "' and foono ='" + FOONO + "'";
-            // }
             DataTable dt = DBMgr.GetDataTable(sql);
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
@@ -298,7 +289,7 @@ namespace SceneOfCustoms.Controllers
             return Content("chunk uploaded", "text/plain");
 
         }
-       [HttpPost]
+        [HttpPost]
         public string update_file()
         {
             string id = Request["id"];
@@ -309,7 +300,7 @@ namespace SceneOfCustoms.Controllers
                 string sql = "update list_attachment set ordercode='" + ordercode.Trim() + "' where id='" + id + "'";
                 result = DBMgr.ExecuteNonQuery(sql);
                 sql = "update list_order set filerelate='1' where code='" + ordercode + "'";
-                result = DBMgr.ExecuteNonQuery(sql);
+                DBMgr.ExecuteNonQuery(sql);
             }
             return result > 0 ? "{success:true}" : "{success:false}";
         }
