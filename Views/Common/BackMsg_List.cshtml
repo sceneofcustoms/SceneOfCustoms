@@ -8,7 +8,7 @@
     // 查询条件  --类型
     var businessin_type = [
         { code: 'declare', name: '报关' },
-        { code: 'inpection', name: '报检' }
+        { code: 'inspection', name: '报检' }
     ];
     $(function () {
         $('#searchform #search_code').combobox({
@@ -27,7 +27,7 @@
             case "declare":
                 return "报关";
                 break;
-            case "inpection":
+            case "inspection":
                 return "报检";
                 break;
         }

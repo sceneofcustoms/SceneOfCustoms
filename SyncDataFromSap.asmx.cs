@@ -143,7 +143,7 @@ namespace SceneOfCustoms
                         if (Order_Res == 1)
                         {
                             MSList.Add(IFS.set_MObj("S", "保存成功"));
-                            //IFS.SendWuMao(ld[0].ORDERCODE + "", Nowtime);
+                            IFS.SendWuMao(ld[0].ORDERCODE + "", Nowtime);
                         }
                         else
                         {

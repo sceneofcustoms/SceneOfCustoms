@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ENTRY_RESULT xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <EportNo>AE161103273</EportNo>
+  <TransitEportNo />
+  <ENTRYNO>123456712345671234</ENTRYNO>
+  <NoticeDate>20161129T173515</NoticeDate>
+  <Channel>007</Channel>
+  <Note />
+  <EportLocationCode />
+  <CorporationName>123</CorporationName>
+  <EntrydeclarantNo />
+  <CorporationCustomsCode>456</CorporationCustomsCode>
+  <CYNo />
+  <WarehouseNo />
+  <ImportExportDate />
+  <Packages>
+  </Packages>
+  <BillOfLadingNo>
+  </BillOfLadingNo>
+  <MeansOfTransportMode>
+  </MeansOfTransportMode>
+  <MeansOfTransportId />
+  <NetWeight>
+  </NetWeight>
+  <GrossWeight>
+  </GrossWeight>
+  <DeclareDate />
+  <ResultInformation>申报成功</ResultInformation>
+</ENTRY_RESULT>

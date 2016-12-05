@@ -1,0 +1,141 @@
+﻿<script type="text/javascript">
+    //1 查询条件 --日期
+    var search_condition_date = [
+        { code: 'CREATETIME', name: '下游返回日期', selected: true },
+        { code: 'SENDTIME', name: '下游修改日期' }
+    ];
+    //2 查询条件  --单据号
+    var search_code = [
+        { code: 'CODE', name: '业务单号', selected: true },
+        { code: 'DECLARATIONCODE', name: '报关单号' },
+        { code: 'ONLYCODE', name: '唯一号' },
+        { code: 'FWONO', name: 'FWO订单号' },
+        { code: 'FOONO', name: '报关FOO' },
+        { code: 'FOONOBJ', name: '报检FOO' }
+    ];
+
+    var SEARCH_XCBUSINAME = [
+        { code: '空进', name: '空进' },
+        { code: '空出', name: '空出' },
+        { code: '海进', name: '海进' },
+        { code: '海出', name: '海出' },
+        { code: '陆进', name: '陆进' },
+        { code: '陆出', name: '陆出' },
+        { code: '特殊监管', name: '特殊监管' },
+        { code: '叠加保税', name: '叠加保税' },
+        { code: '国内', name: '国内' }
+    ];
+
+    //搜索列表
+    function DeclarationSearch_form() {
+        var o = {};
+        var str = $('#searchform').serializeArray();        //form表单信息序列化
+        $.each(str, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });                                     //form表单信息转换为json格式
+        var info = JSON.stringify(o);           //json格式转换为字符串传值
+        $('#DeclarationDatagrid').datagrid({
+            queryParams: { data: info },
+        });
+    }
+    $(function () {
+        $('#DeclarationDatagrid').datagrid({
+            url: '/Order/LoadDeclarationList',
+            rownumbers: true,
+            dataType: 'json',
+            method: 'get',
+            toolbar: '#tb',
+            pageSize: 20,
+            pageList: [20, 40, 60, 80, 100, 300],
+            pagination: true
+        });
+        $('#searchform #search_condition_date').combobox({
+            data: search_condition_date,
+            valueField: 'code',
+            textField: 'name'
+        });
+
+        $('#searchform #search_code').combobox({
+            data: search_code,
+            valueField: 'code',
+            textField: 'name'
+        });
+
+
+        $('#searchform #XCBUSINAME').combobox({
+            data: SEARCH_XCBUSINAME,
+            valueField: 'code',
+            textField: 'name'
+        });
+
+    })
+</script>
+<div class="ibox-content">
+    <div class="table-responsive">
+        <table id="DeclarationDatagrid" class="easyui-datagrid" title="报关单列表" style="height:auto;min-height:500px;max-height:800px"
+               data-options="queryParams:{}">
+            <thead>
+                <tr>
+                    <th data-options="field: 'ID',width:80,checkbox:true"></th>
+                    <th data-options="field:'ONLYCODE',width:130">唯一号</th>
+                    <th data-options="field:'CODE',width:100">业务单号</th>
+                    <th data-options="field:'XCBUSINAME',width:100">业务类型</th>
+                    <th data-options="field:'DECLARATIONCODE',width:150">报关单号</th>
+                    <th data-options="field:'CREATETIME',width:130,sortable:true,">下游返回日期</th>
+                    <th data-options="field:'UPDATETIME',width:130,sortable:true,">下游修改日期</th>
+                    <th data-options="field:'FWONO',width:160">FWO号</th>
+                    <th data-options="field:'FOONO',width:180">报关FOO</th>
+                    <th data-options="field:'FOONOBJ',width:180">报检FOO</th>
+                </tr>
+            </thead>
+        </table>
+        <div id="tb">
+            <div class="tb_search">
+                <form id="searchform" method="post">
+                    <table>
+                        <tr>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_code" panelheight="auto" name="ordercode"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value placeholderclass" type="text" name="ordercode_value" placeholder="单据号" />
+                            </td>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>业务类型</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value" editable="false" id="XCBUSINAME" panelheight="auto" name="XCBUSINAME"></select>
+                            </td>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="search_condition_date" panelheight="auto" name="orderdate"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value placeholderclass" editable="false" name="startdate" placeholder="开始时间">
+                            </td>
+                            <td>
+                                <input class="easyui-datebox value placeholderclass" editable="false" name="stopdate" placeholder="结束时间">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="tb_but">
+                <div class="but_left">
+                </div>
+                <div class="but_right">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="DeclarationSearch_form()"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="fa fa-retweet" aria-hidden="true"></i> 重置</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

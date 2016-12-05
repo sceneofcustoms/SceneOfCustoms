@@ -31,6 +31,15 @@
         { code: '国内', name: '国内' }
     ];
 
+
+    function formatISPRINT(value) {
+        if (value == 0) {
+            return "否";
+        } else {
+            return "是";
+        }
+    }
+
     $(function () {
         debugger;
         loadListGrid('');
@@ -80,12 +89,14 @@
                     <th data-options="field:'CREATETIME',width:130,sortable:true,">上游下发日期</th>
                     <th data-options="field:'UPDATETIME',width:130,sortable:true,">上游修改数据日期</th>
                     <th data-options="field:'SUBMITUSERNAME',width:80">下发人</th>
-                    <th data-options="field:'IFSEND',width:100">是否发送到下游</th>
+                    <th data-options="field:'IFSEND',width:100,formatter:formatISPRINT">是否发送到下游</th>
                     <th data-options="field:'SENDTIME',width:130,sortable:true,">发送下游日期</th>
-                    <th data-options="field:'FILERELATE',width:100">是否关联文件</th>
+                    <th data-options="field:'FILERELATE',width:100,formatter:formatISPRINT">是否关联文件</th>
                     <th data-options="field:'FWONO',width:160">FWO号</th>
                     <th data-options="field:'FOONO',width:180">报关FOO</th>
                     <th data-options="field:'FOONOBJ',width:180">报检FOO</th>
+
+
                 </tr>
             </thead>
         </table>

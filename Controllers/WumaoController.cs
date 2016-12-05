@@ -322,11 +322,7 @@ namespace SceneOfCustoms.Controllers
             //Message msg = new Message();
             //msg.Body = xmlDoc.ToString();
             //msg.Formatter = new System.Messaging.XmlMessageFormatter(new Type[] { typeof(string) });
-
-            //MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.206.245\\Private$\\DataCenter_SZ");
-
             MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:58.210.121.35\\Private$\\DataCenter_KS");
-
             Message msg = new Message();
             ////ZYDFL_S_系统名称_十个0_十个0_企业内部编号_GUID.xml old
 
@@ -339,6 +335,7 @@ namespace SceneOfCustoms.Controllers
             {
                 msg.BodyStream = fstream;
                 msg.Label = Label;
+
                 mq.Send(msg, MessageQueueTransactionType.Single);
                 sql = "update LIST_WUMAO set STATUS='1' where ordercode='" + ORDERCODE + "'";
                 DBMgr.ExecuteNonQuery(sql);

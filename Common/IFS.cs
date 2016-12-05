@@ -195,21 +195,10 @@ namespace SceneOfCustoms.Common
             }
 
             xmlDoc.Save(path);
-
-            //MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.206.253\\Private$\\etf");
-            //Message msg = new Message();
-            //msg.Body = xmlDoc.ToString();
-            //msg.Formatter = new System.Messaging.XmlMessageFormatter(new Type[] { typeof(string) });
-
-            //MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.206.245\\Private$\\DataCenter_SZ");
-
             MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:58.210.121.35\\Private$\\DataCenter_KS");
-
             Message msg = new Message();
             ////ZYDFL_S_系统名称_十个0_十个0_企业内部编号_GUID.xml old
-
             //作业单 ZYDFL_S_FL_申报单位十位编码_十个0_企业内部编号_GUID.xml new
-
             string guid = Guid.NewGuid().ToString();
             string Label = "ZYDFL_S_FL_" + dt.Rows[0]["APPCOMPANY"] + "_0000000000_" + dt.Rows[0]["ORDERCODE"] + "_" + guid + ".xml";
 
@@ -223,8 +212,6 @@ namespace SceneOfCustoms.Common
             }
 
         }
-
-
 
         //推送到单证的数据
         public static void SaveDZOrder(string FWO, string ONLYCODE)
@@ -450,12 +437,6 @@ namespace SceneOfCustoms.Common
                         ASS1 = "GL" + ListOrder[0].ORDERCODE;//2单关联号
                     }
                 }
-
-
-
-
-
-
             }
 
             DataTable dt;
@@ -828,7 +809,7 @@ namespace SceneOfCustoms.Common
             if (IFS.IFINSERT == "1")
             {
                 IDatabase db = SeRedis.redis.GetDatabase();
-                string json = "{\"ONLYCODE\":" + GroupOrder[0][0].ONLYCODE + "}";
+                string json = "{\"ONLYCODE\":'" + GroupOrder[0][0].ONLYCODE + "'}";
                 db.ListRightPush("XGW_CheckFile", json);
             }
             //保存到单证
@@ -933,6 +914,9 @@ namespace SceneOfCustoms.Common
             //作业单类型名称
             //进出口标志代码
 
+
+
+
             if (BUSITYPE == "11" || BUSITYPE == "21")
             {
                 wm.TRADE_CODE = SGOODSUNITCODE;
@@ -962,7 +946,7 @@ namespace SceneOfCustoms.Common
             }
             wm.PACK_NO = ld[0].GOODSNUM;
             wm.GROSS_WT = ld[0].GOODSWEIGHT;
-            wm.NET_WT = ld[0].CHECKEDWEIGHT;
+            wm.NET_WT = ld[0].GOODSWEIGHT;
             wm.TRANSFER_NO = ld[0].TURNPRENO;
 
             //转关方式
@@ -998,8 +982,30 @@ namespace SceneOfCustoms.Common
             wm.WRAP_TYPE_ID = Packing(ld[0].PACKKIND + ""); //包装种类
 
 
+            //陆运货物类型 陆运业务类型 陆运ID
+            if (BUSITYPE == "21")
+            {
+                // 海运进口
+                if (ld[0].TONGGUANFSNAME == "转关" || ld[0].TONGGUANFSNAME == "直通")
+                {
+                    wm.GOODS_TYPE_ID = "01";
+                    wm.LY_BIZ_TYPE_ID = "03";
+                    wm.LYTYPE_ID = "1";
+                }
+                if (ld[0].TONGGUANFSNAME == "一体化" && ld[0].PORTCODE == "太仓海关")
+                {
+                    wm.GOODS_TYPE_ID = "44";
+                    wm.LY_BIZ_TYPE_ID = "03";
+                    wm.LYTYPE_ID = "42";
+                }
 
-
+                if (ld[0].TONGGUANFSNAME == "一体化" && ld[0].PORTCODE != "太仓海关")
+                {
+                    wm.GOODS_TYPE_ID = "37";
+                    wm.LY_BIZ_TYPE_ID = "03";
+                    wm.LYTYPE_ID = "25";
+                }
+            }
 
 
 
@@ -1020,14 +1026,82 @@ namespace SceneOfCustoms.Common
                     wm.LYTYPE_ID = "42";
                 }
 
+                if (ld[0].TONGGUANFSNAME == "一体化" && ld[0].PORTCODE != "太仓海关")
+                {
+                    wm.GOODS_TYPE_ID = "37";
+                    wm.LY_BIZ_TYPE_ID = "03";
+                    wm.LYTYPE_ID = "25";
+                }
+            }
+
+            if (BUSITYPE == "20")
+            {
+                //海运出口
+
+                if (ld[0].TONGGUANFSNAME == "转关")
+                {
+                    wm.GOODS_TYPE_ID = "02";
+                    wm.LY_BIZ_TYPE_ID = "04";
+                    wm.LYTYPE_ID = "5";
+                }
+                if (ld[0].TONGGUANFSNAME == "一体化" && ld[0].PORTCODE == "太仓海关")
+                {
+                    wm.GOODS_TYPE_ID = "45";
+                    wm.LY_BIZ_TYPE_ID = "04";
+                    wm.LYTYPE_ID = "41";
+                }
+
+                if (ld[0].TONGGUANFSNAME == "一体化" && ld[0].PORTCODE != "太仓海关")
+                {
+                    wm.GOODS_TYPE_ID = "38";
+                    wm.LY_BIZ_TYPE_ID = "04";
+                    wm.LYTYPE_ID = "26";
+                }
 
             }
 
 
+            if (BUSITYPE == "10")
+            {
+                //空出
+                if (ld[0].TONGGUANFSNAME == "一体化")
+                {
+                    wm.GOODS_TYPE_ID = "38";
+                    wm.LY_BIZ_TYPE_ID = "04";
+                    wm.LYTYPE_ID = "26";
+                }
 
-            wm.GOODS_TYPE_ID = "45"; //货物类型
-            wm.LY_BIZ_TYPE_ID = "04";//业务类型
-            wm.LYTYPE_ID = "41"; //陆运ID
+                if (ld[0].TONGGUANFSNAME == "转关")
+                {
+                    wm.GOODS_TYPE_ID = "02";
+                    wm.LY_BIZ_TYPE_ID = "04";
+                    wm.LYTYPE_ID = "5";
+                }
+            }
+
+
+            if (BUSITYPE == "11")
+            {
+                //空出
+                if (ld[0].TONGGUANFSNAME == "一体化")
+                {
+                    wm.GOODS_TYPE_ID = "37";
+                    wm.LY_BIZ_TYPE_ID = "03";
+                    wm.LYTYPE_ID = "25";
+                }
+
+                if (ld[0].TONGGUANFSNAME == "转关")
+                {
+                    wm.GOODS_TYPE_ID = "01";
+                    wm.LY_BIZ_TYPE_ID = "03";
+                    wm.LYTYPE_ID = "1";
+                }
+            }
+
+
+            //wm.GOODS_TYPE_ID = "45"; //货物类型
+            //wm.LY_BIZ_TYPE_ID = "04";//业务类型
+            //wm.LYTYPE_ID = "41"; //陆运ID
 
 
             //海关编号
@@ -1046,7 +1120,6 @@ namespace SceneOfCustoms.Common
             res = EditWumao(wm);
             return res;
         }
-
 
         public static string Packing(string WOODPACKINGID)
         {
@@ -1074,6 +1147,104 @@ namespace SceneOfCustoms.Common
             return ID;
         }
 
+
+        public static bool Check_WuMaoType(string BUSITYPE, string TONGGUANFSNAME, string PORTCODE)
+        {
+            bool res = false;
+
+
+            //陆运货物类型 陆运业务类型 陆运ID
+            if (BUSITYPE == "21")
+            {
+                // 海运进口
+                if (TONGGUANFSNAME == "转关" || TONGGUANFSNAME == "直通")
+                {
+                    res = true;
+                }
+                if (TONGGUANFSNAME == "一体化" && PORTCODE == "太仓海关")
+                {
+                    res = true;
+                }
+
+                if (TONGGUANFSNAME == "一体化" && PORTCODE != "太仓海关")
+                {
+                    res = true;
+                }
+            }
+
+
+
+            //陆运货物类型 陆运业务类型 陆运ID
+            if (BUSITYPE == "21")
+            {
+                // 海运进口
+                if (TONGGUANFSNAME == "转关" || TONGGUANFSNAME == "直通")
+                {
+                    res = true;
+                }
+                if (TONGGUANFSNAME == "一体化" && PORTCODE == "太仓海关")
+                {
+                    res = true;
+                }
+
+                if (TONGGUANFSNAME == "一体化" && PORTCODE != "太仓海关")
+                {
+                    res = true;
+                }
+            }
+
+            if (BUSITYPE == "20")
+            {
+                //海运出口
+
+                if (TONGGUANFSNAME == "转关")
+                {
+                    res = true;
+                }
+                if (TONGGUANFSNAME == "一体化" && PORTCODE == "太仓海关")
+                {
+                    res = true;
+                }
+
+                if (TONGGUANFSNAME == "一体化" && PORTCODE != "太仓海关")
+                {
+                    res = true;
+                }
+
+            }
+
+
+            if (BUSITYPE == "10")
+            {
+                //空出
+                if (TONGGUANFSNAME == "一体化")
+                {
+                    res = true;
+                }
+
+                if (TONGGUANFSNAME == "转关")
+                {
+                    res = true;
+                }
+            }
+
+
+            if (BUSITYPE == "11")
+            {
+                //空出
+                if (TONGGUANFSNAME == "一体化")
+                {
+                    res = true;
+                }
+
+                if (TONGGUANFSNAME == "转关")
+                {
+                    res = true;
+                }
+            }
+
+            return res;
+        }
 
 
         public static int EditWumao(Wumao wm)
@@ -1165,7 +1336,8 @@ namespace SceneOfCustoms.Common
                                   FILGHTNO='{40}',TURNPRENO='{41}',INVOICENO='{42}',ALLOWDECLARE='{43}', 
                                   SENDNUMBER='{44}',XCBUSINAME='{45}',UPDATETIME=to_date('{46}','yyyy-mm-dd hh24:mi:ss'),
                                   IFSEND='{47}',SENDURL='{48}',TONGGUANFSNAME='{49}',TONGGUANFSCODE='{50}',
-                                  CGGROUPCODE='{51}',CGGROUPNAME='{52}'
+                                  CGGROUPCODE='{51}',CGGROUPNAME='{52}',FWONO='{53}',FOONO='{54}',
+                                  FOONOBJ='{55}',ENTRUSTTYPEID='{56}'
                                   where code='" + o.ORDERCODE + "'";
                 sql = string.Format(sql,
     o.TOTALNO, o.DIVIDENO, o.GOODSNUM, o.GOODSWEIGHT,
@@ -1181,7 +1353,8 @@ namespace SceneOfCustoms.Common
     o.FILGHTNO, o.TURNPRENO, o.INVOICENO, o.ALLOWDECLARE,
     o.SENDNUMBER, o.XCBUSINAME, o.UPDATETIME, o.IFSEND,
     o.SENDURL, o.TONGGUANFSNAME, o.TONGGUANFSCODE, o.CGGROUPCODE,
-    o.CGGROUPNAME
+    o.CGGROUPNAME, o.CODE, o.FOONO, o.FOONOBJ,
+    o.ENTRUSTTYPEID
     );
             }
             else
@@ -1310,6 +1483,12 @@ namespace SceneOfCustoms.Common
                         MsgobjList.Add(set_MObj("E", "陆运需求未定，不可发物贸通！"));
                         return MsgobjList;
                     }
+
+                    if (BUSITYPE == "21" || BUSITYPE == "20")
+                    {
+                        MsgobjList.Add(set_MObj("E", "海运要自己去物贸通上维护数据！"));
+                        return MsgobjList;
+                    }
                 }
 
                 if (ListOrder.Count > 1)
@@ -1357,6 +1536,13 @@ namespace SceneOfCustoms.Common
                     MsgobjList.Add(set_MObj("E", "凭证类型无法匹配" + o.FOONO));
                 }
 
+
+                bool Res = Check_WuMaoType(BUSITYPE, o.TONGGUANFSNAME, o.PORTCODE);
+
+                if (!Res)
+                {
+                    MsgobjList.Add(set_MObj("E", "货运类型无法匹配" + o.FOONO));
+                }
 
 
                 if (string.IsNullOrEmpty(o.BUSIUNITNAME) || o.BUSIUNITNAME.Length < 11)
@@ -1419,16 +1605,16 @@ namespace SceneOfCustoms.Common
                 }
 
 
-                if (string.IsNullOrEmpty(o.CHECKEDGOODSNUM))
+                if (string.IsNullOrEmpty(o.GOODSNUM))
                 {
-                    MsgobjList.Add(set_MObj("E", "实际件数不可为空" + o.FOONO));
+                    MsgobjList.Add(set_MObj("E", "件数不可为空" + o.FOONO));
                 }
 
-
-                if (string.IsNullOrEmpty(o.CHECKEDWEIGHT))
-                {
-                    MsgobjList.Add(set_MObj("E", "实际毛重不可为空" + o.FOONO));
-                }
+                //读取一个重量 2016-12-3 早上 
+                //if (string.IsNullOrEmpty(o.CHECKEDWEIGHT))
+                //{
+                //    MsgobjList.Add(set_MObj("E", "实际毛重不可为空" + o.FOONO));
+                //}
 
 
                 if (string.IsNullOrEmpty(o.GOODSWEIGHT))
@@ -1604,8 +1790,6 @@ namespace SceneOfCustoms.Common
                 //        }
                 //    }
                 //}
-
-
 
                 if (!string.IsNullOrEmpty(BUSITYPE) && BUSITYPE != "0")
                 {

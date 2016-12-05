@@ -17,10 +17,10 @@
     //2 查询条件  --单据号
     var search_code = [
         { code: 'CODE', name: '业务编号', selected: true },
-        { code: 'CONTRACTNO', name: '发票合同号' },
-        { code: 'DECLARATIONCODE', name: '报关单号' },
         { code: 'FWONO', name: 'FWO订单号' },
-        { code: 'FOONO', name: 'FO号' }
+        { code: 'FOONO', name: 'FO号' },
+        { code: 'DECLARATIONCODE', name: '报关单号' },
+        { code: 'CONTRACTNO', name: '发票合同号' }
     ];
     $(function () {
         loadListGrid('Declare/DomesticBlc_Edit');
@@ -75,7 +75,6 @@
                     <th data-options="field: 'ASSOCIATENO',width:200">两单关联号</th>
                     <th data-options="field: 'CORRESPONDNO',width:200">四单关联号</th>
                     <th data-options="field: 'BUSINAME',width:200">业务类型</th>
-                    
                 </tr>
             </thead>
         </table>

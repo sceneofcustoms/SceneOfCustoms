@@ -641,10 +641,6 @@ namespace SceneOfCustoms.Controllers
         }
         //申报关区 进口口岸 
 
-
-
-
-
         public ActionResult OrderList()
         {
             ViewData["crumb"] = "订单管理-->订单列表";
@@ -652,6 +648,64 @@ namespace SceneOfCustoms.Controllers
         }
 
 
+        public ActionResult DeclarationList()
+        {
+            ViewData["crumb"] = "订单管理-->报关单列表";
+            return View();
+        }
+
+        public string LoadDeclarationList()
+        {
+            int PageSize = Convert.ToInt32(Request.Params["rows"]);
+            int Page = Convert.ToInt32(Request.Params["page"]);
+            int total = 0;
+            string sql = "select o.fwono,o.foono,o.foonobj,o.code,o.XCBUSINAME,o.ONLYCODE,d.DECLARATIONCODE,d.CREATETIME,d.UPDATETIME from LIST_DECLARATION d left join list_order o on o.code=d.ordercode where 1=1 ";
+            string data = Request["data"];
+            if (data != null)
+            {
+                JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
+                if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
+                {
+                    string ordercode_value = jo.Value<string>("ordercode_value").Trim();
+                    string name = "";
+                    if (jo.Value<string>("ordercode") == "CODE" || jo.Value<string>("ordercode") == "DECLARATIONCODE")
+                    {
+                        name = "d." + name;
+                    }
+                    else
+                    {
+                        name = "o." + name;
+                    }
+
+                    sql += " AND " + jo.Value<string>("ordercode") + " like '%" + ordercode_value + "%'";
+                }
+                if (jo.Value<string>("XCBUSINAME") != null && jo.Value<string>("XCBUSINAME") != "")
+                {
+                    sql += " AND o.XCBUSINAME = '" + jo.Value<string>("XCBUSINAME") + "' ";
+                }
+
+                if (jo.Value<string>("startdate") != "")
+                {
+                    string startdate = jo.Value<string>("startdate") + " 00:00:00";
+                    sql += " AND d." + jo.Value<string>("orderdate") + " >= to_date('" + startdate + "','yyyy-mm-dd hh24:mi:ss')";
+                }
+                if (jo.Value<string>("stopdate") != "")
+                {
+                    string stopdate = jo.Value<string>("stopdate") + " 23:59:59";
+                    sql += " AND d." + jo.Value<string>("orderdate") + " <= to_date('" + stopdate + "','yyyy-mm-dd hh24:mi:ss')";
+                }
+            }
+            string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
+            sort = "d." + sort;
+            string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
+            sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
+            DataTable dt = DBMgr.GetDataTable(sql);
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string result = JsonConvert.SerializeObject(dt, iso);
+            result = "{\"total\":" + total + ",\"rows\":" + result + "}";
+            return result;
+        }
 
 
         public string Get_SBGQ()
@@ -976,7 +1030,6 @@ namespace SceneOfCustoms.Controllers
                     sql += " AND FILERELATE = '" + jo.Value<string>("FILERELATE") + "' ";
                 }
 
-
                 if (jo.Value<string>("XCBUSINAME") != null && jo.Value<string>("XCBUSINAME") != "")
                 {
                     sql += " AND XCBUSINAME = '" + jo.Value<string>("XCBUSINAME") + "' ";
@@ -992,15 +1045,8 @@ namespace SceneOfCustoms.Controllers
                 }
                 if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
                 {
-                    string ordercode_value = jo.Value<string>("ordercode_value").Replace(" ", "");
-                    if (jo.Value<string>("ordercode") != "FWONO" && jo.Value<string>("ordercode") != "FOONO" && jo.Value<string>("ordercode") != "FOONOBJ")
-                    {
-                        sql += " AND " + jo.Value<string>("ordercode") + " ='" + ordercode_value + "'";
-                    }
-                    else
-                    {
-                        sql += " AND " + jo.Value<string>("ordercode") + " like '%" + ordercode_value + "%'";
-                    }
+                    string ordercode_value = jo.Value<string>("ordercode_value").Trim();
+                    sql += " AND " + jo.Value<string>("ordercode") + " like '%" + ordercode_value + "%'";
                 }
                 if (jo.Value<string>("oprname_value") != null && jo.Value<string>("oprname_value") != "")
                 {
@@ -1131,37 +1177,6 @@ namespace SceneOfCustoms.Controllers
 
             sql += "  PASSMODE =  '" + Request.Form["PASSMODE"] + "',";
 
-            //sql += "  IFCHAYAN =  '" + Request.Form["IFCHAYAN"] + "',";
-
-            //sql += "  KOUHUOSIGN =  '" + Request.Form["KOUHUOSIGN"] + "',";
-
-            //sql += "  IFTIAODANG =  '" + Request.Form["IFTIAODANG"] + "',";
-
-            //sql += "  LIHUOSIGN =  '" + Request.Form["LIHUOSIGN"] + "',";
-
-
-            //if (Request.Params.AllKeys.Contains("CHAYANTIMES"))
-            //{
-            //    sql += "  CHAYANTIMES =  '" + Request.Form["CHAYANTIMES"] + "',";
-            //}
-
-            //if (Request.Params.AllKeys.Contains("CHAYANREMARK"))
-            //{
-            //    sql += "  CHAYANREMARK =  '" + Request.Form["CHAYANREMARK"] + "',";
-            //}
-
-
-            //if (Request.Params.AllKeys.Contains("LIHUOTIMES"))
-            //{
-            //    sql += "  LIHUOTIMES =  '" + Request.Form["LIHUOTIMES"] + "',";
-            //}
-
-
-            //if (Request.Params.AllKeys.Contains("TIAODANGTIMES"))
-            //{
-            //    sql += "  TIAODANGTIMES =  '" + Request.Form["TIAODANGTIMES"] + "',";
-            //}
-
             if (Request.Params.AllKeys.Contains("DECLCARNO"))
             {
                 sql += "  DECLCARNO =  '" + Request.Form["DECLCARNO"] + "',";
@@ -1222,44 +1237,6 @@ namespace SceneOfCustoms.Controllers
                 sql += "  SHIWUJIAFENGDESC =  '" + Request.Form["SHIWUJIAFENGDESC"] + "',";
             }
 
-
-            //if (Request.Params.AllKeys.Contains("SHANDANTOTAL"))
-            //{
-            //    sql += "  SHANDANTOTAL =  '" + Request.Form["SHANDANTOTAL"] + "',";
-            //}
-            //if (Request.Params.AllKeys.Contains("SHANDANDESC"))
-            //{
-            //    sql += "  SHANDANDESC =  '" + Request.Form["SHANDANDESC"] + "',";
-            //}
-            //if (Request.Params.AllKeys.Contains("GAIDANTOTAL"))
-            //{
-            //    sql += "  GAIDANTOTAL =  '" + Request.Form["GAIDANTOTAL"] + "',";
-            //}
-            //if (Request.Params.AllKeys.Contains("GAIDANDESC"))
-            //{
-            //    sql += "  GAIDANDESC =  '" + Request.Form["GAIDANDESC"] + "',";
-            //}
-
-            //SYY 9-27
-            //if (Request.Params.AllKeys.Contains("CHAYANZHILINGXIAFATIME"))
-            //{
-            //    sql += "  CHAYANZHILINGXIAFATIME =  to_date('" + Request.Form["CHAYANZHILINGXIAFATIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
-            //}
-            //if (Request.Params.AllKeys.Contains("KOUHUOTIME"))
-            //{
-            //    sql += "  KOUHUOTIME =  to_date('" + Request.Form["KOUHUOTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
-            //}
-
-            //lakers
-            //if (Request.Params.AllKeys.Contains("IFXUNZHENG"))
-            //{
-            //    sql += "  IFXUNZHENG =  '" + Request.Form["IFXUNZHENG"] + "',";
-            //}
-
-            //if (Request.Params.AllKeys.Contains("XUNZHENGDESC"))
-            //{
-            //    sql += "  XUNZHENGDESC =  '" + Request.Form["XUNZHENGDESC"] + "',";
-            //}
             if (Request.Params.AllKeys.Contains("CHAYANTYPE"))
             {
                 sql += "  CHAYANTYPE =  '" + Request.Form["CHAYANTYPE"] + "',";
@@ -1315,8 +1292,6 @@ namespace SceneOfCustoms.Controllers
 
         }
 
-
-
         public static void UpdateXcInspection(string INSPECTIONCODE, string FORMINFO)
         {
             System.Collections.Specialized.NameValueCollection Request = System.Web.HttpUtility.ParseQueryString(FORMINFO);
@@ -1367,7 +1342,6 @@ namespace SceneOfCustoms.Controllers
             sql += " where INSPECTIONCODE =" + INSPECTIONCODE;
             DBMgr.ExecuteNonQuery(sql);
         }
-
 
 
         //同步报关单现场表里的数据 DLC 2016-11-3
