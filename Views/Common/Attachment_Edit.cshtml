@@ -164,10 +164,10 @@
             if (recs.length < 1) {
                 Ext.MessageBox.alert("提示框", "请选择文件！");
                 return false;
-            }
+            }             
             Ext.Ajax.request({
                 url: "/Common/update_file",
-                params: { id: recs[0].get("ID"), ordercode: Ext.get('ORDERCODE').getValue() },
+                params: {ordercode: Ext.get('ORDERCODE').getValue(), glordercode: Ext.get('GLORDERCODE').getValue(), fileinfo: Ext.encode(recs[0].data) },
                 success: function (response, opts) {
                     var result = Ext.decode(response.responseText);
                     if (result.success) {
@@ -186,9 +186,7 @@
 <body>
     <div class="container" style="width:540px">
         <input type="hidden" value="@ViewData["Path"]" id="Path">
-        <input type="hidden" value="@ViewData["ID"]" id="fileid" />
-        @*@if (ViewData["is_passed"] == "1")
-            {*@
+        <input type="hidden" value="@ViewData["ID"]" id="fileid" />v
         <div class="input-group" style="width:100%;margin:10px 0px">
             <span class="input-group-addon" style="width:120px">FWO订单号</span>
             <input type="text" class="form-control" value="@ViewData["FWONO"]" id="FWONO" readonly="readonly">
@@ -201,6 +199,10 @@
             <span class="input-group-addon" style="width:120px">业务单号</span>
             <input type="text" class="form-control" value="@ViewData["ORDERCODE"]" id="ORDERCODE">
         </div>
+        <div class="input-group" style="width: 100%; margin: 10px 0px">
+            <span class="input-group-addon" style="width:120px">关联业务单号</span>
+            <input type="text" class="form-control" value="@ViewData["GLORDERCODE"]" id="GLORDERCODE">
+        </div>
         <div class="btn-group" role="group">
             <button type="button" class="btn btn-primary btn-sm" onclick="update_file()"><i class="fa fa-save"></i>&nbsp;保存</button>
             <button type="button" class="btn btn-primary btn-sm" id="pickfiles"><i class="fa fa-upload"></i>&nbsp;上传文件</button>
@@ -209,11 +211,6 @@
         </div>
         <div id="div_panel">
         </div>
-        @*}
-            else
-            {
-                <h1>参数异常</h1>
-            }*@
     </div>
 </body>
 </html>

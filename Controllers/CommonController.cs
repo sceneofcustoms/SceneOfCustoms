@@ -229,12 +229,12 @@ namespace SceneOfCustoms.Controllers
         {
             string FWONO = Request["FWONO"];
             string FOONO = Request["FOONO"];
-            string ORDERCODE = Request["ORDERCODE"]; 
+            string ORDERCODE = Request["ORDERCODE"];
             ViewData["is_passed"] = "1";
             ViewData["FWONO"] = FWONO;
             ViewData["FOONO"] = FOONO;
             ViewData["ORDERCODE"] = ORDERCODE;
-            ViewData["ID"] = Request["ID"]; 
+            ViewData["ID"] = Request["ID"];
             return View();
         }
 
@@ -292,16 +292,34 @@ namespace SceneOfCustoms.Controllers
         [HttpPost]
         public string update_file()
         {
-            string id = Request["id"];
+            //  string id = Request["id"];
+            JObject jo_file = (JObject)JsonConvert.DeserializeObject(Request["fileinfo"] + "");
             string ordercode = Request["ordercode"];
+            string glordercode = Request["glordercode"];
             int result = 0;
-            if (!string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(ordercode))
+            if (!string.IsNullOrEmpty(jo_file.Value<string>("ID")) && !string.IsNullOrEmpty(ordercode))
             {
-                string sql = "update list_attachment set ordercode='" + ordercode.Trim() + "' where id='" + id + "'";
+                string sql = "update list_attachment set ordercode='" + ordercode.Trim() + "' where id='" + jo_file.Value<string>("ID") + "'";
                 result = DBMgr.ExecuteNonQuery(sql);
                 sql = "update list_order set filerelate='1' where code='" + ordercode + "'";
                 DBMgr.ExecuteNonQuery(sql);
+                if (!string.IsNullOrEmpty(glordercode))
+                {
+
+                    string direc_upload = DateTime.Now.ToString("yyyy-MM-dd");
+                    string UserName = ConfigurationManager.AppSettings["FTPUserName"];
+                    string Password = ConfigurationManager.AppSettings["FTPPassword"];
+                    System.Uri Uri = new Uri("ftp://" + ConfigurationManager.AppSettings["FTPServer"] + ":" + ConfigurationManager.AppSettings["FTPPortNO"]);
+                    FtpHelper ftp = new FtpHelper(Uri, UserName, Password);
+                    string guid = Guid.NewGuid().ToString();//新文件名
+                    sql = @"insert into list_attachment (ID,FILEPATH,FILENAME,FILESIZE,CREATETIME,ORDERCODE) values(
+                    LIST_ATTACHMENT_ID.NEXTVAL,'{0}','{1}','{2}',sysdate,'{3}')";
+                    sql = string.Format(sql, "/" + direc_upload + "/" + guid + ".pdf", guid + ".pdf", jo_file.Value<string>("FILESIZE"), glordercode);
+                    DBMgr.ExecuteNonQuery(sql);//插入数据库
+                    ftp.DownloadFile(jo_file.Value<string>("FILEPATH"), ConfigurationManager.AppSettings["UploadLocation"] + guid + ".pdf");//下载文件到临时目录,由后台程序负责上传
+                }
             }
+
             return result > 0 ? "{success:true}" : "{success:false}";
         }
         [HttpPost]
