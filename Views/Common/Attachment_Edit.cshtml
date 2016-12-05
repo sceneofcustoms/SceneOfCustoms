@@ -28,7 +28,7 @@
         var file_store;
         Ext.onReady(function () {
             file_store = Ext.create('Ext.data.JsonStore', {
-                fields: ['ID', 'FILENAME', 'FILEPATH', 'CREATETIME', 'FILESIZE', 'CREATENAME', 'ORDERCODE'],
+                fields: ['ID', 'FILENAME', 'FILEPATH', 'CREATETIME', 'FILESIZE', 'CREATENAME', 'ORDERCODE', 'CREATEUSERID'],
                 proxy: {
                     type: 'ajax',
                     url: '/Common/load_file?FWONO=' + Ext.get('FWONO').getValue() + '&FOONO=' + Ext.get('FOONO').getValue() + '&ORDERCODE=' + Ext.get('ORDERCODE').getValue() + "&id=" + Ext.get('fileid').getValue(),
@@ -186,7 +186,7 @@
 <body>
     <div class="container" style="width:540px">
         <input type="hidden" value="@ViewData["Path"]" id="Path">
-        <input type="hidden" value="@ViewData["ID"]" id="fileid" />v
+        <input type="hidden" value="@ViewData["ID"]" id="fileid" />
         <div class="input-group" style="width:100%;margin:10px 0px">
             <span class="input-group-addon" style="width:120px">FWO订单号</span>
             <input type="text" class="form-control" value="@ViewData["FWONO"]" id="FWONO" readonly="readonly">

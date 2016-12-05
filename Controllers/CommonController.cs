@@ -312,9 +312,9 @@ namespace SceneOfCustoms.Controllers
                     System.Uri Uri = new Uri("ftp://" + ConfigurationManager.AppSettings["FTPServer"] + ":" + ConfigurationManager.AppSettings["FTPPortNO"]);
                     FtpHelper ftp = new FtpHelper(Uri, UserName, Password);
                     string guid = Guid.NewGuid().ToString();//新文件名
-                    sql = @"insert into list_attachment (ID,FILEPATH,FILENAME,FILESIZE,CREATETIME,ORDERCODE) values(
-                    LIST_ATTACHMENT_ID.NEXTVAL,'{0}','{1}','{2}',sysdate,'{3}')";
-                    sql = string.Format(sql, "/" + direc_upload + "/" + guid + ".pdf", guid + ".pdf", jo_file.Value<string>("FILESIZE"), glordercode);
+                    sql = @"insert into list_attachment (ID,FILEPATH,FILENAME,FILESIZE,CREATETIME,ORDERCODE,CREATEUSERID) values(
+                    LIST_ATTACHMENT_ID.NEXTVAL,'{0}','{1}','{2}',sysdate,'{3}','{4}')";
+                    sql = string.Format(sql, "/" + direc_upload + "/" + guid + ".pdf", guid + ".pdf", jo_file.Value<string>("FILESIZE"), glordercode, jo_file.Value<string>("CREATEUSERID"));
                     DBMgr.ExecuteNonQuery(sql);//插入数据库
                     ftp.DownloadFile(jo_file.Value<string>("FILEPATH"), ConfigurationManager.AppSettings["UploadLocation"] + guid + ".pdf");//下载文件到临时目录,由后台程序负责上传
                 }
