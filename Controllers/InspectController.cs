@@ -111,34 +111,32 @@ namespace SceneOfCustoms.Controllers
         public ActionResult DomesticKnot_Edit()
         {
             ViewData["crumb"] = "报检操作-->国内业务编辑";
-            string ID = Request["ID"];
-            string sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where id='" + ID + "'";
-            DataTable dt = DBMgr.GetDataTable(sql);
+            //string ID = Request["ID"];
+            //string sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO from list_order where id='" + ID + "'";
+            //DataTable dt = DBMgr.GetDataTable(sql);
 
-            if (!string.IsNullOrEmpty(dt.Rows[0]["ASSOCIATENO"] + ""))
-            {
-                string ASSOCIATENO = dt.Rows[0]["ASSOCIATENO"] + "";
-                string CODE = ASSOCIATENO.Replace("GL", "");
-
-
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE ='40'";
-                dt = DBMgr.GetDataTable(sql);
-                if (dt.Rows.Count > 0)
-                {
-                    ViewData["id1"] = dt.Rows[0]["ID"] + "";//1单ID
-                    ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
-                }
-
-                sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE ='41'";
-                dt = DBMgr.GetDataTable(sql);
-                if (dt.Rows.Count > 0)
-                {
-                    ViewData["id2"] = dt.Rows[0]["ID"] + "";//2单ID
-                    ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
-                }
+            //if (!string.IsNullOrEmpty(dt.Rows[0]["ASSOCIATENO"] + ""))
+            //{
+            //    string ASSOCIATENO = dt.Rows[0]["ASSOCIATENO"] + "";
+            //    string CODE = ASSOCIATENO.Replace("GL", "");
 
 
-            }
+            //    sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE ='40'";
+            //    dt = DBMgr.GetDataTable(sql);
+            //    if (dt.Rows.Count > 0)
+            //    {
+            //        ViewData["id1"] = dt.Rows[0]["ID"] + "";//1单ID
+            //        ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
+            //    }
+
+            //    sql = "select ID,CODE, ASSOCIATENO,CORRESPONDNO,BUSIUNITNAME from list_order where ASSOCIATENO='" + ASSOCIATENO + "' and BUSITYPE ='41'";
+            //    dt = DBMgr.GetDataTable(sql);
+            //    if (dt.Rows.Count > 0)
+            //    {
+            //        ViewData["id2"] = dt.Rows[0]["ID"] + "";//2单ID
+            //        ViewData["BUSIUNITNAME"] = dt.Rows[0]["BUSIUNITNAME"] + "";
+            //    }
+            //}
 
             return View();
         }
@@ -151,7 +149,7 @@ namespace SceneOfCustoms.Controllers
             return View();
         }
 
-        // -先进口编辑
+        // -线进口编辑
         public ActionResult OnelineIn_Edit()
         {
             ViewData["crumb"] = "报检操作-->一线进口编辑";

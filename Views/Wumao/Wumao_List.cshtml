@@ -1,38 +1,19 @@
 ﻿<script type="text/javascript">
     // 查询条件  --单据号
     var search_code = [
-        { code: 'CODE', name: '订单号',selected:true }
+        { code: 'ORDERCODE', name: '订单号',selected:true }
     ];
     // 查询条件  --业务类型
-    var customs_busitype = [
-        { name: '飞力达FWO-空运出口'},
-        { name: '飞力达FWO-空运出口-外包服务(备用)' },
-        { name: '飞力达FWO-空运出口-服务无运输(ZCA)' },
-        { name: '飞力达FWO-空运进口' },
-        { name: '飞力达FWO-空运进口-外包服务(备用)' },
-        { name: '飞力达FWO-空运进口-服务无运输(ZCA)' },
-        { name: '飞力达FWO-叠加保税' },
-        { name: '飞力达FWO-空运出口配套' },
-        { name: '飞力达FWO-国内结转' },
-        { name: '飞力达FWO-国内空运(备用)' },
-        { name: '飞力达FWO-陆运-服务无运输(ZCD)' },
-        { name: '飞力达FWO-陆运出口' },
-        { name: '飞力达FWO-陆运运输' },
-        { name: '飞力达FWO-陆运进口' },
-        { name: '飞力达FWO-公铁联运(集装箱)' },
-        { name: '飞力达FWO-公铁联运(零担)' },
-        { name: '飞力达FWO-海运出口-整箱' },
-        { name: '飞力达FWO-海运出口-拼箱' },
-        { name: '飞力达FWO-海运出口-外包服务(备用)' },
-        { name: '飞力达FWO-海运出口-服务无运输(ZCB)' },
-        { name: '飞力达FWO-海运进口-整箱' },
-        { name: '飞力达FWO-海运进口-拼箱' },
-        { name: '飞力达FWO-海运进口-直通分拨-直通整箱' },
-        { name: '飞力达FWO-海运进口-直通分拨-分拨拼箱' },
-        { name: '飞力达FWO-海运进口-直通分拨-直通拼箱(备用)' },
-        { name: '飞力达FWO-海运进口-外包服务(备用)' },
-        { name: '飞力达FWO-海运进口-服务无运输(ZCB)' },
-        { name: '飞力达FWO-特殊监管' },
+    var SEARCH_XCBUSINAME = [
+        { code: '空进', name: '空进' },
+        { code: '空出', name: '空出' },
+        { code: '海进', name: '海进' },
+        { code: '海出', name: '海出' },
+        { code: '陆进', name: '陆进' },
+        { code: '陆出', name: '陆出' },
+        { code: '特殊监管', name: '特殊监管' },
+        { code: '叠加保税', name: '叠加保税' },
+        { code: '国内', name: '国内' }
     ];
     $(function () {
         $('#searchform #search_code').combobox({
@@ -40,9 +21,15 @@
             valueField: 'code',
             textField: 'name'
         });
-        $('#searchform #customs_busitype').combobox({
-            data: customs_busitype,
-            valueField: 'name',
+        //$('#searchform #customs_busitype').combobox({
+        //    data: customs_busitype,
+        //    valueField: 'name',
+        //    textField: 'name'
+        //});
+
+        $('#searchform #XCBUSINAME').combobox({
+            data: SEARCH_XCBUSINAME,
+            valueField: 'code',
             textField: 'name'
         });
         $('#customs_busitype').next('span').css('width', '300px');
@@ -66,7 +53,6 @@
                 $.messager.alert("提示", "请选择数据！");
                 return;
             }
-            debugger;
             var ORDERCODE = row.ORDERCODE;
             $.ajax({
                 url: '/Wumao/SyncData',                          // 跳转到 action
@@ -95,8 +81,11 @@
                 <tr>
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
                     <th data-options="field:'ORDERCODE',width:150">业务编号</th>
+                    <th data-options="field:'CREATETIME',width:150">创建时间</th>
+                    <th data-options="field:'UPDATETIME',width:150">修改时间</th>
                     <th data-options="field:'STATUS',width:100">状态</th>
                     <th data-options="field:'BUSINAME',width:150">业务类型</th>
+                    <th data-options="field:'APPCIQID',width:150">海关编号</th>
                     <th data-options="field:'GOODS_NATURE_ID',width:150">料件性质</th>
                     <th data-options="field:'PROVIDER_NAME',width:150">货物名称</th>
                     <th data-options="field:'D_DATE',width:150">申报日期</th>
@@ -104,7 +93,6 @@
                     <th data-options="field:'TRANSPORT_NAME',width:150">货代经办企业名称</th>
                     <th data-options="field:'APPCOMPANY',width:150">申报单位代码</th>
                     <th data-options="field:'APPCOMPANY_NAME',width:150">申报单位名称</th>
-                    <th data-options="field:'APPCIQID',width:150">海关编号</th>
                     <th data-options="field:'I_E_FALG_TYPE',width:150">进出口标志代码</th>
                     <th data-options="field:'BIZ_TYPE_ID',width:150">作业单类型代码</th>
                     <th data-options="field:'BIZ_TYPE_NAME',width:150">作业单类型名称</th>
@@ -158,14 +146,17 @@
                             <td>
                                 <input class="easyui-textbox value placeholderclass" type="text" name="ordercode_value" placeholder="单据号" />
                             </td>
+
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
                                     <option>业务类型</option>
                                 </select>
                             </td>
                             <td>
-                                <select class="easyui-combobox value dlc" editable="false" id="customs_busitype" style="width:130px" panelheight="auto" name="customs_busitype"></select>
+                                <select class="easyui-combobox combobox_width value" editable="false" id="XCBUSINAME" panelheight="auto" name="XCBUSINAME"></select>
                             </td>
+
+
                             <td class="search_margin">
                                 <select class="easyui-combobox" panelheight="auto">
                                     <option>发送时间</option>

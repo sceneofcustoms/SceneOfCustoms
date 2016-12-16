@@ -30,24 +30,24 @@ namespace SceneOfCustoms.Common
         }
         public static JObject Get_UserInfo(string account)
         {
-            IDatabase db = SeRedis.redis.GetDatabase();
-            string result = "";
-            if (db.KeyExists(account))
-            {
-                result = db.StringGet(account);
-            }
-            else
-            {
+            //IDatabase db = SeRedis.redis.GetDatabase();
+            //string result = "";
+            //if (db.KeyExists(account))
+            //{
+            //    result = db.StringGet(account);
+            //}
+            //else
+            //{
                 string sql = @"select u.* from SYS_USER u where u.name ='" + account + "'";
                 DataTable dt = DBMgr.GetDataTable(sql);
                 IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
                 iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
                 string jsonstr = JsonConvert.SerializeObject(dt, iso);
                 jsonstr = jsonstr.Replace("[", "").Replace("]", "");
-                db.StringSet(account, jsonstr);
-                result = jsonstr;
-            }
-            return (JObject)JsonConvert.DeserializeObject(result);
+                //db.StringSet(account, jsonstr);
+                //result = jsonstr;
+            //}
+                return (JObject)JsonConvert.DeserializeObject(jsonstr);
         }
 
         //获取订单CODE

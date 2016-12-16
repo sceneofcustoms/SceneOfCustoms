@@ -62,7 +62,6 @@ namespace SceneOfCustoms.Models
         public string FOONO { get; set; }
         public string TONGGUANFSCODE { get; set; }
         public string TONGGUANFSNAME { get; set; }
-
-
+        public string XCBUSINAME { get; set; }
     }
 }

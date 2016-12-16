@@ -1,66 +1,15 @@
 ﻿<script type="text/javascript">
     // 查询条件  --单据号
     var search_code = [
-        { code: 'CODE', name: '订单号',selected:true }
+        { code: 'ORDERCODE', name: '业务单号', selected: true }
     ];
-    // 查询条件  --业务类型
-    var customs_busitype = [
-        { name: '飞力达FWO-空运出口'},
-        { name: '飞力达FWO-空运出口-外包服务(备用)' },
-        { name: '飞力达FWO-空运出口-服务无运输(ZCA)' },
-        { name: '飞力达FWO-空运进口' },
-        { name: '飞力达FWO-空运进口-外包服务(备用)' },
-        { name: '飞力达FWO-空运进口-服务无运输(ZCA)' },
-        { name: '飞力达FWO-叠加保税' },
-        { name: '飞力达FWO-空运出口配套' },
-        { name: '飞力达FWO-国内结转' },
-        { name: '飞力达FWO-国内空运(备用)' },
-        { name: '飞力达FWO-陆运-服务无运输(ZCD)' },
-        { name: '飞力达FWO-陆运出口' },
-        { name: '飞力达FWO-陆运运输' },
-        { name: '飞力达FWO-陆运进口' },
-        { name: '飞力达FWO-公铁联运(集装箱)' },
-        { name: '飞力达FWO-公铁联运(零担)' },
-        { name: '飞力达FWO-海运出口-整箱' },
-        { name: '飞力达FWO-海运出口-拼箱' },
-        { name: '飞力达FWO-海运出口-外包服务(备用)' },
-        { name: '飞力达FWO-海运出口-服务无运输(ZCB)' },
-        { name: '飞力达FWO-海运进口-整箱' },
-        { name: '飞力达FWO-海运进口-拼箱' },
-        { name: '飞力达FWO-海运进口-直通分拨-直通整箱' },
-        { name: '飞力达FWO-海运进口-直通分拨-分拨拼箱' },
-        { name: '飞力达FWO-海运进口-直通分拨-直通拼箱(备用)' },
-        { name: '飞力达FWO-海运进口-外包服务(备用)' },
-        { name: '飞力达FWO-海运进口-服务无运输(ZCB)' },
-        { name: '飞力达FWO-特殊监管' },
-    ];
+
     $(function () {
         $('#searchform #search_code').combobox({
             data: search_code,
             valueField: 'code',
             textField: 'name'
         });
-        $('#searchform #customs_busitype').combobox({
-            data: customs_busitype,
-            valueField: 'name',
-            textField: 'name'
-        });
-        $('#customs_busitype').next('span').css('width', '300px');
-        $('#customs_busitype').next('span').children('.textbox-text').css('width', '300px');
-        var width = '';
-        $("#customs_busitype").next('span').click(function () {
-            $('.panel-body-noheader').each(function () {
-                width = $(this).css('width');
-                if (width == '300px') {
-                    $(this).css('height', '300px');
-                    $(this).css('overflow-x', 'hidden');
-                    $(this).css('overflow-y', 'auto');
-                }
-            });
-        });
-
-
-
     })
 </script>
 <div class="ibox-content">
@@ -105,25 +54,6 @@
                             </td>
                             <td>
                                 <input class="easyui-textbox value placeholderclass" type="text" name="ordercode_value" placeholder="单据号" />
-                            </td>
-                            <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto">
-                                    <option>业务类型</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="easyui-combobox value dlc" editable="false" id="customs_busitype" style="width:130px" panelheight="auto" name="customs_busitype"></select>
-                            </td>
-                            <td class="search_margin">
-                                <select class="easyui-combobox" panelheight="auto">
-                                    <option>发送时间</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input class="easyui-datebox value  placeholderclass" editable="false" name="startdate" placeholder="开始时间">
-                            </td>
-                            <td>
-                                <input class="easyui-datebox value  placeholderclass" editable="false" name="stopdate" placeholder="结束时间">
                             </td>
                         </tr>
                     </table>

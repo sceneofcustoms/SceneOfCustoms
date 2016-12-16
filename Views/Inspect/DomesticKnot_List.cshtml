@@ -12,18 +12,18 @@
     ];
     //2 查询条件  --单据号
     var search_code = [
-        { code: 'CODE', name: '业务编号', selected: true },
-        { code: 'FWONO', name: 'FWO订单号', },
-        { code: 'FOONOBJ', name: 'FO号' },
-        { code: 'INSPECTIONCODE', name: '报检单号' },
-        { code: 'TOTALNO', name: '总单号' },
-        { code: 'DIVIDENO', name: '分单号' },
-        //{ code: 'text', name: '万达号' },
-        { code: 'MANIFEST', name: '载货清单号' },
-        { code: 'FIRSTLADINGBILLNO', name: '一程提运单号' },
-        { code: 'SECONDLADINGBILLNO', name: '二程提运单号' },
-        { code: 'CLEARANCENO', name: '通关单号' }
-        //{ code: 'CONTAINERNO', name: '集装箱号' }
+    { code: 'APPROVALCODE', name: '核准单号', selected: true },
+    { code: 'INSPECTIONCODE', name: '报检单号'},
+    { code: 'CODE', name: '业务编号'},
+    { code: 'FWONO', name: 'FWO号' },
+    { code: 'FOONOBJ', name: 'FO号' },
+    { code: 'DIVIDENO', name: '分单号' },
+    { code: 'TOTALNO', name: '总单号' },
+    { code: 'MANIFEST', name: '载货清单号' },
+    { code: 'FIRSTLADINGBILLNO', name: '一程提运单号' },
+    { code: 'SECONDLADINGBILLNO', name: '二程提运单号' }
+    //{ code: 'CLEARANCENO', name: '通关单号' }
+    //{ code: 'CONTAINERNO', name: '集装箱号' }
     ];
     //3 查询条件 --
     var BUSITYPE = [
@@ -58,19 +58,20 @@
                 <tr>
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
                     <th data-options="field:'CODE',width:100,sortable:true,">业务单号</th>
-                    <th data-options="field:'CREATETIME',width:130,sortable:true,">TM下发时间</th>
-                    <th data-options="field:'BUSIUNITNAME',width:150,sortable:true,">进口企业</th>
-                    <th data-options="field:'BUSIUNITNAME',width:150,sortable:true,">出口企业</th>
-                    <th data-options="field:'INSPECTIONCODE',width:100,sortable:true,">报检单号</th>
-                    <th data-options="field:'INSPECTIONSTATUS',width:100,sortable:true">国检状态</th>
-                    <th data-options="field:'CLEARANCENO',width:100,sortable:true">通关单号</th>
-                    <th data-options="field:'INSPSTATUS',width:100,sortable:true">报检状态</th>
+                    @*<th data-options="field:'CREATETIME',width:130,sortable:true,">TM下发时间</th>*@
+                    <th data-options="field:'BUSIUNITNAME',width:150">进口企业</th>
+                    <th data-options="field:'BUSIUNITNAME',width:150">出口企业</th>
+                    <th data-options="field:'APPROVALCODE',width:160">核准单号</th>
+                    <th data-options="field:'INSPECTIONCODE',width:100">报检单号</th>
+                    <th data-options="field:'INSPECTIONSTATUS',width:100">国检状态</th>
+                    <th data-options="field:'INSPSTATUS',width:100">报检状态</th>
                     @*<th data-options="field:'DECLSTATUS',width:100,sortable:true">报关状态</th>*@
-                    <th data-options="field:'BUSITYPE',width:100,formatter:formatBUSITYPE">业务类型</th>
                 </tr>
             </thead>
             <thead>
                 <tr>
+                    <th data-options="field:'BUSITYPE',width:100,formatter:formatBUSITYPE">业务类型</th>
+                    <th data-options="field:'CLEARANCECODE',width:100">通关单号</th>
                     <th data-options="field:'GOODSNUM',width:100,sortable:true">总件数</th>
                     <th data-options="field:'GOODSWEIGHT',width:100,sortable:true">总重量</th>
                     <th data-options="field:'CONTRACTNO',width:100,sortable:true">合同/发票号</th>

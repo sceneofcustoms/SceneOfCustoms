@@ -364,8 +364,10 @@ namespace SceneOfCustoms.Controllers
         public string save_dl()
         {
             IDatabase db = SeRedis.redis.GetDatabase();
-            string json = "{\"ONLYCODE\":'0c111a4a-965a-425a-ab2c-963180c01380'}";
-            db.ListRightPush("XGW_CheckFile", json);
+            //string json = "{\"ONLYCODE\":'0c111a4a-965a-425a-ab2c-963180c01380'}";
+            string json = "{\"ORDERCODE\":'AI161204669'}";
+            //db.ListRightPush("XGW_CheckFile", json);
+            db.ListRightPush("WMT_QP_CODE", json);
             return "";
         }
 

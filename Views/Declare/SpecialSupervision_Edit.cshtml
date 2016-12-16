@@ -66,6 +66,10 @@
                     <label for="DECLARATIONCODE">报关单号:</label>
                     <input class="easyui-textbox" type="text" name="DECLARATIONCODE" readonly="readonly" />
                 </td>
+                <td style="text-align:left">
+                    <label for="LAWCONDITION">法检标志:</label>
+                    <input class="" id="LAWCONDITION" type="checkbox" name="LAWCONDITION" disabled="disabled" value="1" />
+                </td>
             </tr>
         </table>
     </div>
@@ -207,15 +211,20 @@
                     <label for="IFYIJIAO">是否移交:</label>
                     <input class="" id="IFYIJIAO" type="checkbox" name="IFYIJIAO" value="1" />
                 </td>
+            </tr>
+
+            <tr>
                 <td style="text-align:left">
-                    <label for="LAWCONDITION">法检标志:</label>
-                    <input class="" id="LAWCONDITION" type="checkbox" name="LAWCONDITION" value="1" />
+                    <label for="IFLIHUO">理货标识:</label>
+                    <input class="" id="IFLIHUO" type="checkbox" name="IFLIHUO" value="1" />
                 </td>
-                <td style="text-align:left">
-                    <label for="IFLIHUO">理货标志:</label>
-                    <input class="" id="LIHUOSIGN" type="checkbox" name="IFLIHUO" value="1" />
+                <td>
+                    <label for="LIHUOTOTAL">理货次数:</label>
+                    <input class="easyui-numberspinner" name="LIHUOTOTAL"
+                           data-options="min:0">
                 </td>
             </tr>
+
             <tr>
                 <td style="text-align:left">
                     <label for="IFSHANDAN">是否删单:</label>

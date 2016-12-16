@@ -52,9 +52,9 @@
                     <label for="SECONDLADINGBILLNO">二程提运单号:</label>
                     <input class="easyui-textbox" type="text" name="SECONDLADINGBILLNO" disabled="disabled" />
                 </td>
-                <td>
-                    <label for="CONTAINERNO">集装箱号:</label>
-                    <input class="easyui-textbox" type="text" name="CONTAINERNO" disabled="disabled" />
+                <td style="text-align:left">
+                    <label for="LAWCONDITION">法检标志:</label>
+                    <input class="" id="LAWCONDITION" type="checkbox" name="LAWCONDITION" disabled="disabled" value="1" />
                 </td>
                 <td>
                     <label for="SFGOODSUNIT">收货人:</label>
@@ -231,15 +231,21 @@
                     <label for="IFYIJIAO">是否移交:</label>
                     <input class="" id="IFYIJIAO" type="checkbox" name="IFYIJIAO" value="1" />
                 </td>
-                <td style="text-align:left">
-                    <label for="LAWCONDITION">法检标志:</label>
-                    <input class="" id="LAWCONDITION" type="checkbox" name="LAWCONDITION" value="1" />
-                </td>
+            </tr>
+
+
+            <tr>
                 <td style="text-align:left">
                     <label for="IFLIHUO">理货标识:</label>
                     <input class="" id="IFLIHUO" type="checkbox" name="IFLIHUO" value="1" />
                 </td>
+                <td>
+                    <label for="LIHUOTOTAL">理货次数:</label>
+                    <input class="easyui-numberspinner" name="LIHUOTOTAL"
+                           data-options="min:0">
+                </td>
             </tr>
+
 
             <tr>
                 <td style="text-align:left">
@@ -255,7 +261,6 @@
                     <label for="SHANDANDESC">删单备注:</label>
                     <input class="easyui-textbox" type="text" name="SHANDANDESC" />
                 </td>
-
             </tr>
             <tr>
                 <td style="text-align:left">
@@ -323,7 +328,7 @@
         <a class="btn btn-primary" href="javascript:void(0)" onclick="submitForm()">
             <i class="fa fa-floppy-o"></i> 保存
         </a>
-        <a class="btn btn-primary" href="javascript:void(0)" onclick="javascript: history.back(-1);">
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="javascript: history.go(-1);">
             <i class="icon-reply"></i> 返回
         </a>
     </div>
@@ -331,4 +336,4 @@
 
 <script type="text/javascript">
     Edit();
- </script>
+</script>

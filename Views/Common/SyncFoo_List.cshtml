@@ -1,12 +1,13 @@
 ﻿<script type="text/javascript">
     // 查询条件  --单据号
     var search_code = [
+        { code: 'FWONO', name: 'FWO号', selected: true },
+                { code: 'FOONO', name: 'FOO指令号' },
+        { code: 'CODE', name: '订单号' },
         {
-            code: 'ONLYCODE', name: '唯一号', selected: true
+            code: 'ONLYCODE', name: '唯一号'
         },
-        { code: 'FWONO', name: 'FWO号' },
-        { code: 'FOONO', name: 'FOO指令号' },
-        { code: 'CODE', name: '订单号' }
+
     ];
     // 查询条件  --业务类型
     var customs_busitype = [
@@ -113,7 +114,7 @@
             <thead>
                 <tr>
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
-                    <th data-options="field:'ONLYCODE',width:150,sortable:true">唯一号</th>
+                    <th data-options="field:'ONLYCODE',width:270,sortable:true">唯一号</th>
                     <th data-options="field:'FWONO',width:200,sortable:true">FWO号</th>
                     <th data-options="field:'FOONO',width:200,sortable:true">FOO指令号</th>
                     <th data-options="field:'TIME',width:150,sortable:true">发送时间</th>

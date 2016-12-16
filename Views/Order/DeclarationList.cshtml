@@ -6,10 +6,10 @@
     ];
     //2 查询条件  --单据号
     var search_code = [
-        { code: 'CODE', name: '业务单号', selected: true },
+        { code: 'ORDERCODE', name: '业务单号', selected: true },
         { code: 'DECLARATIONCODE', name: '报关单号' },
-        { code: 'ONLYCODE', name: '唯一号' },
-        { code: 'FWONO', name: 'FWO订单号' },
+        { code: 'PREDECLCODE', name: '预制单号码' },
+        { code: 'FWONO', name: 'FWO号' },
         { code: 'FOONO', name: '报关FOO' },
         { code: 'FOONOBJ', name: '报检FOO' }
     ];
@@ -27,7 +27,7 @@
     ];
 
     //搜索列表
-    function DeclarationSearch_form() {
+    function InspectionSearch_form() {
         var o = {};
         var str = $('#searchform').serializeArray();        //form表单信息序列化
         $.each(str, function () {
@@ -45,6 +45,16 @@
             queryParams: { data: info },
         });
     }
+
+    function formatISPRINT(value) {
+        if (value == 0)
+        {
+            return "否";
+        } else {
+            return "是";
+        }
+    }
+
     $(function () {
         $('#DeclarationDatagrid').datagrid({
             url: '/Order/LoadDeclarationList',
@@ -53,7 +63,7 @@
             method: 'get',
             toolbar: '#tb',
             pageSize: 20,
-            pageList: [20, 40, 60, 80, 100, 300],
+            pageList: [20, 40, 60, 80, 100, 300,1000],
             pagination: true
         });
         $('#searchform #search_condition_date').combobox({
@@ -74,8 +84,36 @@
             valueField: 'code',
             textField: 'name'
         });
-
     })
+
+
+
+    //数据导出
+    function export_form() {
+        var ids = "";
+        var BUSITYPE = $("input[name='BUSITYPE']").val();
+        var row = $('#DeclarationDatagrid').datagrid('getSelected');
+        if (row == null) {
+            $.messager.alert("提示", "请选择数据！");
+            return;
+        }
+        debugger;
+        $(".datagrid-row-selected input[name='ID']").each(function () {
+            ids += this.value + ",";
+        });
+        ids = ids.substring(0, ids.length - 1);
+        var host = window.location.host;
+        $.ajax({
+            url: '/Order/DataExportOut',                          // 跳转到 action
+            data: { "ids": ids, "BUSITYPE": BUSITYPE },
+            type: 'post',
+            dataType: 'json',
+            success: function (data) {
+                window.open("http://" + host + data.path);
+            },
+        });
+    }
+
 </script>
 <div class="ibox-content">
     <div class="table-responsive">
@@ -84,21 +122,46 @@
             <thead>
                 <tr>
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
-                    <th data-options="field:'ONLYCODE',width:130">唯一号</th>
                     <th data-options="field:'CODE',width:100">业务单号</th>
+                    <th data-options="field:'FWONO',width:180">FWO号</th>
                     <th data-options="field:'XCBUSINAME',width:100">业务类型</th>
                     <th data-options="field:'DECLARATIONCODE',width:150">报关单号</th>
-                    <th data-options="field:'CREATETIME',width:130,sortable:true,">下游返回日期</th>
-                    <th data-options="field:'UPDATETIME',width:130,sortable:true,">下游修改日期</th>
-                    <th data-options="field:'FWONO',width:160">FWO号</th>
+                    <th data-options="field:'TRANSNAME',width:130,">转关预录号</th>
+                    <th data-options="field:'ISDEL',width:100,formatter:formatISPRINT">是否作废</th>
+                    <th data-options="field:'CREATETIME',width:130,">下游返回日期</th>
+                    <th data-options="field:'UPDATETIME',width:130,">下游修改日期</th>
+                    <th data-options="field:'CUSTOMSSTATUS',width:130,">海关状态</th>
+                    <th data-options="field:'SHEETNUM',width:130,">通关单张数</th>
+                    <th data-options="field:'COMMODITYNUM',width:130,">品名个数</th>
+                    <th data-options="field:'IFSHANDAN',width:130,">是否删单</th>
+                    <th data-options="field:'SHANDANTOTAL',width:130,">删单次数</th>
+                    <th data-options="field:'SHANDANDESC',width:130,">删单备注</th>
+                    <th data-options="field:'IFGAIDAN',width:130,">是否改单</th>
+                    <th data-options="field:'GAIDANTOTAL',width:130,">改单次数</th>
+                    <th data-options="field:'GAIDANDESC',width:130,">改单备注</th>
+                    <th data-options="field:'IFYIJIAO',width:130,">是否移交</th>
+                    <th data-options="field:'IFLIHUO',width:130,">是否理货</th>
+                    <th data-options="field:'LIHUOTOTAL',width:130,">理货次数</th>
+                    <th data-options="field:'LIHUODESC',width:130,">理货备注</th>
+                    <th data-options="field:'IFCHAYAN',width:130,">是否查验</th>
+                    <th data-options="field:'CHAYANTOTAL',width:130,">查验次数</th>
+                    <th data-options="field:'CHAYANDESC',width:130,">查验备注</th>
+                    <th data-options="field:'CHAYANZHILINGXIAFATIME',width:130,">查验指令下发时间</th>
+                    <th data-options="field:'IFTIAODANG',width:130,">是否调档</th>
+                    <th data-options="field:'TIAODANGTOTAL',width:130,">调档次数</th>
+                    <th data-options="field:'IFKOUHUO',width:130,">是否扣货</th>
+                    <th data-options="field:'KOUHUOTIME',width:130,">扣货时间</th>
+                    <th data-options="field:'PREDECLCODE',width:130,">预制单号码</th>
                     <th data-options="field:'FOONO',width:180">报关FOO</th>
                     <th data-options="field:'FOONOBJ',width:180">报检FOO</th>
+                    <th data-options="field:'ONLYCODE',width:280">唯一号</th>
                 </tr>
             </thead>
         </table>
         <div id="tb">
             <div class="tb_search">
                 <form id="searchform" method="post">
+                    <input type="hidden" name="BUSITYPE" value="Declaration" />
                     <table>
                         <tr>
                             <td class="search_margin">
@@ -130,9 +193,10 @@
             </div>
             <div class="tb_but">
                 <div class="but_left">
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="export_form()"><i class="fa fa-share-square-o" aria-hidden="true"></i> 导出</a>
                 </div>
                 <div class="but_right">
-                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="DeclarationSearch_form()"><i class="icon-search"></i> 搜索</a>
+                    <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="InspectionSearch_form()"><i class="icon-search"></i> 搜索</a>
                     <a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="reset_form()"><i class="fa fa-retweet" aria-hidden="true"></i> 重置</a>
                 </div>
             </div>

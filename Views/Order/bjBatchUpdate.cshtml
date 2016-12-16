@@ -44,12 +44,12 @@
         </tr>
         <tr>
             <td>
-                <label for="CHAYANZHILINGXIAFATIME">查验时间:</label>
-                <input class="easyui-datetimebox  time_input " id="CHAYANZHILINGXIAFATIME" datatype="CHAYANZHILINGXIAFAUSERNAME" data-options="text:'填充时间'" editable="false" name="CHAYANZHILINGXIAFATIME" />
+                <label for="BJCHAYANTIME">查验时间:</label>
+                <input class="easyui-datetimebox  time_input " id="BJCHAYANTIME" datatype="BJCHAYANUSERNAME" data-options="text:'填充时间'" editable="false" name="BJCHAYANTIME" />
             </td>
             <td>
-                <label for="CHAYANZHILINGXIAFAUSERNAME">查验人:</label>
-                <input class="easyui-textbox " type="text" id="CHAYANZHILINGXIAFAUSERNAME" name="CHAYANZHILINGXIAFAUSERNAME" disabled="disabled" />
+                <label for="BJCHAYANUSERNAME">查验人:</label>
+                <input class="easyui-textbox " type="text" id="BJCHAYANUSERNAME" name="BJCHAYANUSERNAME" disabled="disabled" />
             </td>
         </tr>
         <tr>
@@ -71,13 +71,9 @@
 
 <script type="text/javascript">
     function submitUpdateFrom() {
-        var bjname = $("#BAOJIANUSERNAME").val();
-        var bjfxname = $("#BAOJIANFANGXINGUSERNAME").val();
-        var xzname = $("#XUNZHENGUSERNAME").val();
-        var cyname = $("#CHAYANZHILINGXIAFAUSERNAME").val();
-        var cyfxname = $("#CHAYANFANGXINGUSERNAME").val();
+        debugger;
         $('#bjUpdateFrom').form('submit', {
-            url: "/Order/SavebjUpdateData?bjname=" + bjname + "&bjfxname=" + bjfxname + "&xzname=" + xzname + "&cyname=" + cyname + "&cyfxname" + cyfxname,
+            url: "/Order/SavebjUpdateData",
             onSubmit: function () {
                 if ($(this).form('enableValidation').form('validate')) {
                     return true;
@@ -86,6 +82,7 @@
                 }
             },
             success: function (data) {
+                debugger;
                 var data = eval('(' + data + ')');  // change the JSON string to javascript object
                 if (data.Success) {
                     $.messager.alert('成功', '保存成功');

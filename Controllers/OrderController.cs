@@ -19,10 +19,13 @@ namespace SceneOfCustoms.Controllers
     //订单方法
     public class OrderController : Controller
     {
+        IDatabase db = SeRedis.redis.GetDatabase();
+
         //报关一线进口导出明细
         public DataTable One_lineIn(string ids)
         {
             DataTable dt = new DataTable();
+            DataTable dt1 = new DataTable();
             dt.Columns.Add("收货人");
             dt.Columns.Add("一程提运单号");
             dt.Columns.Add("二程提运单号");
@@ -37,14 +40,15 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("单证放行时间");
             dt.Columns.Add("实物放行时间");
             dt.Columns.Add("贸易方式");
-            dt.Columns.Add("单证放行状态");
-            dt.Columns.Add("实物放行状态");
+            //dt.Columns.Add("单证放行状态");
+            //dt.Columns.Add("实物放行状态");
             dt.Columns.Add("载货清单号");
-            dt.Columns.Add("万达号");
+            //dt.Columns.Add("万达号");
             dt.Columns.Add("业务编号");
-            dt.Columns.Add("转关预录入号");
+            //dt.Columns.Add("转关预录入号");
             dt.Columns.Add("单证放行人");
             dt.Columns.Add("实物放行人");
+            dt.Columns.Add("集装箱信息");
             dt.Columns.Add("关区代码");
             dt.Columns.Add("FWO订单号");
             dt.Columns.Add("FO号");
@@ -62,25 +66,31 @@ namespace SceneOfCustoms.Controllers
                 dr["总重量"] = data_dt.Rows[i]["GOODSWEIGHT"];
                 dr["总单号"] = data_dt.Rows[i]["TOTALNO"];
                 dr["分单号"] = data_dt.Rows[i]["DIVIDENO"];
-                //dr["报关单号"] = data_dt.Rows[i]["ASSOCIATEPEDECLNO"];
+                dr["报关单号"] = data_dt.Rows[i]["DECLARATIONCODE"];
                 dr["是否法检"] = data_dt.Rows[i]["LAWCONDITION"];
                 dr["关务接受时间"] = data_dt.Rows[i]["GUANWUJIESHOUTIME"];
                 dr["报入海关时间"] = data_dt.Rows[i]["BAORUHAIGUANTIME"];
                 dr["单证放行时间"] = data_dt.Rows[i]["DANZHENGFANGXINGTIME"];
                 dr["实物放行时间"] = data_dt.Rows[i]["SHIWUFANGXINGTIME"];
-                dr["贸易方式"] = data_dt.Rows[i]["ASSOCIATETRADEWAY"];
-                //dr["单证放行状态"] = data_dt.Rows[i]["text"];
-                //dr["实物放行状态"] = data_dt.Rows[i]["text"];
-                //dr["万达号"] = data_dt.Rows[i]["text"];
+                dr["贸易方式"] = data_dt.Rows[i]["TRADEWAYCODES"];
                 dr["载货清单号"] = data_dt.Rows[i]["MANIFEST"];
                 dr["业务编号"] = data_dt.Rows[i]["CODE"];
-                dr["转关预录入号"] = data_dt.Rows[i]["TURNPRENO"];
                 dr["单证放行人"] = data_dt.Rows[i]["DANZHENGFANGXINGUSERNAME"];
                 dr["实物放行人"] = data_dt.Rows[i]["SHIWUFANGXINGUSERNAME"];
+                string sql2 = "select CONTAINERNO from LIST_DECLCONTAINERTRUCK where ordercode='" + data_dt.Rows[i]["CODE"] + "'";
+                dt1 = DBMgr.GetDataTable(sql2);
+                string CONTAINERNO = "";
+                for (int j = 0; j < dt1.Rows.Count; j++)
+                {
+                    if (!string.IsNullOrEmpty(dt1.Rows[j]["CONTAINERNO"] + ""))
+                    {
+                        CONTAINERNO += dt1.Rows[j]["CONTAINERNO"] + "/";
+                    }
+                }
+                dr["集装箱信息"] = CONTAINERNO;
                 dr["关区代码"] = data_dt.Rows[i]["CUSTOMDISTRICTCODE"];
                 dr["FWO订单号"] = data_dt.Rows[i]["FWONO"];
                 dr["FO号"] = data_dt.Rows[i]["FOONO"];
-                //dr["海关通关状态"] = data_dt.Rows[i]["text"];
                 dt.Rows.Add(dr);
             }
             return dt;
@@ -89,6 +99,7 @@ namespace SceneOfCustoms.Controllers
         public DataTable One_lineOut(string ids)
         {
             DataTable dt = new DataTable();
+            DataTable dt1 = new DataTable();
             dt.Columns.Add("发货人");
             dt.Columns.Add("FWO订单号");
             dt.Columns.Add("FO号");
@@ -102,6 +113,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("实物放行时间");
             dt.Columns.Add("单证放行人");
             dt.Columns.Add("实物放行人");
+            dt.Columns.Add("集装箱信息");
             dt.Columns.Add("贸易方式");
             dt.Columns.Add("转关预录入号");
             dt.Columns.Add("关区代码");
@@ -118,7 +130,7 @@ namespace SceneOfCustoms.Controllers
                 dr["业务编号"] = data_dt.Rows[i]["CODE"];
                 dr["总件数"] = data_dt.Rows[i]["GOODSNUM"];
                 dr["总重量"] = data_dt.Rows[i]["GOODSWEIGHT"];
-                //dr["报关单号"] = data_dt.Rows[i]["ASSOCIATEPEDECLNO"];
+                dr["报关单号"] = data_dt.Rows[i]["DECLARATIONCODE"];
                 dr["报入海关时间"] = data_dt.Rows[i]["BAORUHAIGUANTIME"];
                 dr["单证放行时间"] = data_dt.Rows[i]["DANZHENGFANGXINGTIME"];
                 dr["实物加封时间"] = data_dt.Rows[i]["SHIWUJIAFENGTIME"];
@@ -126,9 +138,18 @@ namespace SceneOfCustoms.Controllers
                 dr["单证放行人"] = data_dt.Rows[i]["DANZHENGFANGXINGUSERNAME"];
                 dr["实物放行人"] = data_dt.Rows[i]["SHIWUFANGXINGUSERNAME"];
                 dr["贸易方式"] = data_dt.Rows[i]["ASSOCIATETRADEWAY"];
-                dr["转关预录入号"] = data_dt.Rows[i]["TURNPRENO"];
+                string sql2 = "select CONTAINERNO from LIST_DECLCONTAINERTRUCK where ordercode='" + data_dt.Rows[i]["CODE"] + "'";
+                dt1 = DBMgr.GetDataTable(sql2);
+                string CONTAINERNO = "";
+                for (int j = 0; j < dt1.Rows.Count; j++)
+                {
+                    if (!string.IsNullOrEmpty(dt1.Rows[j]["CONTAINERNO"] + ""))
+                    {
+                        CONTAINERNO += dt1.Rows[j]["CONTAINERNO"] + "/";
+                    }
+                }
+                dr["集装箱信息"] = CONTAINERNO;
                 dr["关区代码"] = data_dt.Rows[i]["CUSTOMDISTRICTCODE"];
-                //dr["海关通关状态"] = data_dt.Rows[i]["text"];
                 dt.Rows.Add(dr);
             }
             return dt;
@@ -168,7 +189,7 @@ namespace SceneOfCustoms.Controllers
                 dr["FWO订单号"] = data_dt.Rows[i]["FWONO"];
                 dr["FO号"] = data_dt.Rows[i]["FOONO"];
                 dr["业务编号"] = data_dt.Rows[i]["CODE"];
-                //dr["报关单号"] = data_dt.Rows[i]["ASSOCIATEPEDECLNO"];
+                dr["报关单号"] = data_dt.Rows[i]["DECLARATIONCODE"];
                 dr["实物放行时间"] = data_dt.Rows[i]["SHIWUFANGXINGTIME"];
                 dr["实物放行人"] = data_dt.Rows[i]["SHIWUFANGXINGUSERNAME"];
                 dr["业务类型"] = data_dt.Rows[i]["BUSITYPE"];
@@ -183,10 +204,10 @@ namespace SceneOfCustoms.Controllers
                 dr["单证放行时间"] = data_dt.Rows[i]["DANZHENGFANGXINGTIME"];
                 dr["单证放行人"] = data_dt.Rows[i]["DANZHENGFANGXINGUSERNAME"];
                 dr["报关状态"] = data_dt.Rows[i]["DECLSTATUS"];
-                dr["报检状态"] = data_dt.Rows[i]["INSPSTATUS"];
+                //dr["报检状态"] = data_dt.Rows[i]["INSPSTATUS"];
                 dr["报关方式"] = data_dt.Rows[i]["DECLWAY"];
                 dr["关区代码"] = data_dt.Rows[i]["CUSTOMDISTRICTCODE"];
-                //dr["海关通关状态"] = data_dt.Rows[i]["text"];
+                dr["海关通关状态"] = data_dt.Rows[i]["DECLARATIONSTATUS"];
                 dt.Rows.Add(dr);
             }
             return dt;
@@ -217,7 +238,7 @@ namespace SceneOfCustoms.Controllers
             {
                 dr = dt.NewRow();
                 dr["业务编号"] = data_dt.Rows[i]["CODE"];
-                //dr["报关单号"] = data_dt.Rows[i]["ASSOCIATEPEDECLNO"];
+                dr["报关单号"] = data_dt.Rows[i]["DECLARATIONCODE"];
                 dr["实物放行时间"] = data_dt.Rows[i]["SHIWUFANGXINGTIME"];
                 dr["收/发货人"] = data_dt.Rows[i]["SFGOODSUNIT"];
                 dr["件数"] = data_dt.Rows[i]["GOODSNUM"];
@@ -227,7 +248,7 @@ namespace SceneOfCustoms.Controllers
                 dr["单证放行人"] = data_dt.Rows[i]["DANZHENGFANGXINGUSERNAME"];
                 dr["实物放行人"] = data_dt.Rows[i]["SHIWUFANGXINGUSERNAME"];
                 dr["关务接单时间"] = data_dt.Rows[i]["GUANWUJIESHOUTIME"];
-                dr["进出口类别"] = data_dt.Rows[i]["INOUTTYPE"];
+                //dr["进出口类别"] = data_dt.Rows[i]["INOUTTYPE"];
                 dr["申报方式"] = data_dt.Rows[i]["REPWAYID"];
                 dr["FWO订单号"] = data_dt.Rows[i]["FWONO"];
                 dr["FO号"] = data_dt.Rows[i]["FOONO"];
@@ -239,6 +260,7 @@ namespace SceneOfCustoms.Controllers
         public DataTable One_lineInbj(string ids)
         {
             DataTable dt = new DataTable();
+            DataTable dt1 = new DataTable();
             dt.Columns.Add("收货人");
             dt.Columns.Add("一程提运单号");
             dt.Columns.Add("二程提运单号");
@@ -254,14 +276,16 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("载货清单号");
             dt.Columns.Add("木质包装");
             dt.Columns.Add("通关单标志");
-            dt.Columns.Add("通关单张数");
-            dt.Columns.Add("通关单号");
+            //dt.Columns.Add("通关单张数");
+            //dt.Columns.Add("通关单号");
+            dt.Columns.Add("集装箱信息");
             dt.Columns.Add("合同/发票号");
             dt.Columns.Add("报检时间");
             dt.Columns.Add("报检人");
             dt.Columns.Add("放行时间");
             dt.Columns.Add("放行人");
-            dt.Columns.Add("报关状态");
+            dt.Columns.Add("集装箱信息");
+            //dt.Columns.Add("报关状态");
             dt.Columns.Add("报检状态");
             string sql = "select * from list_order where ID in(" + ids + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
@@ -269,13 +293,13 @@ namespace SceneOfCustoms.Controllers
             for (int i = 0; i < data_dt.Rows.Count; i++)
             {
                 dr = dt.NewRow();
-                dr["收货人"] = data_dt.Rows[i]["BUSIUNITNAME"];
+                dr["收货人"] = data_dt.Rows[i]["SGOODSUNIT"];
                 dr["一程提运单号"] = data_dt.Rows[i]["FIRSTLADINGBILLNO"];
                 dr["二程提运单号"] = data_dt.Rows[i]["SECONDLADINGBILLNO"];
                 dr["总件数"] = data_dt.Rows[i]["GOODSNUM"];
                 dr["总重量"] = data_dt.Rows[i]["GOODSWEIGHT"];
                 dr["业务编号"] = data_dt.Rows[i]["CODE"];
-                //dr["报检单号"] = data_dt.Rows[i]["text"];
+                dr["报检单号"] = data_dt.Rows[i]["INSPECTIONCODE"];
                 dr["FWO订单号"] = data_dt.Rows[i]["FWONO"];
                 dr["FO号"] = data_dt.Rows[i]["FOONO"];
                 dr["总单号"] = data_dt.Rows[i]["TOTALNO"];
@@ -285,13 +309,25 @@ namespace SceneOfCustoms.Controllers
                 dr["木质包装"] = data_dt.Rows[i]["WOODPACKINGID"];
                 //dr["通关单标志"] = data_dt.Rows[i]["text"];
                 //dr["通关单张数"] = data_dt.Rows[i]["text"];
-                dr["通关单号"] = data_dt.Rows[i]["CLEARANCENO"];
+                //dr["通关单号"] = data_dt.Rows[i]["CLEARANCENO"];
                 dr["合同/发票号"] = data_dt.Rows[i]["CONTRACTNO"];
                 dr["报检时间"] = data_dt.Rows[i]["BAOJIANTIME"];
                 //dr["报检人"] = data_dt.Rows[i]["text"];
                 dr["放行时间"] = data_dt.Rows[i]["BAOJIANFANGXINGTIME"];
                 dr["放行人"] = data_dt.Rows[i]["BAOJIANFANGXINGUSERNAME"];
-                dr["报关状态"] = data_dt.Rows[i]["DECLSTATUS"];
+                //dr["报关状态"] = data_dt.Rows[i]["DECLSTATUS"];
+
+                string sql2 = "select CONTAINERNO from LIST_DECLCONTAINERTRUCK where ordercode='" + data_dt.Rows[i]["CODE"] + "'";
+                dt1 = DBMgr.GetDataTable(sql2);
+                string CONTAINERNO = "";
+                for (int j = 0; j < dt1.Rows.Count; j++)
+                {
+                    if (!string.IsNullOrEmpty(dt1.Rows[j]["CONTAINERNO"] + ""))
+                    {
+                        CONTAINERNO += dt1.Rows[j]["CONTAINERNO"] + "/";
+                    }
+                }
+
                 dr["报检状态"] = data_dt.Rows[i]["INSPSTATUS"];
                 dt.Rows.Add(dr);
             }
@@ -304,7 +340,7 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("FWO订单号");
             dt.Columns.Add("FO号");
             dt.Columns.Add("业务编号");
-            dt.Columns.Add("报关单号");
+            dt.Columns.Add("报检单号");
             dt.Columns.Add("实物放行时间");
             dt.Columns.Add("实物放行人");
             dt.Columns.Add("业务类型");
@@ -318,11 +354,16 @@ namespace SceneOfCustoms.Controllers
             dt.Columns.Add("报关人");
             dt.Columns.Add("单证放行时间");
             dt.Columns.Add("单证放行人");
-            dt.Columns.Add("报关状态");
+            dt.Columns.Add("报检时间");
+            dt.Columns.Add("报检人");
+            dt.Columns.Add("报检放行时间");
+            dt.Columns.Add("报检放行人");
+            //dt.Columns.Add("报关状态");
             dt.Columns.Add("报检状态");
-            dt.Columns.Add("报关方式");
+            //dt.Columns.Add("报关方式");
             dt.Columns.Add("关区代码");
-            dt.Columns.Add("海关通关状态");
+            dt.Columns.Add("国检状态");
+
             string sql = "select * from list_order where ID in(" + ids + ") order by ID desc";
             DataTable data_dt = DBMgr.GetDataTable(sql);
             DataRow dr;
@@ -332,13 +373,13 @@ namespace SceneOfCustoms.Controllers
                 dr["FWO订单号"] = data_dt.Rows[i]["FWONO"];
                 dr["FO号"] = data_dt.Rows[i]["FOONO"];
                 dr["业务编号"] = data_dt.Rows[i]["CODE"];
-                //dr["报关单号"] = data_dt.Rows[i]["ASSOCIATEPEDECLNO"];
+                dr["报检单号"] = data_dt.Rows[i]["INSPECTIONCODE"];
                 dr["实物放行时间"] = data_dt.Rows[i]["SHIWUFANGXINGTIME"];
                 dr["实物放行人"] = data_dt.Rows[i]["SHIWUFANGXINGUSERNAME"];
-                dr["业务类型"] = data_dt.Rows[i]["BUSITYPE"];
+                dr["业务类型"] = data_dt.Rows[i]["XCBUSINAME"];
                 dr["企业"] = data_dt.Rows[i]["BUSIUNITNAME"];
                 dr["发票合同"] = data_dt.Rows[i]["CONTRACTNO"];
-                dr["贸易方式"] = data_dt.Rows[i]["ASSOCIATETRADEWAY"];
+                dr["贸易方式"] = data_dt.Rows[i]["TRADEWAYCODES"];
                 dr["件数"] = data_dt.Rows[i]["GOODSNUM"];
                 dr["重量"] = data_dt.Rows[i]["GOODSWEIGHT"];
                 dr["关务接受时间"] = data_dt.Rows[i]["GUANWUJIESHOUTIME"];
@@ -346,11 +387,15 @@ namespace SceneOfCustoms.Controllers
                 dr["报关人"] = data_dt.Rows[i]["BAOGUANUSERNAME"];
                 dr["单证放行时间"] = data_dt.Rows[i]["DANZHENGFANGXINGTIME"];
                 dr["单证放行人"] = data_dt.Rows[i]["DANZHENGFANGXINGUSERNAME"];
-                dr["报关状态"] = data_dt.Rows[i]["DECLSTATUS"];
+                dr["报检时间"] = data_dt.Rows[i]["BAOJIANTIME"];
+                dr["报检人"] = data_dt.Rows[i]["BAOJIANUSERNAME"];
+                dr["报检放行时间"] = data_dt.Rows[i]["BAOJIANFANGXINGTIME"];
+                dr["报检放行人"] = data_dt.Rows[i]["BAOJIANFANGXINGUSERNAME"];
+                //dr["报关状态"] = data_dt.Rows[i]["DECLSTATUS"];
                 dr["报检状态"] = data_dt.Rows[i]["INSPSTATUS"];
-                dr["报关方式"] = data_dt.Rows[i]["DECLWAY"];
+                //dr["报关方式"] = data_dt.Rows[i]["DECLWAY"];
                 dr["关区代码"] = data_dt.Rows[i]["CUSTOMDISTRICTCODE"];
-                //dr["海关通关状态"] = data_dt.Rows[i]["text"];
+                dr["国检状态"] = data_dt.Rows[i]["INSPECTIONSTATUS"];
                 dt.Rows.Add(dr);
             }
             return dt;
@@ -525,6 +570,130 @@ namespace SceneOfCustoms.Controllers
             }
             return dt;
         }
+
+        //后台同步状态导出明细
+        public DataTable OutDeclaration(string ids)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("业务单号");
+            dt.Columns.Add("FWO号");
+            dt.Columns.Add("业务类型");
+            dt.Columns.Add("报关单号");
+            dt.Columns.Add("转关预录号");
+            dt.Columns.Add("是否作废");
+            dt.Columns.Add("下游返回日期");
+            dt.Columns.Add("下游修改日期");
+            dt.Columns.Add("海关状态");
+            dt.Columns.Add("通关单张数");
+            dt.Columns.Add("品名个数");
+            dt.Columns.Add("是否删单");
+            dt.Columns.Add("删单次数");
+            dt.Columns.Add("删单备注");
+            dt.Columns.Add("是否改单");
+            dt.Columns.Add("改单次数");
+            dt.Columns.Add("改单备注");
+            dt.Columns.Add("是否移交");
+
+            dt.Columns.Add("是否理货");
+            dt.Columns.Add("理货次数");
+            dt.Columns.Add("理货备注");
+            dt.Columns.Add("是否查验");
+
+            dt.Columns.Add("查验次数");
+            dt.Columns.Add("查验备注");
+            dt.Columns.Add("查验指令下发时间");
+            dt.Columns.Add("是否调档");
+            dt.Columns.Add("调档次数");
+            dt.Columns.Add("是否扣货");
+            dt.Columns.Add("扣货时间");
+            string sql = "select o.fwono,o.foono,o.foonobj,o.code,o.XCBUSINAME,o.ONLYCODE,o.id,d.* from LIST_DECLARATION d left join list_order o on o.code=d.ordercode where 1=1  and d.id in(" + ids + ")";
+            //string sql = "select * from MSG where ID in(" + ids + ") order by ID desc";
+            DataTable data_dt = DBMgr.GetDataTable(sql);
+            DataRow dr;
+            for (int i = 0; i < data_dt.Rows.Count; i++)
+            {
+                dr = dt.NewRow();
+                dr["业务单号"] = data_dt.Rows[i]["ORDERCODE"];
+                dr["FWO号"] = data_dt.Rows[i]["FWONO"];
+                dr["业务类型"] = data_dt.Rows[i]["XCBUSINAME"];
+                dr["报关单号"] = data_dt.Rows[i]["DECLARATIONCODE"];
+                dr["转关预录号"] = data_dt.Rows[i]["TRANSNAME"];
+                dr["是否作废"] = data_dt.Rows[i]["ISDEL"];
+                dr["下游返回日期"] = data_dt.Rows[i]["CREATETIME"];
+                dr["下游修改日期"] = data_dt.Rows[i]["UPDATETIME"];
+                dr["海关状态"] = data_dt.Rows[i]["CUSTOMSSTATUS"];
+                dr["通关单张数"] = data_dt.Rows[i]["SHEETNUM"];
+                dr["品名个数"] = data_dt.Rows[i]["COMMODITYNUM"];
+                dr["是否删单"] = data_dt.Rows[i]["IFSHANDAN"];
+                dr["删单次数"] = data_dt.Rows[i]["SHANDANTOTAL"];
+                dr["删单备注"] = data_dt.Rows[i]["SHANDANDESC"];
+                dr["是否改单"] = data_dt.Rows[i]["IFGAIDAN"];
+                dr["改单次数"] = data_dt.Rows[i]["GAIDANTOTAL"];
+                dr["改单备注"] = data_dt.Rows[i]["GAIDANDESC"];
+                dr["是否移交"] = data_dt.Rows[i]["IFYIJIAO"];
+                dr["是否理货"] = data_dt.Rows[i]["IFLIHUO"];
+                dr["理货次数"] = data_dt.Rows[i]["LIHUOTOTAL"];
+                dr["理货备注"] = data_dt.Rows[i]["LIHUODESC"];
+                dr["是否查验"] = data_dt.Rows[i]["IFCHAYAN"];
+                dr["查验次数"] = data_dt.Rows[i]["CHAYANTOTAL"];
+                dr["查验备注"] = data_dt.Rows[i]["CHAYANDESC"];
+                dr["查验指令下发时间"] = data_dt.Rows[i]["CHAYANZHILINGXIAFATIME"];
+                dr["是否调档"] = data_dt.Rows[i]["IFTIAODANG"];
+                dr["调档次数"] = data_dt.Rows[i]["TIAODANGTOTAL"];
+                dr["是否扣货"] = data_dt.Rows[i]["IFKOUHUO"];
+                dr["扣货时间"] = data_dt.Rows[i]["KOUHUOTIME"];
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
+
+        //后台订单列表导出明细
+        public DataTable OutOrderList(string ids)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("业务单号");
+            dt.Columns.Add("上游下发日期");
+            dt.Columns.Add("发送下游日期");
+            dt.Columns.Add("FWO号");
+            dt.Columns.Add("报关FOO");
+            dt.Columns.Add("报检FOO");
+            dt.Columns.Add("业务类型");
+            dt.Columns.Add("报关单号");
+            dt.Columns.Add("海关状态");
+            dt.Columns.Add("报检流水号");
+            dt.Columns.Add("报检单号");
+            dt.Columns.Add("是否法检");
+            dt.Columns.Add("理货标记");
+            dt.Columns.Add("理货次数");
+            dt.Columns.Add("单证放行时间");
+            dt.Columns.Add("实物放行时间");
+            string sql = "select * from list_order where 1=1  and  id in(" + ids + ")";
+            DataTable data_dt = DBMgr.GetDataTable(sql);
+            DataRow dr;
+            for (int i = 0; i < data_dt.Rows.Count; i++)
+            {
+                dr = dt.NewRow();
+                dr["业务单号"] = data_dt.Rows[i]["CODE"];
+                dr["上游下发日期"] = data_dt.Rows[i]["CREATETIME"];
+                dr["发送下游日期"] = data_dt.Rows[i]["UPDATETIME"];
+                dr["FWO号"] = data_dt.Rows[i]["FWONO"];
+                dr["报关FOO"] = data_dt.Rows[i]["FOONO"];
+                dr["报检FOO"] = data_dt.Rows[i]["FOONOBJ"];
+                dr["业务类型"] = data_dt.Rows[i]["XCBUSINAME"];
+                dr["报关单号"] = data_dt.Rows[i]["DECLARATIONCODE"];
+                dr["海关状态"] = data_dt.Rows[i]["DECLARATIONSTATUS"];
+                dr["报检流水号"] = data_dt.Rows[i]["APPROVALCODE"];
+                dr["报检单号"] = data_dt.Rows[i]["INSPECTIONCODE"];
+                dr["是否法检"] = data_dt.Rows[i]["LAWCONDITION"];
+                dr["理货标记"] = data_dt.Rows[i]["IFLIHUO"];
+                dr["理货次数"] = data_dt.Rows[i]["LIHUOTOTAL"];
+                dr["单证放行时间"] = data_dt.Rows[i]["DANZHENGFANGXINGTIME"];
+                dr["实物放行时间"] = data_dt.Rows[i]["SHIWUFANGXINGTIME"];
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
+
         //导出数据
         [HttpPost]
         public ActionResult DataExportOut()
@@ -576,6 +745,16 @@ namespace SceneOfCustoms.Controllers
                     path = "/Export/后台同步状态" + Nowtime + ".xls";
                     OutPath = Server.MapPath("~" + path);
                     dt = SyncMsg(IDS);
+                    break;
+                case "Declaration":
+                    path = "/Export/报关单列表" + Nowtime + ".xls";
+                    OutPath = Server.MapPath("~" + path);
+                    dt = OutDeclaration(IDS);
+                    break;
+                case "OrderList":
+                    path = "/Export/订单列表" + Nowtime + ".xls";
+                    OutPath = Server.MapPath("~" + path);
+                    dt = OutOrderList(IDS);
                     break;
                 default:
                     path = "/Export/异常登记" + Nowtime + ".xls";
@@ -647,19 +826,23 @@ namespace SceneOfCustoms.Controllers
             return View();
         }
 
-
         public ActionResult DeclarationList()
         {
             ViewData["crumb"] = "订单管理-->报关单列表";
             return View();
         }
+        public ActionResult InspectionList()
+        {
+            ViewData["crumb"] = "订单管理-->报检单列表";
+            return View();
+        }
 
-        public string LoadDeclarationList()
+        public string LoadInspectionList()
         {
             int PageSize = Convert.ToInt32(Request.Params["rows"]);
             int Page = Convert.ToInt32(Request.Params["page"]);
             int total = 0;
-            string sql = "select o.fwono,o.foono,o.foonobj,o.code,o.XCBUSINAME,o.ONLYCODE,d.DECLARATIONCODE,d.CREATETIME,d.UPDATETIME from LIST_DECLARATION d left join list_order o on o.code=d.ordercode where 1=1 ";
+            string sql = "select o.fwono,o.foono,o.foonobj,o.code,o.XCBUSINAME,o.ONLYCODE,d.* from LIST_INSPECTION d left join list_order o on o.code=d.ordercode where 1=1 ";
             string data = Request["data"];
             if (data != null)
             {
@@ -668,16 +851,70 @@ namespace SceneOfCustoms.Controllers
                 {
                     string ordercode_value = jo.Value<string>("ordercode_value").Trim();
                     string name = "";
-                    if (jo.Value<string>("ordercode") == "CODE" || jo.Value<string>("ordercode") == "DECLARATIONCODE")
+                    if (jo.Value<string>("ordercode") == "CODE" || jo.Value<string>("ordercode") == "DECLARATIONCODE" || jo.Value<string>("ordercode") == "APPROVALCODE")
                     {
-                        name = "d." + name;
+                        name = "d." + jo.Value<string>("ordercode");
                     }
                     else
                     {
-                        name = "o." + name;
+                        name = "o." + jo.Value<string>("ordercode");
                     }
 
-                    sql += " AND " + jo.Value<string>("ordercode") + " like '%" + ordercode_value + "%'";
+                    sql += " AND " + name + " like '%" + ordercode_value + "%'";
+                }
+                if (jo.Value<string>("XCBUSINAME") != null && jo.Value<string>("XCBUSINAME") != "")
+                {
+                    sql += " AND o.XCBUSINAME = '" + jo.Value<string>("XCBUSINAME") + "' ";
+                }
+
+                if (jo.Value<string>("startdate") != "")
+                {
+                    string startdate = jo.Value<string>("startdate") + " 00:00:00";
+                    sql += " AND d." + jo.Value<string>("orderdate") + " >= to_date('" + startdate + "','yyyy-mm-dd hh24:mi:ss')";
+                }
+                if (jo.Value<string>("stopdate") != "")
+                {
+                    string stopdate = jo.Value<string>("stopdate") + " 23:59:59";
+                    sql += " AND d." + jo.Value<string>("orderdate") + " <= to_date('" + stopdate + "','yyyy-mm-dd hh24:mi:ss')";
+                }
+            }
+            string sort = !string.IsNullOrEmpty(Request.Params["sort"]) && Request.Params["sort"] != "text" ? Request.Params["sort"] : "ID";
+            sort = "d." + sort;
+            string order = !string.IsNullOrEmpty(Request.Params["order"]) ? Request.Params["order"] : "DESC";
+            sql = Extension.GetPageSql(sql, sort, order, ref total, (Page - 1) * PageSize, Page * PageSize);
+            DataTable dt = DBMgr.GetDataTable(sql);
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            string result = JsonConvert.SerializeObject(dt, iso);
+            result = "{\"total\":" + total + ",\"rows\":" + result + "}";
+            return result;
+        }
+
+
+        public string LoadDeclarationList()
+        {
+            int PageSize = Convert.ToInt32(Request.Params["rows"]);
+            int Page = Convert.ToInt32(Request.Params["page"]);
+            int total = 0;
+            string sql = "select o.fwono,o.foono,o.foonobj,o.code,o.XCBUSINAME,o.ONLYCODE,d.* from LIST_DECLARATION d left join list_order o on o.code=d.ordercode where 1=1 ";
+            string data = Request["data"];
+            if (data != null)
+            {
+                JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
+                if (jo.Value<string>("ordercode_value") != "" && jo.Value<string>("ordercode") != "text")
+                {
+                    string ordercode_value = jo.Value<string>("ordercode_value").Trim();
+                    string name = "";
+                    if (jo.Value<string>("ordercode") == "ORDERCODE" || jo.Value<string>("ordercode") == "DECLARATIONCODE" || jo.Value<string>("ordercode") == "PREDECLCODE")
+                    {
+                        name = "d." + jo.Value<string>("ordercode");
+                    }
+                    else
+                    {
+                        name = "o." + jo.Value<string>("ordercode");
+                    }
+
+                    sql += " AND " + name + " like '%" + ordercode_value + "%'";
                 }
                 if (jo.Value<string>("XCBUSINAME") != null && jo.Value<string>("XCBUSINAME") != "")
                 {
@@ -755,6 +992,9 @@ namespace SceneOfCustoms.Controllers
             string ID = Request.QueryString["ID"];
             string DECLARATIONCODE = Request.QueryString["DECLARATIONCODE"];//报关单号
             string INSPECTIONCODE = Request.QueryString["INSPECTIONCODE"];//报检单号
+
+            string APPROVALCODE = Request.QueryString["APPROVALCODE"];//报检流水号
+
             string TYPE = Request.QueryString["TYPE"];// 判断是报关  还是报检
             string sql = "select *  from list_order  where  ID = " + ID;
             DataTable dt = DBMgr.GetDataTable(sql);
@@ -783,20 +1023,14 @@ namespace SceneOfCustoms.Controllers
                     DECLARATIONCODE = dt.Rows[0]["DECLARATIONCODE"] + "";
                     OrderArray["DECLARATIONCODE"] = DECLARATIONCODE;
                     OrderArray["ORDERCODE"] = OrderArray.Value<string>("CODE");
-
                     OrderArray["IFSHANDAN"] = dt.Rows[0]["IFSHANDAN"] + "";
                     OrderArray["SHANDANTOTAL"] = dt.Rows[0]["SHANDANTOTAL"] + "";
                     OrderArray["SHANDANDESC"] = dt.Rows[0]["SHANDANDESC"] + "";
                     OrderArray["IFGAIDAN"] = dt.Rows[0]["IFGAIDAN"] + "";
                     OrderArray["GAIDANTOTAL"] = dt.Rows[0]["GAIDANTOTAL"] + "";
                     OrderArray["GAIDANDESC"] = dt.Rows[0]["GAIDANDESC"] + "";
-
-
-                    OrderArray["IFLIHUO"] = dt.Rows[0]["IFLIHUO"] + "";
-                    OrderArray["LIHUOTOTAL"] = dt.Rows[0]["LIHUOTOTAL"] + "";
-
-
-
+                    //OrderArray["IFLIHUO"] = dt.Rows[0]["IFLIHUO"] + "";
+                    //OrderArray["LIHUOTOTAL"] = dt.Rows[0]["LIHUOTOTAL"] + "";
                     OrderArray["IFYIJIAO"] = dt.Rows[0]["IFYIJIAO"] + "";
                     OrderArray["IFCHAYAN"] = dt.Rows[0]["IFCHAYAN"] + "";
                     OrderArray["CHAYANTOTAL"] = dt.Rows[0]["CHAYANTOTAL"] + "";
@@ -812,7 +1046,6 @@ namespace SceneOfCustoms.Controllers
                     {
                         OrderArray["KOUHUOTIME"] = Convert.ToDateTime(dt.Rows[0]["KOUHUOTIME"]).ToString("yyyy-MM-dd HH:mm:ss");
                     }
-
                 }
                 else
                 {
@@ -833,8 +1066,8 @@ namespace SceneOfCustoms.Controllers
                     OrderArray["CHAYANTOTAL"] = "";
                     OrderArray["CHAYANDESC"] = "";
 
-                    OrderArray["IFLIHUO"] = "";
-                    OrderArray["LIHUOTOTAL"] = "";
+                    //OrderArray["IFLIHUO"] = "";
+                    //OrderArray["LIHUOTOTAL"] = "";
 
                     OrderArray["IFTIAODANG"] = "";
                     OrderArray["TIAODANGTOTAL"] = "";
@@ -846,21 +1079,20 @@ namespace SceneOfCustoms.Controllers
             }
             else if (TYPE == "02")
             {
-                if (string.IsNullOrEmpty(INSPECTIONCODE))
+                if (string.IsNullOrEmpty(APPROVALCODE))
                 {
                     sql = "select * from LIST_INSPECTION where  ORDERCODE='" + CODE + "' order by id asc";
                 }
                 else
                 {
-                    sql = "select * from LIST_INSPECTION where  INSPECTIONCODE='" + INSPECTIONCODE + "'";
+                    sql = "select * from LIST_INSPECTION where  APPROVALCODE='" + APPROVALCODE + "'";
                 }
                 dt = DBMgr.GetDataTable(sql);
                 if (dt.Rows.Count > 0)
                 {
-                    INSPECTIONCODE = dt.Rows[0]["INSPECTIONCODE"] + "";
-                    OrderArray["INSPECTIONCODE"] = INSPECTIONCODE;
+                    OrderArray["INSPECTIONCODE"] = dt.Rows[0]["INSPECTIONCODE"] + "";
+                    OrderArray["APPROVALCODE"] = dt.Rows[0]["APPROVALCODE"] + "";
                     OrderArray["ORDERCODE"] = OrderArray.Value<string>("CODE");
-
                     OrderArray["IFSHANDAN"] = dt.Rows[0]["IFSHANDAN"] + "";
                     OrderArray["SHANDANTOTAL"] = dt.Rows[0]["SHANDANTOTAL"] + "";
                     OrderArray["SHANDANDESC"] = dt.Rows[0]["SHANDANDESC"] + "";
@@ -973,6 +1205,16 @@ namespace SceneOfCustoms.Controllers
             if (data != null)
             {
                 JObject jo = JsonConvert.DeserializeObject<JObject>(data);      //json格式转换为数组
+                //是否放行
+                if (jo.Value<string>("IFFANGXING") == "1")
+                {
+                    sql += "AND　id in (select id from list_order where  DANZHENGFANGXINGUSERNAME is not  null and SHIWUFANGXINGUSERNAME is not null)";
+                }
+                else if (jo.Value<string>("IFFANGXING") == "0")
+                {
+                    sql += "AND　id in (select id from list_order where  DANZHENGFANGXINGUSERNAME is  null or SHIWUFANGXINGUSERNAME is  null)";
+                }
+
                 BUSITYPE = jo.Value<string>("BUSITYPE");
                 if (jo.Value<string>("businessin_object") != null && jo.Value<string>("businessin_object") != "")
                 {
@@ -1097,32 +1339,96 @@ namespace SceneOfCustoms.Controllers
                     }
                 }
 
+
+                if (jo.Value<string>("APPROVALCODE") != null && jo.Value<string>("APPROVALCODE") != "")
+                {
+                    if (jo.Value<string>("APPROVALCODE") == "1")
+                    {
+                        sql += " AND APPROVALCODE  is not null ";
+                    }
+                    if (jo.Value<string>("APPROVALCODE") == "0")
+                    {
+                        sql += " AND APPROVALCODE  is  null ";
+                    }
+                }
+
+
                 if (jo.Value<string>("LAWCONDITION") == "1")
                 {
                     sql += " AND LAWCONDITION = '1' ";
                 }
                 else if (jo.Value<string>("LAWCONDITION") == "0")
                 {
-                    sql += " AND (LAWCONDITION is null or LAWCONDITION='0') ";
+                    sql += " AND  LAWCONDITION='0' ";
                 }
 
 
+                if (jo.Value<string>("ISNEEDCLEARANCE") == "1")
+                {
+                    sql += " AND ISNEEDCLEARANCE = '1' ";
+                }
+                else if (jo.Value<string>("ISNEEDCLEARANCE") == "0")
+                {
+                    sql += " AND  ISNEEDCLEARANCE='0' ";
+                }
                 //if (jo.Value<string>("WOODPACKINGID") != null && jo.Value<string>("WOODPACKINGID") != "")
                 //{
                 //    sql += " AND WOODPACKINGID = '" + jo.Value<string>("WOODPACKINGID") + "' ";
                 //}
-
-
-                if (jo.Value<string>("LIHUOSIGN") == "1")
+                if (jo.Value<string>("IFLIHUO") == "1")
                 {
-                    sql += " AND LIHUOSIGN = '1' ";
+                    sql += " AND IFLIHUO = '1' ";
                 }
-                else if (jo.Value<string>("LIHUOSIGN") == "0")
+                else if (jo.Value<string>("IFLIHUO") == "0")
                 {
-                    sql += " AND LIHUOSIGN is null ";
+                    sql += " AND IFLIHUO is null ";
                 }
 
-
+                //海关状态
+                if (!string.IsNullOrEmpty(jo.Value<string>("customs_state")))
+                {
+                    if (jo.Value<string>("customs_state") == "1")
+                    {
+                        sql += " AND  DECLARATIONSTATUS like '%提前转关生成%' ";
+                    }
+                    else if (jo.Value<string>("customs_state") == "2")
+                    {
+                        sql += " AND  DECLARATIONSTATUS like '%暂存未申报%' ";
+                    }
+                    else if (jo.Value<string>("customs_state") == "3")
+                    {
+                        sql += " AND  DECLARATIONSTATUS like '%已申报%' ";
+                    }
+                    else if (jo.Value<string>("customs_state") == "4")
+                    {
+                        sql += " AND  DECLARATIONSTATUS like '%申报退单%' ";
+                    }
+                    else if (jo.Value<string>("customs_state") == "5")
+                    {
+                        sql += " AND  DECLARATIONSTATUS like '%申报完成%' ";
+                    }
+                    else if (jo.Value<string>("customs_state") == "6")
+                    {
+                        sql += " AND  DECLARATIONSTATUS like '%现场申报%' ";
+                    }
+                    else if (jo.Value<string>("customs_state") == "7")
+                    {
+                        sql += " AND  DECLARATIONSTATUS like '%布控查验%' ";
+                    }
+                    else if (jo.Value<string>("customs_state") == "8")
+                    {
+                        sql += " AND  DECLARATIONSTATUS like '%已结关%' ";
+                    }
+                    else if (jo.Value<string>("customs_state") == "9")
+                    {
+                        sql += " AND  DECLARATIONSTATUS like '%已放行%' ";
+                    }
+                }
+                //收发货单位
+                if (!string.IsNullOrEmpty(jo.Value<string>("company_value")))
+                {
+                    sql += " AND  " + jo.Value<string>("company") + " like '%" + jo.Value<string>("company_value").Trim() + "%' ";
+                }
             }
             else
             {
@@ -1257,9 +1563,18 @@ namespace SceneOfCustoms.Controllers
                 sql += "  JGCZCBH =  '" + Request.Form["JGCZCBH"] + "',";
             }
 
-            //sql += "  IFSHANDAN =  '" + Request.Form["IFSHANDAN"] + "',";
-            //sql += "  IFGAIDAN =  '" + Request.Form["IFGAIDAN"] + "',";
-            //sql += "  IFYIJIAO =  '" + Request.Form["IFYIJIAO"] + "',";
+            //理货标识 要和业务走
+            sql += "  IFLIHUO =  '" + Request.Form["IFLIHUO"] + "',";
+            if (Request.Params.AllKeys.Contains("LIHUOTOTAL"))
+            {
+                sql += "  LIHUOTOTAL =  '" + Request.Form["LIHUOTOTAL"] + "',";
+            }
+            if (Request.Params.AllKeys.Contains("LIHUODESC"))
+            {
+                sql += "  LIHUODESC =  '" + Request.Form["LIHUODESC"] + "',";
+            }
+
+
             sql += "  LAWCONDITION =  '" + Request.Form["LAWCONDITION"] + "',";
 
             sql = sql.Substring(0, sql.Length - 1);
@@ -1271,16 +1586,22 @@ namespace SceneOfCustoms.Controllers
                 string type = Request.Form["type"];
                 string CODE = Request.Form["CODE"];
                 string DECLARATIONCODE = Request.Form["DECLARATIONCODE"];
-                string INSPECTIONCODE = Request.Form["INSPECTIONCODE"];
+                string APPROVALCODE = Request.Form["APPROVALCODE"];
                 if (type == "02")
                 {
-                    UpdateXcInspection(INSPECTIONCODE, FORMINFO);
+                    UpdateXcInspection(APPROVALCODE, FORMINFO);
                     IFS.ZSBJ_ABNO(CODE);
+
+                    string json = "{\"CODE\":'" + CODE + "',\"TYPE\":'BJ'}";
+                    db.ListRightPush("XGW_BJYC", json);
                 }
                 else
                 {
                     UpdateXcDeclaration(DECLARATIONCODE, FORMINFO);
                     IFS.ZSBG_ABNO(CODE);
+
+                    string json = "{\"CODE\":'" + CODE + "',\"TYPE\":'BG'}";
+                    db.ListRightPush("XGW_BGYC", json);
                 }
 
                 return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
@@ -1292,14 +1613,10 @@ namespace SceneOfCustoms.Controllers
 
         }
 
-        public static void UpdateXcInspection(string INSPECTIONCODE, string FORMINFO)
+        public static void UpdateXcInspection(string APPROVALCODE, string FORMINFO)
         {
             System.Collections.Specialized.NameValueCollection Request = System.Web.HttpUtility.ParseQueryString(FORMINFO);
-
             string sql = "update LIST_INSPECTION set";
-
-
-
             sql += "  IFSHANDAN =  '" + Request["IFSHANDAN"] + "',";
             if (Request.AllKeys.Contains("SHANDANTOTAL"))
             {
@@ -1339,10 +1656,9 @@ namespace SceneOfCustoms.Controllers
 
 
             sql = sql.Substring(0, sql.Length - 1);
-            sql += " where INSPECTIONCODE =" + INSPECTIONCODE;
+            sql += " where APPROVALCODE ='" + APPROVALCODE + "'";
             DBMgr.ExecuteNonQuery(sql);
         }
-
 
         //同步报关单现场表里的数据 DLC 2016-11-3
         public static void UpdateXcDeclaration(string DECLARATIONCODE, string FORMINFO)
@@ -1372,17 +1688,18 @@ namespace SceneOfCustoms.Controllers
                 sql += "  GAIDANDESC =  '" + Request["GAIDANDESC"] + "',";
             }
             sql += "  IFYIJIAO =  '" + Request["IFYIJIAO"] + "',";
-            sql += "  IFLIHUO =  '" + Request["IFLIHUO"] + "',";
-            if (Request.AllKeys.Contains("LIHUOTOTAL"))
-            {
-                sql += "  LIHUOTOTAL =  '" + Request["LIHUOTOTAL"] + "',";
-            }
 
 
-            if (Request.AllKeys.Contains("LIHUODESC"))
-            {
-                sql += "  LIHUODESC =  '" + Request["LIHUODESC"] + "',";
-            }
+            //理货标识 要和业务走
+            //sql += "  IFLIHUO =  '" + Request["IFLIHUO"] + "',";
+            //if (Request.AllKeys.Contains("LIHUOTOTAL"))
+            //{
+            //    sql += "  LIHUOTOTAL =  '" + Request["LIHUOTOTAL"] + "',";
+            //}
+            //if (Request.AllKeys.Contains("LIHUODESC"))
+            //{
+            //    sql += "  LIHUODESC =  '" + Request["LIHUODESC"] + "',";
+            //}
 
             sql += "  IFCHAYAN =  '" + Request["IFCHAYAN"] + "',";
             if (Request.AllKeys.Contains("CHAYANTOTAL"))
@@ -1410,7 +1727,7 @@ namespace SceneOfCustoms.Controllers
                 sql += "  KOUHUOTIME =  to_date('" + Request["KOUHUOTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
             }
             sql = sql.Substring(0, sql.Length - 1);
-            sql += " where DECLARATIONCODE =" + DECLARATIONCODE;
+            sql += " where DECLARATIONCODE ='" + DECLARATIONCODE + "'";
             DBMgr.ExecuteNonQuery(sql);
         }
 
@@ -1424,6 +1741,8 @@ namespace SceneOfCustoms.Controllers
             string INSPSTATUS = Request.Form["INSPSTATUS"];//报检
             string DECLSTATUS = Request.Form["DECLSTATUS"];//报关
             JObject jo = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
+            string name = jo.Value<string>("REALNAME");
+
             string sql = "update list_order set  ";
 
             if (!string.IsNullOrEmpty(INSPSTATUS))
@@ -1441,21 +1760,90 @@ namespace SceneOfCustoms.Controllers
                 string time = type + "TIME";
                 string userid = type + "USERID";
                 string username = type + "USERNAME";
-                sql += time + "  = to_date('" + datetime + "','yyyy-mm-dd hh24:mi:ss') ," + username + " ='" + jo.Value<string>("REALNAME") + "', " + userid + " =  " + jo.Value<string>("ID");
+                if (string.IsNullOrEmpty(datetime))
+                {
+                    name = "";
+                }
+                sql += time + "  = to_date('" + datetime + "','yyyy-mm-dd hh24:mi:ss') ," + username + " ='" + name + "', " + userid + " =  '" + jo.Value<string>("ID") + "'";
             }
-            sql += " where ID =" + ID;
+            if (!string.IsNullOrEmpty(ASSOCIATENO))
+            {
+                sql += " where ASSOCIATENO ='" + ASSOCIATENO + "'";
+            }
+            else
+            {
+                sql += " where ID ='" + ID + "'";
+            }
             int res = DBMgr.ExecuteNonQuery(sql);
             if (res == 1)
             {
-                IFS.Callback_TM(type, ID, ASSOCIATENO);
+                //IFS.Callback_TM(type, ID, ASSOCIATENO);
+                SendData(type, ID);
                 datetime = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
-                return Json(new { Success = true, datetime = datetime, name = jo.Value<string>("REALNAME") }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = true, datetime = datetime, name = name }, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 return Json(new { Success = false, sql = sql }, JsonRequestBehavior.AllowGet);
             }
+        }
 
+        public void SendData(string type, string id)
+        {
+            if (type == "XIAOBAO")
+            {
+                //销保时间
+                string json = "{\"TIME\":'" + type + "',\"ID\":'" + id + "',\"TYPE\":'BG'}";
+                db.ListRightPush("XGW_XBSJ", json);
+            }
+            else if (type == "CHAYANSTART")
+            {
+                //查验起始时间
+                //string json = "{\"TIME\":'" + type + "',\"ID\":'" + id + "',\"TYPE\":'BG'}";
+                //db.ListRightPush("XGW_CYQSSJ", json);
+            }
+            else if (type == "CHAYANEND")
+            {
+                //查验完成时间
+                string json = "{\"TIME\":'" + type + "',\"ID\":'" + id + "',\"TYPE\":'BG'}";
+                db.ListRightPush("XGW_CYWCSJ", json);
+            }
+            else if (type == "BAOJIANFANGXING")
+            {
+                //报检放行时间
+                string json = "{\"TIME\":'" + type + "',\"ID\":'" + id + "',\"TYPE\":'BJ'}";
+                db.ListRightPush("XGW_BJFXSJ", json);
+            }
+            else if (type == "CHAYANFANGXING")
+            {
+                // 查验放行时间 完成
+                string json = "{\"TIME\":'" + type + "',\"ID\":'" + id + "',\"TYPE\":'BJ'}";
+                db.ListRightPush("XGW_CYFXSJ", json);
+            }
+            else if (type == "BJCHAYAN")
+            {
+                //报检查验 
+                string json = "{\"TIME\":'" + type + "',\"ID\":'" + id + "',\"TYPE\":'BJ'}";
+                db.ListRightPush("XGW_BJCYSJ", json);
+            }
+            else if (type == "BAORUHAIGUAN")
+            {
+                //报入海关时间
+                string json = "{\"TIME\":'" + type + "',\"ID\":'" + id + "',\"TYPE\":'BG'}";
+                db.ListRightPush("XGW_BRHGSJ", json);
+            }
+            else if (type == "BAOJIAN")
+            {
+                //报检时间
+                //string json = "{\"TIME\":'" + type + "',\"ID\":'" + id + "',\"TYPE\":'BJ'}";
+                //db.ListRightPush("XGW_BJSJ", json);
+            }
+            else if (type == "SHIWUFANGXING")
+            {
+                //实物放行时间
+                string json = "{\"TIME\":'" + type + "',\"ID\":'" + id + "',\"TYPE\":'BG'}";
+                db.ListRightPush("XGW_SWFXSJ", json);
+            }
         }
 
 
@@ -1482,96 +1870,82 @@ namespace SceneOfCustoms.Controllers
         //报关批量更新保存
         public ActionResult SaveUpdateData(FormCollection form)
         {
+            JObject jo = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
             string ids = Request.Form["ids"];
-            string bname = Request["bname"];
-            string dname = Request["dname"];
-            string sname = Request["sname"];
             string sql = "update list_order set ";
             if (Request.Form["BAORUHAIGUANTIME"] != "")
             {
-                sql += "  BAORUHAIGUANTIME =  to_date('" + Request.Form["BAORUHAIGUANTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+                sql += "BAORUHAIGUANTIME =  to_date('" + Request.Form["BAORUHAIGUANTIME"] + "','yyyy-MM-dd hh24:mi:ss'), BAORUHAIGUANUSERNAME ='" + jo.Value<string>("REALNAME") + "', BAORUHAIGUANUSERID='" + jo.Value<string>("ID") + "',";
             }
             if (Request.Form["DANZHENGFANGXINGTIME"] != "")
             {
-                sql += "  DANZHENGFANGXINGTIME =  to_date('" + Request.Form["DANZHENGFANGXINGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+                sql += "DANZHENGFANGXINGTIME =  to_date('" + Request.Form["DANZHENGFANGXINGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),DANZHENGFANGXINGUSERNAME = '" + jo.Value<string>("REALNAME") + "',DANZHENGFANGXINGUSERID ='" + jo.Value<string>("ID") + "',";
             }
             if (Request.Form["SHIWUFANGXINGTIME"] != "")
             {
-                sql += "  SHIWUFANGXINGTIME =  to_date('" + Request.Form["SHIWUFANGXINGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+                sql += "SHIWUFANGXINGTIME =  to_date('" + Request.Form["SHIWUFANGXINGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),SHIWUFANGXINGUSERNAME ='" + jo.Value<string>("REALNAME") + "',SHIWUFANGXINGUSERID ='" + jo.Value<string>("ID") + "',";
             }
-            if (bname != "" && bname != null)
+
+            if (!string.IsNullOrEmpty(Request.Form["IFPASSMODE"]))
             {
-                sql += "  BAORUHAIGUANUSERNAME =  '" + bname + "',";
+                sql += "PASSMODE =  '" + Request.Form["PASSMODE"] + "',";
             }
-            if (dname != "" && dname != null)
+            //IF_LIHUO
+            if (!string.IsNullOrEmpty(Request.Form["IF_LIHUO"]))
             {
-                sql += "  DANZHENGFANGXINGUSERNAME =  '" + dname + "',";
-            }
-            if (sname != "" && sname != null)
-            {
-                sql += "  SHIWUFANGXINGUSERNAME =  '" + sname + "',";
+                sql += "IFLIHUO =  '" + Request["IFLIHUO"] + "',";
+                sql += "LIHUOTOTAL =  '" + Request["LIHUOTOTAL"] + "',";
             }
             sql = sql.Substring(0, sql.Length - 1);
             sql += " where ID in (" + ids + ")";
-            if (DBMgr.ExecuteNonQuery(sql) != 0)
+
+            try
             {
-                return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+                if (DBMgr.ExecuteNonQuery(sql) != 0)
+                {
+                    return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { Success = false, sql = sql }, JsonRequestBehavior.AllowGet);
+                }
             }
-            else
+            catch (Exception e)
             {
                 return Json(new { Success = false, sql = sql }, JsonRequestBehavior.AllowGet);
             }
+
+
+
         }
         //报检批量更新保存
         public ActionResult SavebjUpdateData(FormCollection form)
         {
+            JObject jo = Extension.Get_UserInfo(HttpContext.User.Identity.Name);
             string ids = Request.Form["ids"];
-            string bjname = Request["bjname"];
-            string bjfxname = Request["bjfxname"];
-            string xzname = Request["xzname"];
-            string cyname = Request["cyname"];
-            string cyfxname = Request["cyfxname"];
             string sql = "update list_order set ";
             if (Request.Form["BAOJIANTIME"] != "")
             {
-                sql += "  BAOJIANTIME =  to_date('" + Request.Form["BAOJIANTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+                sql += "BAOJIANTIME =  to_date('" + Request.Form["BAOJIANTIME"] + "','yyyy-MM-dd hh24:mi:ss'),BAOJIANUSERNAME='" + jo.Value<string>("REALNAME") + "',BAOJIANUSERID='" + jo.Value<string>("ID") + "',";
             }
             if (Request.Form["BAOJIANFANGXINGTIME"] != "")
             {
-                sql += "  BAOJIANFANGXINGTIME =  to_date('" + Request.Form["BAOJIANFANGXINGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+                sql += "BAOJIANFANGXINGTIME =  to_date('" + Request.Form["BAOJIANFANGXINGTIME"] + "','yyyy-MM-dd hh24:mi:ss'), BAOJIANFANGXINGUSERNAME='" + jo.Value<string>("REALNAME") + "',BAOJIANFANGXINGUSERID='" + jo.Value<string>("ID") + "',";
+
             }
             if (Request.Form["XUNZHENGTIME"] != "")
             {
-                sql += "  XUNZHENGTIME =  to_date('" + Request.Form["XUNZHENGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+                sql += "XUNZHENGTIME =  to_date('" + Request.Form["XUNZHENGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),XUNZHENGUSERNAME='" + jo.Value<string>("REALNAME") + "',XUNZHENGUSERID='" + jo.Value<string>("ID") + "',";
             }
-            if (Request.Form["CHAYANZHILINGXIAFATIME"] != "")
+            if (Request.Form["BJCHAYANTIME"] != "")
             {
-                sql += "  CHAYANZHILINGXIAFATIME =  to_date('" + Request.Form["CHAYANZHILINGXIAFATIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+                sql += "BJCHAYANTIME =  to_date('" + Request.Form["BJCHAYANTIME"] + "','yyyy-MM-dd hh24:mi:ss'),BJCHAYANUSERNAME='" + jo.Value<string>("REALNAME") + "',BJCHAYANUSERID='" + jo.Value<string>("ID") + "',";
             }
             if (Request.Form["CHAYANFANGXINGTIME"] != "")
             {
-                sql += "  CHAYANFANGXINGTIME =  to_date('" + Request.Form["CHAYANFANGXINGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),";
+                sql += "CHAYANFANGXINGTIME =  to_date('" + Request.Form["CHAYANFANGXINGTIME"] + "','yyyy-MM-dd hh24:mi:ss'),CHAYANFANGXINGUSERNAME='" + jo.Value<string>("REALNAME") + "',CHAYANFANGXINGUSERID='" + jo.Value<string>("ID") + "',";
             }
-            if (bjname != "" && bjname != null)
-            {
-                sql += "  BAOJIANUSERNAME =  '" + bjname + "',";
-            }
-            if (bjfxname != "" && bjfxname != null)
-            {
-                sql += "  BAOJIANFANGXINGUSERNAME =  '" + bjfxname + "',";
-            }
-            if (xzname != "" && xzname != null)
-            {
-                sql += "  XUNZHENGUSERNAME =  '" + xzname + "',";
-            }
-            if (cyname != "" && cyname != null)
-            {
-                sql += "  CHAYANZHILINGXIAFAUSERNAME =  '" + cyname + "',";
-            }
-            if (cyfxname != "" && cyfxname != null)
-            {
-                sql += "  CHAYANFANGXINGUSERNAME =  '" + cyfxname + "',";
-            }
+
             sql = sql.Substring(0, sql.Length - 1);
             sql += " where ID in (" + ids + ")";
             if (DBMgr.ExecuteNonQuery(sql) != 0)
@@ -1633,8 +2007,6 @@ namespace SceneOfCustoms.Controllers
             return result;
         }
 
-
-
         public string LoadBjdList()
         {
             string CODE = Request["data"];
@@ -1652,7 +2024,6 @@ namespace SceneOfCustoms.Controllers
             result = "{\"total\":" + total + ",\"rows\":" + result + "}";
             return result;
         }
-
 
         //报关单信息更新保存
         public ActionResult SaveBgdinfo()

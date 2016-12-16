@@ -1,7 +1,8 @@
 ﻿<script type="text/javascript">
     //1 查询条件 --日期
     var search_condition_date = [
-        { code: 'GUANWUJIESHOUTIME', name: '关务接受日期', selected: true },
+                { code: 'CREATETIME', name: '上游下发日期', selected: true },
+        { code: 'GUANWUJIESHOUTIME', name: '关务接受日期'},
         { code: 'BAORUHAIGUANTIME', name: '报入海关日期' },
         { code: 'SHANDANKAISHITIME', name: '删单开始日期' },
         { code: 'SHANDANWANCHENGTIME', name: '删单完成日期' },
@@ -13,8 +14,7 @@
         { code: 'DANZHENGFANGXINGTIME', name: '单证放行日期' },
         { code: 'SHIWUFANGXINGTIME', name: '实物放行日期' },
         { code: 'XIAOBAOTIME', name: '销保时间' },
-        { code: 'SHIWUJIAFENGTIME', name: '实物加封时间' },
-        { code: 'CREATETIME', name: 'TM下发日期' }
+        { code: 'SHIWUJIAFENGTIME', name: '实物加封时间' }
     ];
     //2 查询条件  --单据号
     var search_code = [
@@ -50,27 +50,26 @@
                 <tr>
                     <th data-options="field: 'ID',width:80,checkbox:true"></th>
                     <th data-options="field:'CODE',width:100,sortable:true,">业务单号</th>
-                    <th data-options="field:'CREATETIME',width:130,sortable:true,">TM下发时间</th>
                     <th data-options="field:'FGOODSUNIT',width:200,sortable:true,">发货人</th>
                     <th data-options="field:'DECLARATIONCODE',width:150,sortable:true">报关单号</th>
-                    <th data-options="field:'DECLARATIONSTATUS',width:150,sortable:true">海关通关状态</th>
-                    <th data-options="field:'text',width:100,sortable:true">关务状态</th>
-                    <th data-options="field:'BUSITYPE',width:100,formatter:formatBUSITYPE">业务类型</th>
+                    <th data-options="field:'DECLARATIONSTATUS',width:100">海关通关状态</th>
+                    <th data-options="field:'DANZHENGFANGXINGUSERNAME',width:70">单证放行人</th>
+                    <th data-options="field:'SHIWUFANGXINGUSERNAME',width:70">实物放行人</th>
                 </tr>
             </thead>
             <thead>
                 <tr>
+                    <th data-options="field:'CREATETIME',width:130,sortable:true">上游下发日期</th>
+                    <th data-options="field:'BUSITYPE',width:100,formatter:formatBUSITYPE">业务类型</th>
                     <th data-options="field:'GOODSNUM',width:100,sortable:true">总件数</th>
                     <th data-options="field:'GOODSWEIGHT',width:100,sortable:true">总重量</th>
                     <th data-options="field:'ASSOCIATETRADEWAY',width:100,sortable:true">贸易方式</th>
                     <th data-options="field:'TURNPRENO',width:100,sortable:true">转关预录号</th>
                     <th data-options="field:'GUANWUJIESHOUTIME',width:100,sortable:true">关务接受时间</th>
                     <th data-options="field:'BAORUHAIGUANTIME',width:100,sortable:true">报入海关时间</th>
-                    <th data-options="field:'DANZHENGFANGXINGTIME',width:100,sortable:true">单证放行时间</th>
                     <th data-options="field:'SHIWUJIAFENGTIME',width:100,sortable:true">实物加封时间</th>
-                    <th data-options="field:'SHIWUFANGXINGTIME',width:100,sortable:true">实物放行时间</th>
-                    <th data-options="field:'DANZHENGFANGXINGUSERNAME',width:100,sortable:true">单证放行人</th>
-                    <th data-options="field:'SHIWUFANGXINGUSERNAME',width:100,sortable:true">实物放行人</th>
+                    <th data-options="field:'DANZHENGFANGXINGTIME',width:130,sortable:true">单证放行时间</th>
+                    <th data-options="field:'SHIWUFANGXINGTIME',width:130,sortable:true">实物放行时间</th>
                     <th data-options="field:'FWONO',width:180,sortable:true">FWO订单号</th>
                     <th data-options="field:'FOONO',width:190,sortable:true">FOO报关服务号</th>
                     <th data-options="field:'CUSTOMDISTRICTCODE',width:100,sortable:true">关区代码</th>
@@ -130,6 +129,21 @@
                             </td>
                             <td>
                                 <select class="easyui-combobox combobox_width value" id="CUSTOMDISTRICTCODE" name="CUSTOMDISTRICTCODE"></select>
+                            </td>
+                            <td class="search_margin">
+                                <select class="easyui-combobox" panelheight="auto">
+                                    <option>是否放行</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox combobox_width value is_check" editable="false" name="IFFANGXING" panelheight="auto"></select>
+                            </td>
+
+                            <td class="search_margin">
+                                <select class="easyui-combobox" id="company" panelheight="auto" name="company"></select>
+                            </td>
+                            <td>
+                                <input class="easyui-textbox value placeholderclass" type="text" name="company_value" placeholder="单位名称" />
                             </td>
                         </tr>
                     </table>

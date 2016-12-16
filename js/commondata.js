@@ -1,4 +1,26 @@
-﻿//公共静态数据
+﻿/**
+* 给时间框控件扩展一个清除的按钮
+*/
+$.fn.datetimebox.defaults.cleanText = '清空';
+
+(function ($) {
+    var buttons = $.extend([], $.fn.datetimebox.defaults.buttons);
+    buttons.splice(1, 0, {
+        text: function (target) {
+            return $(target).datetimebox("options").cleanText
+        },
+        handler: function (target) {
+            $(target).datetimebox("setValue", "");
+            $(target).datetimebox("hidePanel");
+        }
+    });
+    $.extend($.fn.datetimebox.defaults, {
+        buttons: buttons
+    });
+
+})(jQuery)
+
+//公共静态数据
 
 //1 查询条件 --日期
 //var search_condition_date = [
@@ -45,15 +67,24 @@ var search_operator = [
 
 //4 查询条件  --海关通关状态
 var search_customs_state = [
-    { code: 'jiedan', name: '已申报' },
-    { code: 'jiedan', name: '简化手续方式' },
-    { code: 'jiedan', name: '同意担保放行' },
-    { code: 'jiedan', name: '已放行' },
-    { code: 'jiedan', name: '删单成功' },
-    { code: 'jiedan', name: '已接单' },
-    { code: 'jiedan', name: '已结关' },
-    { code: 'jiedan', name: '人工审核通过' },
-    { code: 'jiedan', name: '人工退单' }
+    //{ code: 'jiedan', name: '已申报' },
+    //{ code: 'jiedan', name: '简化手续方式' },
+    //{ code: 'jiedan', name: '同意担保放行' },
+    //{ code: 'jiedan', name: '已放行' },
+    //{ code: 'jiedan', name: '删单成功' },
+    //{ code: 'jiedan', name: '已接单' },
+    //{ code: 'jiedan', name: '已结关' },
+    //{ code: 'jiedan', name: '人工审核通过' },
+    //{ code: 'jiedan', name: '人工退单' }
+      { code: '1', name: '提前转关生成' },
+      { code: '2', name: '暂存未申报' },
+      { code: '3', name: '已申报' },
+      { code: '4', name: '申报退单' },
+      { code: '5', name: '申报完成' },
+      { code: '6', name: '现场申报' },
+      { code: '7', name: '布控查验' },
+      { code: '8', name: '已结关' },
+      { code: '9', name: '已放行' }
 ];
 
 //5 查询选择值  --关代码
@@ -120,6 +151,12 @@ var declaration_type = [
 var out_in = [
        { code: 'HUB 仓出', name: '转出' },
        { code: 'HUB 仓进', name: '转入' }
+];
+
+// 收发货方
+var company = [
+    { code: 'SGOODSUNIT', name: '收货方', selected: true },
+    { code: 'FGOODSUNIT', name: '发货方' }
 ];
 
 
@@ -208,6 +245,11 @@ $(function () {
         textField: 'name'
     });
 
+    $('#searchform #company').combobox({
+        data: company,
+        valueField: 'code',
+        textField: 'name'
+    });
 
     ////改状态  报关
     //$('.DECLSTATUS').click(function () {
@@ -249,7 +291,7 @@ $(function () {
     //时间  状态 
     $('.time_input').datetimebox({
         stopFirstChangeEvent: true,
-        onChange: function () {
+        onChange: function (date) {
             var options = $(this).datetimebox('options');
             if (options.stopFirstChangeEvent) {
                 options.stopFirstChangeEvent = false;
@@ -260,61 +302,64 @@ $(function () {
             var DECLSTATUS1 = "";//报关状态 叠加保税2个表单
             var DECLSTATUS2 = "";//报关状态 叠加保税2个表单
             var INSPSTATUS = "";//报检状态
-            if ($(this).hasClass('DECLSTATUS')) {
-                if (type == 'BAORUHAIGUAN') {
-                    DECLSTATUS1 = "报关";
-                    $("#DECLSTATUS").textbox('setValue', '报关');
-                } else if (type == 'CHAYANSTART') {
-                    DECLSTATUS1 = "查验";
-                    $("#DECLSTATUS").textbox('setValue', '查验');
-                } else if (type == 'DANZHENGFANGXING') {
-                    DECLSTATUS1 = "单证放行";
-                    $("#DECLSTATUS").textbox('setValue', '单证放行');
-                } else if (type == 'SHIWUFANGXING') {
-                    DECLSTATUS1 = "实物放行";
-                    $("#DECLSTATUS").textbox('setValue', '实物放行');
+            if (date != "") {
+                if ($(this).hasClass('DECLSTATUS')) {
+                    if (type == 'BAORUHAIGUAN') {
+                        DECLSTATUS1 = "报关";
+                        $("#DECLSTATUS").textbox('setValue', '报关');
+                    } else if (type == 'CHAYANSTART') {
+                        DECLSTATUS1 = "查验";
+                        $("#DECLSTATUS").textbox('setValue', '查验');
+                    } else if (type == 'DANZHENGFANGXING') {
+                        DECLSTATUS1 = "单证放行";
+                        $("#DECLSTATUS").textbox('setValue', '单证放行');
+                    } else if (type == 'SHIWUFANGXING') {
+                        DECLSTATUS1 = "实物放行";
+                        $("#DECLSTATUS").textbox('setValue', '实物放行');
+                    }
+
+                } else if ($(this).hasClass('DECLSTATUS2')) {
+                    if (type == 'BAORUHAIGUAN') {
+                        DECLSTATUS2 = "报关";
+                        $("#DECLSTATUS2").textbox('setValue', '报关');
+                    } else if (type == 'CHAYANSTART') {
+                        DECLSTATUS2 = "查验";
+                        $("#DECLSTATUS2").textbox('setValue', '查验');
+                    } else if (type == 'DANZHENGFANGXING') {
+                        DECLSTATUS2 = "单证放行";
+                        $("#DECLSTATUS2").textbox('setValue', '单证放行');
+                    } else if (type == 'SHIWUFANGXING') {
+                        DECLSTATUS2 = "实物放行";
+                        $("#DECLSTATUS").textbox('setValue', '实物放行');
+                    }
+
+                } else if ($(this).hasClass('INSPSTATUS')) {
+                    if (type == 'BAOJIAN') {
+                        INSPSTATUS = "报检";
+                        $("#INSPSTATUS").textbox('setValue', '报检');
+                    } else if (type == 'BJCHAYAN') {
+                        INSPSTATUS = "查验";
+                        $("#INSPSTATUS").textbox('setValue', '查验');
+                    } else if (type == 'XUNZHENG') {
+                        INSPSTATUS = "熏蒸";
+                        $("#INSPSTATUS").textbox('setValue', '熏蒸');
+                    } else if (type == 'BAOJIANFANGXING') {
+                        INSPSTATUS = "报检放行";
+                        $("#INSPSTATUS").textbox('setValue', '报检放行');
+                    }
                 }
 
-            } else if ($(this).hasClass('DECLSTATUS2')) {
-                if (type == 'BAORUHAIGUAN') {
-                    DECLSTATUS2 = "报关";
-                    $("#DECLSTATUS2").textbox('setValue', '报关');
-                } else if (type == 'CHAYANSTART') {
-                    DECLSTATUS2 = "查验";
-                    $("#DECLSTATUS2").textbox('setValue', '查验');
-                } else if (type == 'DANZHENGFANGXING') {
-                    DECLSTATUS2 = "单证放行";
-                    $("#DECLSTATUS2").textbox('setValue', '单证放行');
-                } else if (type == 'SHIWUFANGXING') {
-                    DECLSTATUS2 = "实物放行";
-                    $("#DECLSTATUS").textbox('setValue', '实物放行');
-                }
-
-            } else if ($(this).hasClass('INSPSTATUS')) {
-                if (type == 'BAOJIAN') {
-                    INSPSTATUS = "报检";
-                    $("#INSPSTATUS").textbox('setValue', '报检');
-                } else if (type == 'BJCHAYAN') {
-                    INSPSTATUS = "查验";
-                    $("#INSPSTATUS").textbox('setValue', '查验');
-                } else if (type == 'XUNZHENG') {
-                    INSPSTATUS = "熏蒸";
-                    $("#INSPSTATUS").textbox('setValue', '熏蒸');
-                } else if (type == 'BAOJIANFANGXING') {
-                    INSPSTATUS = "报检放行";
-                    $("#INSPSTATUS").textbox('setValue', '报检放行');
-                }
+                DECLSTATUS = DECLSTATUS1 ? DECLSTATUS1 : DECLSTATUS2;
             }
             var form = $(this).parents('.OrderFrom').attr('id');//查找哪个form
-            var id_val = "#" + form + " #" + this.id;
-            var date = $(id_val).datetimebox('getValue');
+            //var id_val = "#" + form + " #" + this.id;
+            //var date = $(id_val).datetimebox('getValue');
             var findname = "#" + form + " input[name=ID]";
             var ID = $(findname).val();
             var ASSOCIATENO = "";
             if ($("input[name='ASSOCIATENO']").length > 0) {
                 ASSOCIATENO = $("input[name='ASSOCIATENO']").val();
             }
-            DECLSTATUS = DECLSTATUS1 ? DECLSTATUS1 : DECLSTATUS2;
             $.ajax({
                 url: '/Order/Edit_Ajax_Scene',// 跳转到 action6
                 data: {
@@ -328,6 +373,7 @@ $(function () {
                 type: 'post',
                 dataType: 'json',
                 success: function (data) {
+                    debugger;
                     if (data.Success == true) {
                         var name = "#" + form + " #" + type + 'USERNAME';
                         $(name).textbox('setValue', data.name);
@@ -546,6 +592,7 @@ function export_form() {
     });
     ids = ids.substring(0, ids.length - 1);
     var host = window.location.host;
+    debugger;
     $.ajax({
         url: '/Order/DataExportOut',                          // 跳转到 action
         data: { "ids": ids, "BUSITYPE": BUSITYPE },
@@ -624,8 +671,9 @@ function Edit() {
     var ID = getQueryString('ID');
     var type = $("input[name=type]").val();
     var DECLARATIONCODE = getQueryString('DECLARATIONCODE') ? getQueryString('DECLARATIONCODE') : "";
-    var INSPECTIONCODE = getQueryString('INSPECTIONCODE') ? getQueryString('INSPECTIONCODE') : "";
-    $('#OrderFrom').form('load', '/Order/Edit_Order?ID=' + ID + "&DECLARATIONCODE=" + DECLARATIONCODE + "&type=" + type + "&INSPECTIONCODE=" + INSPECTIONCODE);
+    var APPROVALCODE = getQueryString('APPROVALCODE') ? getQueryString('APPROVALCODE') : "";
+
+    $('#OrderFrom').form('load', '/Order/Edit_Order?ID=' + ID + "&DECLARATIONCODE=" + DECLARATIONCODE + "&type=" + type + "&APPROVALCODE=" + APPROVALCODE);
 }
 
 
@@ -707,8 +755,8 @@ function manyEditForm() {
         });
         var type = $("input[name=type]").val();
         var DECLARATIONCODE = getQueryString('DECLARATIONCODE') ? getQueryString('DECLARATIONCODE') : "";
-        var INSPECTIONCODE = getQueryString('INSPECTIONCODE') ? getQueryString('INSPECTIONCODE') : "";
-        $(formid).form('load', '/Order/Edit_Order?ID=' + id + "&DECLARATIONCODE=" + DECLARATIONCODE + "&type=" + type + "&INSPECTIONCODE=" + INSPECTIONCODE);
+        var APPROVALCODE = getQueryString('APPROVALCODE') ? getQueryString('APPROVALCODE') : "";
+        $(formid).form('load', '/Order/Edit_Order?ID=' + id + "&DECLARATIONCODE=" + DECLARATIONCODE + "&type=" + type + "&APPROVALCODE=" + APPROVALCODE);
     });
 }
 
@@ -721,7 +769,7 @@ function loadListGrid(page) {
         method: 'get',
         toolbar: '#tb',
         pageSize: 20,
-        pageList: [20, 40, 60, 80, 100, 300],
+        pageList: [20, 40, 60, 80, 100, 300, 1000],
         pagination: true,
         onDblClickCell: function (index, field, value) {
             var row = $('#datagrid').datagrid('getData').rows[index];
@@ -731,7 +779,7 @@ function loadListGrid(page) {
                     var is_open = true;
                 }
             } else {
-                if (row.INSPECTIONCODE != undefined && row.INSPECTIONCODE != null) {
+                if (row.APPROVALCODE != undefined && row.APPROVALCODE != null) {
                     var is_open = true;
                 }
             }
@@ -740,7 +788,6 @@ function loadListGrid(page) {
                     if (row.BUSINAME.indexOf("叠加保税") > 0) {
                         page = "Declare/OverlayBonded_Edit";
                     }
-
                 }
                 if (row.ID != "") {
                     window.location.href = "/" + page + "?ID=" + row.ID;

@@ -5,7 +5,7 @@
         <input type="hidden" name="ID" />
         <input type="hidden" name="type" value="02" />
         <input type="hidden" name="page" value="/Inspect/OnelineIn_Edit" />
-        <input type="hidden" name="DECLARATIONCODE" />
+        @*<input type="hidden" name="DECLARATIONCODE" />*@
         <input type="hidden" name="ORDERCODE" />
         <table>
             <tr>
@@ -29,8 +29,8 @@
 
             <tr>
                 <td>
-                    <label for="text">万达号:</label>
-                    <input class="easyui-textbox" type="text" name="text" disabled="disabled" />
+                    <label for="text">报检流水号:</label>
+                    <input class="easyui-textbox" type="text" name="APPROVALCODE" readonly="readonly" />
                 </td>
                 <td>
                     <label for="MANIFEST">载货清单号:</label>
@@ -52,9 +52,9 @@
                         木质包装:
                         <input class="" type="checkbox" name="" disabled="disabled" />
                         通关单否:
-                        <input class="" type="checkbox" name="" disabled="disabled" />
+                        <input class="" type="checkbox" name="ISNEEDCLEARANCE" disabled="disabled" value="1" />
                         法检标志:
-                        <input class="" type="checkbox" name="" disabled="disabled" />
+                        <input class="" type="checkbox" name="LAWCONDITION" disabled="disabled" value="1" />
                     </div>
                 </td>
             </tr>
@@ -118,7 +118,7 @@
                     <input class="easyui-textbox " type="text" id="BAOJIANUSERNAME" name="BAOJIANUSERNAME" disabled="disabled" />
                 </td>
                 <td>
-                    <label for="BAOJIANFANGXINGTIME"> 报检放行时间:</label>
+                    <label for="BAOJIANFANGXINGTIME">报检放行时间:</label>
                     <input class="easyui-textbox time_input INSPSTATUS" datatype="BAOJIANFANGXING" id="BAOJIANFANGXINGTIME" name="BAOJIANFANGXINGTIME" editable="false" />
                     @*<a href="javascript:void(0)" datatype="BAOJIANFANGXING" class="easyui-linkbutton fillingData"><i class="icon-time"></i></a>*@
                 </td>

@@ -13,12 +13,13 @@
     pagination: true,">
         <thead>
             <tr>
-                <th data-options="field:'ORDERCODE',width:120,sortable:true">业务单号</th>
-                <th data-options="field:'INSPECTIONCODE',width:120,sortable:true">报检单号</th>
-                <th data-options="field:'CLEARANCECODE',width:120,sortable:true">通关单号</th>
-                <th data-options="field:'INSPSTATUS',width:120,sortable:true">国检状态</th>
-                <th data-options="field:'SHEETNUM',width:120,sortable:true">报检单张数</th>
-                <th data-options="field:'COMMODITYNUM',width:50,sortable:true">品名个数</th>
+                <th data-options="field:'ORDERCODE',width:120">业务单号</th>
+                <th data-options="field:'INSPECTIONCODE',width:150">报检单号</th>
+                <th data-options="field:'APPROVALCODE',width:160">流水单号</th>
+                <th data-options="field:'CLEARANCECODE',width:120">通关单号</th>
+                <th data-options="field:'INSPSTATUS',width:120">国检状态</th>
+                <th data-options="field:'SHEETNUM',width:120">报检单张数</th>
+                <th data-options="field:'COMMODITYNUM',width:80">品名个数</th>
                 @*<th data-options="field:'ISPRINT',width:80,align:'center',formatter:formatISPRINT" editor="{type:'checkbox',options:{on:'1',off:'0'}}">是否打印</th>
                 <th data-options="field:'PRINTNUM',width:80,align:'center'" editor="{type:'numberbox'}">打印次数</th>*@
                 <th data-options="field:'action',width:50,align:'center',formatter:formatter">操作</th>
@@ -45,8 +46,9 @@
             }
         }
         function formatter(value, row, index) {
-            var INSPECTIONCODE = row.INSPECTIONCODE;
-            var url = "http://" + host + page + "?ID=" + ID + "&INSPECTIONCODE=" + INSPECTIONCODE;
+            debugger;
+            var APPROVALCODE = row.APPROVALCODE;
+            var url = "http://" + host + page + "?ID=" + ID + "&APPROVALCODE=" + APPROVALCODE;
             var s = '<a href="' + url + '">查看</a> ';
             return s;
         }

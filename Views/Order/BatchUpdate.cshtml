@@ -12,37 +12,73 @@
     <input type="hidden" name="USERID" value="@ViewData["USERID"]" />
     <input type="hidden" name="USERNAME" id="USERNAME" value="@ViewData["USERNAME"]" />
     <table id="scene">
-            <tr>
-                <td>
-                    <label for="BAORUHAIGUANTIME"> 报入海关时间:</label>
-                    <input class="easyui-datetimebox  time_input" id="BAORUHAIGUANTIME" datatype="BAORUHAIGUANUSERNAME" data-options="text:'填充时间'" editable="false" name="BAORUHAIGUANTIME" />
-                </td>
-                <td>
-                    <label for="BAORUHAIGUANUSERNAME">报入海关人:</label>
-                    <input class="easyui-textbox " type="text" id="BAORUHAIGUANUSERNAME" name="BAORUHAIGUANUSERNAME" disabled="disabled" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="DANZHENGFANGXINGTIME"> 单证放行时间:</label>
-                    <input class="easyui-datetimebox  time_input " id="DANZHENGFANGXINGTIME" datatype="DANZHENGFANGXINGUSERNAME" data-options="text:'填充时间'" editable="false" name="DANZHENGFANGXINGTIME" />
-                </td>
-                <td>
-                    <label for="DANZHENGFANGXINGUSERNAME">单证放行人:</label>
-                    <input class="easyui-textbox " type="text" id="DANZHENGFANGXINGUSERNAME" name="DANZHENGFANGXINGUSERNAME" disabled="disabled" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="SHIWUFANGXINGTIME">实物放行时间:</label>
-                    <input class="easyui-datetimebox  time_input " id="SHIWUFANGXINGTIME" datatype="SHIWUFANGXINGUSERNAME" data-options="text:'填充时间'" editable="false" name="SHIWUFANGXINGTIME" />
-                </td>
-                <td>
-                    <label for="SHIWUFANGXINGUSERNAME">实物放行人:</label>
-                    <input class="easyui-textbox " type="text" id="SHIWUFANGXINGUSERNAME" name="SHIWUFANGXINGUSERNAME" disabled="disabled" />
-                </td>
-            </tr>
-        </table>
+        <tr>
+            <td>
+                <label for="BAORUHAIGUANTIME"> 报入海关时间:</label>
+                <input class="easyui-datetimebox  time_input" id="BAORUHAIGUANTIME" datatype="BAORUHAIGUANUSERNAME" data-options="text:'填充时间'" editable="false" name="BAORUHAIGUANTIME" />
+            </td>
+            <td>
+                <label for="BAORUHAIGUANUSERNAME">报入海关人:</label>
+                <input class="easyui-textbox " type="text" id="BAORUHAIGUANUSERNAME" name="BAORUHAIGUANUSERNAME" disabled="disabled" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="DANZHENGFANGXINGTIME"> 单证放行时间:</label>
+                <input class="easyui-datetimebox  time_input " id="DANZHENGFANGXINGTIME" datatype="DANZHENGFANGXINGUSERNAME" data-options="text:'填充时间'" editable="false" name="DANZHENGFANGXINGTIME" />
+            </td>
+            <td>
+                <label for="DANZHENGFANGXINGUSERNAME">单证放行人:</label>
+                <input class="easyui-textbox " type="text" id="DANZHENGFANGXINGUSERNAME" name="DANZHENGFANGXINGUSERNAME" disabled="disabled" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="SHIWUFANGXINGTIME">实物放行时间:</label>
+                <input class="easyui-datetimebox  time_input " id="SHIWUFANGXINGTIME" datatype="SHIWUFANGXINGUSERNAME" data-options="text:'填充时间'" editable="false" name="SHIWUFANGXINGTIME" />
+            </td>
+            <td>
+                <label for="SHIWUFANGXINGUSERNAME">实物放行人:</label>
+                <input class="easyui-textbox " type="text" id="SHIWUFANGXINGUSERNAME" name="SHIWUFANGXINGUSERNAME" disabled="disabled" />
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:left">
+                <label for="IFPASSMODE">是否更新放行方式:</label>
+                <input class="" type="checkbox" name="IFPASSMODE" value="1" />
+            </td>
+            
+            <td>
+                <div style="float:left;height:22px;line-height:22px;">
+                    <label>放行方式:</label>
+                </div>
+                <div style="float:left">
+                    <label for="zhengchang">正常放行:</label>
+                    <input class="" id="zhengchang" type="checkbox" value="1" name="PASSMODE" />
+                    <label for="jiancha">查验放行:</label>
+                    <input class="" id="jiancha" type="checkbox" value="3" name="PASSMODE" />
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="text-align:left">
+                <label for="IF_LIHUO">是否更新理货:</label>
+                <input class="" type="checkbox" name="IF_LIHUO" value="1" />
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:left">
+                <label for="IFLIHUO">理货标识:</label>
+                <input class="" id="IFLIHUO" type="checkbox" name="IFLIHUO" value="1" />
+            </td>
+            <td>
+                <label for="LIHUOTOTAL">理货次数:</label>
+                <input class="easyui-numberspinner" name="LIHUOTOTAL"
+                       data-options="min:0">
+            </td>
+        </tr>
+    </table>
     <div style="text-align:center;padding:5px 0;margin-top: 30px;">
         <a class="btn btn-primary" href="javascript:void(0)" style="margin-right: 20px;" onclick="submitUpdateFrom()"><i class="fa fa-floppy-o"></i> 保存 </a>
         <a class="btn btn-primary" href="javascript:void(0)" onclick="closeFrom()"><i class="fa fa-times" aria-hidden="true"></i> 关闭 </a>
@@ -51,11 +87,8 @@
 
 <script type="text/javascript">
     function submitUpdateFrom() {
-        var bname = $("#BAORUHAIGUANUSERNAME").val();
-        var dname = $("#DANZHENGFANGXINGUSERNAME").val();
-        var sname = $("#SHIWUFANGXINGUSERNAME").val();
         $('#UpdateFrom').form('submit', {
-            url: "/Order/SaveUpdateData?bname=" + bname + "&dname=" + dname + "&sname=" + sname,
+            url: "/Order/SaveUpdateData",
             onSubmit: function () {
                 if ($(this).form('enableValidation').form('validate')) {
                     return true;
@@ -69,7 +102,7 @@
                     $.messager.alert('成功', '保存成功');
                     closeFrom();
                 } else {
-                    $.messager.alert('失败', '保存失败');
+                    $.messager.alert('失败', '暂无修改项！');
                 }
             }
         });

@@ -323,6 +323,7 @@ namespace SceneOfCustoms.Controllers
             //msg.Body = xmlDoc.ToString();
             //msg.Formatter = new System.Messaging.XmlMessageFormatter(new Type[] { typeof(string) });
             MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:58.210.121.35\\Private$\\DataCenter_KS");
+            //MessageQueue mq = new MessageQueue("FormatName:DIRECT=TCP:221.224.21.29\\Private$\\wmzyddata");
             Message msg = new Message();
             ////ZYDFL_S_系统名称_十个0_十个0_企业内部编号_GUID.xml old
 
@@ -425,9 +426,9 @@ namespace SceneOfCustoms.Controllers
                 {
                     sql += " AND " + jo.Value<string>("ordercode") + " ='" + jo.Value<string>("ordercode_value") + "'";
                 }
-                if (jo.Value<string>("businessin_createname") != null && jo.Value<string>("businessin_createname") != "")
+                if (jo.Value<string>("XCBUSINAME") != null && jo.Value<string>("XCBUSINAME") != "")
                 {
-                    sql += " AND CREATENAME = '" + jo.Value<string>("businessin_createname") + "' ";
+                    sql += " AND XCBUSINAME = '" + jo.Value<string>("XCBUSINAME") + "' ";
                 }
                 if (jo.Value<string>("starttime") != "" && jo.Value<string>("starttime") != null)
                 {
@@ -448,7 +449,6 @@ namespace SceneOfCustoms.Controllers
             result = "{\"total\":" + total + ",\"rows\":" + result + "}";
             return result;
         }
-
 
 
         public string Load_WuMaoBack()

@@ -133,7 +133,6 @@ namespace SceneOfCustoms.Common
                 node.InnerText = dt.Rows[0]["MANUAL_NO"] + "";
 
 
-
                 node = (XmlElement)xmlDoc.SelectSingleNode("PASS_HEAD/OUT_CODE");
                 node.InnerText = dt.Rows[0]["OUT_CODE"] + "";
 
@@ -403,45 +402,106 @@ namespace SceneOfCustoms.Common
             string ASS2 = "";
             List<List<OrderEn>> GroupOrder = GroupByConFoo(ld);
 
+            //定义变量 等于3个业务单号的情况
+
+            string WTFS1 = "";
+            string WTFS2 = "";
+            string WTFS3 = "";
+            string WTFS4 = "";
             //关联号 如果4单 2单和4单关联号一样，下面在去判断 2单关联号
             foreach (List<OrderEn> ListOrder in GroupOrder)
             {
-
                 if (ListOrder[0].BUSITYPE.IndexOf("叠加保税") >= 0)
                 {
-                    if (GroupOrder.Count >= 2)
+
+                    if (GroupOrder.Count == 3)
                     {
+                        if (ListOrder[0].ENTRUSTTYPEID == "HUB 仓出")
+                        {
+                            WTFS1 = "GL" + ListOrder[0].ORDERCODE;
+                        }
+                        if (ListOrder[0].ENTRUSTTYPEID == "进口企业")
+                        {
+                            WTFS2 = "GL" + ListOrder[0].ORDERCODE;
+                        }
+
                         if (ListOrder[0].ENTRUSTTYPEID == "HUB 仓进")
                         {
-                            CORRESPONDNO = "GF" + ListOrder[0].ORDERCODE;
-                            ASS2 = "GL" + ListOrder[0].ORDERCODE;//2单关联号
+                            WTFS3 = "GL" + ListOrder[0].ORDERCODE;
                         }
+
+                        if (ListOrder[0].ENTRUSTTYPEID == "出口企业")
+                        {
+                            WTFS4 = "GL" + ListOrder[0].ORDERCODE;
+                        }
+                        if (ListOrder[0].ENTRUSTTYPEID == "HUB 仓出" || ListOrder[0].ENTRUSTTYPEID == "进口企业")
+                        {
+                            CORRESPONDNO = "GF" + ListOrder[0].ORDERCODE; //4单关联号
+                        }
+                    }
+                    else if (GroupOrder.Count > 3)
+                    {
+
                         if (ListOrder[0].ENTRUSTTYPEID == "HUB 仓出")
                         {
                             ASS1 = "GL" + ListOrder[0].ORDERCODE;//2单关联号
+                            CORRESPONDNO = "GF" + ListOrder[0].ORDERCODE; //4单关联号
+                        }
+                        if (ListOrder[0].ENTRUSTTYPEID == "HUB 仓进")
+                        {
+                            ASS2 = "GL" + ListOrder[0].ORDERCODE;//2单关联号
                         }
                     }
-                    else
+                    else if (GroupOrder.Count == 2)
                     {
-                        if (ListOrder[0].ENTRUSTTYPEID == "HUB 仓出" || ListOrder[0].ENTRUSTTYPEID == "HUB 仓进")
+                        string WTFS_TWO = GroupOrder[0][0].ENTRUSTTYPEID + GroupOrder[1][0].ENTRUSTTYPEID;
+                        if (WTFS_TWO == "HUB 仓出进口企业" || WTFS_TWO == "进口企业HUB 仓出" || WTFS_TWO == "出口企业HUB 仓进" || WTFS_TWO == "HUB 仓进出口企业")
                         {
                             ASSOCIATENO = "GL" + ListOrder[0].ORDERCODE;
+                        }
+                        else
+                        {
+                            CORRESPONDNO = "GF" + ListOrder[0].ORDERCODE; //4单关联号
                         }
                     }
                 }
 
                 if (ListOrder[0].BUSITYPE.IndexOf("国内") >= 0)
                 {
-                    if (ListOrder[0].ENTRUSTTYPEID == "进口企业")
+
+                    if (GroupOrder.Count == 2)
                     {
-                        ASS1 = "GL" + ListOrder[0].ORDERCODE;//2单关联号
+                        if (ListOrder[0].ENTRUSTTYPEID == "进口企业")
+                        {
+                            ASS1 = "GL" + ListOrder[0].ORDERCODE;//2单关联号
+                        }
                     }
+
+                }
+            }
+
+            if (GroupOrder.Count == 3)
+            {
+                if (!string.IsNullOrEmpty(WTFS1))
+                {
+                    ASS1 = WTFS1;
+                }
+                else
+                {
+                    ASS1 = WTFS2;
+                }
+                if (!string.IsNullOrEmpty(WTFS3))
+                {
+                    ASS2 = WTFS3;
+                }
+                else
+                {
+                    ASS2 = WTFS4;
                 }
             }
 
             DataTable dt;
             string sql = "";
-
             string NewTime = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
 
             foreach (List<OrderEn> o in GroupOrder)
@@ -451,15 +511,8 @@ namespace SceneOfCustoms.Common
                 o[0].UPDATETIME = NewTime;
                 //关联号
 
-                if (GroupOrder.Count >= 2)
+                if (GroupOrder.Count > 2)
                 {
-
-                    if (o[0].BUSITYPE.IndexOf("国内") >= 0)
-                    {
-                        ASSOCIATENO = ASS1;
-                    }
-
-
                     if (o[0].BUSITYPE.IndexOf("叠加保税") >= 0)
                     {
                         if (o[0].ENTRUSTTYPEID == "HUB 仓进" || o[0].ENTRUSTTYPEID == "出口企业")
@@ -471,12 +524,17 @@ namespace SceneOfCustoms.Common
                             ASSOCIATENO = ASS1;
                         }
                     }
-
                 }
+
+
+                if (o[0].BUSITYPE.IndexOf("国内") >= 0)
+                {
+                    ASSOCIATENO = ASS1;
+                }
+
                 //两单关联号，四单关联号
                 o[0].ASSOCIATENO = ASSOCIATENO;
                 o[0].CORRESPONDNO = CORRESPONDNO;
-
                 //委托类型中文
                 o[0].WTFS = o[0].ENTRUSTTYPEID;
 
@@ -891,6 +949,15 @@ namespace SceneOfCustoms.Common
                 wm.OUT_TRAF_MODE = dt.Rows[0]["OUT_TRAF_MODE"] + "";
             }
 
+
+
+
+
+
+
+            //现场业务类型
+            wm.XCBUSINAME = IFS.XCBUSINAME;
+
             wm.TRADETYPE = "0110"; //监管方式
 
 
@@ -913,10 +980,7 @@ namespace SceneOfCustoms.Common
             //进出口标志代码
             //作业单类型名称
             //进出口标志代码
-
-
-
-
+            
             if (BUSITYPE == "11" || BUSITYPE == "21")
             {
                 wm.TRADE_CODE = SGOODSUNITCODE;
@@ -949,6 +1013,16 @@ namespace SceneOfCustoms.Common
             wm.NET_WT = ld[0].GOODSWEIGHT;
             wm.TRANSFER_NO = ld[0].TURNPRENO;
 
+
+            // 出口的是要放到发货方的  进口的是要放到收货方的  I进口/E出口
+            if (wm.I_E_FALG_TYPE == "E")
+            {
+                wm.OUT_CODE = wm.CONSIGNEE_CODE;
+                wm.CONSIGNEE_CODE = "";
+                wm.CONSIGNEE_NAME = "";
+            }
+
+
             //转关方式
             //空进  海出 
             if (BUSITYPE == "10" || BUSITYPE == "20")
@@ -980,7 +1054,6 @@ namespace SceneOfCustoms.Common
             }
             //转关方式end
             wm.WRAP_TYPE_ID = Packing(ld[0].PACKKIND + ""); //包装种类
-
 
             //陆运货物类型 陆运业务类型 陆运ID
             if (BUSITYPE == "21")
@@ -1109,7 +1182,7 @@ namespace SceneOfCustoms.Common
             dt = DBMgr.GetDataTable(sql);
             if (dt.Rows.Count > 0)
             {
-                wm.APPCIQID = dt.Rows[0]["DECLARATIONCODE"] + "";
+                //wm.APPCIQID = dt.Rows[0]["DECLARATIONCODE"] + "";
             }
 
 
@@ -1117,6 +1190,9 @@ namespace SceneOfCustoms.Common
             wm.SUBCODE = ld[0].DIVIDENO;
             wm.TONGGUANFSCODE = ld[0].TONGGUANFSCODE;
             wm.TONGGUANFSNAME = ld[0].TONGGUANFSNAME;
+
+            wm.SEND_USER = "3223980002";
+
             res = EditWumao(wm);
             return res;
         }
@@ -1263,7 +1339,8 @@ namespace SceneOfCustoms.Common
                                       GROSS_WT='{20}',NET_WT='{21}',GOODS_TYPE_LY='{22}',WRAP_TYPE_ID='{23}',
                                       MAINCODE='{24}',SUBCODE='{25}',TRANSFER_NO='{26}',ONLYCODE='{27}'
                                       ,WTFS='{28}',GOODS_NATURE_ID='{29}',TONGGUANFSCODE='{30}',TONGGUANFSNAME='{31}',
-                                      LYTYPE_ID='{32}',GOODS_TYPE_ID='{33}',LY_BIZ_TYPE_ID='{34}',APPCIQID='{35}'
+                                      LYTYPE_ID='{32}',GOODS_TYPE_ID='{33}',LY_BIZ_TYPE_ID='{34}',APPCIQID='{35}',UPDATETIME=sysdate,XCBUSINAME='{36}',
+                                      OUT_CODE='{37}',SEND_USER='{38}'
                                       where ORDERCODE='" + wm.ORDERCODE + "'";
                 sql = string.Format(sql,
     wm.I_E_FALG_TYPE, wm.BIZ_TYPE_ID, wm.TRAFFICTYPE, wm.BILL_TYPE,
@@ -1274,12 +1351,13 @@ namespace SceneOfCustoms.Common
     wm.GROSS_WT, wm.NET_WT, wm.GOODS_TYPE_LY, wm.WRAP_TYPE_ID,
     wm.MAINCODE, wm.SUBCODE, wm.TRANSFER_NO, wm.ONLYCODE,
     wm.WTFS, wm.GOODS_NATURE_ID, wm.TONGGUANFSCODE, wm.TONGGUANFSNAME,
-    wm.LYTYPE_ID, wm.GOODS_TYPE_ID, wm.LY_BIZ_TYPE_ID, wm.APPCIQID
+    wm.LYTYPE_ID, wm.GOODS_TYPE_ID, wm.LY_BIZ_TYPE_ID, wm.APPCIQID, wm.XCBUSINAME,
+    wm.OUT_CODE, wm.SEND_USER
     );
             }
             else
             {
-                sql = @"insert into LIST_WUMAO(ID,
+                sql = @"insert into LIST_WUMAO(ID,CREATETIME,UPDATETIME,
                                       I_E_FALG_TYPE,BIZ_TYPE_ID,TRAFFICTYPE,BILL_TYPE,
                                       APPCIQTYPE,OUT_TRAF_MODE,BUSINAME,PROVIDER_NAME,
                                       D_DATE,TRANSPORT_CODE,TRANSPORT_NAME,APPCOMPANY,
@@ -1289,11 +1367,11 @@ namespace SceneOfCustoms.Common
                                       MAINCODE,SUBCODE,TRANSFER_NO,ONLYCODE,
                                       WTFS,ORDERCODE,FWONO,FOONO,
                                       GOODS_NATURE_ID,TONGGUANFSCODE,TONGGUANFSNAME,
-                                      LYTYPE_ID, GOODS_TYPE_ID, LY_BIZ_TYPE_ID, APPCIQID
-                                       )VALUES(LIST_ORDER_ID.Nextval,
+                                      LYTYPE_ID, GOODS_TYPE_ID, LY_BIZ_TYPE_ID, APPCIQID,XCBUSINAME,OUT_CODE,SEND_USER
+                                       )VALUES(LIST_ORDER_ID.Nextval,sysdate,sysdate,
                    '{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}',to_date('{8}','yyyy-mm-dd'),'{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}',
                    '{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}','{28}','{29}','{30}','{31}','{32}','{33}','{34}',
-                   '{35}','{36}','{37}','{38}'
+                   '{35}','{36}','{37}','{38}','{39}','{40}','{41}'
                   )";
                 sql = string.Format(sql,
     wm.I_E_FALG_TYPE, wm.BIZ_TYPE_ID, wm.TRAFFICTYPE, wm.BILL_TYPE,
@@ -1305,7 +1383,8 @@ namespace SceneOfCustoms.Common
     wm.MAINCODE, wm.SUBCODE, wm.TRANSFER_NO, wm.ONLYCODE,
     wm.WTFS, wm.ORDERCODE, wm.FWONO, wm.FOONO,
     wm.GOODS_NATURE_ID, wm.TONGGUANFSCODE, wm.TONGGUANFSNAME,
-    wm.LYTYPE_ID, wm.GOODS_TYPE_ID, wm.LY_BIZ_TYPE_ID, wm.APPCIQID
+    wm.LYTYPE_ID, wm.GOODS_TYPE_ID, wm.LY_BIZ_TYPE_ID, wm.APPCIQID, wm.XCBUSINAME,
+    wm.OUT_CODE, wm.SEND_USER
     );
             }
             res = DBMgr.ExecuteNonQuery(sql);
@@ -1525,6 +1604,21 @@ namespace SceneOfCustoms.Common
                 {
                     MsgobjList.Add(set_MObj("E", "FOONO不可为空"));
                 }
+
+                sql = "select * from  LIST_WUMAODADAMATCHING where BUSINAME='" + o.BUSITYPE + "'";
+                dt = DBMgr.GetDataTable(sql);
+                if (dt.Rows.Count <= 0)
+                {
+                    MsgobjList.Add(set_MObj("E", "业务类型无法匹配基础数据！" + o.FOONO));
+                }
+
+                sql = "select * from  LIST_WUMAO_BACK where ORDERCODE='" + o.ORDERCODE + "'";
+                dt = DBMgr.GetDataTable(sql);
+                if (dt.Rows.Count > 0)
+                {
+                    MsgobjList.Add(set_MObj("E", "物贸通已经返回数据，不可提交！" + o.FOONO));
+                }
+
                 string BUSITYPE;
                 BUSITYPE = JudgeBusiType(o.BUSITYPE, o.ENTRUSTTYPEID);
                 if (string.IsNullOrEmpty(o.BUSITYPE))
@@ -2311,7 +2405,6 @@ namespace SceneOfCustoms.Common
                 //销保时间
                 ZSXBSJ(id);
                 //testZSXBSJ(id);
-
             }
             else if (type == "CHAYANSTART")
             {
@@ -2374,7 +2467,17 @@ namespace SceneOfCustoms.Common
                 {
                     Declaration = new sap.DT_CUS_CUS1002_REQITEMORDER();
                     Declaration.ZBGDH = dt.Rows[i]["INSPECTIONCODE"] + "";
-                    Declaration.ZZGYLH = dt.Rows[i]["CLEARANCECODE"] + "";
+
+                    if (!string.IsNullOrEmpty(dt.Rows[i]["CLEARANCECODE"] + ""))
+                    {
+                        string CLEARANCECODE = dt.Rows[i]["CLEARANCECODE"] + "";
+                        Declaration.ZZGYLH = CLEARANCECODE.Replace("@", "");
+                    }
+                    else
+                    {
+                        Declaration.ZZGYLH = "";
+                    }
+
                     Declaration.ZBGDZS = dt.Rows[i]["SHEETNUM"] + "";
 
                     if (!string.IsNullOrEmpty(dt.Rows[i]["SHANDANTOTAL"] + ""))
